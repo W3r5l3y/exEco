@@ -101,3 +101,12 @@ class AuthenticationBackendTestCase(TestCase):
             request=None, email="test@example.com", password="wrongpassword"
         )
         self.assertIsNone(user)
+
+
+class WebpageLoadTestCase(TestCase):
+    def test_login_page_loads_correctly(self):
+        response = self.client.get(reverse("login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/login.html")
+        # Check if specific images are present in the response content
+        self.assertContains(response, 'src="/static/img/execo-logo.png"')
