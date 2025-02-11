@@ -249,10 +249,11 @@
 
                 <!-- Login tab content -->
                 <div class="tabs-content">
-                    <form action="" method=""> <!-- ADD ACTION & METHOD -->
+                    <form action="" method="POST">
+                        {% csrf_token %}
                         <div class="input-group">
-                            <input class="input" type="text" id="email" name="email" placeholder="Enter your email" required>
-                            <label class="input-label" for="email">Username</label>
+                            <input class="input" type="email" id="email" name="email" placeholder="Enter your email" required>
+                            <label class="input-label" for="email">Email</label>
                         </div>
 
                         <div class="input-group">
@@ -262,7 +263,7 @@
 
                         <!-- FORGOT PASSWORD?? -->
 
-                        <button>Login</button>
+                        <button type="submit" name="login">Login</button>
                     </form>
                 </div>
 
@@ -272,14 +273,15 @@
 
                 <!-- Register tab content -->
                 <div class="tabs-content">
-                    <form action="" method=""> <!-- ADD ACTION & METHOD -->
+                    <form action="" method="POST">
+                        {% csrf_token %}
                         <div class="input-group">
-                            <input class="input" type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
+                            <input class="input" type="text" id="first-name" name="first_name" placeholder="Enter your first name" required>
                             <label class="input-label" for="first-name">First Name</label>
                         </div>
 
                         <div class="input-group">
-                            <input class="input" type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
+                            <input class="input" type="text" id="last-name" name="last_name" placeholder="Enter your last name" required>
                             <label class="input-label" for="last-name">Last Name</label>
                         </div>
 
@@ -294,11 +296,11 @@
                         </div>
 
                         <div class="input-group">
-                            <input class="input" type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                            <input class="input" type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
                             <label class="input-label" for="confirm-password">Confirm Password</label>
                         </div>
 
-                        <button>Register</button>
+                        <button type="submit" name="register">Register</button>
                     </form>
                 </div>
             </div>
