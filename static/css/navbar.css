@@ -1,0 +1,36 @@
+
+@import url("/static/css/colours.css");
+
+
+header {
+    position: absolute;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 40px;
+    background-color: var(--primary_colour);
+    box-shadow:
+        0 0 10px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.header-logo-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-logo-title img {
+    height: 75px;
+    width: 75px;
+}
+
+.header-logo-title h1 {
+    font-size: 1.8em;
+    color: var(--neutral_colour);
+    margin-left: 20px;
+}
