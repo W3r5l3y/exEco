@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .forms import LoginForm, RegisterForm
+from .backends import EmailBackend
 
 
 class FormsTestCase(TestCase):
@@ -67,3 +69,35 @@ class ViewsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 302)  # Redirect after registration
         self.assertRedirects(response, reverse("login"))
+
+
+class AuthenticationBackendTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username="testuser", email="test@example.com", password="password123"
+        )
+
+    # Uncomment the following test after implementing the authentication with datbase
+    """
+    def test_authenticate_with_email(self):
+        backend = EmailBackend()
+        user = backend.authenticate(
+            request=None, email="test@example.com", password="password123"
+        )
+        self.assertIsNotNone(user)
+        self.assertEqual(user.email, "test@example.com")
+    """
+
+    def test_authenticate_with_invalid_email(self):
+        backend = EmailBackend()
+        user = backend.authenticate(
+            request=None, email="invalid@example.com", password="password123"
+        )
+        self.assertIsNone(user)
+
+    def test_authenticate_with_invalid_password(self):
+        backend = EmailBackend()
+        user = backend.authenticate(
+            request=None, email="test@example.com", password="wrongpassword"
+        )
+        self.assertIsNone(user)
