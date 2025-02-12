@@ -17,7 +17,7 @@ class RegisterForm(forms.ModelForm):
             "password": forms.PasswordInput(),
         }
 
-    def clean_password(self):
+    def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
