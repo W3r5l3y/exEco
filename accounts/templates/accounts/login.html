@@ -11,8 +11,53 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
-<body>
+    <style>
+/* Error Popup Styles */
+#error-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 300px;
+}
 
+.error-popup {
+    background-color: rgba(255, 69, 58, 0.9); /* Red with some transparency */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.error-popup.hidden {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    right: -5px;
+}
+
+.close-btn:hover {
+    color: #ffcccc;
+}
+    </style>
+<body>
+    <div id="error-popup"></div> <!-- Error popup when provided with an error query parameter -->
 
     <main>
         <div class="tabs-wrapper">
@@ -80,6 +125,31 @@
             </div>
         </div>
     </main>
+    
+    <script>
+        // Get query parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        // If the error query parameter is present, display an error popup
+        const error = urlParams.get('error');
+        if (error) {
+            const errorPopup = document.getElementById('error-popup');
+            errorPopup.innerHTML = `
+                <div class="error-popup" id="popup-message">
+                    <span>${error}</span>
+                    <button class="close-btn" onclick="closePopup()">&times;</button>
+                </div>
+            `;
+        }
+    
+        function closePopup() {
+            const popup = document.getElementById('popup-message');
+            if (popup) {
+                popup.classList.add('hidden');
+                setTimeout(() => popup.remove(), 300); // Matches the fade-out transition
+            }
+        }
+    </script>
     
 </body>
 
