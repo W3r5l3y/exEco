@@ -12,52 +12,65 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
     <style>
-/* Error Popup Styles */
-#error-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    max-width: 300px;
-}
+        /* Fixed positioning to keep popup independent */
+        #error-popup {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 20px 30px;
+            z-index: 9999; /* Ensures it stays on top */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            max-width: 400px;
+            text-align: center;
+            display: none; /* Hide initially */
+            flex-direction: column;
+            position: fixed; /* Make sure it's always on top */
+        }
 
-.error-popup {
-    background-color: rgba(255, 69, 58, 0.9); /* Red with some transparency */
-    color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 14px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
+        #error-popup.hidden {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-.error-popup.hidden {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-}
+        #error-popup-title {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
 
-.close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 5px;
-    right: -5px;
-}
+        #error-popup-message {
+            margin: 10px 0 0;
+        }
 
-.close-btn:hover {
-    color: #ffcccc;
-}
+        .close-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30px;
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .close-btn:hover {
+            color: #ddd;
+        }
     </style>
 <body>
-    <div id="error-popup"></div> <!-- Error popup when provided with an error query parameter -->
+    <!-- ERROR POPUP -->
+    <div id="error-popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <p id="error-popup-title">Error</p>
+        <p id="error-popup-message">An unexpected error occurred.</p>
+    </div>
 
     <main>
         <div class="tabs-wrapper">
@@ -127,26 +140,36 @@
     </main>
     
     <script>
+        // Close the error popup
+        function closePopup() {
+            const popup = document.getElementById('error-popup');
+            popup.classList.add('hidden');
+            setTimeout(() => popup.style.display = 'none', 300);
+        }
+
+        // Show error message in popup
+        function showError(message) {
+            const errorPopup = document.getElementById('error-popup');
+            const errorMessage = document.getElementById('error-popup-message');
+
+            errorMessage.textContent = message;
+            errorPopup.style.display = 'flex'; // Make it visible
+            setTimeout(() => errorPopup.classList.remove('hidden'), 10);
+        }
+
         // Get query parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
-    
-        // If the error query parameter is present, display an error popup
         const error = urlParams.get('error');
+        const tab_location = urlParams.get('tab');
+
+        // Show error message if present
         if (error) {
-            const errorPopup = document.getElementById('error-popup');
-            errorPopup.innerHTML = `
-                <div class="error-popup" id="popup-message">
-                    <span>${error}</span>
-                    <button class="close-btn" onclick="closePopup()">&times;</button>
-                </div>
-            `;
-        }
-    
-        function closePopup() {
-            const popup = document.getElementById('popup-message');
-            if (popup) {
-                popup.classList.add('hidden');
-                setTimeout(() => popup.remove(), 300); // Matches the fade-out transition
+            showError(error);
+
+            // If a tab is specified, switch to that tab
+            if (tab_location) {
+                const tabRadio = document.getElementById(`${tab_location}-tab-radio`);
+                tabRadio.checked = true;
             }
         }
     </script>
