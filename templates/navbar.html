@@ -15,7 +15,7 @@
     </head>
     <body>
         {% block content %}
-        <header>
+        <header class="">
             <div class="header-logo-div">
                 <div class="header-logo-title">
                     <img src="{% static 'img/execo-logo.png' %}" alt="University of Exeter Logo">
@@ -41,29 +41,26 @@
                     </a>
                 </div>
 
-                <!-- Navbar items -->
+
                 <div class="header-right-div-bottom-line">
                     <nav class="navbar navbar-expand-md navbar-light">
-                        <!-- Navbar content (this will be shown on larger screens) -->
                         <div class="container-fluid">
-                            <!-- Navbar Toggle Button (Only visible on mobile) -->
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
 
-                            <!-- Collapsing Navbar -->
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav ms-auto">
-                                    <li class="header-right-navbar-item ">
+                                    <li class="header-right-navbar-item">
                                         <a class="header-right-navbar-item-link" href="{% url 'login' %}">Home</a>
                                     </li>
-                                    <li class="header-right-navbar-item ">
+                                    <li class="header-right-navbar-item">
                                         <a class="header-right-navbar-item-link" href="{% url 'login' %}">Leaderboard</a>
                                     </li>
-                                    <li class="header-right-navbar-item ">
+                                    <li class="header-right-navbar-item">
                                         <a class="header-right-navbar-item-link" href="{% url 'login' %}">Shop</a>
                                     </li>
-                                    <li class="header-right-navbar-item ">
+                                    <li class="header-right-navbar-item">
                                         <a class="header-right-navbar-item-link" href="{% url 'login' %}">GameMakers</a>
                                     </li>
                                 </ul>

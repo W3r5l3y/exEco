@@ -3,14 +3,14 @@
 
 
 header {
-    position: absolute;
+    position: fixed;
+    z-index: 1050;
     align-self: flex-start;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-
     background-color: var(--primary_colour);
     box-shadow:
         0 0 10px rgba(0, 0, 0, 0.6),
@@ -129,8 +129,22 @@ header {
 }
 
 
+
 @media (max-width: 767px) {
     .header-right-div {
         padding-right: 0;
     }
+    .header-logo-title img {
+        height: 50px;
+        width: 50px;
+    }
+
+    .header-logo-title h1 {
+        font-size: 1.4em;
+        color: var(--neutral_colour);
+        margin-left: 10px;
+        line-height: 50px;
+    }
+
 }
+
