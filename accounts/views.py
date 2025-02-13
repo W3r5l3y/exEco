@@ -19,8 +19,9 @@ def login_register_view(request):
                 print("Authenticated user:", user)  ## TODO REMOVE
                 if user is not None:
                     login(request, user)
+                    request.session['user_id'] = user.id
                     print("LOGIN SUCCESSFUL!")  ## TODO REMOVE
-                    return redirect("home")  # Redirect to a home page.
+                    return redirect("login")  # Redirect to a home page.
                 else:
                     print("Invalid login credentials")  ## TODO REMOVE
         elif "register" in request.POST:

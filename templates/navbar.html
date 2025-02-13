@@ -15,14 +15,63 @@
     </head>
     <body>
         {% block content %}
-        <header>
-            <div class="header-logo-title">
-                <img src="{% static 'img/execo-logo.png' %}" alt="University of Exeter Logo">
-                <h1>exEco</h1>
+        <header class="">
+            <div class="header-logo-div">
+                <div class="header-logo-title">
+                    <img src="{% static 'img/execo-logo.png' %}" alt="University of Exeter Logo">
+                    <h1>exEco</h1>
+                </div>
             </div>
-            <div>
-                <!-- Nav links on other pages -->
+            <div class="header-right-div">
+                <div class="header-right-div-top-line d-none d-md-flex">
+                    <div class="header-right-div-coins1-div ">
+                        <img class="coin1-img" src="{% static 'img/coin1.png' %}" alt="coin1">
+                        <p class="user-profile-text"> 000</p>
+                    </div>
+                    <div class="header-right-div-coins2-div">
+                        <img class="coin2-img" src="{% static 'img/coin2.png' %}" alt="coin2">
+                        <p class="user-profile-text"> 000</p>
+                    </div>
+
+                    <a href="{% url 'login' %}" style="text-decoration: none;color: inherit;">
+                        <div class="header-right-div-profile-div d-none d-md-flex">
+                            <p class="user-profile-text">{{ fullUser.first_name }} {{ fullUser.last_name }}</p>
+                            <div class="user-profile-circle">{{ fullUser.initials }}</div>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="header-right-div-bottom-line">
+                    <nav class="navbar navbar-expand-md navbar-light">
+                        <div class="container-fluid">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="header-right-navbar-item">
+                                        <a class="header-right-navbar-item-link" href="{% url 'login' %}">Home</a>
+                                    </li>
+                                    <li class="header-right-navbar-item">
+                                        <a class="header-right-navbar-item-link" href="{% url 'login' %}">Leaderboard</a>
+                                    </li>
+                                    <li class="header-right-navbar-item">
+                                        <a class="header-right-navbar-item-link" href="{% url 'login' %}">Shop</a>
+                                    </li>
+                                    <li class="header-right-navbar-item">
+                                        <a class="header-right-navbar-item-link" href="{% url 'login' %}">GameMakers</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
             </div>
+
+            </div>
+
         </header>
 
         {% endblock content %}
