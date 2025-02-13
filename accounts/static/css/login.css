@@ -162,6 +162,57 @@ button {
     opacity: 1;
 }
 
+/* Error popup */
+#error-popup {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    max-width: 400px;
+    background-color: #f44336;
+    color: white;
+    padding: 20px 30px;
+    z-index: 1000;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#error-popup.hidden {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#error-popup-title {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+#error-popup-message {
+    margin: 10px 0 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-btn:hover {
+    color: #ddd;
+}
+
 /* Responsive */
 
 @media (max-width: 768px) {
