@@ -1,4 +1,5 @@
 from django import forms
+from .models import CustomUser
 
 
 class LoginForm(forms.Form):
@@ -6,14 +7,16 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class RegisterForm(forms.Form):
-    first_name = forms.CharField(max_length=100)
-    last_name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+class RegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
-    # Custom validation for password and confirm_password to ensure they match
+    class Meta:
+        model = CustomUser
+        fields = ["first_name", "last_name", "email", "password"]
+        widgets = {
+            "password": forms.PasswordInput(),
+        }
+
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
@@ -21,6 +24,18 @@ class RegisterForm(forms.Form):
 
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords do not match.")
-            # TODO: Error needs to be reflected in webpage
 
         return cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exists.")
+        return email
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user

@@ -74,11 +74,12 @@ class ViewsTestCase(TestCase):
 class AuthenticationBackendTestCase(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="test@example.com", password="password123"
+            email="test@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123",
         )
 
-    # Uncomment the following test after implementing the authentication with datbase
-    """
     def test_authenticate_with_email(self):
         backend = EmailBackend()
         user = backend.authenticate(
@@ -86,7 +87,6 @@ class AuthenticationBackendTestCase(TestCase):
         )
         self.assertIsNotNone(user)
         self.assertEqual(user.email, "test@example.com")
-    """
 
     def test_authenticate_with_invalid_email(self):
         backend = EmailBackend()
