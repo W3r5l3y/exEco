@@ -23,10 +23,10 @@ const tab_location = urlParams.get('tab');
 // Show error message if present
 if (error) {
     showError(error);
+}
 
-    // If a tab is specified, switch to that tab
-    if (tab_location) {
-        const tabRadio = document.getElementById(`${tab_location}-tab-radio`);
-        tabRadio.checked = true;
-    }
+// Show the correct tab if present
+if (tab_location) {
+    const tab = document.getElementById(tab_location);
+    tab.click();
 }
