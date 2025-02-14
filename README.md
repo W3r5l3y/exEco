@@ -17,7 +17,7 @@ Ensure you have the following installed:
 #### **1. Clone the Repository**
 
 ```sh
-git clone https://github.com/yourusername/exEco.git
+git clone https://github.com/W3r5l3y/exEco.git
 cd exEco
 ```
 
@@ -51,7 +51,7 @@ The app will be available at **http://127.0.0.1:8000/**.
 
 ---
 
-## **Project Structure**
+## **Project Structure WIP**
 
 ```
 exEco/
