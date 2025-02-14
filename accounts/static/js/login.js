@@ -27,6 +27,6 @@ if (error) {
 
 // Show the correct tab if present
 if (tab_location) {
-    const tab = document.getElementById(tab_location);
+    const tab = document.getElementById(tab_location + '-tab-radio');
     tab.click();
 }
