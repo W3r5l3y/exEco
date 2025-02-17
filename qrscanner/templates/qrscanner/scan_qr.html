@@ -1,0 +1,9 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Scan QR Code</button>
+</form>
+
+{% if result %}
+    <p>QR Code Data: {{ result }}</p>
+{% endif %}
