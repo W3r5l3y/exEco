@@ -4,3 +4,4 @@ qrcode
 opencv-python
 pyzbar
 numpy
+pillow
