@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm
-from .models import CustomUser
+from .models import CustomUser  # TODO Maybe remove later
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def login_register_view(request):
@@ -19,23 +21,27 @@ def login_register_view(request):
                 print("Authenticated user:", user)  ## TODO REMOVE
                 if user is not None:
                     login(request, user)
-                    request.session['user_id'] = user.id
+                    request.session["user_id"] = user.id
                     print("LOGIN SUCCESSFUL!")  ## TODO REMOVE
-                    return redirect("login")  # Redirect to a home page.
+                    return redirect("dashboard")  # Redirect to a home page.
                 else:
                     print("Invalid login credentials")  ## TODO REMOVE
+                    error_message = "Invalid login credentials"
+                    return HttpResponseRedirect(
+                        reverse("login") + f"?error={error_message}&tab=login"
+                    )
         elif "register" in request.POST:
             register_form = RegisterForm(request.POST)
             if register_form.is_valid():
                 register_form.save()
                 print("REGISTRATION SUCCESSFUL!")  ## TODO REMOVE
-                return redirect(
-                    "login"
-                )  # Redirect to login page after successful registration
+                return HttpResponseRedirect(reverse("login") + "?tab=login")
             else:
-                print(
-                    register_form.is_valid(), register_form.errors
-                )  # Print form errors TODO REMOVE
+                # Extract the first error message
+                error_message = list(register_form.errors.values())[0][0]
+                return HttpResponseRedirect(
+                    reverse("login") + f"?error={error_message}&tab=register"
+                )
 
     return render(
         request,
