@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register Form</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="{% static 'js/dashboard.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <img src="{% static 'img/dashboard-banner.jpg' %}" alt="Dashboard Banner" id="dashboard-banner">
+        <!--
+        Image reference (IEEE):
+        Univeristy of Exeter, "Why I chose to study MA Theatre Practice at the University of Exeter" Univeristy of Exeter, Apr. 30, 2019. https://sites.exeter.ac.uk/students/2019/04/30/why-i-chose-to-study-ma-theatre-practice-at-the-university-of-exeter/ [Accessed: 13-02-2025]
+        -->
+        <section class="game-dashboard">
+            <div class="game-card-wrapper">
+                <div class="game-card" id="game-card-1">
+                    <h2>Game 1</h2>
+                    <img src="{% static 'img/temp-qr-card.png' %}" alt="Game 1">
+                </div>
+                <div class="game-card" id="game-card-2">
+                    <h2>Game 2</h2>
+                    <img src="" alt="Game 2">
+                </div>
+                <div class="game-card" id="game-card-3">
+                    <h2>Game 3</h2>
+                    <img src="" alt="Game 3">
+                </div>
+                <div class="game-card" id="game-card-4">
+                    <h2>Game 4</h2>
+                    <img src="" alt="Game 4">
+                </div>
+                <!-- Add more game cards here -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>

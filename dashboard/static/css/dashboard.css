@@ -1,0 +1,113 @@
+
+/* EXETER UNI COLORS
+
+White - #fff
+Dark green - #003b3c
+Lighter green - #00c592
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif; /* CHANGE FONT */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Banner Styling */
+
+#dashboard-banner {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+    margin-top: 0;
+}
+
+/* Game Dashboard Styling */
+.game-dashboard {
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.game-card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Individual Game Card */
+.game-card {
+    position: relative;
+    flex: 1;
+    background: #00c592;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.game-card h2 {
+    /* Position the text above the image on bottom left corner */
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background: #003b3c;
+    color: #fff;
+    border-top-right-radius: 10px;
+    margin: 0;
+}
+
+.game-card img {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    border-radius: 5px;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+
+/* Custom scrollbar (thin, grey) */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
