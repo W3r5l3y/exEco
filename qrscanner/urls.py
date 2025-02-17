@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import qrcode_view
+from .views import scan_qr
 
 urlpatterns = [
-    path("qrscanner/", qrcode_view, name="qrscanner"),
+    path("qrscanner/", scan_qr, name="scan_qr"),
 ]
