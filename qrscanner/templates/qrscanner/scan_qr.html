@@ -6,4 +6,12 @@
 
 {% if result %}
     <p>QR Code Data: {{ result }}</p>
+
+    {% if location %}
+        <p>Location Name: {{ location.location_name }}</p>
+        <p>Fact: {{ location.location_fact }}</p>
+        <p>Times Scanned: {{ location.times_visited }}</p>
+    {% else %}
+        <p>No location found for this QR code.</p>
+    {% endif %}
 {% endif %}
