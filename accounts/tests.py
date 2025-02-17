@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import LoginForm, RegisterForm
 from .backends import EmailBackend
@@ -36,24 +35,40 @@ class FormsTestCase(TestCase):
 
 
 class ViewsTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="test@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123",
+        )
+
     def test_login_register_view_get(self):
         response = self.client.get(reverse("login"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts/login.html")
 
-    # Uncomment the following test after implementing the home view
-    """ 
     def test_login_register_view_post_login(self):
-        user = User.objects.create_user(
-            username="testuser", email="test@example.com", password="password123"
-        )
         response = self.client.post(
             reverse("login"),
             {"email": "test@example.com", "password": "password123", "login": "Login"},
         )
         self.assertEqual(response.status_code, 302)  # Redirect after login
-        self.assertRedirects(response, reverse("home"))
-    """
+        self.assertRedirects(response, reverse("dashboard"))
+
+    def test_login_register_view_post_invalid_login(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "email": "invalid@example.com",
+                "password": "wrongpassword",
+                "login": "Login",
+            },
+        )
+        self.assertEqual(response.status_code, 302)  # Redirect after invalid login
+        self.assertRedirects(
+            response, reverse("login") + "?error=Invalid login credentials&tab=login"
+        )
 
     def test_login_register_view_post_register(self):
         response = self.client.post(
@@ -68,7 +83,45 @@ class ViewsTestCase(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)  # Redirect after registration
-        self.assertRedirects(response, reverse("login"))
+        self.assertRedirects(response, reverse("login") + "?tab=login")
+
+    def test_login_register_view_post_register_existing_email(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "first_name": "Test",
+                "last_name": "User",
+                "email": "test@example.com",
+                "password": "password123",
+                "confirm_password": "password123",
+                "register": "Register",
+            },
+        )
+        self.assertEqual(
+            response.status_code, 302
+        )  # Redirect after registration with existing email
+        self.assertRedirects(
+            response, reverse("login") + "?error=Email already exists.&tab=register"
+        )
+
+    def test_login_register_view_post_register_mismatched_passwords(self):
+        response = self.client.post(
+            reverse("login"),
+            {
+                "first_name": "John",
+                "last_name": "Doe",
+                "email": "john.doe@example.com",
+                "password": "password123",
+                "confirm_password": "password456",
+                "register": "Register",
+            },
+        )
+        self.assertEqual(
+            response.status_code, 302
+        )  # Redirect after registration with mismatched passwords
+        self.assertRedirects(
+            response, reverse("login") + "?error=Passwords do not match.&tab=register"
+        )
 
 
 class AuthenticationBackendTestCase(TestCase):
