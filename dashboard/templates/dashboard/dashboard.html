@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Register Form</title>
+    <title>Dashboard</title>
 
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
@@ -21,10 +21,10 @@
         -->
         <section class="game-dashboard">
             <div class="game-card-wrapper">
-                <div class="game-card" id="game-card-1">
+                <a href="{% url 'scan_qr' %}" class="game-card" id="game-card-1">
                     <h2>Game 1</h2>
                     <img src="{% static 'img/temp-qr-card.png' %}" alt="Game 1">
-                </div>
+                </a>
                 <div class="game-card" id="game-card-2">
                     <h2>Game 2</h2>
                     <img src="" alt="Game 2">
