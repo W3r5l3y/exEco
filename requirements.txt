@@ -3,5 +3,6 @@ django-bootstrap-v5
 qrcode
 opencv-python
 pyzbar
+zbar
 numpy
 pillow
