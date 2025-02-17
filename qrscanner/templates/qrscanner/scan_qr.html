@@ -4,6 +4,10 @@
     <button type="submit">Scan QR Code</button>
 </form>
 
+{% if message %}
+    <p><strong>{{ message }}</strong></p>
+{% endif %}
+
 {% if result %}
     <p>QR Code Data: {{ result }}</p>
 
@@ -11,7 +15,10 @@
         <p>Location Name: {{ location.location_name }}</p>
         <p>Fact: {{ location.location_fact }}</p>
         <p>Times Scanned: {{ location.times_visited }}</p>
-    {% else %}
-        <p>No location found for this QR code.</p>
+        <p>Point Value: {{ location.location_value }}</p>
+    {% endif %}
+
+    {% if user_points %}
+        <p>Total Points: {{ user_points.points_scored }}</p>
     {% endif %}
 {% endif %}
