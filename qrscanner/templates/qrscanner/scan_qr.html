@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>QR Code Scanner</title>
 
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
@@ -12,28 +12,30 @@
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <script src="{% static 'js/dashboard.js' %}" defer></script>
 </head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Scan QR Code</button>
+    </form>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Scan QR Code</button>
-</form>
-
-{% if message %}
-    <p><strong>{{ message }}</strong></p>
-{% endif %}
-
-{% if result %}
-    <p>QR Code Data: {{ result }}</p>
-
-    {% if location %}
-        <p>Location Name: {{ location.location_name }}</p>
-        <p>Fact: {{ location.location_fact }}</p>
-        <p>Times Scanned: {{ location.times_visited }}</p>
-        <p>Point Value: {{ location.location_value }}</p>
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
     {% endif %}
 
-    {% if user_points %}
-        <p>Total Points: {{ user_points.points_scored }}</p>
+    {% if result %}
+        <p>QR Code Data: {{ result }}</p>
+
+        {% if location %}
+            <p>Location Name: {{ location.location_name }}</p>
+            <p>Fact: {{ location.location_fact }}</p>
+            <p>Times Scanned: {{ location.times_visited }}</p>
+            <p>Point Value: {{ location.location_value }}</p>
+        {% endif %}
+
+        {% if user_points %}
+            <p>Total Points: {{ user_points.points_scored }}</p>
+        {% endif %}
     {% endif %}
-{% endif %}
+</body>
+</html>
