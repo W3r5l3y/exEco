@@ -65,3 +65,25 @@ document.addEventListener("DOMContentLoaded", function () {
         feedback.style.fontWeight = "bold";
     });
 });
+
+function resetGame() {
+    const itemsContainer = document.getElementById("items-container");
+    const items = document.querySelectorAll(".draggable");
+
+    // Move all items back to the original container
+    items.forEach(item => {
+        itemsContainer.appendChild(item);
+        item.style.position = "relative"; // Reset any positioning
+        item.style.margin = "5px"; // Reset spacing
+    });
+
+    // Clear stored placements
+    placedItems = {};
+
+    // Remove feedback message if it exists
+    const feedback = document.getElementById("feedback");
+    if (feedback) {
+        feedback.innerText = "";
+    }
+}
+
