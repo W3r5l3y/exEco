@@ -48,3 +48,5 @@ def login_register_view(request):
         "accounts/login.html",
         {"login_form": login_form, "register_form": register_form},
     )
+def settings_view(request):
+    return render(request, "accounts/settings.html")
