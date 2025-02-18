@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def transport_view(request):
+    return render(request, "transport/transport.html")

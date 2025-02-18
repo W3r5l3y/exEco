@@ -25,4 +25,5 @@ urlpatterns = [
     path("", include("accounts.urls")),
     path("", include("dashboard.urls")),
     path("", include("qrscanner.urls")),
+    path("", include("transport.urls")),
 ]
