@@ -63,6 +63,11 @@
                                     <li class="header-right-navbar-item">
                                         <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">Settings</a>
                                     </li>
+                                    {% if user.is_staff %}
+                                        <li class="header-right-navbar-item">
+                                            <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">GameManagers</a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
