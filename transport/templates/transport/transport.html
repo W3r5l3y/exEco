@@ -12,9 +12,11 @@
 </head>
 <body>
     <main>
-        {% if user.is_authenticated %} <!-- Check if the user is logged in -->
-            {% if user.strava_token %} <!-- Check if the user is connected to Strava -->
+        {% if user.is_authenticated %}
+            {% if user.strava_token %}
                 <p>You are connected to Strava!</p>
+                <button id="fetch-activity-btn">Get Latest Activity</button>
+                <div id="activity-result"></div>
             {% else %}
                 <a href="{% url 'strava-login' %}">Connect with Strava</a>
             {% endif %}
@@ -22,5 +24,27 @@
             <p>Please log in to connect with Strava.</p>
         {% endif %}
     </main>
+    
+    <script>
+        document.getElementById("fetch-activity-btn").addEventListener("click", function() {
+            fetch("{% url 'get-latest-activity' %}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("activity-result").innerHTML = `<p>Error: ${data.error}</p>`;
+                    } else {
+                        document.getElementById("activity-result").innerHTML = `
+                            <h3>Latest Activity: ${data.name}</h3>
+                            <p>Distance: ${data.distance} meters</p>
+                            <p>Time: ${data.moving_time} seconds</p>
+                            <p>Type: ${data.type}</p>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("activity-result").innerHTML = `<p>Error fetching activity.</p>`;
+                });
+        });
+    </script>
 </body>
 </html>

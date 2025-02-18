@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.http import JsonResponse
 from .models import StravaToken
 
 def transport_view(request):
@@ -104,3 +105,49 @@ def strava_callback(request):
     strava_token.save()
 
     return redirect('transport') # Redirect to the transport view
+
+@login_required
+def get_latest_activity(request):
+    """Fetches the latest activity from Strava API."""
+    try:
+        strava_token = StravaToken.objects.get(user=request.user)
+
+        # Check if token is expired and refresh if needed
+        if strava_token.expires_at.timestamp() < datetime.datetime.now().timestamp():
+            refresh_url = "https://www.strava.com/oauth/token"
+            refresh_payload = {
+                "client_id": settings.STRAVA_CLIENT_ID,
+                "client_secret": settings.STRAVA_CLIENT_SECRET,
+                "refresh_token": strava_token.refresh_token,
+                "grant_type": "refresh_token"
+            }
+            refresh_response = requests.post(refresh_url, data=refresh_payload).json()
+
+            strava_token.access_token = refresh_response.get("access_token")
+            strava_token.refresh_token = refresh_response.get("refresh_token")
+            strava_token.expires_at = datetime.datetime.fromtimestamp(refresh_response.get("expires_at"))
+            strava_token.save()
+
+        # Get latest activity from Strava
+        activities_url = "https://www.strava.com/api/v3/athlete/activities"
+        headers = {"Authorization": f"Bearer {strava_token.access_token}"}
+        response = requests.get(activities_url, headers=headers)
+        activities = response.json()
+
+        if response.status_code != 200 or not activities:
+            return JsonResponse({"error": "Could not fetch activities."}, status=400)
+
+        latest_activity = activities[0]  # Get most recent activity
+
+        return JsonResponse({
+            "name": latest_activity.get("name"),
+            "distance": latest_activity.get("distance"),
+            "moving_time": latest_activity.get("moving_time"),
+            "type": latest_activity.get("type")
+        })
+
+    except StravaToken.DoesNotExist:
+        return JsonResponse({"error": "No Strava account linked."}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
