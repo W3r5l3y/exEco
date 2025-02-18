@@ -1,21 +1,26 @@
+<!-- templates/transport/transport.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Register Form</title>
-
+    <title>Transport App</title>
     {% include 'navbar.html' %}
-    {% block css %}{% endblock %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/transport.css' %}">
     <script src="{% static 'js/transport.js' %}" defer></script>
 </head>
 <body>
     <main>
-        
+        {% if user.is_authenticated %} <!-- Check if the user is logged in -->
+            {% if user.strava_token %} <!-- Check if the user is connected to Strava -->
+                <p>You are connected to Strava!</p>
+            {% else %}
+                <a href="{% url 'strava-login' %}">Connect with Strava</a>
+            {% endif %}
+        {% else %}
+            <p>Please log in to connect with Strava.</p>
+        {% endif %}
     </main>
 </body>
-
 </html>
