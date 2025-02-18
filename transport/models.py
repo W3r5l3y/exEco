@@ -1,6 +1,7 @@
 # transport/models.py
 from django.db import models
-from django.conf import settings  # So we can reference AUTH_USER_MODEL
+from accounts.models import CustomUser 
+from django.conf import settings
 
 class StravaToken(models.Model):
     """
@@ -19,3 +20,13 @@ class StravaToken(models.Model):
 
     def __str__(self):
         return f"{self.user.email}'s Strava tokens"
+
+class LoggedActivity(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Use CustomUser
+    activity_id = models.BigIntegerField(unique=True)  # Unique Strava Activity ID
+    distance = models.FloatField()  # Distance in meters
+    activity_type = models.CharField(max_length=20, choices=[("commute", "Commute"), ("hobby", "Hobby")])
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp
+
+    def __str__(self):
+        return f"{self.user.email} - {self.activity_id} - {self.activity_type}"

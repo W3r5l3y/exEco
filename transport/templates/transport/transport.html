@@ -12,17 +12,86 @@
 </head>
 <body>
     <main>
-        {% if user.is_authenticated %}
-            {% if user.strava_token %}
-                <p>You are connected to Strava!</p>
-                <button id="fetch-activity-btn">Get Latest Activity</button>
-                <div id="activity-result"></div>
-            {% else %}
-                <a href="{% url 'strava-login' %}">Connect with Strava</a>
-            {% endif %}
-        {% else %}
-            <p>Please log in to connect with Strava.</p>
-        {% endif %}
+        <!-- Left column -->
+        <div class="left-column">
+            <!-- Intro wrapper -->
+            <section class="intro-wrapper column-item">
+                <h2>Transport</h2>
+                <p>Fun fact: Driving to work contributed to ... of ...</p>
+                <p>Let's walk or cycle instead!</p>
+            </section>
+
+            <!-- Activity logger -->
+            <section class="log-activity column-item">
+                <h3>Log Activity</h3>
+                {% if user.is_authenticated %}
+                    {% if user.strava_token %}
+                        <button id="log-btn" class="log-activity-btn">Log Activity</button>
+                    {% else %}
+                        <p>In order to log your activities you must log in using Strava</p>
+                        <p>Strava is a mobile application to log exercises, such as walk, runs, cycles</p>
+                        <p>Access it below!</p>
+                        <a href="{% url 'strava-login' %}" class="log-activity-btn">Connect to Strava</a>
+                    {% endif %}
+                {% else %}
+                    <p>Please log in to connect with Strava.</p>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- Right column -->
+        <div class="right-column">
+            <!-- Leaderboard -->
+            <section class="leaderboard column-item">
+                <h3>Leaderboard</h3>
+                <ol>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                    <li>Item 4</li>
+                    <li>Item 5</li>
+                    <li>Item 6</li>
+                    <li>Item 7</li>
+                    <li>Item 8</li>
+                    <li>Item 9</li>
+                    <li>Item 10</li>
+                </ol>
+            </section>
+
+            <!-- Emissions reduced / Stats-->
+            <section class="emissions-reduced column-item">
+                <div class="emissions-circle">
+                    <p>Points Earned</p>
+                    <p>Total distance</p>
+                    <p>Emissions Reduced (compared to traveling by car)</p>
+                </div>
+            </section>
+        </div>
     </main>
+
+    <!-- Popup for logging activity -->
+    <div id="log-popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+
+            <h2>Log Activity</h2>
+
+            <p>Please select the activity from your last 5 strava entries. <b>[Must be a new entry]</b></p>
+            <select id="activity-select">
+                <option value="" disabled selected>Select an activity</option>
+            </select>
+
+            <p>What was the reason for this activity?</p>
+            <div id="commute-radio">
+                <input type="radio" id="commute" name="activity-type" value="commute">
+                <label for="commute">Replace Commute</label>
+            </div>
+            <div id="hobby-radio">
+                <input type="radio" id="hobby" name="activity-type" value="hobby">
+                <label for="hobby">Replace Hobby</label>
+            </div>
+            <button id="submit-activity">Submit</button>
+        </div>
+    </div>
 </body>
 </html>

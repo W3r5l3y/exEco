@@ -2,13 +2,14 @@
 
 import datetime
 import requests
+import json
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.http import JsonResponse
-from .models import StravaToken
+from .models import StravaToken, LoggedActivity
 
 @login_required
 def transport_view(request):
@@ -172,3 +173,84 @@ def get_latest_activity(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+    
+@login_required
+def get_last_five_activities(request):
+    try:
+        strava_token = StravaToken.objects.get(user=request.user)
+
+        # Check if token is expired and refresh if needed
+        if strava_token.expires_at.timestamp() < datetime.datetime.now().timestamp():
+            refresh_url = "https://www.strava.com/oauth/token"
+            refresh_payload = {
+                "client_id": settings.STRAVA_CLIENT_ID,
+                "client_secret": settings.STRAVA_CLIENT_SECRET,
+                "refresh_token": strava_token.refresh_token,
+                "grant_type": "refresh_token"
+            }
+            refresh_response = requests.post(refresh_url, data=refresh_payload).json()
+
+            strava_token.access_token = refresh_response.get("access_token")
+            strava_token.refresh_token = refresh_response.get("refresh_token")
+            strava_token.expires_at = datetime.datetime.fromtimestamp(refresh_response.get("expires_at"))
+            strava_token.save()
+
+        # Get latest activities from Strava
+        activities_url = "https://www.strava.com/api/v3/athlete/activities"
+        headers = {"Authorization": f"Bearer {strava_token.access_token}"}
+        response = requests.get(activities_url, headers=headers)
+        activities = response.json()
+
+        if response.status_code != 200 or not activities:
+            return JsonResponse({"error": "Could not fetch activities."}, status=400)
+
+        # Filter only Walk, Run, and Ride activities & exclude logged ones
+        valid_activities = []
+        logged_ids = LoggedActivity.objects.filter(user=request.user).values_list("activity_id", flat=True)
+
+        for activity in activities:
+            if activity["type"] in ["Run", "Ride", "Walk"] and activity["id"] not in logged_ids:
+                valid_activities.append({
+                    "id": activity["id"],  # Strava Activity ID
+                    "name": activity["name"],
+                    "distance": activity["distance"],  # Distance in meters
+                    "type": activity["type"]
+                })
+                if len(valid_activities) == 5:
+                    break
+
+        return JsonResponse(valid_activities, safe=False)
+
+    except StravaToken.DoesNotExist:
+        return JsonResponse({"error": "No Strava account linked."}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@login_required
+def log_activity(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            activity_id = data.get("activity_id")
+            distance = data.get("distance")
+            activity_type = data.get("activity_type")
+
+            # Check if activity is already logged
+            if LoggedActivity.objects.filter(activity_id=activity_id).exists():
+                return JsonResponse({"error": "This activity has already been logged."}, status=400)
+
+            # Store activity
+            LoggedActivity.objects.create(
+                user=request.user,
+                activity_id=activity_id,
+                distance=distance,
+                activity_type=activity_type
+            )
+
+            return JsonResponse({"success": "Activity logged successfully!"})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)
