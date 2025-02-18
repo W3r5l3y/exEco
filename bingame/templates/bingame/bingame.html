@@ -25,12 +25,13 @@
 
         <div id="bins-container">
             {% for bin in bins %}
-                <div class="bin" id="{{ bin.bin_name|slugify }}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style = "height:100px; width:auto;">
+                <div class="bin" id="{{ bin.bin_name|slugify }}" data-bin-id="{{ bin.id }}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
                     <p>{{ bin.bin_name }}</p>
                 </div>
             {% endfor %}
         </div>
+        
         <div id="check-answer-tile" onclick="checkAnswers()">Check Answers</div>
         <div id="reset-game-tile" onclick="resetGame()">Reset Game</div>
     </div>
