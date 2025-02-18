@@ -10,6 +10,7 @@ from django.utils.timezone import now
 from django.http import JsonResponse
 from .models import StravaToken
 
+@login_required
 def transport_view(request):
     return render(request, 'transport/transport.html')
 
@@ -25,7 +26,7 @@ def strava_login(request):
 
         # If token is still valid, no need to log in again
         if strava_token.expires_at > now():
-            return redirect('transport-home')  # Redirect to your app
+            return redirect('transport/transport.html')  # Redirect to the transport view
 
         # If expired, refresh the token
         refresh_token = strava_token.refresh_token
@@ -45,7 +46,7 @@ def strava_login(request):
         strava_token.expires_at = datetime.datetime.fromtimestamp(data.get('expires_at'))
         strava_token.save()
 
-        return redirect('transport-home')  # Redirect after refreshing
+        return redirect('transport/transport.html')  # Redirect after refreshing
 
     except StravaToken.DoesNotExist:
         # If no StravaToken exists, redirect user to Strava login
@@ -94,14 +95,34 @@ def strava_callback(request):
     refresh_token = data.get('refresh_token') # Token to refresh the access token
     expires_at = data.get('expires_at') # Unix timestamp for token expiration
 
+    # Ensure all tokens are present
+    if not access_token or not refresh_token or not expires_at:
+        return render(request, 'transport/error.html', {'error': 'Invalid response from Strava'})
+
     # Ensure the user is logged in (CustomUser from your accounts app)
     user = request.user
+
+    # Get the athlete ID from the Strava API
+    athlete_url = "https://www.strava.com/api/v3/athlete"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    athlete_response = requests.get(athlete_url, headers=headers)
+    athlete_data = athlete_response.json()
+    athlete_id = athlete_data.get("id")
+
+    # Check if the athlete ID was successfully retrieved
+    if not athlete_id:
+        return render(request, 'transport/error.html', {'error': 'Could not get athlete ID from Strava'})
+    
+    # Check if the athlete ID is in use by another user
+    if StravaToken.objects.filter(athlete_id=athlete_id).exists():
+        return render(request, 'transport/error.html', {'error': 'This Strava account is already linked to another user'})
 
     # Create or update the user's Strava tokens
     strava_token, created = StravaToken.objects.get_or_create(user=user)
     strava_token.access_token = access_token
     strava_token.refresh_token = refresh_token
     strava_token.expires_at = datetime.datetime.fromtimestamp(expires_at)
+    strava_token.athlete_id = athlete_id
     strava_token.save()
 
     return redirect('transport') # Redirect to the transport view
