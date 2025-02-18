@@ -1,5 +1,6 @@
 from django.urls import path
+from .views import game_view
 
 urlpatterns = [
-    path("bingame/", bingame, name="bingame"),
+    path("bingame/", game_view, name="bingame"),
 ]
