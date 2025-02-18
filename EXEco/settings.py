@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "bootstrap5",
     "accounts",
     "dashboard",
+    "qrscanner",
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "EXEco.context_processors.user_context"
+                "EXEco.context_processors.user_context",
             ],
         },
     },
@@ -141,3 +142,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+LOGIN_URL = "/accounts/login/"

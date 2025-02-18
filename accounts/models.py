@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.conf import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -44,3 +45,18 @@ class CustomUser(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_superuser
+
+
+class UserPoints(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
+    )
+    points_scored = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.points_scored} points"
+
+    def add_points(self, points=2):
+        # Increment points when a QR code is scanned
+        self.points_scored += points
+        self.save()
