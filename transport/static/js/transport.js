@@ -52,10 +52,13 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Activity logged successfully!");
                 document.getElementById("log-popup").style.display = "none";
+                document.getElementById("success-popup").style.display = "flex";
+
+                // TODO: Update the stats like points and distance
             } else {
-                alert("Error logging activity: " + data.error);
+                document.getElementById("log-popup").style.display = "none";
+                document.getElementById("error-popup").style.display = "flex";
             }
         })
         .catch(error => console.error("Error logging activity:", error));
@@ -70,4 +73,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return "";
     }
+
+    // Close the log popup
+    document.getElementById("close-log-popup").addEventListener("click", function() {
+        document.getElementById("log-popup").style.display = "none";
+    });
+
+    // Close the success popup
+    document.getElementById("close-success-popup").addEventListener("click", function() {
+        document.getElementById("success-popup").style.display = "none";
+    });
+
+    // Close the error popup
+    document.getElementById("close-error-popup").addEventListener("click", function() {
+        document.getElementById("error-popup").style.display = "none";
+    });
 });

@@ -72,7 +72,7 @@
     <!-- Popup for logging activity -->
     <div id="log-popup" class="popup">
         <div class="popup-content">
-            <span class="close">&times;</span>
+            <span class="close" id="close-log-popup">&times;</span>
 
             <h2>Log Activity</h2>
 
@@ -93,5 +93,24 @@
             <button id="submit-activity">Submit</button>
         </div>
     </div>
+
+    <!-- Popup for successful activity logging -->
+    <div id="success-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-success-popup">&times;</span>
+
+            <h2>Activity Logged</h2>
+            <p>Your activity has been logged successfully!</p>
+        </div>
+    </div>
+
+    <!-- Popup for error in activity logging -->
+    <div id="error-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-error-popup">&times;</span>
+
+            <h2>Error</h2>
+            <p>There was an error in logging your activity. Please try again later.</p>
+        </div>
 </body>
 </html>
