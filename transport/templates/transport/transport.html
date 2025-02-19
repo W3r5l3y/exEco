@@ -17,8 +17,9 @@
             <!-- Intro wrapper -->
             <section class="intro-wrapper column-item">
                 <h2>Transport</h2>
-                <p>Fun fact: Driving to work contributed to ... of ...</p>
-                <p>Let's walk or cycle instead!</p>
+                <p>Fun fact: Short car trips (under 5 miles) make up over 70% of all vehicle journeys, yet they could often be replaced by walking or cycling.</p>
+                <!-- https://www.gov.uk/government/statistics/national-travel-survey-2021/national-travel-survey-2021-mode-share-journey-lengths-and-public-transport-use?utm_source=chatgpt.com -->
+                <p>Swap a drive for a walk or ride and cut down on emissions while staying active!</p>
             </section>
 
             <!-- Activity logger -->
@@ -26,6 +27,9 @@
                 <h3>Log Activity</h3>
                 {% if user.is_authenticated %}
                     {% if user.strava_token %}
+                        <p>Log your activities here to earn points!</p>
+                        <p>Points are earned based on the distance traveled and the reason for the activity.</p>
+                        <p>If you're replacing a commute, LOG IT!</p>
                         <button id="log-btn" class="log-activity-btn">Log Activity</button>
                     {% else %}
                         <p>In order to log your activities you must log in using Strava</p>
@@ -88,7 +92,7 @@
             </div>
             <div id="hobby-radio">
                 <input type="radio" id="hobby" name="activity-type" value="hobby">
-                <label for="hobby">Replace Hobby</label>
+                <label for="hobby">Hobby</label>
             </div>
             <button id="submit-activity">Submit</button>
         </div>
