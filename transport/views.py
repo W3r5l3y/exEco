@@ -20,6 +20,14 @@ def strava_login(request):
     """ 
     Check if user has valid Strava credentials; otherwise, redirect to Strava OAuth.
     """
+
+    #print cookies for debugging
+    print("cookies")
+    print(request.COOKIES)
+    #print session for debugging
+    print("session")
+    print(request.session)
+    
     user = request.user
 
     try:
@@ -63,6 +71,7 @@ def strava_login(request):
             f"&response_type={response_type}"
             f"&scope={scope}"
         )
+        print(request.COOKIES)
         return redirect(strava_auth_url)
 
 @login_required
@@ -70,6 +79,14 @@ def strava_callback(request):
     """
     Handles the callback from Strava, exchanging the code for tokens and storing them.
     """
+    # Ensure the user is logged in
+    if not request.user.is_authenticated:
+        #print cookies for debugging
+        print(request.COOKIES)
+        return render(request, 'transport/error.html', {'error': 'You must be logged in to link your Strava account.'})
+    
+
+    
     # Get the code and error from the query parameters
     code = request.GET.get('code')
     error = request.GET.get('error')
@@ -126,7 +143,7 @@ def strava_callback(request):
     strava_token.athlete_id = athlete_id
     strava_token.save()
 
-    return redirect('transport') # Redirect to the transport view
+    return redirect('transport')  # Redirect to the transport view
 
 @login_required
 def get_latest_activity(request):
