@@ -1,102 +1,54 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const draggables = document.querySelectorAll(".draggable");
-    const bins = document.querySelectorAll(".bin");
-    const checkButton = document.getElementById("check-answer-tile");
-    const resetButton = document.getElementById("reset-game-tile");
-    const feedback = document.createElement("div"); // Feedback message container
 
-    let placedItems = {}; // Store which item is placed in which bin
+let newX = 0, newY = 0, startX = 0, startY = 0;
+//const item = document.querySelector('.items');
+let currentItem = null;
 
-    feedback.id = "feedback";
-    document.body.appendChild(feedback); // Add feedback message
-
-    draggables.forEach(item => {
-        item.draggable = true;
-        item.addEventListener("dragstart", (event) => {
-            event.dataTransfer.setData("item-id", event.target.id);
-            event.dataTransfer.setData("correct-bin", event.target.dataset.correctBin);
-        });
-    });
-
-    bins.forEach(bin => {
-        bin.addEventListener("dragover", (event) => event.preventDefault());
-
-        bin.addEventListener("drop", (event) => {
-            event.preventDefault();
-            const itemId = event.dataTransfer.getData("item-id");
-            const correctBin = event.dataTransfer.getData("correct-bin");
-
-            let draggedItem = document.getElementById(itemId);
-            let binId = bin.dataset.binId; // Using data-bin-id from the HTML
-
-            // Attach the item to the bin
-            if (draggedItem) {
-                bin.appendChild(draggedItem);
-                draggedItem.style.position = "relative";
-                draggedItem.style.margin = "5px";
-
-                // Store the placed item
-                placedItems[itemId] = binId;
-            }
-        });
-    });
-
-    // Ensure the check button calls `checkAnswers()`
-    checkButton.addEventListener("click", checkAnswers);
-    
-    // Ensure the reset button calls `resetGame()`
-    resetButton.addEventListener("click", resetGame);
+/*
+DataTransferItemList.forEach(item => {
+    item.addEventListener('mousedown', mouseDown);
+});
+*/
+//Gets all the items in the items class and adds an event listener to each
+document.querySelectorAll('.items').forEach(item => {
+    item.addEventListener('mousedown', mouseDown);
 });
 
-// Function to check if the placed items are correct
-function checkAnswers() {
-    let allCorrect = true;
+// Prevent image dragging inside items
+document.querySelectorAll('.items img').forEach(img => {
+    img.ondragstart = (e) => e.preventDefault();
+});
 
-    for (let itemId in placedItems) {
-        let itemElement = document.getElementById(itemId);
-        let correctBinId = itemElement.dataset.correctBin; // Bin ID from database
-        let placedBinId = placedItems[itemId];
+// When the user clicks down
+function mouseDown(e){
+    // Select the item being clicked
+    currentItem = e.target.closest('.items');
+    // If clicking outside item area
+    if (!currentItem) return;
+    startX = e.clientX
+    startY = e.clientY
 
-        if (placedBinId !== correctBinId) {
-            allCorrect = false;
-            break;
-        }
-    }
+    document.addEventListener('mousemove', mouseMove); 
+    document.addEventListener('mouseup', mouseUp);
 
-    // Display feedback message
-    const feedback = document.getElementById("feedback") || document.createElement("div");
-    feedback.id = "feedback";
-    feedback.innerText = allCorrect ? "✅ Correct! All items are in the right bins!" : "❌ Some items are in the wrong bins!";
-    feedback.style.position = "fixed";
-    feedback.style.bottom = "80px";
-    feedback.style.right = "20px";
-    feedback.style.padding = "15px";
-    feedback.style.backgroundColor = allCorrect ? "#4CAF50" : "#FF3333";
-    feedback.style.color = "white";
-    feedback.style.borderRadius = "10px";
-    feedback.style.fontWeight = "bold";
-
-    document.body.appendChild(feedback);
 }
 
-// Function to reset the game
-function resetGame() {
-    const itemsContainer = document.getElementById("items-container");
-    const items = document.querySelectorAll(".draggable");
+// When the user moves the mouse
+function mouseMove(e){
+    // Only move if selected
+    if (!currentItem) return;
+    newX = startX - e.clientX;
+    newY = startY - e.clientY;
 
-    // Move all items back to the original container
-    items.forEach(item => {
-        itemsContainer.appendChild(item);
-        item.style.position = "relative"; // Reset any positioning
-        item.style.margin = "5px"; // Reset spacing
-    });
+    startX = e.clientX;
+    startY = e.clientY;
 
-    // Clear stored placements
-    placedItems = {};
+    currentItem.style.top = (currentItem.offsetTop - newY) + 'px';
+    currentItem.style.left = (currentItem.offsetLeft - newX) + 'px';
+    
+}
 
-    // Remove feedback message if it exists
-    const feedback = document.getElementById("feedback");
-    if (feedback) {
-        feedback.innerText = "";
-    }
+// When the user releases the mouse
+function mouseUp(e){
+    document.removeEventListener('mousemove', mouseMove);
+    currentItem=null;
 }

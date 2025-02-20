@@ -4,25 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bin Game</title>
-
+    <!--
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
+    -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bingame.css' %}">
     <script src="{% static 'js/bingame.js' %}" defer></script>
 </head>
 <body>
+    <main>
     <div id="game-container">
-        <h1>Bin Sorting Game</h1>
-
+        <!-- Items -->
         <div id="items-container">
+            
             {% for item in items %}
-                
-                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" 
-                     class="draggable" draggable="true" ondragstart="drag(event)" id="item-{{ item.item_id }}" data-correct-bin="{{ item.correct_bin.bin_name|slugify }}" style = "height:50px; width:auto;">
+                <div class="items">
+                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" id="item-{{ item.item_id }}" data-correct-bin="{{ item.correct_bin.bin_name|slugify }}">
+                </div>
             {% endfor %}
+            
         </div>
-
+        <!-- Bins -->
         <div id="bins-container">
             {% for bin in bins %}
                 <div class="bin" id="{{ bin.bin_name|slugify }}" data-bin-id="{{ bin.id }}" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -35,6 +38,6 @@
         <div id="check-answer-tile" onclick="checkAnswers()">Check Answers</div>
         <div id="reset-game-tile" onclick="resetGame()">Reset Game</div>
     </div>
-    <script src="script.js"></script>
+    </main>
 </body>
 </html>

@@ -1,3 +1,4 @@
+/* General */
 #game-container {
     display: flex;
     flex-direction: column;
@@ -7,16 +8,11 @@
     padding: 20px;
 }
 
-#items-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    width: 100%;
-    position: relative;
-    top: 10px; 
+main{
+    padding-top:400px;
 }
 
+/* Bins */
 #bins-container {
     display: flex;
     justify-content: center;
@@ -36,6 +32,33 @@
     background-color: lightgray;
 }
 
+/* Items */
+#items-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+    top: 10px; 
+}
+
+.items{
+    height:50px; 
+    width:auto;
+    display: flex;
+    justify-content: center;
+    background-color:black;
+    gap: 20px;
+    position: fixed;
+    top: 10px; 
+}
+
+.items img{
+    width: 100%;
+    height: 100%;
+}
+
+/* Check Answer */
 #checkanswer-container {
     display: flex;
     justify-content: center;
@@ -69,18 +92,7 @@
     transform: scale(1.05);
 }
 
-.draggable {
-    width: 80px;
-    height: auto;
-    cursor: grab;
-    z-index: 3;
-    position: relative;
-}
-
-.draggable:active {
-    cursor: grabbing;
-}
-
+/* Reset Game */
 #reset-game-tile {
     position: fixed;
     bottom: 20px;
