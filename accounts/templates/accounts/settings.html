@@ -26,7 +26,7 @@
             <div class="container-container">
                 <div class="profile-grid">
                     <h1 class="sub-title"> Profile </h1>
-                    <form action="" method="POST">
+                    <form action="" id="profile_form" method="POST">
                         {% csrf_token %}
                         <div class="input-group limited-width">
                             <input class="input" type="email" id="email" name="email" placeholder="Enter your email" data-email="{{ request.user.email }}" value="{{ request.user.email }}"  required>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="password-grid">
                     <h1 class="sub-title"> Password </h1>
-                    <form action="" method="POST">
+                    <form action="" id="password_form" method="POST">
                         {% csrf_token %}
                         <div class="input-group limited-width">
                             <input class="input" type="password" id="password" name="password" placeholder="Enter your new password" required>
@@ -75,8 +75,8 @@
                         </div>
 
                         <div class="space-evenly-button-div limited-width">
-                            <button class="confirm-button" name="confirm_password_change">Confirm</button>
-                            <button class="reset-button" name="cancel_password">Cancel</button>
+                            <button class="confirm-button" type="submit" name="confirm_password_change">Confirm</button>
+                            <button class="reset-button" type="reset" name="cancel_password">Cancel</button>
                         </div>
                     </form>
                 </div>
