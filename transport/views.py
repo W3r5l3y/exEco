@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.http import JsonResponse
-from .models import StravaToken, LoggedActivity, CumulativeStats, LeaderboardEntry
+from .models import StravaToken, LoggedActivity, CumulativeStats, LeaderboardEntry, CustomUser
 
 @login_required
 def transport_view(request):
@@ -294,32 +294,6 @@ def log_activity(request):
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
-"""
-// Function to update stats on page (JAVASCRIPT)
-    function updateStats() {
-        fetch("/get-stats/")
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error("Error fetching stats:", data.error);
-                    return;
-                }
-
-                const pointsEarned = document.getElementById("stats-points-earned");
-                const totalDistance = document.getElementById("stats-total-distance");
-                const emissionsReduced = document.getElementById("stats-emissions-reduced");
-
-                // Update points
-                pointsEarned.textContent = data.points_earned;
-                // Convert total distance from meters to kilometers
-                totalDistance.textContent = `${(data.total_distance / 1000).toFixed(2)} km`;
-                // Use total distance to calculate emissions reduced
-                emissionsReduced.textContent = `${(data.total_distance / 1000 * 0.21).toFixed(2)} kg`;
-            })
-            .catch(error => console.error("Error fetching stats:", error));
-    }
-"""
-
 @login_required
 def get_stats(request):
     try:
@@ -337,6 +311,23 @@ def get_stats(request):
 
     except LeaderboardEntry.DoesNotExist:
         return JsonResponse({"error": "No leaderboard entry available."}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+    
+
+@login_required
+def get_leaderboard(request):
+    try:
+        leaderboard = LeaderboardEntry.objects.order_by("-points").values("user__email", "points")[:10] # Get top 10 players
+
+        # Get user first name and last name instead of email using custom user model and change key name to username
+        for entry in leaderboard:
+            user = CustomUser.objects.get(email=entry["user__email"])
+            entry["username"] = user.first_name + " " + user.last_name
+            del entry["user__email"]
+
+        return JsonResponse(list(leaderboard), safe=False) # Convert QuerySet to list structured as JSON
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)

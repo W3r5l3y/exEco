@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import transport_view, strava_login, strava_callback, get_latest_activity, get_last_five_activities, log_activity, get_stats
+from .views import transport_view, strava_login, strava_callback, get_latest_activity, get_last_five_activities, log_activity, get_stats, get_leaderboard
 
 urlpatterns = [
     path("transport/", transport_view, name="transport"),
@@ -9,4 +9,5 @@ urlpatterns = [
     path("get-last-five-activities/", get_last_five_activities, name="get_last_five_activities"),
     path("log-activity/", log_activity, name="log_activity"),
     path("get-stats/", get_stats, name="get_stats"),
+    path("get-leaderboard/", get_leaderboard, name="get_leaderboard"),
 ]

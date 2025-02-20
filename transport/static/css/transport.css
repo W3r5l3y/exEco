@@ -94,6 +94,7 @@ h3 {
     border-radius: 30px;
     cursor: pointer;
     padding: 10px 20px;
+    transition: all 0.2s ease-in-out;
 }
 
 .log-activity-btn:hover {
@@ -131,7 +132,7 @@ h3 {
     padding: 2px 10px;
     background-color: #00c5916a;
     border-radius: 5px;
-    transition: transform 0.2s;
+    transition: all 0.2s ease-in-out;
 }
 
 .leaderboard li:nth-child(even) {

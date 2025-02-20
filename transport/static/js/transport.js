@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("success-popup").style.display = "flex";
 
                 updateStats();
+                updateLeaderboard();
             } else {
                 document.getElementById("log-popup").style.display = "none";
                 document.getElementById("error-popup").style.display = "flex";
@@ -78,14 +79,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
 
-                /*
-                return JsonResponse({
-                    "total_commute_distance": cumulative_stats.total_commute_distance,
-                    "total_hobby_distance": cumulative_stats.total_hobby_distance,
-                    "points_earned": leaderboard_entry.points
-                })
-            */
-
                 const pointsEarned = document.getElementById("stats-points-earned");
                 const totalDistance = document.getElementById("stats-total-distance");
                 const emissionsReduced = document.getElementById("stats-emissions-reduced");
@@ -94,10 +87,40 @@ document.addEventListener("DOMContentLoaded", function() {
                 pointsEarned.textContent = data.points_earned;
                 // Update total distance ( add total commute and hobby distance)
                 totalDistance.textContent = ((data.total_commute_distance + data.total_hobby_distance) / 1000).toFixed(2);
-                // Update emissions reduced ( add total commute and hobby distance and calculate emissions) (1 km = 0.21 kg CO2)
-                emissionsReduced.textContent = ((data.total_commute_distance + data.total_hobby_distance) * 0.21 / 1000).toFixed(2);
+                // Update emissions reduced ( add total commute and hobby distance and calculate emissions) (1 km = 180g CO2)
+                emissionsReduced.textContent = ((data.total_commute_distance + data.total_hobby_distance) * 180 / 1000).toFixed(2);
             })
             .catch(error => console.error("Error fetching stats:", error));
+    }
+
+    // Function to update leaderboard on page (points_earned)
+    function updateLeaderboard() {
+        fetch("/get-leaderboard/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error fetching leaderboard:", data.error);
+                    return;
+                }
+
+                // Ensure data is sorted by points in descending order
+                data.sort((a, b) => b.points - a.points);
+
+                // Loop through the leaderboard items and update them
+                for (let i = 0; i < 10; i++) {
+                    const leaderboardItem = document.getElementById(`leaderboard-item-${i + 1}`);
+                    
+                    if (leaderboardItem) {
+                        if (data[i]) {
+                            console.log(data[i]);
+                            leaderboardItem.textContent = `${data[i].username} - ${data[i].points} pts`;
+                        } else {
+                            leaderboardItem.textContent = "---"; // Placeholder if no data available
+                        }
+                    }
+                }
+            })
+            .catch(error => console.error("Error fetching leaderboard:", error));
     }
 
     // Function to get CSRF token from cookies
@@ -130,4 +153,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch stats when page loads
     updateStats();
+    updateLeaderboard();
 });
