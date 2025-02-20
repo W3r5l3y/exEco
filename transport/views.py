@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.http import JsonResponse
-from .models import StravaToken, LoggedActivity
+from .models import StravaToken, LoggedActivity, CumulativeStats, LeaderboardEntry
 
 @login_required
 def transport_view(request):
@@ -233,7 +233,7 @@ def get_last_five_activities(request):
                     "distance": activity["distance"],  # Distance in meters
                     "type": activity["type"]
                 })
-                if len(valid_activities) == 5:
+                if len(valid_activities) == 5: # Limit to 5 activities
                     break
 
         return JsonResponse(valid_activities, safe=False)
@@ -252,6 +252,7 @@ def log_activity(request):
             activity_id = data.get("activity_id")
             distance = data.get("distance")
             activity_type = data.get("activity_type")
+            option = data.get("option")
 
             # Check if activity is already logged
             if LoggedActivity.objects.filter(activity_id=activity_id).exists():
@@ -262,8 +263,28 @@ def log_activity(request):
                 user=request.user,
                 activity_id=activity_id,
                 distance=distance,
-                activity_type=activity_type
+                activity_type=activity_type,
+                option=option
             )
+            print("logged activity")
+
+            # Update CumulativeStats
+            cumulative_stats, _ = CumulativeStats.objects.get_or_create(user=request.user)
+            print("got cumulative stats")
+            print(option)
+            if option == "commute".lower():
+                cumulative_stats.total_commute_distance += distance
+                print("commute")
+            elif option == "hobby".lower():
+                cumulative_stats.total_hobby_distance += distance
+
+            cumulative_stats.save()
+
+            # Update LeaderboardEntry (only for commutes)
+            leaderboard_entry, _ = LeaderboardEntry.objects.get_or_create(user=request.user)
+            leaderboard_entry.points = int((cumulative_stats.total_commute_distance // 1000))  # 1 point per km (rounded down)
+            leaderboard_entry.save()
+
 
             return JsonResponse({"success": "Activity logged successfully!"})
 
@@ -271,3 +292,51 @@ def log_activity(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
+"""
+// Function to update stats on page (JAVASCRIPT)
+    function updateStats() {
+        fetch("/get-stats/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error fetching stats:", data.error);
+                    return;
+                }
+
+                const pointsEarned = document.getElementById("stats-points-earned");
+                const totalDistance = document.getElementById("stats-total-distance");
+                const emissionsReduced = document.getElementById("stats-emissions-reduced");
+
+                // Update points
+                pointsEarned.textContent = data.points_earned;
+                // Convert total distance from meters to kilometers
+                totalDistance.textContent = `${(data.total_distance / 1000).toFixed(2)} km`;
+                // Use total distance to calculate emissions reduced
+                emissionsReduced.textContent = `${(data.total_distance / 1000 * 0.21).toFixed(2)} kg`;
+            })
+            .catch(error => console.error("Error fetching stats:", error));
+    }
+"""
+
+@login_required
+def get_stats(request):
+    try:
+        cumulative_stats = CumulativeStats.objects.get(user=request.user)
+        leaderboard_entry = LeaderboardEntry.objects.get(user=request.user)
+
+        return JsonResponse({
+            "total_commute_distance": cumulative_stats.total_commute_distance,
+            "total_hobby_distance": cumulative_stats.total_hobby_distance,
+            "points_earned": leaderboard_entry.points
+        })
+
+    except CumulativeStats.DoesNotExist:
+        return JsonResponse({"error": "No stats available."}, status=400)
+
+    except LeaderboardEntry.DoesNotExist:
+        return JsonResponse({"error": "No leaderboard entry available."}, status=400)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

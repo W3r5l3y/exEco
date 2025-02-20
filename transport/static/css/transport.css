@@ -156,6 +156,50 @@ h3 {
     }
 }
 
+/* --------------------------------------------------
+    Statistics Styles
+-------------------------------------------------- */
+
+.statistics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
+.statistics h3 {
+    padding-left: 20px;
+}
+
+.statistics-item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 15px;
+}
+
+.statistics-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border-bottom: 4px solid var(--primary_colour);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    height: 120px;
+}
+
+.statistics-item-title {
+    color: var(--primary_colour);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 
 /* --------------------------------------------------
     Popup Styles

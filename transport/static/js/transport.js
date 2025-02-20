@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     option.value = activity.id;
                     option.textContent = `${activity.name} - ${(activity.distance / 1000).toFixed(2)} km`;
                     option.dataset.distance = activity.distance; // Store distance
+                    option.dataset.type = activity.type; // Store type (walk, run, cycle)
                     select.appendChild(option);
                 });
             })
@@ -26,10 +27,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById("submit-activity").addEventListener("click", function() {
-        const selectedActivity = document.getElementById("activity-select").value;
-        const selectedOption = document.querySelector("#activity-select option:checked");
-        const selectedDistance = selectedOption ? selectedOption.dataset.distance : null;
-        const selectedType = document.querySelector('input[name="activity-type"]:checked')?.value;
+        const selectedActivity = document.getElementById("activity-select").value; // Strava activity ID
+        const selectedType = document.getElementById("activity-select").selectedOptions[0].dataset.type; // walk, run, cycle
+        const selectedDistance = Number(document.getElementById("activity-select").selectedOptions[0].dataset.distance); // Distance in meters
+        const selectedOption = document.querySelector('input[name="activity-option"]:checked')?.value; // commute, hobby
+
 
         if (!selectedActivity || !selectedType) {
             alert("Please select an activity and an activity type.");
@@ -44,9 +46,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 "X-CSRFToken": getCSRFToken()  // CSRF token function below
             },
             body: JSON.stringify({
-                activity_id: selectedActivity,
-                distance: selectedDistance,
-                activity_type: selectedType
+                activity_id: selectedActivity, // Strava activity ID
+                distance: selectedDistance, // Distance in meters
+                activity_type: selectedType, // Activity type (walk, run, cycle)
+                option: selectedOption // Activity option (commute, hobby)
             })
         })
         .then(response => response.json())
@@ -55,14 +58,47 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("log-popup").style.display = "none";
                 document.getElementById("success-popup").style.display = "flex";
 
-                // TODO: Update the stats like points and distance
+                updateStats();
             } else {
                 document.getElementById("log-popup").style.display = "none";
                 document.getElementById("error-popup").style.display = "flex";
+                console.error("Error logging activity:", data.error);
             }
         })
         .catch(error => console.error("Error logging activity:", error));
     });
+
+    // Function to update stats on page
+    function updateStats() {
+        fetch("/get-stats/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error fetching stats:", data.error);
+                    return;
+                }
+
+                /*
+                return JsonResponse({
+                    "total_commute_distance": cumulative_stats.total_commute_distance,
+                    "total_hobby_distance": cumulative_stats.total_hobby_distance,
+                    "points_earned": leaderboard_entry.points
+                })
+            */
+
+                const pointsEarned = document.getElementById("stats-points-earned");
+                const totalDistance = document.getElementById("stats-total-distance");
+                const emissionsReduced = document.getElementById("stats-emissions-reduced");
+
+                // Update points
+                pointsEarned.textContent = data.points_earned;
+                // Update total distance ( add total commute and hobby distance)
+                totalDistance.textContent = ((data.total_commute_distance + data.total_hobby_distance) / 1000).toFixed(2);
+                // Update emissions reduced ( add total commute and hobby distance and calculate emissions) (1 km = 0.21 kg CO2)
+                emissionsReduced.textContent = ((data.total_commute_distance + data.total_hobby_distance) * 0.21 / 1000).toFixed(2);
+            })
+            .catch(error => console.error("Error fetching stats:", error));
+    }
 
     // Function to get CSRF token from cookies
     function getCSRFToken() {
@@ -88,4 +124,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("close-error-popup").addEventListener("click", function() {
         document.getElementById("error-popup").style.display = "none";
     });
+
+
+
+
+    // Fetch stats when page loads
+    updateStats();
 });

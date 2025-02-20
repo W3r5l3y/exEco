@@ -62,12 +62,22 @@
                 </ol>
             </section>
 
-            <!-- Emissions reduced / Stats-->
-            <section class="emissions-reduced column-item">
-                <div class="emissions-circle">
-                    <p>Points Earned</p>
-                    <p>Total distance</p>
-                    <p>Emissions Reduced (compared to traveling by car)</p>
+            <!-- Stats-->
+            <section class="statistics column-item">
+                <h3>Statistics</h3>
+                <div class="statistics-item-container">
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Points Earned</p>
+                        <p id="stats-points-earned">0</p>
+                    </div>
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Total distance /km</p>
+                        <p id="stats-total-distance">0 km</p>
+                    </div>
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Emissions Reduced /kg CO2</p>
+                        <p id="stats-emissions-reduced">0 kg</p>
+                    </div> 
                 </div>
             </section>
         </div>
@@ -87,12 +97,12 @@
 
             <p>What was the reason for this activity?</p>
             <div id="commute-radio">
-                <input type="radio" id="commute" name="activity-type" value="commute">
+                <input type="radio" id="commute" name="activity-option" value="commute" checked>
                 <label for="commute">Replace Commute</label>
             </div>
             <div id="hobby-radio">
-                <input type="radio" id="hobby" name="activity-type" value="hobby">
-                <label for="hobby">Hobby</label>
+                <input type="radio" id="hobby" name="activity-option" value="hobby">
+                <label for="hobby">Hobby/Exercise</label>
             </div>
             <button id="submit-activity">Submit</button>
         </div>
