@@ -1,0 +1,130 @@
+<!-- templates/transport/transport.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport App</title>
+    {% include 'navbar.html' %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/transport.css' %}">
+    <script src="{% static 'js/transport.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <!-- Left column -->
+        <div class="left-column">
+            <!-- Intro wrapper -->
+            <section class="intro-wrapper column-item">
+                <h2>Transport</h2>
+                <p>Fun fact: Short car trips (under 5 miles) make up over 70% of all vehicle journeys, yet they could often be replaced by walking or cycling.</p>
+                <!-- https://www.gov.uk/government/statistics/national-travel-survey-2021/national-travel-survey-2021-mode-share-journey-lengths-and-public-transport-use?utm_source=chatgpt.com -->
+                <p>Swap a drive for a walk or ride and cut down on emissions while staying active!</p>
+            </section>
+
+            <!-- Activity logger -->
+            <section class="log-activity column-item">
+                <h3>Log Activity</h3>
+                {% if user.is_authenticated %}
+                    {% if user.strava_token %}
+                        <p>Log your activities here to earn points!</p>
+                        <p>Points are earned based on the distance traveled and the reason for the activity.</p>
+                        <p>If you're replacing a commute, LOG IT!</p>
+                        <button id="log-btn" class="log-activity-btn">Log Activity</button>
+                    {% else %}
+                        <p>In order to log your activities you must log in using Strava</p>
+                        <p>Strava is a mobile application to log exercises, such as walk, runs, cycles</p>
+                        <p>Access it below!</p>
+                        <a href="{% url 'strava-login' %}" class="log-activity-btn">Connect to Strava</a>
+                    {% endif %}
+                {% else %}
+                    <p>Please log in to connect with Strava.</p>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- Right column -->
+        <div class="right-column">
+            <!-- Leaderboard -->
+            <section class="leaderboard column-item">
+                <h3>Leaderboard</h3>
+                <ol id="leaderboard-list">
+                    <li class="leaderboard-item" id="leaderboard-item-1">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-2">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-3">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-4">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-5">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-6">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-7">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-8">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-9">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-10">---</li>
+                </ol>
+            </section>
+
+            <!-- Stats-->
+            <section class="statistics column-item">
+                <h3>Statistics</h3>
+                <div class="statistics-item-container">
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Points Earned</p>
+                        <p id="stats-points-earned">0</p>
+                    </div>
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Total distance /km</p>
+                        <p id="stats-total-distance">0 km</p>
+                    </div>
+                    <div class="statistics-item">
+                        <p class="statistics-item-title">Emissions Reduced /g CO2</p>
+                        <p id="stats-emissions-reduced">0 g</p>
+                    </div> 
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Popup for logging activity -->
+    <div id="log-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-log-popup">&times;</span>
+
+            <h2>Log Activity</h2>
+
+            <p>Please select the activity from your last 5 strava entries. <b>[Must be a new entry]</b></p>
+            <select id="activity-select">
+                <option value="" disabled selected>Select an activity</option>
+            </select>
+
+            <p>What was the reason for this activity?</p>
+            <div id="commute-radio">
+                <input type="radio" id="commute" name="activity-option" value="commute" checked>
+                <label for="commute">Replace Commute</label>
+            </div>
+            <div id="hobby-radio">
+                <input type="radio" id="hobby" name="activity-option" value="hobby">
+                <label for="hobby">Hobby/Exercise</label>
+            </div>
+            <button id="submit-activity">Submit</button>
+        </div>
+    </div>
+
+    <!-- Popup for successful activity logging -->
+    <div id="success-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-success-popup">&times;</span>
+
+            <h2>Activity Logged</h2>
+            <p>Your activity has been logged successfully!</p>
+        </div>
+    </div>
+
+    <!-- Popup for error in activity logging -->
+    <div id="error-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-error-popup">&times;</span>
+
+            <h2>Error</h2>
+            <p>There was an error in logging your activity. Please try again later.</p>
+        </div>
+</body>
+</html>
