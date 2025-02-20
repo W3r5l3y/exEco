@@ -10,42 +10,44 @@
     {% block css %}{% endblock %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/settings.css' %}">
-    <script src="{% static 'js/login.js' %}" defer></script>
+    <script src="{% static 'js/settings.js' %}" defer></script>
 </head>
-<body>
-    <!-- ERROR POPUP -->
-    <div id="error-popup">
+<body >
+    <div id="error-popup" >
         <button class="close-btn" onclick="closePopup()">&times;</button>
         <p id="error-popup-title">Error</p>
         <p id="error-popup-message">An unexpected error occurred.</p>
     </div>
 
-    <main>
+    <main id="settings">
         <div class="background-box">
             <h1 class="main-title">Settings</h1>
             <hr class="main-title-divider">
             <div class="container-container">
                 <div class="profile-grid">
                     <h1 class="sub-title"> Profile </h1>
-                    <div class="input-group limited-width">
-                        <input class="input" type="email" id="email" name="email" placeholder="Enter your email" required>
-                        <label class="input-label" for="email">Email</label>
-                    </div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group limited-width">
+                            <input class="input" type="email" id="email" name="email" placeholder="Enter your email" data-email="{{ request.user.email }}" value="{{ request.user.email }}"  required>
+                            <label class="input-label" for="email">Email</label>
+                        </div>
 
-                    <div class="input-group limited-width">
-                            <input class="input" type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
-                            <label class="input-label" for="first_name">First name</label>
-                    </div>
+                        <div class="input-group limited-width">
+                                <input class="input" type="text" id="first_name" name="first_name" placeholder="Enter your first name" data-firstname="{{ request.user.first_name }}" value="{{ request.user.first_name }}" required>
+                                <label class="input-label" for="first_name">First name</label>
+                        </div>
 
-                    <div class="input-group limited-width">
-                            <input class="input" type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
-                            <label class="input-label" for="last_name">Last name</label>
-                    </div>
+                        <div class="input-group limited-width">
+                                <input class="input" type="text" id="last_name" name="last_name" placeholder="Enter your last name" data-lastname="{{ request.user.last_name }}" value="{{ request.user.last_name }}"  required>
+                                <label class="input-label" for="last_name">Last name</label>
+                        </div>
 
-                    <div class="space-evenly-button-div limited-width">
-                        <button class="confirm-button" name="confirm_profile">Confirm</button>
-                        <button class="reset-button" name="cancel_profile">Cancel</button>
-                    </div>
+                        <div class="space-evenly-button-div limited-width">
+                            <button class="confirm-button" type="submit" name="confirm_profile">Confirm</button>
+                            <button class="reset-button" name="cancel_profile" onclick="profileReset()">Cancel</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="connections-grid">
                     <h1 class="sub-title"> Connections </h1>
@@ -60,21 +62,23 @@
                 </div>
                 <div class="password-grid">
                     <h1 class="sub-title"> Password </h1>
-                    <div class="input-group limited-width">
-                        <input class="input" type="password" id="password" name="password" placeholder="Enter your password" required>
-                        <label class="input-label" for="password">Password</label>
-                    </div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group limited-width">
+                            <input class="input" type="password" id="password" name="password" placeholder="Enter your new password" required>
+                            <label class="input-label" for="password">Password</label>
+                        </div>
 
-                    <div class="input-group limited-width">
-                            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Enter your password" required>
-                            <label class="input-label" for="confirm_password">Password</label>
-                    </div>
+                        <div class="input-group limited-width">
+                                <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
+                                <label class="input-label" for="confirm_password">Password</label>
+                        </div>
 
-                    <div class="space-evenly-button-div limited-width">
-                        <button class="confirm-button" name="confirm_password">Confirm</button>
-                        <button class="reset-button" name="cancel_password">Cancel</button>
-                    </div>
-
+                        <div class="space-evenly-button-div limited-width">
+                            <button class="confirm-button" name="confirm_password_change">Confirm</button>
+                            <button class="reset-button" name="cancel_password">Cancel</button>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="buttons-grid">
@@ -103,6 +107,7 @@
 
         </div>
     </main>
+
 </body>
 
 </html>

@@ -233,6 +233,23 @@ main {
     font-weight: 600;
 }
 
+#error-popup {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    max-width: 400px;
+    background-color: #f44336;
+    color: white;
+    padding: 20px 30px;
+    z-index: 1000;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 @media (max-width: 768px) {
     .background-box {
