@@ -13,10 +13,15 @@
     <script src="{% static 'js/settings.js' %}" defer></script>
 </head>
 <body >
-    <div id="error-popup" >
-        <button class="close-btn" onclick="closePopup()">&times;</button>
+    <div id="error-popup" class="popup" >
+        <button class="close-btn" onclick="closeErrorPopup()">&times;</button>
         <p id="error-popup-title">Error</p>
         <p id="error-popup-message">An unexpected error occurred.</p>
+    </div>
+    <div id="success-popup" style="background-color: lightgreen" class="popup"  >
+        <button class="close-btn" onclick="closeSuccessPopup()">&times;</button>
+        <p id="success-popup-title">Error</p>
+        <p id="success-popup-message">An unexpected error occurred.</p>
     </div>
 
     <main id="settings">

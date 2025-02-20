@@ -234,7 +234,7 @@ main {
 }
 
 /* Error popup */
-#error-popup {
+.popup {
     position: fixed;
     display: none;
     flex-direction: column;
@@ -252,18 +252,18 @@ main {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#error-popup.hidden {
+.popup.hidden {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
 
-#error-popup-title {
+.popup-title {
     font-size: 1.5rem;
     margin: 0;
     font-weight: bold;
 }
 
-#error-popup-message {
+.popup-message {
     margin: 10px 0 0;
 }
 

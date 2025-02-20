@@ -55,6 +55,9 @@ def settings_view(request):
             form = ChangeProfileForm(request.POST, instance=user)
             if form.is_valid():
                 form.save()
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?success= Profile changed successfully"
+                )
                 print("PROFILE CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
                 # Extract the first error message
@@ -69,6 +72,9 @@ def settings_view(request):
                 user = authenticate(username=user.email, password=form.cleaned_data['password'])
                 if user is not None:
                     login(request, user)
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?success=Passwords changed successfully"
+                )
                 print("PASSWORD CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
                 # Extract the first error message

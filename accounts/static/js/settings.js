@@ -1,9 +1,17 @@
 // Close the error popup
-function closePopup() {
+function closeErrorPopup() {
     const popup = document.getElementById('error-popup');
     popup.classList.add('hidden');
     setTimeout(() => popup.style.display = 'none', 300);
 }
+
+// Close the error popup
+function closeSuccessPopup() {
+    const popup = document.getElementById('success-popup');
+    popup.classList.add('hidden');
+    setTimeout(() => popup.style.display = 'none', 300);
+}
+
 
 // Show error message in popup
 function showError(message) {
@@ -11,18 +19,30 @@ function showError(message) {
     const errorMessage = document.getElementById('error-popup-message');
 
     errorMessage.textContent = message;
-    errorPopup.style.display = 'flex'; // Make it visible
+    errorPopup.style.display = 'flex';
     setTimeout(() => errorPopup.classList.remove('hidden'), 10);
+}
+
+function showSuccess(message) {
+    const successPopup = document.getElementById('success-popup');
+    const successMessage = document.getElementById('success-popup-message');
+
+    successMessage.textContent = message;
+    successPopup.style.display = 'flex';
+
+    setTimeout(() => successPopup.classList.remove('hidden'), 10);
 }
 
 // Get query parameters from URL
 const urlParams = new URLSearchParams(window.location.search);
 const error = urlParams.get('error');
-const tab_location = urlParams.get('tab');
+const success = urlParams.get('success');
 
 // Show error message if present
 if (error) {
     showError(error);
+}else if (success){
+    showSuccess(success)
 }
 
 
@@ -44,10 +64,8 @@ window.onload = function () {
 function adjustNavBarHeight(){
     const navbar = document.getElementById("navbar");
     const content = document.getElementById("settings");
-    console.log(navbar)
-    console.log(content)
+
     if (navbar && content) {
-        console.log("yo")
         const navbarHeight = navbar.offsetHeight;
         content.style.paddingTop = navbarHeight + "px";
     }
