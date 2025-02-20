@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register Form</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+    <script src="{% static 'js/login.js' %}" defer></script>
+</head>
+<body>
+    <!-- ERROR POPUP -->
+    <div id="error-popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <p id="error-popup-title">Error</p>
+        <p id="error-popup-message">An unexpected error occurred.</p>
+    </div>
+
+    <main>
+        <div class="background-box">
+            <h1 class="main-title">Settings</h1>
+            <hr class="main-title-divider">
+            <div class="container-container">
+                <div class="profile-grid">
+                    <h1 class="sub-title"> Profile </h1>
+                    <div class="input-group limited-width">
+                        <input class="input" type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <label class="input-label" for="email">Email</label>
+                    </div>
+
+                    <div class="input-group limited-width">
+                            <input class="input" type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
+                            <label class="input-label" for="first_name">First name</label>
+                    </div>
+
+                    <div class="input-group limited-width">
+                            <input class="input" type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
+                            <label class="input-label" for="last_name">Last name</label>
+                    </div>
+
+                    <div class="space-evenly-button-div limited-width">
+                        <button class="confirm-button" name="confirm_profile">Confirm</button>
+                        <button class="reset-button" name="cancel_profile">Cancel</button>
+                    </div>
+                </div>
+                <div class="connections-grid">
+                    <h1 class="sub-title"> Connections </h1>
+                    <div class="connection-item-div">
+                        <div class="connection-logo-name">
+                            <img class="connection-logo"  src="{% static 'img/strava-logo.png' %}" alt="strava_logo">
+                            <h2 class="connection-name">Strava</h2>
+                        </div>
+                        <button class="connection-button" name="login">Unlink</button>
+                    </div>
+
+                </div>
+                <div class="password-grid">
+                    <h1 class="sub-title"> Password </h1>
+                    <div class="input-group limited-width">
+                        <input class="input" type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <label class="input-label" for="password">Password</label>
+                    </div>
+
+                    <div class="input-group limited-width">
+                            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Enter your password" required>
+                            <label class="input-label" for="confirm_password">Password</label>
+                    </div>
+
+                    <div class="space-evenly-button-div limited-width">
+                        <button class="confirm-button" name="confirm_password">Confirm</button>
+                        <button class="reset-button" name="cancel_password">Cancel</button>
+                    </div>
+
+                </div>
+
+                <div class="buttons-grid">
+                    <div class="all-buttons-div ">
+                        <div class="buttons-mini-div">
+                            <h3>Request data</h3>
+                            <p>An email will be sent to your current email,
+                                with all collected data</p>
+                            <button class="buttons-mini-div-button" name="request_data">Request</button>
+                        </div>
+                        <div class="buttons-mini-div">
+                            <h3>Disable account</h3>
+                            <p>Your account will be disabled until further notice.</p>
+                            <button class="buttons-mini-div-button" name="request_data" style="background-color: lightblue">Disable</button>
+                        </div>
+                        <div class="buttons-mini-div">
+                            <h3>Delete account</h3>
+                            <p>Warning, this is an irreversible action</p>
+                            <button class="buttons-mini-div-button" name="request_data" style="background-color: red">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </main>
+</body>
+
+</html>

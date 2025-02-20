@@ -1,0 +1,307 @@
+@import url("/static/css/colours.css");
+
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.background-box {
+    display: flex;
+    flex-direction: column;
+    width: 1300px;
+    height: 900px;
+    border: 2px solid var(--display_color) ;
+    backdrop-filter: blur(5px);
+    box-shadow:
+        0 0 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    background-color: var(--primary_colour);
+    border-radius: 10px;
+    padding: 30px 40px;
+    margin-top: 50px;
+    margin-bottom: 0;
+}
+
+
+.main-title {
+    font-size: 2.5em;
+    color: white;
+}
+.main-title-divider {
+    width: 100%;
+    height: 10px;
+    background-color: white;
+}
+
+.sub-title {
+    font-size: 2em;
+    color: white;
+}
+
+
+
+/* || INPUT BOX DESIGN||*/
+
+.input-group {
+    position: relative;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-group input {
+    width: 100%;
+    height: 100%;
+    background: var(--neutral_colour);
+    border: none;
+    outline: none;
+    border: 2px solid var(--neutral_colour);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #000;
+    padding: 20px 45px 20px 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.input-group .input-label {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    background: var(--accessories_colour);
+    padding: 0 5px;
+    color: var(--neutral_colour);
+    font-size: 0.7rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border-radius: 20px;
+    border: 2px solid var(--neutral_colour);
+    transition: all 0.3s ease-in-out;
+}
+
+.input-group input:focus {
+    border: 2px solid var(--accessories_colour);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Label styling when input is focused */
+.input-group input:focus + .input-label {
+    border-top: 2px solid var(--accessories_colour);
+    border-left: 2px solid var(--accessories_colour);
+    border-right: 2px solid var(--accessories_colour);
+    border-bottom: none;
+}
+
+/* || Container boxes||*/
+.container-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1.5fr 1fr;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-grid {
+
+}
+.connections-grid {
+
+}
+.password-grid {
+
+}
+.buttons-grid {
+    height: 100%;
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
+/* || Connections container||*/
+
+
+.connection-item-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.connection-logo {
+    width: 60px;
+    height: 60px;
+}
+.connection-name {
+    color: white;
+    font-size: 1.8em;
+    margin-left: 20px;
+
+}
+.connection-logo-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.connection-button {
+    width: 20%;
+    height: 45px;
+    background: var(--accessories_colour);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--neutral_colour);
+    font-weight: 600;
+}
+
+
+.confirm-button {
+    width: 20%;
+    height: 45px;
+    background: var(--accessories_colour);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--neutral_colour);
+    font-weight: 600;
+}
+
+.reset-button {
+    width: 20%;
+    height: 45px;
+    background: lightgrey;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--neutral_colour);
+    font-weight: 600;
+}
+
+.all-buttons-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.space-evenly-button-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.limited-width {
+    width: 80%;
+}
+
+.buttons-mini-div {
+    width: 25%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+.buttons-mini-div-button {
+    width: 90%;
+    height: 45px;
+    background: var(--accessories_colour);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--neutral_colour);
+    font-weight: 600;
+}
+
+
+@media (max-width: 768px) {
+    .background-box {
+        width: 650px;
+        height: 1200px;
+    }
+    .profile-grid{
+        width: 100%;
+    }
+    .connections-grid{
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+
+    .container-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .limited-width {
+        width: 100%;
+    }
+
+    .confirm-button {
+        width: 30%;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .reset-button {
+        width: 30%;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .connection-button {
+        width: 30%;
+    }
+
+    .all-buttons-div {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .buttons-mini-div{
+        flex-direction: row;
+        width: 100%;
+    }
+    .buttons-grid {
+        border-top: none;
+        border-left: none;
+    }
+
+    .buttons-mini-div h3 {
+        font-size: 20px;
+    }
+
+    .buttons-mini-div p {
+        display: none;
+    }
+
+    .buttons-mini-div-button {
+        width: 40%;
+    }
+}
+
+@media (max-width: 500px) {
+    .background-box {
+        width: 100%;
+    }
+}
