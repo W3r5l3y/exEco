@@ -73,7 +73,7 @@ def settings_view(request):
                 if user is not None:
                     login(request, user)
                 return HttpResponseRedirect(
-                    reverse("settings") + f"?success=Passwords changed successfully"
+                    reverse("settings") + f"?success=Password changed successfully"
                 )
                 print("PASSWORD CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
