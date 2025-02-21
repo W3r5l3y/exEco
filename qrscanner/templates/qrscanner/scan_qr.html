@@ -1,41 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
-
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <script src="{% static 'js/dashboard.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/scan_qr.css' %}">
+    <script src="{% static 'js/scan_qr.js' %}" defer></script>
 </head>
 <body>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Scan QR Code</button>
-    </form>
+    <main>
+        <!-- Left Column -->
+        <div class="left-column">
+            <!-- Intro Section (Top Left) -->
+            <section class="intro-wrapper column-item">
+                <h2>QR Code Scanner</h2>
+                <p>Scan a QR code to reveal location details and earn points!</p>
+            </section>
+            <!-- Upload Section (Bottom Left) -->
+            <section class="upload column-item">
+                <h3>Upload QR Code</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Scan QR Code</button>
+                </form>
+                {% if message %}
+                    <p><strong>{{ message }}</strong></p>
+                {% endif %}
+            </section>
+        </div>
 
-    {% if message %}
-        <p><strong>{{ message }}</strong></p>
-    {% endif %}
-
-    {% if result %}
-        <p>QR Code Data: {{ result }}</p>
-
-        {% if location %}
-            <p>Location Name: {{ location.location_name }}</p>
-            <p>Fact: {{ location.location_fact }}</p>
-            <p>Times Scanned: {{ location.times_visited }}</p>
-            <p>Point Value: {{ location.location_value }}</p>
-        {% endif %}
-
-        {% if user_points %}
-            <p>Total Points: {{ user_points.points_scored }}</p>
-        {% endif %}
-    {% endif %}
+        <!-- Right Column -->
+        <div class="right-column">
+            <!-- Leaderboard Section (Top Right) -->
+            <section class="leaderboard column-item">
+                <h3>Leaderboard</h3>
+                <ol id="leaderboard-list">
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item">---</li>
+                </ol>
+            </section>
+            <!-- Last Upload Section (Bottom Right) -->
+            <section class="last-upload column-item">
+                <h3>Last Upload</h3>
+                {% if result %}
+                    <p>QR Code Data: {{ result }}</p>
+                    {% if location %}
+                        <p>Location Name: {{ location.location_name }}</p>
+                        <p>Fact: {{ location.location_fact }}</p>
+                        <p>Times Scanned: {{ location.times_visited }}</p>
+                        <p>Point Value: {{ location.location_value }}</p>
+                    {% endif %}
+                    {% if user_points %}
+                        <p>Total Points: {{ user_points.points_scored }}</p>
+                    {% endif %}
+                {% endif %}
+            </section>
+        </div>
+    </main>
 </body>
 </html>
