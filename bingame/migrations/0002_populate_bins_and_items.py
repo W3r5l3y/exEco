@@ -28,7 +28,7 @@ def populate_bins_and_items(apps, schema_editor):
         {'item_name': 'Plastic Bottle', 'item_image': 'static/img/items/plastic_bottle.jpg', 'bin_id': 1},
         {'item_name': 'Cardboard', 'item_image': 'static/img/items/cardboard.jpg', 'bin_id': 3},
         {'item_name': 'Tin', 'item_image': 'static/img/items/tins.jpg', 'bin_id': 4},
-        {'item_name': 'Glass Bottle', 'item_image': 'static/img/items/glass_bottle.jpg', 'bin_id': 2},
+        {'item_name': 'Glass Bottle', 'item_image': 'static/img/items/glass_bottle.png', 'bin_id': 2},
     ]
 
     for item_entry in item_data:
