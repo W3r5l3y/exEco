@@ -38,7 +38,7 @@ def populate_bins_and_items(apps, schema_editor):
         {'item_name': 'Soap dispenser', 'item_image': 'static/img/items/soap_dispenser.png', 'bin_id': 1},
         {'item_name': 'Envelope', 'item_image': 'static/img/items/envelope.png', 'bin_id': 3},
         {'item_name': 'Broken mirror', 'item_image': 'static/img/items/broken_mirror.png', 'bin_id': 2},
-        {'item_name': 'Coffee cup', 'item_image': 'static/img/items/coffee_cup.png', 'bin_id': 5}
+        {'item_name': 'Coffee cup', 'item_image': 'static/img/items/coffee_cup.png', 'bin_id': 5},
 
     ]
 
