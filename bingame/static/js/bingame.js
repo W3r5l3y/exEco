@@ -160,20 +160,42 @@ function checkAnswers() {
 }
 
 function calculateScore(){
-    let points = (maxAttempts - attempts + 1 ) * 2;
-    //max = 3: if attempts = {1,2,3} points then = {6, 4, 2}
+    let points = (maxAttempts - attempts + 1 ) * 2; //max = 3: if attempts = {1,2,3} points then = {6, 4, 2}
     score += points;
 }
 
 function endGame(){
     //updateLeaderboard()
-    //resetGame()
+    alert('Game over! Score: ' + score);
+    resetGame()
 }
 
-function resetGame(){
-
+function updateLeaderBoard(){
+    fetch('/update-leaderboard', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'score=${score}',
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
 }
+
+
 /*
 RESET FUNCTIONALITY
 */
-//document.getElementById('check-reset-tile').addEventListener('click', resetGame);
+function resetGame(){
+    attempts = 0;
+    score = 0;
+    document.querySelectorAll('.items').forEach(item => {
+        item.style.left = '50%';
+        item.style.top = '40%';
+        item.removeAttribute('data-dropped-bin-id');
+        item.classList.remove('correct');
+        item.style.border = 'none';
+    });
+}
