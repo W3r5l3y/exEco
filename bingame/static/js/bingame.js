@@ -180,8 +180,13 @@ function updateLeaderBoard(){
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
+        if (data.status === 'success'){
+            console.log('New total score:', data.new_score);
+        } else{
+            console.error('error updating leaderboard');
+        }
     })
+    .catch(error => console.error('Error:', error));
 }
 
 
