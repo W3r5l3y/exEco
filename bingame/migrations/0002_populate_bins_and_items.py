@@ -41,7 +41,7 @@ def populate_bins_and_items(apps, schema_editor):
             }
         )
 
-def remove_bins_and_items(apps):
+def remove_bins_and_items(apps,schema_editor):
     Bins = apps.get_model('bingame', 'Bins')
     Items = apps.get_model('bingame', 'Items')
     
