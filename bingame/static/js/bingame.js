@@ -99,10 +99,33 @@ DRAG AND DROP FUNCTIONALITY - Bin
 /*
 CHECK ANSWER FUNCTIONALITY
 */
+let attempts = 0;
+let maxAttempts = 3
+let totalItems = document.querySelectorAll('.items').length;
+let score = 0;
+
 document.getElementById('check-answer-tile').addEventListener('click', checkAnswers);
+//The check answer function
 function checkAnswers() {
     const items = document.querySelectorAll('.items');
+    let allPlaced = true;
     let correctCount = 0;
+
+    //Ensure all items are placed
+    items.forEach(item => {
+        if (!item.getAttribute('data-dropped-bin-id')) {
+            allPlaced = false;
+            item.style.border = '2px dashed red';
+        }
+    });
+    //If not all placed, ask user to place the ones not yet placed
+    if (!allPlaced) {
+        alert('Please place all items in the correct bins');
+        return;
+    }
+
+    attempts++;
+
     //Check for each item if its on the correct bin, use the correct bin id from django and the dropped from handleDrop()
     items.forEach(item => {
         const correctBinId = item.getAttribute('data-correct-bin-id');
@@ -117,11 +140,39 @@ function checkAnswers() {
             item.classList.add('correct');
             item.style.border = '2px solid green';
         } else {
+            item.style.left = '50%';
+            item.style.top = '40%';
+            item.removeAttribute('data-dropped-bin-id');
             item.style.border = '2px solid red';
         }
     })
+
+    // Count correct items
+    correctCount = document.querySelectorAll('.items.correct').length;
+
+    if (correctCount === totalItems){
+        calculateScore()
+        endGame();
+    } else if (attempts >= maxAttempts){
+        calculateScore()
+        endGame();
+    }
 }
 
+function calculateScore(){
+    let points = (maxAttempts - attempts + 1 ) * 2;
+    //max = 3: if attempts = {1,2,3} points then = {6, 4, 2}
+    score += points;
+}
+
+function endGame(){
+    //updateLeaderboard()
+    //resetGame()
+}
+
+function resetGame(){
+
+}
 /*
 RESET FUNCTIONALITY
 */
