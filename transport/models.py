@@ -19,7 +19,7 @@ class StravaToken(models.Model):
     athlete_id = models.BigIntegerField(unique=True, null=True, blank=True) # The Strava athlete ID
 
     def __str__(self):
-        return f"{self.user.email}'s Strava tokens" # Return the user's email and the string "Strava tokens"
+        return f"User {self.user.id}'s Strava tokens"
 
 class LoggedActivity(models.Model):
     user = models.ForeignKey(
@@ -33,7 +33,7 @@ class LoggedActivity(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp
 
     def __str__(self):
-        return f"{self.user.email} - {self.activity_id} - {self.activity_type}" # Return the user's email, activity ID and type
+        return f"User {self.user.id} - {self.activity_id} - {self.activity_type}"
 
 class CumulativeStats(models.Model):
     """Tracks cumulative distance for users, separated by activity type."""
@@ -46,7 +46,7 @@ class CumulativeStats(models.Model):
     total_hobby_distance = models.FloatField(default=0)  # Distance in meters
 
     def __str__(self):
-        return f"{self.user.email} - Commute: {self.total_commute_distance}m, Hobby: {self.total_hobby_distance}m"
+        return f"User {self.user.id} - Commute: {self.total_commute_distance}m, Hobby: {self.total_hobby_distance}m"
 
 
 class LeaderboardEntry(models.Model):
@@ -58,4 +58,4 @@ class LeaderboardEntry(models.Model):
     points = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.user.email} - {self.points} points"
+        return f"User {self.user.id} - {self.points} points"
