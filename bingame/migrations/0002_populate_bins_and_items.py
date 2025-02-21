@@ -27,7 +27,7 @@ def populate_bins_and_items(apps, schema_editor):
     item_data = [
         {'item_name': 'Plastic Bottle', 'item_image': 'static/img/items/plastic_bottle.png', 'bin_id': 1},
         {'item_name': 'Cardboard', 'item_image': 'static/img/items/cardboard.png', 'bin_id': 3},
-        {'item_name': 'Tin', 'item_image': 'static/img/items/tins.jpg', 'bin_id': 4},
+      #  {'item_name': 'Tin', 'item_image': 'static/img/items/tins.jpg', 'bin_id': 4},
         {'item_name': 'Glass Bottle', 'item_image': 'static/img/items/glass_bottle.png', 'bin_id': 2},
         {'item_name': 'Chip Packet', 'item_image': 'static/img/items/chip_packet.png', 'bin_id': 5},
         {'item_name': 'Drink Can', 'item_image': 'static/img/items/drink_can.png', 'bin_id': 4},
@@ -36,6 +36,10 @@ def populate_bins_and_items(apps, schema_editor):
         {'item_name': 'Pizza box', 'item_image': 'static/img/items/pizza_box.png', 'bin_id': 5},
         {'item_name': 'Milk carton', 'item_image': 'static/img/items/milk_carton.png', 'bin_id': 3},
         {'item_name': 'Soap dispenser', 'item_image': 'static/img/items/soap_dispenser.png', 'bin_id': 1},
+        {'item_name': 'Envelope', 'item_image': 'static/img/items/envelope.png', 'bin_id': 3},
+        {'item_name': 'Broken mirror', 'item_image': 'static/img/items/broken_mirror.png', 'bin_id': 2},
+        {'item_name': 'Coffee cup', 'item_image': 'static/img/items/coffee_cup.png', 'bin_id': 5}
+
     ]
 
     for item_entry in item_data:
