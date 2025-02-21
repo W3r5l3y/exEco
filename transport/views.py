@@ -266,12 +266,9 @@ def log_activity(request):
                 activity_type=activity_type,
                 option=option
             )
-            print("logged activity")
 
             # Update CumulativeStats
             cumulative_stats, _ = CumulativeStats.objects.get_or_create(user=request.user)
-            print("got cumulative stats")
-            print(option)
             if option == "commute".lower():
                 cumulative_stats.total_commute_distance += distance
                 print("commute")
@@ -280,9 +277,12 @@ def log_activity(request):
 
             cumulative_stats.save()
 
-            # Update LeaderboardEntry (only for commutes)
+            # Update LeaderboardEntry
             leaderboard_entry, _ = LeaderboardEntry.objects.get_or_create(user=request.user)
-            leaderboard_entry.points = int((cumulative_stats.total_commute_distance // 1000))  # 1 point per km (rounded down)
+            if option == "commute".lower():
+                leaderboard_entry.points = int((cumulative_stats.total_commute_distance // 1000)) 
+            elif option == "hobby".lower():
+                leaderboard_entry.points = int((cumulative_stats.total_hobby_distance // 1000))
             leaderboard_entry.save()
 
 
@@ -314,20 +314,21 @@ def get_stats(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
     
 
 @login_required
 def get_leaderboard(request):
     try:
-        leaderboard = LeaderboardEntry.objects.order_by("-points").values("user__email", "points")[:10] # Get top 10 players
+        leaderboard = LeaderboardEntry.objects.order_by("-points").values("user_id", "points")[:10]  # Get top 10 users
 
-        # Get user first name and last name instead of email using custom user model and change key name to username
+        # Replace email lookup with user ID
         for entry in leaderboard:
-            user = CustomUser.objects.get(email=entry["user__email"])
-            entry["username"] = user.first_name + " " + user.last_name
-            del entry["user__email"]
+            user = CustomUser.objects.get(id=entry["user_id"])
+            entry["username"] = f"{user.first_name} {user.last_name}"
+            del entry["user_id"]
 
-        return JsonResponse(list(leaderboard), safe=False) # Convert QuerySet to list structured as JSON
+        return JsonResponse(list(leaderboard), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
