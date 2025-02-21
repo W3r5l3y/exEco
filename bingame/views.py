@@ -44,3 +44,19 @@ def get_leaderboard(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
     
+@login_required
+def fetch_random_items(request):
+    all_items = list(Items.objects.all())
+    random_items = sample(all_items, min(10, len(all_items)))
+
+    # Build JSON response with the item info you need
+    item_data = []
+    for item in random_items:
+        item_data.append({
+            'id': item.item_id,
+            'bin_id': item.bin_id.bin_id,
+            'item_name': item.item_name,
+            'item_image_url': item.item_image.url,
+        })
+    
+    return JsonResponse({'items': item_data})

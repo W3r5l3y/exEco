@@ -250,6 +250,49 @@ function resetGame(){
         item.style.border = 'none';
     });
     getLeaderboard();
+    //Redirect to game_view in views.py
+    fetchNewRandomItems();
 }
+
+
+async function fetchNewRandomItems() {
+    try {
+        const response = await fetch('/fetch_random_items/');
+        if (!response.ok) {
+            throw new Error('Failed to fetch random items');
+        }
+        
+        const data = await response.json();
+        const items = data.items; 
+
+        //Remove the items
+        const itemsContainer = document.getElementById('items-container');
+        itemsContainer.innerHTML = '';
+
+        //Get the new item elements
+        items.forEach(itemData => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('items');
+            itemDiv.setAttribute('data-dropped-bin-id', '');
+            itemDiv.id = itemData.id;
+            itemDiv.setAttribute('data-correct-bin-id', itemData.bin_id);
+
+            const img = document.createElement('img');
+            img.src = itemData.item_image_url;
+            img.alt = itemData.item_name;
+
+            itemDiv.appendChild(img);
+            itemsContainer.appendChild(itemDiv);
+        });
+
+        //Put listeners back onto the new items
+        rebindItemEventListeners();
+
+    } catch (error) {
+        console.error('Error fetching new random items:', error);
+    }
+}
+
+
 
 getLeaderboard(); // Update leaderboard on page load
