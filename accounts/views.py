@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .models import CustomUser  # TODO Maybe remove later
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -48,3 +48,41 @@ def login_register_view(request):
         "accounts/login.html",
         {"login_form": login_form, "register_form": register_form},
     )
+def settings_view(request):
+    if request.method == "POST":
+        user = request.user
+        if "confirm_profile" in request.POST:
+            form = ChangeProfileForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?success= Profile changed successfully"
+                )
+                print("PROFILE CHANGES SUCCESSFUL!")  ## TODO REMOVE
+            else:
+                # Extract the first error message
+                error_message = list(form.errors.values())[0][0]
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?error={error_message}"
+                )
+        elif "confirm_password" in request.POST:
+            form = ChangePasswordForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                user = authenticate(username=user.email, password=form.cleaned_data['password'])
+                if user is not None:
+                    login(request, user)
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?success=Password changed successfully"
+                )
+                print("PASSWORD CHANGES SUCCESSFUL!")  ## TODO REMOVE
+            else:
+                # Extract the first error message
+                print(form.errors)
+                error_message = list(form.errors.values())[0][0]
+                return HttpResponseRedirect(
+                    reverse("settings") + f"?error={error_message}"
+                )
+
+
+    return render(request, "accounts/settings.html")
