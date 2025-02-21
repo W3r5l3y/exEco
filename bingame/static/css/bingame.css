@@ -30,7 +30,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: lightgray;
+    /*background-color: lightgray;*/
 }
 
 /* Items */
@@ -55,7 +55,6 @@ main {
     width: auto;
     justify-content: center;
     align-items: center;
-    background-color: black;
     gap: 10px;
     position: fixed;
     top: 40%;
