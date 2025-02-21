@@ -35,6 +35,7 @@ def populate_bins_and_items(apps, schema_editor):
         {'item_name': 'Newspaper', 'item_image': 'static/img/items/newspaper.png', 'bin_id': 3},
         {'item_name': 'Pizza box', 'item_image': 'static/img/items/pizza_box.png', 'bin_id': 5},
         {'item_name': 'Milk carton', 'item_image': 'static/img/items/milk_carton.png', 'bin_id': 3},
+        {'item_name': 'Soap dispenser', 'item_image': 'static/img/items/soap_dispenser.png', 'bin_id': 1},
     ]
 
     for item_entry in item_data:
