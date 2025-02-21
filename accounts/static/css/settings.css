@@ -355,3 +355,21 @@ main {
         width: 100%;
     }
 }
+
+@media (max-width: 1000px) {
+    .confirm-button {
+        width: 30%;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .reset-button {
+        width: 30%;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .buttons-mini-div p {
+        font-size: 12px;
+    }
+}
