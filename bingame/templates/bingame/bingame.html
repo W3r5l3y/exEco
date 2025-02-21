@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bin Game</title>
-    <!--
+    
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
-    -->
+    
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bingame.css' %}">
     <script src="{% static 'js/bingame.js' %}" defer></script>
@@ -16,11 +16,11 @@
     <main>
     <div id="game-container">
         <!-- Items -->
-        <div id="items-container">
+        <div id="items-container" >
             
             {% for item in items %}
-                <div class="items">
-                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" id="item-{{ item.item_id }}" data-correct-bin="{{ item.correct_bin.bin_name|slugify }}">
+                <div class="items" data-dropped-bin-id="" >
+                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" id="item-{{ item.item_id }}" data-correct-bin-id="{{ item.correct_bin.bin_name|slugify }}">
                 </div>
             {% endfor %}
             
@@ -28,15 +28,15 @@
         <!-- Bins -->
         <div id="bins-container">
             {% for bin in bins %}
-                <div class="bin" id="{{ bin.bin_name|slugify }}" data-bin-id="{{ bin.id }}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="bin" id="{{ bin.bin_name|slugify }}" data-bin-id="{{ bin.id }}">
                     <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
-                    <p>{{ bin.bin_name }}</p>
+                    <p>{{ bin.bin_name }}, {{bin.bin_id}}</p>
                 </div>
             {% endfor %}
         </div>
         
-        <div id="check-answer-tile" onclick="checkAnswers()">Check Answers</div>
-        <div id="reset-game-tile" onclick="resetGame()">Reset Game</div>
+        <div id="check-answer-tile" >Check Answers</div>
+        <div id="reset-game-tile" >Reset Game</div>
     </div>
     </main>
 </body>

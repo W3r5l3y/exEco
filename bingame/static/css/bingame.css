@@ -8,8 +8,8 @@
     padding: 20px;
 }
 
-main{
-    padding-top:400px;
+main {
+    padding-top: 400px;
 }
 
 /* Bins */
@@ -18,46 +18,56 @@ main{
     justify-content: center;
     gap: 20px;
     width: 100%;
-    position: relative;
-    bottom: 80px; 
+    position: fixed;
+    bottom: 80px;
+    z-index: 1;
 }
 
 .bin {
+    position: relative;
     width: 120px;
     height: 150px;
-    border: 2px dashed black;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: lightgray;
 }
-
+.bins img {
+    width: 100%;
+    height: 100%;
+}
 /* Items */
 #items-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
-    width: 100%;
-    top: 10px; 
-}
-
-.items{
-    height:50px; 
-    width:auto;
-    display: flex;
-    justify-content: center;
-    background-color:black;
-    gap: 20px;
+    width: 80%;
     position: fixed;
-    top: 10px; 
+    top: 40%;
+    left: 50%;
+    margin-bottom: 40px;
+    margin-left: -40%;
+    margin-top: 10%;
+    z-index: 10;
 }
 
-.items img{
+.items {
+    display: flex;
+    height: 50px;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    gap: 10px;
+    position: fixed;
+    top: 40%;
+}
+
+.items img {
     width: 100%;
     height: 100%;
 }
-
 /* Check Answer */
 #checkanswer-container {
     display: flex;
@@ -116,4 +126,12 @@ main{
 #reset-game-tile:hover {
     transform: scale(1.05);
     background-color: #ff4444;
+}
+
+/* Setup z layers so item ontop of bins */
+#items-container {
+    z-index: 10;
+}
+#bins-container {
+    z-index: 1;
 }

@@ -15,3 +15,6 @@ class Items(models.Model):
     item_image = models.ImageField(upload_to="static/img/items/")
     bin_id = models.ForeignKey(Bins, on_delete=models.CASCADE)
     
+class BinLeaderboard(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    
