@@ -226,12 +226,12 @@ def get_last_five_activities(request):
         logged_ids = LoggedActivity.objects.filter(user=request.user).values_list("activity_id", flat=True)
 
         for activity in activities:
-            if activity["type"] in ["Run", "Ride", "Walk"] and activity["id"] not in logged_ids:
+            if activity["type"] in ["Run", "Ride", "Walk"] and activity["id"] not in logged_ids: # Exclude logged activities
                 valid_activities.append({
                     "id": activity["id"],  # Strava Activity ID
-                    "name": activity["name"],
+                    "name": activity["name"], # Activity name
                     "distance": activity["distance"],  # Distance in meters
-                    "type": activity["type"]
+                    "type": activity["type"] # Activity type (Run, Ride, Walk)
                 })
                 if len(valid_activities) == 5: # Limit to 5 activities
                     break
@@ -322,7 +322,6 @@ def get_leaderboard(request):
     try:
         leaderboard = LeaderboardEntry.objects.order_by("-points").values("user_id", "points")[:10]  # Get top 10 users
 
-        # Replace email lookup with user ID
         for entry in leaderboard:
             user = CustomUser.objects.get(id=entry["user_id"])
             entry["username"] = f"{user.first_name} {user.last_name}"
