@@ -7,7 +7,6 @@
     
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
-    
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/bingame.css' %}">
     <script src="{% static 'js/bingame.js' %}" defer></script>
@@ -30,13 +29,37 @@
             {% for bin in bins %}
                 <div class="bin"  data-bin-id="{{ bin.bin_id }}">
                     <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
-                    <p>{{ bin.bin_name }} (ID: {{ bin.bin.id }})</p>
+                    <p>{{ bin.bin_name }}</p>
                 </div>
             {% endfor %}
         </div>
-        
-        <div id="check-answer-tile" >Check Answers</div>
-        <div id="reset-game-tile" >Reset Game</div>
+
+        <!-- Check Answer-->
+        <div id="check-answer-tile" >
+            Check Answers
+        <p>Attempts Left: <span id="attempts-left">3</span></p>
+        </div>
+
+        <!-- Result-->
+    <!-- Left column -->
+    <div class="left-column">
+        <!-- Leaderboard -->
+        <section class="leaderboard column-item">
+            <h3>Leaderboard</h3>
+            <ol id="leaderboard-list">
+                <li class="leaderboard-item" id="leaderboard-item-1">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-2">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-3">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-4">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-5">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-6">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-7">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-8">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-9">---</li>
+                <li class="leaderboard-item" id="leaderboard-item-10">---</li>
+            </ol>
+        </section>
+    </div>
     </div>
     </main>
 </body>

@@ -93,15 +93,11 @@ function mouseUp(e){
 
 
 /*
-DRAG AND DROP FUNCTIONALITY - Bin
-*/
-//delete trying smthing else saved on notepad incase
-/*
 CHECK ANSWER FUNCTIONALITY
 */
-let attempts = 0;
-let maxAttempts = 3
-let totalItems = document.querySelectorAll('.items').length;
+var attempts = 0;
+var maxAttempts = 3
+var totalItems = document.querySelectorAll('.items').length;
 let score = 0;
 
 document.getElementById('check-answer-tile').addEventListener('click', checkAnswers);
@@ -151,37 +147,47 @@ function checkAnswers() {
     correctCount = document.querySelectorAll('.items.correct').length;
 
     if (correctCount === totalItems){
-        calculateScore()
-        endGame();
+        document.getElementById('attempts-left').innerText = `Attempts left: ${maxAttempts - attempts}`;
+        var tempScore = calculateScore()
+        endGame(tempScore);
     } else if (attempts >= maxAttempts){
-        calculateScore()
-        endGame();
+        var tempScore = calculateScore()
+        endGame(tempScore);
     }
 }
 
 function calculateScore(){
     let points = (maxAttempts - attempts + 1 ) * 2; //max = 3: if attempts = {1,2,3} points then = {6, 4, 2}
     score += points;
+    return score
 }
 
-function endGame(){
-    //updateLeaderboard()
-    alert('Game over! Score: ' + score);
-    resetGame()
+function endGame(tempScore){
+    updateLeaderboard(tempScore)
+    alert('Game over! Score: ' + score + ' ' + tempScore);
+    resetGame();
 }
 
-function updateLeaderBoard(){
-    fetch('/update-leaderboard', {
+
+/*
+LEADERBOARD FUNCTIONALITY
+*/
+function updateLeaderboard(tempScore){
+    console.log('Updating leaderboard with score:', tempScore);
+    fetch('/update-leaderboard/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCSRFToken(),
         },
-        body: 'score=${score}',
+        body: `user_score=${tempScore}&csrfmiddlewaretoken=${getCSRFToken()}`,
     })
-    .then(response => response.json())
+    .then(response => {
+        return response.json();
+    })
     .then(data => {
         if (data.status === 'success'){
-            console.log('New total score:', data.new_score);
+            console.log('New total score:', data.new_score, score);
         } else{
             console.error('error updating leaderboard');
         }
@@ -189,7 +195,46 @@ function updateLeaderBoard(){
     .catch(error => console.error('Error:', error));
 }
 
+// Function to get CSRF token from cookies
+function getCSRFToken() {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === "csrftoken") return value;
+    }
+    return "";
+}
 
+//Gets the leaderboard to be displayed
+function getLeaderboard() {
+    fetch("/get-leaderboard/")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Leaderboard data:", data);
+            if (data.error) {
+                console.error("Error fetching leaderboard:", data.error);
+                return;
+            }
+
+            // Ensure data is sorted by user_score in descending order
+            data.sort((a, b) => b.user_score - a.user_score);
+
+            // Loop through the leaderboard items and update them
+            for (let i = 0; i < 10; i++) {
+                const leaderboardItem = document.getElementById(`leaderboard-item-${i + 1}`);
+                
+                if (leaderboardItem) {
+                    if (data[i]) {
+                        console.log(data[i]);
+                        leaderboardItem.textContent = `${data[i].user_id} - ${data[i].user_score} pts`;
+                    } else {
+                        leaderboardItem.textContent = "---"; // Placeholder if no data available
+                    }
+                }
+            }
+        })
+        .catch(error => console.error("Error fetching leaderboard:", error));
+}
 
 /*
 RESET FUNCTIONALITY
@@ -204,4 +249,50 @@ function resetGame(){
         item.classList.remove('correct');
         item.style.border = 'none';
     });
+    getLeaderboard();
+    //Redirect to game_view in views.py
+    fetchNewRandomItems();
 }
+
+
+async function fetchNewRandomItems() {
+    try {
+        const response = await fetch('/fetch_random_items/');
+        if (!response.ok) {
+            throw new Error('Failed to fetch random items');
+        }
+        
+        const data = await response.json();
+        const items = data.items; 
+
+        //Remove the items
+        const itemsContainer = document.getElementById('items-container');
+        itemsContainer.innerHTML = '';
+
+        //Get the new item elements
+        items.forEach(itemData => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('items');
+            itemDiv.setAttribute('data-dropped-bin-id', '');
+            itemDiv.id = itemData.id;
+            itemDiv.setAttribute('data-correct-bin-id', itemData.bin_id);
+
+            const img = document.createElement('img');
+            img.src = itemData.item_image_url;
+            img.alt = itemData.item_name;
+
+            itemDiv.appendChild(img);
+            itemsContainer.appendChild(itemDiv);
+        });
+
+        //Put listeners back onto the new items
+        rebindItemEventListeners();
+
+    } catch (error) {
+        console.error('Error fetching new random items:', error);
+    }
+}
+
+
+
+getLeaderboard(); // Update leaderboard on page load
