@@ -19,8 +19,8 @@
         <div id="items-container" >
             
             {% for item in items %}
-                <div class="items" data-dropped-bin-id="" >
-                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" id="item-{{ item.item_id }}" data-correct-bin-id="{{ item.correct_bin.bin_name|slugify }}">
+                <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
+                <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}">
                 </div>
             {% endfor %}
             
@@ -28,9 +28,9 @@
         <!-- Bins -->
         <div id="bins-container">
             {% for bin in bins %}
-                <div class="bin" id="{{ bin.bin_name|slugify }}" data-bin-id="{{ bin.id }}">
+                <div class="bin"  data-bin-id="{{ bin.bin_id }}">
                     <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
-                    <p>{{ bin.bin_name }}, {{bin.bin_id}}</p>
+                    <p>{{ bin.bin_name }} (ID: {{ bin.bin.id }})</p>
                 </div>
             {% endfor %}
         </div>

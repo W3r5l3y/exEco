@@ -71,13 +71,14 @@ function mouseUp(e){
 
             //mouseUpped in bin
             const binId = bin.getAttribute('data-bin-id');
+            console.log(binId);
             if (binId) {
                 currentItem.setAttribute('data-dropped-bin-id', binId);
                 console.log(`Item dropped in bin with ID: ${binId}`);
             } else {
                 console.log(' Bin ID not found!');
             }
-            currentItem.setAttribute('dropped-bin-id', binId);
+            currentItem.setAttribute('data-dropped-bin-id', binId);
         }
     });
     //Reset if not on bin
