@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getLeaderboard() {
-        fetch("/get-leaderboard/")
+        fetch("/get-bingame-leaderboard/")
             .then(response => response.json())
             .then(data => {
                 console.log("Leaderboard data:", data);
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (leaderboardItem) {
                         if (data[i]) {
                             console.log(data[i]);
-                            leaderboardItem.textContent = `${data[i].user_id} - ${data[i].bingame_points} pts`;
+                            leaderboardItem.textContent = `${data[i].username} - ${data[i].bingame_points} pts`;
                         } else {
                             leaderboardItem.textContent = "---"; // Placeholder if no data available
                         }
