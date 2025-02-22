@@ -170,37 +170,78 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }    
 
-    function calculateScore(){
-        let points = (maxAttempts - attempts + 1 ) * 2;
+    function calculateScore() {
+        if (attempts >= maxAttempts) {
+            return 0; // Ensure no points if max attempts are used up
+        }
+        let points = (maxAttempts - attempts + 1) * 2;
         score += points;
-        return score
+        return score;
     }
+    
 
-    function endGame(tempScore){
-        updateLeaderboard(tempScore)
-        alert('Game over! Score: ' + score + ' ' + tempScore);
-        resetGame();
-    }
+    function endGame(tempScore) {
+        updateLeaderboard(tempScore);
+    
+        const itemsContainer = document.getElementById('items-container');
+        const checkAnswerBtn = document.getElementById('check-answer-tile');
+        const attemptsLeftElem = document.getElementById('attempts-left');
+    
+        // Remove all items
+        itemsContainer.innerHTML = '';
+    
+        // Create result message
+        const resultMessage = document.createElement('p');
+        resultMessage.style.fontSize = '24px';
+        resultMessage.style.fontWeight = 'bold';
+        resultMessage.style.textAlign = 'center';
+        resultMessage.style.marginTop = '50px';
+    
+        if (tempScore > 0) {
+            itemsContainer.style.backgroundColor = 'lightgreen'; // Win
+            resultMessage.textContent = `Game Won! Score: ${tempScore}`;
+        } else {
+            itemsContainer.style.backgroundColor = 'lightcoral'; // Lose
+            resultMessage.textContent = `Game Lost!`;
+        }
+    
+        itemsContainer.appendChild(resultMessage);
+    
+        checkAnswerBtn.innerText = 'Next Round';
+        checkAnswerBtn.removeEventListener('click', checkAnswers);
+        checkAnswerBtn.addEventListener('click', resetGame);
+    
+        if (attemptsLeftElem) {
+            attemptsLeftElem.style.display = 'none'; // Hide attempts left
+        }
+    }    
 
     function resetGame() {
         attempts = 0;
         score = 0;
     
-        document.querySelectorAll('.items').forEach(item => {
-            resetItemPosition(item);
-            item.removeAttribute('data-dropped-bin-id');
-            item.classList.remove('correct'); // Ensure all items are reset
-            item.style.border = 'none';
-        });
+        const itemsContainer = document.getElementById('items-container');
+        const checkAnswerBtn = document.getElementById('check-answer-tile');
+        const attemptsLeftElem = document.getElementById('attempts-left');
+    
+        // Reset container styling and remove game result message
+        itemsContainer.style.backgroundColor = '';
+        itemsContainer.innerHTML = '';
     
         getLeaderboard();
         fetchNewRandomItems();
     
-        const attemptsLeftElem = document.getElementById('attempts-left');
+        checkAnswerBtn.innerText = 'Check Answers';
+        checkAnswerBtn.removeEventListener('click', resetGame);
+        checkAnswerBtn.addEventListener('click', checkAnswers);
+    
         if (attemptsLeftElem) {
+            attemptsLeftElem.style.display = 'block'; // Show attempts left
             attemptsLeftElem.innerText = `Attempts left: ${maxAttempts - attempts}`;
         }
     }
+    
+    
     
     
 
