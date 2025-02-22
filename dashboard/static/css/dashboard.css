@@ -92,6 +92,9 @@ main {
     height: auto;
     min-height: 200px;
     border-radius: 5px;
+    object-fit: cover;
+    object-position: center;
+    background-color: #fff;
 }
 
 .game-card:hover {
