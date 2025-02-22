@@ -33,14 +33,42 @@ main {
     margin: 0;
 }
 
-/* Banner Styling */
+/* Garden Dashboard Styling */
 
-#dashboard-banner {
+#garden {
     width: 100%;
-    height: 400px;
-    object-fit: cover;
-    object-position: center;
-    margin-top: 0;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.garden-wrapper {
+    display: grid;
+    grid-template-columns: repeat(9, 30px);
+    grid-template-rows: repeat(9, 30px);
+    gap: 5px;
+    border-radius: 10px;
+    /*border: 5px solid var(--primary_colour);*/
+    background-color: #c0fd97;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+}
+
+.grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #5e994c;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.grid-item:hover {
+    background-color: #497038;
+    scale: 1.1;
 }
 
 /* Game Dashboard Styling */
