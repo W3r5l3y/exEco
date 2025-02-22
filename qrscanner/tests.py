@@ -29,7 +29,6 @@ class QRScannerTestCase(TestCase):
     def test_scan_qr_code_success(self):
         with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
             response = self.client.post(reverse("scan_qr"), {"image": qr_image})
-        print("RESPONSE: ", response.content.decode())
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "QR Code Data: 0001")
         self.assertContains(response, "Location Name: Test Location")
