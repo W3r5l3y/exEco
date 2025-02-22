@@ -5,7 +5,7 @@ from random import sample
 from django.http import JsonResponse
 #from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import BinLeaderboardEntry
+from accounts.models import UserPoints 
 # Create your views here.
 #Initial game view
 @login_required
@@ -26,10 +26,16 @@ def update_leaderboard(request):
         try:
             score = int(request.POST.get('user_score', 0)) #One passed in
             print(score)
-            leaderboard_entry, created = BinLeaderboardEntry.objects.get_or_create(user_id=request.user.id)
+            
+            user_points, created = UserPoints.objects.get_or_create(user=request.user)
+            user_points.add_bingame_points(score)
+            
+            """
+            leaderboard_entry, created = UserPoints.objects.get_or_create(user_id=request.user.id)
             leaderboard_entry.user_score += score
             leaderboard_entry.save()
-            return JsonResponse({'status': 'success', 'new_score': leaderboard_entry.user_score,})
+            """
+            return JsonResponse({'status': 'success', 'new_score': UserPoints.bingame_points,})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
@@ -38,7 +44,7 @@ def update_leaderboard(request):
 @login_required
 def get_leaderboard(request):
     try:
-        leaderboard = BinLeaderboardEntry.objects.order_by("-user_score").values("user_id", "user_score")[:10]  # Get top 10 users
+        leaderboard = UserPoints.objects.order_by("-bingame_points").values("user_id", "bingame_points")[:10]  # Get top 10 users
         return JsonResponse(list(leaderboard), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:

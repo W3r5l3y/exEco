@@ -233,7 +233,7 @@ function getLeaderboard() {
             }
 
             // Ensure data is sorted by user_score in descending order
-            data.sort((a, b) => b.user_score - a.user_score);
+            data.sort((a, b) => b.bingame_points - a.bingame_points);
 
             // Loop through the leaderboard items and update them
             for (let i = 0; i < 10; i++) {
@@ -242,7 +242,7 @@ function getLeaderboard() {
                 if (leaderboardItem) {
                     if (data[i]) {
                         console.log(data[i]);
-                        leaderboardItem.textContent = `${data[i].user_id} - ${data[i].user_score} pts`;
+                        leaderboardItem.textContent = `${data[i].user_id} - ${data[i].bingame_points} pts`;
                     } else {
                         leaderboardItem.textContent = "---"; // Placeholder if no data available
                     }
