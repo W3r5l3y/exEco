@@ -9,7 +9,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.http import JsonResponse
-from .models import StravaToken, LoggedActivity, CumulativeStats, LeaderboardEntry, CustomUser
+from .models import StravaToken, LoggedActivity, CumulativeStats, CustomUser
+from accounts.models import UserPoints
 
 @login_required
 def transport_view(request):
@@ -277,13 +278,12 @@ def log_activity(request):
 
             cumulative_stats.save()
 
-            # Update LeaderboardEntry
-            leaderboard_entry, _ = LeaderboardEntry.objects.get_or_create(user=request.user)
-            if option == "commute".lower():
-                leaderboard_entry.points = int((cumulative_stats.total_commute_distance // 1000)) 
-            elif option == "hobby".lower():
-                leaderboard_entry.points = int((cumulative_stats.total_hobby_distance // 1000))
-            leaderboard_entry.save()
+            # Update UserPoints
+            user_points, _ = UserPoints.objects.get_or_create(user=request.user)
+            # 10 points per 1 km
+            user_points.transport_points += int(distance / 1000) * 10
+                
+            user_points.save()
 
 
             return JsonResponse({"success": "Activity logged successfully!"})
@@ -298,36 +298,38 @@ def log_activity(request):
 def get_stats(request):
     try:
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
-        leaderboard_entry = LeaderboardEntry.objects.get(user=request.user)
+        user_points = UserPoints.objects.get(user=request.user)
 
         return JsonResponse({
             "total_commute_distance": cumulative_stats.total_commute_distance,
             "total_hobby_distance": cumulative_stats.total_hobby_distance,
-            "points_earned": leaderboard_entry.points
+            "points_earned": user_points.transport_points
         })
 
     except CumulativeStats.DoesNotExist:
         return JsonResponse({"error": "No stats available."}, status=400)
 
-    except LeaderboardEntry.DoesNotExist:
+    except UserPoints.DoesNotExist:
         return JsonResponse({"error": "No leaderboard entry available."}, status=400)
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-    
 
 @login_required
-def get_leaderboard(request):
+def get_transport_leaderboard(request):
     try:
-        leaderboard = LeaderboardEntry.objects.order_by("-points").values("user_id", "points")[:10]  # Get top 10 users
+        # Get top 10 users based on transport points
+        user_points = UserPoints.objects.order_by("-transport_points").values("user_id", "transport_points")[:10]
 
-        for entry in leaderboard:
+        # Get the username of each user
+        for entry in user_points:
             user = CustomUser.objects.get(id=entry["user_id"])
             entry["username"] = f"{user.first_name} {user.last_name}"
             del entry["user_id"]
 
-        return JsonResponse(list(leaderboard), safe=False)  # Convert QuerySet to JSON
+        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=500)

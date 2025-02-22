@@ -93,9 +93,9 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.error("Error fetching stats:", error));
     }
 
-    // Function to update leaderboard on page (points_earned)
+    // Function to update leaderboard on page
     function updateLeaderboard() {
-        fetch("/get-leaderboard/")
+        fetch("/get-transport-leaderboard/")
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
                     if (leaderboardItem) {
                         if (data[i]) {
-                            leaderboardItem.textContent = `${data[i].username} - ${data[i].points} pts`;
+                            leaderboardItem.textContent = `${data[i].username} - ${data[i].transport_points} pts`;
                         } else {
                             leaderboardItem.textContent = "---";  // Placeholder if no data
                         }
