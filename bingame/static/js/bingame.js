@@ -254,7 +254,6 @@ function resetGame(){
     fetchNewRandomItems();
 }
 
-
 async function fetchNewRandomItems() {
     try {
         const response = await fetch('/fetch_random_items/');
@@ -292,7 +291,5 @@ async function fetchNewRandomItems() {
         console.error('Error fetching new random items:', error);
     }
 }
-
-
 
 getLeaderboard(); // Update leaderboard on page load
