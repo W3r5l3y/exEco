@@ -82,6 +82,9 @@ main {
     color: #fff;
     border-top-right-radius: 10px;
     margin: 0;
+    border: 2px solid #fff;
+    border-left: var(--accessories_colour);
+    border-bottom: var(--accessories_colour);
 }
 
 .game-card img {
