@@ -1,13 +1,16 @@
 /* General */
 #game-container {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column; */
     align-items: center;
     justify-content: space-between;
     height: 90vh;
     padding: 20px;
 }
-
+body{
+    height: 100vh;
+    overflow: hidden;
+}
 main {
     padding-top: 400px;
 }
@@ -15,6 +18,7 @@ main {
 /* Bins */
 #bins-container {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: 20px;
     width: 100%;
@@ -28,21 +32,25 @@ main {
     width: 120px;
     height: 150px;
     display: flex;
+    /*border: 2px solid black; */
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
 }
 
 /* Items */
 #items-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     gap: 15px;
     width: 80%;
     position: fixed;
     top: 40%;
     left: 50%;
+    background-color: blue;
     margin-bottom: 40px;
     margin-left: -40%;
     margin-top: 10%;
@@ -51,13 +59,16 @@ main {
 
 .items {
     display: flex;
-    height: 50px;
+    flex-direction: column;
+    height: 100px;
     width: auto;
     justify-content: center;
     align-items: center;
     gap: 10px;
     position: fixed; /* IMPORTANT - Position has to be fixed for drag and drop logic*/
     top: 40%;
+    background-color: white;
+    border-radius: 20px;
 }
 
 .items img {

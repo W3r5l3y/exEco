@@ -1,19 +1,35 @@
 /*
 DRAG AND DROP FUNCTIONALITY - Item
 */
+//Declaring public vars/ consts
 let newX = 0, newY = 0, startX = 0, startY = 0;
 //const item = document.querySelector('.items');
 let currentItem = null;
+var attempts = 0;
+const maxAttempts = 3
+var totalItems = document.querySelectorAll('.items').length;
+let score = 0;
 
-//Gets all the items in the items class and adds an event listener to each
-document.querySelectorAll('.items').forEach(item => {
-    item.addEventListener('mousedown', mouseDown);
+
+
+function rebindItemEventListeners() {
+    //Gets all the items in the items class and adds an event listener to each
+    document.querySelectorAll('.items').forEach(item => {
+        item.addEventListener('mousedown', mouseDown);
+    });
+
+    // Prevent image dragging inside items
+    document.querySelectorAll('.items img').forEach(img => {
+        img.ondragstart = (e) => e.preventDefault();
+    });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    rebindItemEventListeners();
+    getLeaderboard();
+    document.getElementById('attempts-left').innerText = `Attempts left: ${maxAttempts - attempts}`;
 });
 
-// Prevent image dragging inside items
-document.querySelectorAll('.items img').forEach(img => {
-    img.ondragstart = (e) => e.preventDefault();
-});
 
 // When the user clicks down
 function mouseDown(e){
@@ -23,7 +39,7 @@ function mouseDown(e){
     if (!currentItem) return;
     startX = e.clientX
     startY = e.clientY
-
+    currentItem.style.backgroundColor = 'transparent';
     document.addEventListener('mousemove', mouseMove); 
     document.addEventListener('mouseup', mouseUp);
 
@@ -56,18 +72,22 @@ function mouseUp(e){
     bins.forEach(bin => {
         const binRect = bin.getBoundingClientRect();
         const itemRect = currentItem.getBoundingClientRect();
+        //READHERE: i want to get the binItem from binItems by bin id, then get the rect of that binItem
+        //const binItemsRect = binItems.getBoundingClientRect();
+        //const binItems = bin.querySelector('.bin-items');
 
         if (
-            itemRect.left > binRect.left &&
-            itemRect.right < binRect.right &&
-            itemRect.top > binRect.top &&
-            itemRect.bottom < binRect.bottom
+            itemRect.right > binRect.left &&
+            itemRect.left < binRect.right &&
+            itemRect.bottom > binRect.top &&
+            itemRect.top < binRect.bottom
         ) {
             droppedInBin = true;
 
-            //Place bin in center on bin (change later so look nice but just for logic cause it enough to test)
+            //Place item in center on bin (change later so look nice but just for logic cause it enough to test)
             currentItem.style.left = `${binRect.left + (binRect.width - itemRect.width) / 2}px`;
             currentItem.style.top = `${binRect.top + (binRect.height - itemRect.height) / 2}px`;
+            //binItems.appendChild(currentItem);
 
             //mouseUpped in bin
             const binId = bin.getAttribute('data-bin-id');
@@ -76,7 +96,7 @@ function mouseUp(e){
                 currentItem.setAttribute('data-dropped-bin-id', binId);
                 console.log(`Item dropped in bin with ID: ${binId}`);
             } else {
-                console.log(' Bin ID not found!');
+                console.log(' Bin ID not found!'); //Testing purposes kinda
             }
             currentItem.setAttribute('data-dropped-bin-id', binId);
         }
@@ -85,6 +105,7 @@ function mouseUp(e){
     if (!droppedInBin) {
         currentItem.style.left = '50%';
         currentItem.style.top = '40%';
+        currentItem.style.backgroundColor = 'white';
         currentItem.removeAttribute('data-dropped-bin-id');
     }
 
@@ -95,10 +116,7 @@ function mouseUp(e){
 /*
 CHECK ANSWER FUNCTIONALITY
 */
-var attempts = 0;
-var maxAttempts = 3
-var totalItems = document.querySelectorAll('.items').length;
-let score = 0;
+
 
 document.getElementById('check-answer-tile').addEventListener('click', checkAnswers);
 //The check answer function
@@ -128,40 +146,38 @@ function checkAnswers() {
         const droppedBinId = item.getAttribute('data-dropped-bin-id');
         item.style.border = 'none';
         console.log(`Correct ID: ${correctBinId}, Dropped ID: ${droppedBinId}`);
-        if (!droppedBinId) {
-            item.style.border = '2px dashed red';
-        }
-        else if(correctBinId === droppedBinId) {
+        if(correctBinId === droppedBinId) {
             correctCount++;
             item.classList.add('correct');
-            item.style.border = '2px solid green';
-        } else {
+            //item.style.border = '2px solid green'; //Used for testing
+        } else if (correctBinId !== droppedBinId) {
             item.style.left = '50%';
             item.style.top = '40%';
+            item.style.border ='2px solid rgb(240, 152, 149)';
             item.removeAttribute('data-dropped-bin-id');
-            item.style.border = '2px solid red';
+            //item.style.border = '2px solid red'; //Used for testing
         }
     })
 
     // Count correct items
     correctCount = document.querySelectorAll('.items.correct').length;
-
     if (correctCount === totalItems){
-        document.getElementById('attempts-left').innerText = `Attempts left: ${maxAttempts - attempts}`;
         var tempScore = calculateScore()
         endGame(tempScore);
     } else if (attempts >= maxAttempts){
         var tempScore = calculateScore()
         endGame(tempScore);
     }
+    document.getElementById('attempts-left').innerText = `Attempts left: ${maxAttempts - attempts}`;
 }
-
+//Function to calculate the score: if attempts = {1,2,3} points then = {6, 4, 2}
 function calculateScore(){
-    let points = (maxAttempts - attempts + 1 ) * 2; //max = 3: if attempts = {1,2,3} points then = {6, 4, 2}
+    let points = (maxAttempts - attempts + 1 ) * 2;
     score += points;
     return score
 }
 
+//Function to end round and update leaderboard
 function endGame(tempScore){
     updateLeaderboard(tempScore)
     alert('Game over! Score: ' + score + ' ' + tempScore);
@@ -279,7 +295,9 @@ async function fetchNewRandomItems() {
             const img = document.createElement('img');
             img.src = itemData.item_image_url;
             img.alt = itemData.item_name;
-
+            const itemName = document.createElement('p');
+            itemName.textContent = itemData.item_name;
+            itemDiv.appendChild(itemName);
             itemDiv.appendChild(img);
             itemsContainer.appendChild(itemDiv);
         });

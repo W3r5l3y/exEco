@@ -12,7 +12,7 @@ from .models import BinLeaderboardEntry
 def game_view(request):
     # Get 10 random items from the database, or less if the database doesn't have 10 items
     all_items = list(Items.objects.all())
-    random_items = sample(all_items, min(10, len(all_items)))
+    random_items = sample(all_items, min(6, len(all_items)))
     # Get all bins from the database
     bins = Bins.objects.all() 
     return render(request, 'bingame/bingame.html', {'items': random_items, 'bins': bins})
@@ -47,9 +47,9 @@ def get_leaderboard(request):
 @login_required
 def fetch_random_items(request):
     all_items = list(Items.objects.all())
-    random_items = sample(all_items, min(10, len(all_items)))
+    random_items = sample(all_items, min(6, len(all_items)))
 
-    # Build JSON response with the item info you need
+    #Prepare the data to be sent
     item_data = []
     for item in random_items:
         item_data.append({
