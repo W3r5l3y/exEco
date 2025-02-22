@@ -13,56 +13,57 @@
 </head>
 <body>
     <main>
-    <div id="game-container">
-        <!-- Items -->
-        <div id="items-container" >
-            
-            {% for item in items %}
-                <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
-                    <p>{{ item.item_name }}</p>
-                    <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}">
-                </div>
-            {% endfor %}
-            
-        </div>
-        <!-- Bins -->
-        <div id="bins-container">
-            {% for bin in bins %}
-                <div class="bin"  data-bin-id="{{ bin.bin_id }}">
-                    <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
-                    <p>{{ bin.bin_name }}</p>
-                    <!-- For future better item placement in bins-->
-                    <!-- <div class="bin-items" data-bin-id="{{ bin.bin_id }}"> --> 
-                </div>
-            {% endfor %}
+        <!-- Left section -->
+        <div class="left-section">
+            <section class="leaderboard">
+                <h3>Leaderboard</h3>
+                <ol id="leaderboard-list">
+                    <li class="leaderboard-item" id="leaderboard-item-1">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-2">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-3">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-4">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-5">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-6">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-7">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-8">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-9">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-10">---</li>
+                </ol>
+            </section>
         </div>
 
-        <!-- Check Answer-->
-        <div id="check-answer-tile" >
-            Check Answers
-        <p><span id="attempts-left"></span></p>
+        <!-- Right section-->
+        <div class="right-section">
+            <div id="game-container">
+                <div id="items-container" >
+                    
+                    {% for item in items %}
+                        <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
+                            <p>{{ item.item_name }}</p>
+                            <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}">
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+                <!-- Bins -->
+                <div id="bins-container">
+                    {% for bin in bins %}
+                        <div class="bin"  data-bin-id="{{ bin.bin_id }}">
+                            <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
+                            <p>{{ bin.bin_name }}</p>
+                            <!-- For future better item placement in bins-->
+                            <!-- <div class="bin-items" data-bin-id="{{ bin.bin_id }}"> --> 
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Check Answer-->
+                <div id="check-answer-tile" >
+                    Check Answers
+                    <p id="attempts-left"></p>
+                </div>
+            </div>
         </div>
-    </div>
-        <!-- Result-->
-    <!-- Left column -->
-    <div class="left-column">
-        <!-- Leaderboard -->
-        <section class="leaderboard column-item">
-            <h3>Leaderboard</h3>
-            <ol id="leaderboard-list">
-                <li class="leaderboard-item" id="leaderboard-item-1">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-2">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-3">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-4">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-5">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-6">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-7">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-8">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-9">---</li>
-                <li class="leaderboard-item" id="leaderboard-item-10">---</li>
-            </ol>
-        </section>
-    </div>
     </main>
 </body>
 </html>
