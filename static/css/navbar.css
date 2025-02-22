@@ -1,4 +1,3 @@
-
 @import url("/static/css/colours.css");
 
 
@@ -128,7 +127,10 @@ header {
   color: var(--accessories_colour);
 }
 
-
+p {
+    display: block;
+    margin: 0 0 10px;
+}
 
 @media (max-width: 767px) {
     .header-right-div {

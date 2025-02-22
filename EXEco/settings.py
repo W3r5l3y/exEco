@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "dashboard",
     "qrscanner",
     "bingame",
+    "transport",
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,9 @@ AUTHENTICATION_BACKENDS = [
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 
-LOGIN_URL = "/accounts/login/"
+LOGIN_URL = "/login/"
+
+# Strava environment variables
+STRAVA_CLIENT_ID = 149186
+STRAVA_CLIENT_SECRET = "bca1d6a01353f0c0197a8aed8f331db3aebd37d1"
+REDIRECT_URI = "http://localhost:8000/strava-callback/"

@@ -1,15 +1,16 @@
 import cv2
 import numpy as np
 from pyzbar.pyzbar import decode
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import SimpleUploadedFile
 from .forms import QRCodeUploadForm
-from .models import Location
+from .models import Location, ScanRecord
 from accounts.models import UserPoints
-from .models import ScanRecord
 from datetime import timedelta
 from django.utils.timezone import now
 
-
+@login_required(login_url='/login/')
 def scan_qr(request):
     # Initialise variables
     result = None
