@@ -27,6 +27,7 @@
                     {{ form.as_p }}
                     <button type="submit">Scan QR Code</button>
                 </form>
+                <img id="qr-preview" src="" alt="Selected QR Code" style="display: none; width: 50%; height: auto; object-fit: contain; align-self: center; max-width: 90%; max-height: 300px;">
                 {% if message %}
                     <p><strong>{{ message }}</strong></p>
                 {% endif %}
@@ -39,16 +40,16 @@
             <section class="leaderboard column-item">
                 <h3>Leaderboard</h3>
                 <ol id="leaderboard-list">
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
-                    <li class="leaderboard-item">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-1">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-2">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-3">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-4">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-5">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-6">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-7">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-8">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-9">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-10">---</li>
                 </ol>
             </section>
             <!-- Last Upload Section (Bottom Right) -->
