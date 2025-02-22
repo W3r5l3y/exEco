@@ -34,8 +34,8 @@ class QRScannerTestCase(TestCase):
         self.assertContains(response, "Location Name: Test Location")
         self.assertContains(response, "Fact: This is a test location.")
         self.assertContains(response, "Times Scanned: 1")
-        self.assertContains(response, "Point Value: 1")
-        self.assertContains(response, "Total Points: 1")
+        self.assertContains(response, "Point Value: 2")
+        self.assertContains(response, "Total Points: 2")
 
     def test_scan_qr_code_cooldown(self):
         ScanRecord.objects.create(
