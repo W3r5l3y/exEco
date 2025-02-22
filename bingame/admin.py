@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Bins, Items, BinLeaderboardEntry
+from .models import Bins, Items
 
 # Register your models here.
 class BinsAdmin(admin.ModelAdmin):
