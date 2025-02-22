@@ -15,14 +15,3 @@ class Items(models.Model):
     item_image = models.ImageField(upload_to="static/img/items/")
     bin_id = models.ForeignKey(Bins, on_delete=models.CASCADE)
 
-
-class BinLeaderboardEntry(models.Model):
-    """Tracks points earned by each player for leaderboard ranking."""
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name="leaderboard_entry")
-    user_score = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"User {self.user.id} - {self.points} points"
