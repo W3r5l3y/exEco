@@ -46,7 +46,7 @@ class CustomUser(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_superuser
 
-
+"""
 class UserPoints(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
@@ -60,3 +60,38 @@ class UserPoints(models.Model):
         # Increment points when a QR code is scanned
         self.points_scored += points
         self.save()
+"""
+
+class UserPoints(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    bingame_points = models.IntegerField(default=0)
+    qrscanner_points = models.IntegerField(default=0)
+    transport_points = models.IntegerField(default=0)
+
+    @property
+    def total_points(self):
+        return self.bingame_points + self.qrscanner_points + self.transport_points
+
+    def __str__(self):
+        # Example: "john@example.com - Total: 20 (bingame=5, qr=10, transport=5)"
+        return (f"{self.user.id} - Total: {self.total_points} "
+                f"(bingame={self.bingame_points}, "
+                f"qr={self.qrscanner_points}, "
+                f"transport={self.transport_points})")
+
+    def add_bingame_points(self, points=1):
+        self.bingame_points += points
+        self.save()
+
+    def add_qrscanner_points(self, points=1):
+        self.qrscanner_points += points
+        self.save()
+
+    def add_transport_points(self, points=1):
+        self.transport_points += points
+        self.save()
+        

@@ -66,7 +66,7 @@ def scan_qr(request):
                         user_points, created = UserPoints.objects.get_or_create(
                             user=request.user
                         )
-                        user_points.add_points(points_awarded)
+                        user_points.add_qrscanner_points(points_awarded)
                         message = "You earned 2 points!"
                 except Location.DoesNotExist:
                     result = "Location not found for code: " + result
