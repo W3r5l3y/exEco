@@ -13,9 +13,9 @@
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
     </head>
-    <body>
+    <body >
         {% block content %}
-        <header class="">
+        <header id="navbar" class="">
             <div class="header-logo-div">
                 <div class="header-logo-title">
                     <img src="{% static 'img/execo-logo.png' %}" alt="University of Exeter Logo">
@@ -61,8 +61,13 @@
                                         <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">Shop</a>
                                     </li>
                                     <li class="header-right-navbar-item">
-                                        <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">Settings</a>
+                                        <a class="header-right-navbar-item-link" href="{% url 'settings' %}">Settings</a>
                                     </li>
+                                    {% if user.is_staff %}
+                                        <li class="header-right-navbar-item">
+                                            <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">GameManagers</a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
