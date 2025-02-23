@@ -9,6 +9,9 @@ from .models import Location, ScanRecord
 from accounts.models import UserPoints
 from datetime import timedelta
 from django.utils.timezone import now
+from accounts.models import CustomUser
+from django.http import JsonResponse
+
 
 @login_required(login_url='/login/')
 def scan_qr(request):
@@ -71,6 +74,7 @@ def scan_qr(request):
                 except Location.DoesNotExist:
                     result = "Location not found for code: " + result
 
+
     else:
         # If request method is not POST, create a new form
         form = QRCodeUploadForm()
@@ -87,3 +91,21 @@ def scan_qr(request):
             "message": message,
         },
     )
+
+@login_required
+def get_qrscanner_leaderboard(request):
+    try:
+        # Get top 10 users based on transport points
+        user_points = UserPoints.objects.order_by("-qrscanner_points").values("user_id", "qrscanner_points")[:10]
+
+        # Get the username of each user
+        for entry in user_points:
+            user = CustomUser.objects.get(id=entry["user_id"])
+            entry["username"] = f"{user.first_name} {user.last_name}"
+            del entry["user_id"]
+
+        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({"error": str(e)}, status=500)

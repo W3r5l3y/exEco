@@ -48,9 +48,8 @@ class CumulativeStats(models.Model):
     def __str__(self):
         return f"User {self.user.id} - Commute: {self.total_commute_distance}m, Hobby: {self.total_hobby_distance}m"
 
-
+"""
 class LeaderboardEntry(models.Model):
-    """Tracks points earned by each player for leaderboard ranking."""
     user = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
@@ -59,3 +58,4 @@ class LeaderboardEntry(models.Model):
 
     def __str__(self):
         return f"User {self.user.id} - {self.points} points"
+"""

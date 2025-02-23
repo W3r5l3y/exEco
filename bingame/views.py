@@ -5,7 +5,7 @@ from random import sample
 from django.http import JsonResponse
 #from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from accounts.models import UserPoints 
+from accounts.models import UserPoints, CustomUser
 # Create your views here.
 #Initial game view
 @login_required
@@ -42,12 +42,21 @@ def update_leaderboard(request):
 
 # Get the top 10 users from the leaderboard
 @login_required
-def get_leaderboard(request):
+def get_bingame_leaderboard(request):
     try:
-        leaderboard = UserPoints.objects.order_by("-bingame_points").values("user_id", "bingame_points")[:10]  # Get top 10 users
-        return JsonResponse(list(leaderboard), safe=False)  # Convert QuerySet to JSON
+        # Get top 10 users based on bingame points
+        user_points = UserPoints.objects.order_by("-bingame_points").values("user_id", "bingame_points")[:10]
+
+        # Get the username of each user
+        for entry in user_points:
+            user = CustomUser.objects.get(id=entry["user_id"])
+            entry["username"] = f"{user.first_name} {user.last_name}"
+            del entry["user_id"]
+
+        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=500)
     
 @login_required

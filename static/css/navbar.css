@@ -21,6 +21,7 @@ header {
 /* || Header logo ||*/
 .header-logo-div {
     padding: 20px 40px;
+    cursor: pointer;
 }
 .header-logo-title {
     display: flex;

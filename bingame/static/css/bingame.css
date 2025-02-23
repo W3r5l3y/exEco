@@ -1,128 +1,45 @@
-/* General */
-#game-container {
-    display: flex;
-    /*flex-direction: column; */
-    align-items: center;
-    justify-content: space-between;
-    height: 90vh;
-    padding: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
-body{
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
-    overflow: hidden;
+    background-color: var(--neutral_colour);
 }
+
 main {
-    padding-top: 400px;
-}
-
-/* Bins */
-#bins-container {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
     width: 100%;
-    position: fixed;
-    bottom: 80px;
-    z-index: 1;
+    height: 100vh;
+    padding-top: 150px;
 }
 
-.bin {
-    position: relative;
-    width: 120px;
-    height: 150px;
-    display: flex;
-    /*border: 2px solid black; */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-}
-
-/* Items */
-#items-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    width: 80%;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    background-color: blue;
-    margin-bottom: 40px;
-    margin-left: -40%;
-    margin-top: 10%;
-    z-index: 10;
-}
-
-.items {
+.left-section, .right-section {
     display: flex;
     flex-direction: column;
-    height: 100px;
-    width: auto;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    position: fixed; /* IMPORTANT - Position has to be fixed for drag and drop logic*/
-    top: 40%;
-    background-color: white;
-    border-radius: 20px;
-}
-
-.items img {
-    width: 100%;
+    justify-content: space-between;
     height: 100%;
-}
-/* Check Answer */
-#checkanswer-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    position: absolute;
-    bottom: 20px;
+    padding: 20px;
+    gap: 20px; /* Adjust spacing between items */
 }
 
-#check-answer-tile {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 120px;
-    height: 120px;
-    background-color: #ffcc00;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+.left-section {
+    width: 20%;
 }
 
-#check-answer-tile:hover {
-    transform: scale(1.05);
+.right-section {
+    width: 80%;
 }
 
-#check-answer-tile p {
-    font-size: 10px;
-}
-
-/* Setup z layers so item ontop of bins */
-#items-container {
-    z-index: 10;
-}
-#bins-container {
-    z-index: 1;
-}
-
-/* Leadboard Styles */
+/* --------------------------------------------------
+    Leaderboard Styles
+-------------------------------------------------- */
 .leaderboard {
     width: 100%;
 }
@@ -153,12 +70,110 @@ main {
     background-color: #00c591f0;
 }
 
-.left-column {
-    position: fixed;
-    top: 200px;       
-    left: 0;
-    width: 200px;    
-    height: calc(100% - 60px); 
-    overflow-y: auto; 
-    padding: 10px;   
+/* --------------------------------------------------
+    Statistics Styles
+-------------------------------------------------- */
+
+/* Possible to add more styles here in the future */
+
+/* --------------------------------------------------
+    Game Styles
+-------------------------------------------------- */
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+}
+
+#items-container {
+    position: relative; /* Relative to allow items to be fixed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 300px;
+    height: 100%;
+    width: 100%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: #cfcfcf;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.items {
+    position: fixed; /* Fix items to allow drag and drop */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0  10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    height: 130px;
+    width: 110px;
+}
+
+.items img {
+    height: 70px;
+    width: auto;
+}
+
+#bins-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 20px;
+    margin: 20px 0;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: #cfcfcf;
+    border-radius: 10px;
+}
+
+.bin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.bin-image {
+    height: 100px;
+    width: auto;
+}
+
+#check-answer-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
+    font-size: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    padding-top: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#check-answer-tile:hover {
+    transform: scale(1.02);
+}
+
+#check-answer-tile p {
+    font-size: 0.9rem;
 }

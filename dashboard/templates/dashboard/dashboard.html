@@ -14,16 +14,42 @@
 </head>
 <body>
     <main>
-        <img src="{% static 'img/dashboard-banner.jpg' %}" alt="Dashboard Banner" id="dashboard-banner">
+        <!-- <img src="{% static 'img/dashboard-banner.jpg' %}" alt="Dashboard Banner" id="dashboard-banner"> -->
         <!--
         Image reference (IEEE):
         Univeristy of Exeter, "Why I chose to study MA Theatre Practice at the University of Exeter" Univeristy of Exeter, Apr. 30, 2019. https://sites.exeter.ac.uk/students/2019/04/30/why-i-chose-to-study-ma-theatre-practice-at-the-university-of-exeter/ [Accessed: 13-02-2025]
         -->
+        <section class="dashboard-top">
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <h3>Leaderboard</h3>
+                <ol id="leaderboard-list">
+                    <li class="leaderboard-item" id="leaderboard-item-1">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-2">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-3">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-4">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-5">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-6">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-7">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-8">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-9">---</li>
+                    <li class="leaderboard-item" id="leaderboard-item-10">---</li>
+                </ol>
+            </div>
+
+            <!-- Garden -->
+            <div id="garden">
+                <div class="garden-wrapper">
+                    <!-- Add garden elements using JS -->
+                </div>
+            </div>
+        </section>
+
         <section class="game-dashboard">
             <div class="game-card-wrapper">
                 <a href="{% url 'scan_qr' %}" class="game-card" id="game-card-1">
                     <h2>QR Scanner</h2>
-                    <img src="{% static 'img/temp-qr-card.png' %}" alt="QR Scanner">
+                    <img src="{% static 'img/qr-logo.png' %}" alt="QR Scanner">
                 </a>
 
                 <a href="{% url 'bingame' %}" class="game-card" id="game-card-2">
@@ -37,7 +63,7 @@
 
                 <div class="game-card" id="game-card-4">
                     <h2>Game 4</h2>
-                    <img src="" alt="Game 4">
+                    <img src="{% static 'img/blank-card.png' %}" alt="Game 4">
                 </div>
                 <!-- Add more game cards here -->
             </div>
