@@ -48,6 +48,8 @@ def login_register_view(request):
         "accounts/login.html",
         {"login_form": login_form, "register_form": register_form},
     )
+
+
 def settings_view(request):
     if request.method == "POST":
         user = request.user
@@ -56,7 +58,7 @@ def settings_view(request):
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(
-                    reverse("settings") + f"?success= Profile changed successfully"
+                    reverse("settings") + f"?success=Profile changed successfully"
                 )
                 print("PROFILE CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
@@ -69,7 +71,9 @@ def settings_view(request):
             form = ChangePasswordForm(request.POST, instance=user)
             if form.is_valid():
                 form.save()
-                user = authenticate(username=user.email, password=form.cleaned_data['password'])
+                user = authenticate(
+                    username=user.email, password=form.cleaned_data["password"]
+                )
                 if user is not None:
                     login(request, user)
                 return HttpResponseRedirect(
@@ -83,6 +87,5 @@ def settings_view(request):
                 return HttpResponseRedirect(
                     reverse("settings") + f"?error={error_message}"
                 )
-
 
     return render(request, "accounts/settings.html")

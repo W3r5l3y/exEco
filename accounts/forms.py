@@ -53,7 +53,12 @@ class ChangeProfileForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         current_user = self.instance
-        if email and CustomUser.objects.filter(email=email).exclude(id=current_user.id).exists():
+        if (
+            email
+            and CustomUser.objects.filter(email=email)
+            .exclude(id=current_user.id)
+            .exists()
+        ):
             raise forms.ValidationError("Email already exists.")
         return email
 
@@ -63,15 +68,14 @@ class ChangeProfileForm(forms.ModelForm):
             user.save()
         return user
 
+
 class ChangePasswordForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = CustomUser
         fields = ["password"]
-        widgets = {
-            "password": forms.PasswordInput()
-        }
+        widgets = {"password": forms.PasswordInput()}
 
     def clean(self):
         cleaned_data = super().clean()
@@ -88,6 +92,5 @@ class ChangePasswordForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
-
 
         return user
