@@ -24,6 +24,8 @@
                 </div>
             </div>
             <div class="header-right-div">
+                <!-- only display when logged in -->
+                {% if user.is_authenticated %}
                 <div class="header-right-div-top-line d-none d-md-flex">
                     <div class="header-right-div-coins1-div ">
                         <img class="coin1-img" src="{% static 'img/coin1.png' %}" alt="coin1">
@@ -74,6 +76,7 @@
                         </div>
                     </nav>
                 </div>
+                {% endif %}
             </div>
 
             </div>

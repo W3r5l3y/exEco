@@ -58,3 +58,46 @@ class QRScannerTestCase(TestCase):
             response = self.client.post(reverse("scan_qr"), {"image": qr_image})
         self.assertEqual(response.status_code, 302)  # Redirect to login
         self.assertRedirects(response, "/login/?next=/qrscanner/")
+
+
+class QRScannerLeaderboardTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="test@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123",
+        )
+        self.client.login(email="test@example.com", password="password123")
+
+    def test_qrscanner_leaderboard_view_get(self):
+        response = self.client.get(reverse("scan_qr"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "qrscanner/scan_qr.html")
+
+    def test_qrscanner_leaderboard_view_contains_leaderboard(self):
+        response = self.client.get(reverse("scan_qr"))
+        self.assertContains(response, 'id="leaderboard-list"')
+        for i in range(1, 11):
+            self.assertContains(response, f'id="leaderboard-item-{i}"')
+
+    def test_qrscanner_leaderboard_data(self):
+        # Create some user points for testing
+        for i in range(1, 16):  # Create 15 users
+            user = get_user_model().objects.create_user(
+                email=f"user{i}@test.com",
+                first_name=f"User{i}",
+                last_name=f"Test{i}",
+                password="password123",
+            )
+            UserPoints.objects.create(
+                user=user,
+                qrscanner_points=i * 3,
+            )
+        # Get the leaderboard data
+        response = self.client.get(reverse("get_qrscanner_leaderboard"))
+        self.assertEqual(response.status_code, 200)
+        # Check that the top 10 users are in the response
+        for i in range(6, 16):
+            self.assertContains(response, f"User{i} Test{i}")
+            self.assertContains(response, f"{i * 3}")

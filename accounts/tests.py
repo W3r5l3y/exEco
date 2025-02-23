@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .backends import EmailBackend
 
 
@@ -163,3 +163,83 @@ class WebpageLoadTestCase(TestCase):
         self.assertTemplateUsed(response, "accounts/login.html")
         # Check if specific images are present in the response content
         self.assertContains(response, 'src="/static/img/execo-logo.png"')
+
+
+class SettingsViewTestCase(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email="test@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123",
+        )
+        self.client.login(email="test@example.com", password="password123")
+
+    def test_settings_view_get(self):
+        response = self.client.get(reverse("settings"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/settings.html")
+
+    def test_update_profile_success(self):
+        response = self.client.post(
+            reverse("settings"),
+            {
+                "confirm_profile": "Confirm",
+                "first_name": "Updated",
+                "last_name": "User",
+                "email": "updated@example.com",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("settings") + "?success=Profile changed successfully"
+        )
+
+        user = get_user_model().objects.get(id=self.user.id)
+        self.assertEqual(user.first_name, "Updated")
+        self.assertEqual(user.last_name, "User")
+        self.assertEqual(user.email, "updated@example.com")
+
+    def test_update_profile_invalid(self):
+        response = self.client.post(
+            reverse("settings"),
+            {
+                "confirm_profile": "Confirm",
+                "first_name": "",
+                "last_name": "User",
+                "email": "updated@example.com",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("settings") + "?error=This field is required."
+        )
+
+    def test_change_password_success(self):
+        response = self.client.post(
+            reverse("settings"),
+            {
+                "password": "newpassword123",
+                "confirm_password": "newpassword123",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("settings") + "?success=Password changed successfully"
+        )
+
+        user = get_user_model().objects.get(id=self.user.id)
+        self.assertTrue(user.check_password("newpassword123"))
+
+    def test_change_password_mismatch(self):
+        response = self.client.post(
+            reverse("settings"),
+            {
+                "password": "newpassword123",
+                "confirm_password": "differentpassword",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, reverse("settings") + "?error=Passwords do not match."
+        )

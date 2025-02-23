@@ -12,19 +12,20 @@ from django.http import JsonResponse
 from .models import StravaToken, LoggedActivity, CumulativeStats, CustomUser
 from accounts.models import UserPoints
 
+
 @login_required
 def transport_view(request):
-    return render(request, 'transport/transport.html')
+    return render(request, "transport/transport.html")
+
 
 @login_required
 def strava_login(request):
-    """ 
+    """
     Check if user has valid Strava credentials; otherwise, redirect to Strava OAuth.
     """
 
     print(f"Redirect URI: {settings.REDIRECT_URI}")  # Debugging output
 
-    
     user = request.user
 
     try:
@@ -32,34 +33,40 @@ def strava_login(request):
 
         # If token is still valid, no need to log in again
         if strava_token.expires_at > now():
-            return redirect('transport/transport.html')  # Redirect to the transport view
+            return redirect(
+                "transport/transport.html"
+            )  # Redirect to the transport view
 
         # If expired, refresh the token
         refresh_token = strava_token.refresh_token
-        refresh_url = 'https://www.strava.com/oauth/token'
+        refresh_url = "https://www.strava.com/oauth/token"
         payload = {
-            'client_id': settings.STRAVA_CLIENT_ID,
-            'client_secret': settings.STRAVA_CLIENT_SECRET,
-            'refresh_token': refresh_token,
-            'grant_type': 'refresh_token'
+            "client_id": settings.STRAVA_CLIENT_ID,
+            "client_secret": settings.STRAVA_CLIENT_SECRET,
+            "refresh_token": refresh_token,
+            "grant_type": "refresh_token",
         }
         response = requests.post(refresh_url, data=payload)
         data = response.json()
 
         # Update database with new tokens
-        strava_token.access_token = data.get('access_token')
-        strava_token.refresh_token = data.get('refresh_token')  # Strava provides a new one
-        strava_token.expires_at = datetime.datetime.fromtimestamp(data.get('expires_at'))
+        strava_token.access_token = data.get("access_token")
+        strava_token.refresh_token = data.get(
+            "refresh_token"
+        )  # Strava provides a new one
+        strava_token.expires_at = datetime.datetime.fromtimestamp(
+            data.get("expires_at")
+        )
         strava_token.save()
 
-        return redirect('transport/transport.html')  # Redirect after refreshing
+        return redirect("transport/transport.html")  # Redirect after refreshing
 
     except StravaToken.DoesNotExist:
         # If no StravaToken exists, redirect user to Strava login
         client_id = settings.STRAVA_CLIENT_ID
         redirect_uri = settings.REDIRECT_URI
-        scope = 'activity:read'
-        response_type = 'code'
+        scope = "activity:read"
+        response_type = "code"
 
         strava_auth_url = (
             f"https://www.strava.com/oauth/authorize"
@@ -71,6 +78,7 @@ def strava_login(request):
         print(request.COOKIES)
         return redirect(strava_auth_url)
 
+
 @login_required
 def strava_callback(request):
     """
@@ -81,37 +89,41 @@ def strava_callback(request):
     print(f"Cookies in callback: {request.COOKIES}")  # Debugging session cookies
     print(f"Session Data: {request.session.items()}")  # Check if session persists
 
-
-    
     # Get the code and error from the query parameters
-    code = request.GET.get('code')
-    error = request.GET.get('error')
+    code = request.GET.get("code")
+    error = request.GET.get("error")
 
     # Handle any errors
     if error:
-        return render(request, 'transport/error.html', {'error': error})
+        return render(request, "transport/error.html", {"error": error})
     # Ensure the code is present, otherwise show an error
     if not code:
-        return render(request, 'transport/error.html', {'error': 'No code returned from Strava'})
+        return render(
+            request, "transport/error.html", {"error": "No code returned from Strava"}
+        )
 
     # Exchange the code for tokens
-    token_url = 'https://www.strava.com/oauth/token'
+    token_url = "https://www.strava.com/oauth/token"
     payload = {
-        'client_id': settings.STRAVA_CLIENT_ID, # Use settings to get the client ID and secret
-        'client_secret': settings.STRAVA_CLIENT_SECRET,
-        'code': code, # The code from the query parameters
-        'grant_type': 'authorization_code'
+        "client_id": settings.STRAVA_CLIENT_ID,  # Use settings to get the client ID and secret
+        "client_secret": settings.STRAVA_CLIENT_SECRET,
+        "code": code,  # The code from the query parameters
+        "grant_type": "authorization_code",
     }
-    response = requests.post(token_url, data=payload) 
-    data = response.json() # Response format is JSON: {'access_token': '...', 'refresh_token': '...', 'expires_at': '...'}
+    response = requests.post(token_url, data=payload)
+    data = (
+        response.json()
+    )  # Response format is JSON: {'access_token': '...', 'refresh_token': '...', 'expires_at': '...'}
 
-    access_token = data.get('access_token') # Access token for API requests
-    refresh_token = data.get('refresh_token') # Token to refresh the access token
-    expires_at = data.get('expires_at') # Unix timestamp for token expiration
+    access_token = data.get("access_token")  # Access token for API requests
+    refresh_token = data.get("refresh_token")  # Token to refresh the access token
+    expires_at = data.get("expires_at")  # Unix timestamp for token expiration
 
     # Ensure all tokens are present
     if not access_token or not refresh_token or not expires_at:
-        return render(request, 'transport/error.html', {'error': 'Invalid response from Strava'})
+        return render(
+            request, "transport/error.html", {"error": "Invalid response from Strava"}
+        )
 
     # Ensure the user is logged in (CustomUser from your accounts app)
     user = request.user
@@ -125,11 +137,19 @@ def strava_callback(request):
 
     # Check if the athlete ID was successfully retrieved
     if not athlete_id:
-        return render(request, 'transport/error.html', {'error': 'Could not get athlete ID from Strava'})
-    
+        return render(
+            request,
+            "transport/error.html",
+            {"error": "Could not get athlete ID from Strava"},
+        )
+
     # Check if the athlete ID is in use by another user
     if StravaToken.objects.filter(athlete_id=athlete_id).exists():
-        return render(request, 'transport/error.html', {'error': 'This Strava account is already linked to another user'})
+        return render(
+            request,
+            "transport/error.html",
+            {"error": "This Strava account is already linked to another user"},
+        )
 
     # Create or update the user's Strava tokens
     strava_token, created = StravaToken.objects.get_or_create(user=user)
@@ -139,7 +159,8 @@ def strava_callback(request):
     strava_token.athlete_id = athlete_id
     strava_token.save()
 
-    return redirect('transport')  # Redirect to the transport view
+    return redirect("transport")  # Redirect to the transport view
+
 
 @login_required
 def get_latest_activity(request):
@@ -154,13 +175,15 @@ def get_latest_activity(request):
                 "client_id": settings.STRAVA_CLIENT_ID,
                 "client_secret": settings.STRAVA_CLIENT_SECRET,
                 "refresh_token": strava_token.refresh_token,
-                "grant_type": "refresh_token"
+                "grant_type": "refresh_token",
             }
             refresh_response = requests.post(refresh_url, data=refresh_payload).json()
 
             strava_token.access_token = refresh_response.get("access_token")
             strava_token.refresh_token = refresh_response.get("refresh_token")
-            strava_token.expires_at = datetime.datetime.fromtimestamp(refresh_response.get("expires_at"))
+            strava_token.expires_at = datetime.datetime.fromtimestamp(
+                refresh_response.get("expires_at")
+            )
             strava_token.save()
 
         # Get latest activity from Strava
@@ -174,19 +197,22 @@ def get_latest_activity(request):
 
         latest_activity = activities[0]  # Get most recent activity
 
-        return JsonResponse({
-            "name": latest_activity.get("name"),
-            "distance": latest_activity.get("distance"),
-            "moving_time": latest_activity.get("moving_time"),
-            "type": latest_activity.get("type")
-        })
+        return JsonResponse(
+            {
+                "name": latest_activity.get("name"),
+                "distance": latest_activity.get("distance"),
+                "moving_time": latest_activity.get("moving_time"),
+                "type": latest_activity.get("type"),
+            }
+        )
 
     except StravaToken.DoesNotExist:
         return JsonResponse({"error": "No Strava account linked."}, status=400)
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-    
+
+
 @login_required
 def get_last_five_activities(request):
     try:
@@ -199,13 +225,15 @@ def get_last_five_activities(request):
                 "client_id": settings.STRAVA_CLIENT_ID,
                 "client_secret": settings.STRAVA_CLIENT_SECRET,
                 "refresh_token": strava_token.refresh_token,
-                "grant_type": "refresh_token"
+                "grant_type": "refresh_token",
             }
             refresh_response = requests.post(refresh_url, data=refresh_payload).json()
 
             strava_token.access_token = refresh_response.get("access_token")
             strava_token.refresh_token = refresh_response.get("refresh_token")
-            strava_token.expires_at = datetime.datetime.fromtimestamp(refresh_response.get("expires_at"))
+            strava_token.expires_at = datetime.datetime.fromtimestamp(
+                refresh_response.get("expires_at")
+            )
             strava_token.save()
 
         # Get latest activities from Strava
@@ -219,17 +247,24 @@ def get_last_five_activities(request):
 
         # Filter only Walk, Run, and Ride activities & exclude logged ones
         valid_activities = []
-        logged_ids = LoggedActivity.objects.filter(user=request.user).values_list("activity_id", flat=True)
+        logged_ids = LoggedActivity.objects.filter(user=request.user).values_list(
+            "activity_id", flat=True
+        )
 
         for activity in activities:
-            if activity["type"] in ["Run", "Ride", "Walk"] and activity["id"] not in logged_ids: # Exclude logged activities
-                valid_activities.append({
-                    "id": activity["id"],  # Strava Activity ID
-                    "name": activity["name"], # Activity name
-                    "distance": activity["distance"],  # Distance in meters
-                    "type": activity["type"] # Activity type (Run, Ride, Walk)
-                })
-                if len(valid_activities) == 5: # Limit to 5 activities
+            if (
+                activity["type"] in ["Run", "Ride", "Walk"]
+                and activity["id"] not in logged_ids
+            ):  # Exclude logged activities
+                valid_activities.append(
+                    {
+                        "id": activity["id"],  # Strava Activity ID
+                        "name": activity["name"],  # Activity name
+                        "distance": activity["distance"],  # Distance in meters
+                        "type": activity["type"],  # Activity type (Run, Ride, Walk)
+                    }
+                )
+                if len(valid_activities) == 5:  # Limit to 5 activities
                     break
 
         return JsonResponse(valid_activities, safe=False)
@@ -239,6 +274,7 @@ def get_last_five_activities(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
 
 @login_required
 def log_activity(request):
@@ -252,7 +288,9 @@ def log_activity(request):
 
             # Check if activity is already logged
             if LoggedActivity.objects.filter(activity_id=activity_id).exists():
-                return JsonResponse({"error": "This activity has already been logged."}, status=400)
+                return JsonResponse(
+                    {"error": "This activity has already been logged."}, status=400
+                )
 
             # Store activity
             LoggedActivity.objects.create(
@@ -260,11 +298,13 @@ def log_activity(request):
                 activity_id=activity_id,
                 distance=distance,
                 activity_type=activity_type,
-                option=option
+                option=option,
             )
 
             # Update CumulativeStats
-            cumulative_stats, _ = CumulativeStats.objects.get_or_create(user=request.user)
+            cumulative_stats, _ = CumulativeStats.objects.get_or_create(
+                user=request.user
+            )
             if option == "commute".lower():
                 cumulative_stats.total_commute_distance += distance
                 print("commute")
@@ -276,10 +316,9 @@ def log_activity(request):
             # Update UserPoints
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
             # 10 points per 1 km
-            user_points.transport_points += int(distance / 1000) * 10
-                
-            user_points.save()
+            user_points.transport_points += int(distance / 100)
 
+            user_points.save()
 
             return JsonResponse({"success": "Activity logged successfully!"})
 
@@ -295,11 +334,13 @@ def get_transport_stats(request):
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
 
-        return JsonResponse({
-            "total_commute_distance": cumulative_stats.total_commute_distance,
-            "total_hobby_distance": cumulative_stats.total_hobby_distance,
-            "points_earned": user_points.transport_points
-        })
+        return JsonResponse(
+            {
+                "total_commute_distance": cumulative_stats.total_commute_distance,
+                "total_hobby_distance": cumulative_stats.total_hobby_distance,
+                "points_earned": user_points.transport_points,
+            }
+        )
 
     except CumulativeStats.DoesNotExist:
         return JsonResponse({"error": "No stats available."}, status=400)
@@ -315,7 +356,9 @@ def get_transport_stats(request):
 def get_transport_leaderboard(request):
     try:
         # Get top 10 users based on transport points
-        user_points = UserPoints.objects.order_by("-transport_points").values("user_id", "transport_points")[:10]
+        user_points = UserPoints.objects.order_by("-transport_points").values(
+            "user_id", "transport_points"
+        )[:10]
 
         # Get the username of each user
         for entry in user_points:
