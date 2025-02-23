@@ -15,21 +15,6 @@ class DashboardViewTestCase(TestCase):
         )
         self.client.login(email="test@example.com", password="password123")
 
-        # Create some user points for testing
-        for i in range(1, 16):  # Create 15 users
-            user = get_user_model().objects.create_user(
-                email=f"user{i}@example.com",
-                first_name=f"User{i}",
-                last_name=f"Test{i}",
-                password="password123",
-            )
-            UserPoints.objects.create(
-                user=user,
-                bingame_points=i * 1,
-                qrscanner_points=i * 3,
-                transport_points=i * 5,
-            )
-
     def test_dashboard_view_get(self):
         response = self.client.get(reverse("dashboard"))
         self.assertEqual(response.status_code, 200)
@@ -55,6 +40,21 @@ class DashboardViewTestCase(TestCase):
             self.assertContains(response, f'id="leaderboard-item-{i}"')
 
     def test_leaderboard_data(self):
+        # Create some user points for testing
+        for i in range(1, 16):  # Create 15 users
+            user = get_user_model().objects.create_user(
+                email=f"user{i}@example.com",
+                first_name=f"User{i}",
+                last_name=f"Test{i}",
+                password="password123",
+            )
+            UserPoints.objects.create(
+                user=user,
+                bingame_points=i * 1,
+                qrscanner_points=i * 3,
+                transport_points=i * 5,
+            )
+
         response = self.client.get(reverse("get_total_leaderboard"))
         self.assertEqual(response.status_code, 200)
         leaderboard_data = response.json()
