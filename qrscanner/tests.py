@@ -81,8 +81,6 @@ class QRScannerLeaderboardTestCase(TestCase):
         for i in range(1, 11):
             self.assertContains(response, f'id="leaderboard-item-{i}"')
 
-
-"""
     def test_qrscanner_leaderboard_data(self):
         # Create some user points for testing
         for i in range(1, 16):  # Create 15 users
@@ -96,13 +94,10 @@ class QRScannerLeaderboardTestCase(TestCase):
                 user=user,
                 qrscanner_points=i * 3,
             )
-
-        response = self.client.get(reverse("scan_qr"))
+        # Get the leaderboard data
+        response = self.client.get(reverse("get_qrscanner_leaderboard"))
         self.assertEqual(response.status_code, 200)
-
-        print(response.content.decode("utf-8"))
-
+        # Check that the top 10 users are in the response
         for i in range(6, 16):
             self.assertContains(response, f"User{i} Test{i}")
             self.assertContains(response, f"{i * 3}")
-"""
