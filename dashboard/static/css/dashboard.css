@@ -202,3 +202,55 @@ main {
     background: #888;
     border-radius: 10px;
 }
+
+/* --------------------------------------------------
+    Responsive Styling
+-------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+    main {
+        width: 100%;
+    }
+
+    .dashboard-top {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .leaderboard, #garden {
+        max-width: 100%;
+        min-width: 350px;
+    }
+
+    .leaderboard {
+        margin-bottom: 20px;
+    }
+
+    .leaderboard h3 {
+        font-size: 1.2rem;
+    }
+
+    .leaderboard ol {
+        font-size: 1rem;
+    }
+
+    .garden-wrapper {
+        max-width: 100%;
+        gap: 1px;
+    }
+
+    .grid-item {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+    }
+
+    .game-card-wrapper {
+        gap: 20px;
+    }
+
+    .game-card h2 {
+        font-size: 1rem;
+    }
+}

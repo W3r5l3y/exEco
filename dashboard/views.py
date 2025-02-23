@@ -16,13 +16,16 @@ def root_redirect_view(request):
 def dashboard_view(request):
     return render(request, "dashboard/dashboard.html")
 
+
 @login_required
 def get_total_leaderboard(request):
     try:
         # Get the top 10 users with the highest total points
         user_points = (
             UserPoints.objects.annotate(
-                total_points=F("bingame_points") + F("qrscanner_points") + F("transport_points")
+                total_points=F("bingame_points")
+                + F("qrscanner_points")
+                + F("transport_points")
             )
             .order_by("-total_points")
             .values("user_id", "total_points")[:10]
