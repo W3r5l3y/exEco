@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -151,3 +152,12 @@ LOGIN_URL = "/login/"
 STRAVA_CLIENT_ID = 149186
 STRAVA_CLIENT_SECRET = "bca1d6a01353f0c0197a8aed8f331db3aebd37d1"
 REDIRECT_URI = "http://localhost:8000/strava-callback/"
+
+
+TESTING = 'test' in sys.argv
+
+# Skip migrations for regular tests, but apply them for migration tests
+if TESTING:
+    MIGRATION_MODULES = {
+        'bingame': None,  # Disable migrations for bingame during regular tests
+    }

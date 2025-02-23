@@ -10,7 +10,5 @@ class ItemsAdmin(admin.ModelAdmin):
     list_display = ("item_id", "item_name", "item_image", "bin_id")
     search_fields = ("item_id", "item_name", "bin_id")
 
-
-
 admin.site.register(Bins, BinsAdmin)
 admin.site.register(Items, ItemsAdmin)
