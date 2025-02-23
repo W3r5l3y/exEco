@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class BingameConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'bingame'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "bingame"
