@@ -316,7 +316,7 @@ def log_activity(request):
             # Update UserPoints
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
             # 10 points per 1 km
-            user_points.transport_points += int(distance / 1000) * 10
+            user_points.transport_points += int(distance / 100)
 
             user_points.save()
 
