@@ -13,7 +13,7 @@ from accounts.models import CustomUser
 from django.http import JsonResponse
 
 
-@login_required(login_url='/login/')
+@login_required(login_url="/login/")
 def scan_qr(request):
     # Initialise variables
     result = None
@@ -74,7 +74,6 @@ def scan_qr(request):
                 except Location.DoesNotExist:
                     result = "Location not found for code: " + result
 
-
     else:
         # If request method is not POST, create a new form
         form = QRCodeUploadForm()
@@ -92,11 +91,14 @@ def scan_qr(request):
         },
     )
 
+
 @login_required
 def get_qrscanner_leaderboard(request):
     try:
         # Get top 10 users based on transport points
-        user_points = UserPoints.objects.order_by("-qrscanner_points").values("user_id", "qrscanner_points")[:10]
+        user_points = UserPoints.objects.order_by("-qrscanner_points").values(
+            "user_id", "qrscanner_points"
+        )[:10]
 
         # Get the username of each user
         for entry in user_points:
