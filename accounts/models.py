@@ -47,23 +47,6 @@ class CustomUser(AbstractBaseUser):
         return self.is_superuser
 
 
-"""
-class UserPoints(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
-    )
-    points_scored = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.user.email} - {self.points_scored} points"
-
-    def add_points(self, points=2):
-        # Increment points when a QR code is scanned
-        self.points_scored += points
-        self.save()
-"""
-
-
 class UserPoints(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
