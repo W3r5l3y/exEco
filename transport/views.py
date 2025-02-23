@@ -22,12 +22,8 @@ def strava_login(request):
     Check if user has valid Strava credentials; otherwise, redirect to Strava OAuth.
     """
 
-    #print cookies for debugging
-    print("cookies")
-    print(request.COOKIES)
-    #print session for debugging
-    print("session")
-    print(request.session)
+    print(f"Redirect URI: {settings.REDIRECT_URI}")  # Debugging output
+
     
     user = request.user
 
@@ -80,12 +76,11 @@ def strava_callback(request):
     """
     Handles the callback from Strava, exchanging the code for tokens and storing them.
     """
-    # Ensure the user is logged in
-    if not request.user.is_authenticated:
-        #print cookies for debugging
-        print(request.COOKIES)
-        return render(request, 'transport/error.html', {'error': 'You must be logged in to link your Strava account.'})
-    
+    print(f"Request Host: {request.get_host()}")
+    print(f"Request URL: {request.build_absolute_uri()}")
+    print(f"Cookies in callback: {request.COOKIES}")  # Debugging session cookies
+    print(f"Session Data: {request.session.items()}")  # Check if session persists
+
 
     
     # Get the code and error from the query parameters
@@ -295,7 +290,7 @@ def log_activity(request):
 
 
 @login_required
-def get_stats(request):
+def get_transport_stats(request):
     try:
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)

@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Function to update stats on page
     function updateStats() {
-        fetch("/get-stats/")
+        fetch("/get-transport-stats/")
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
