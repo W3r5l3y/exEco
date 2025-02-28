@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "bingame",
     "transport",
     "inventory",
+    "garden",
 ]
 
 MIDDLEWARE = [
