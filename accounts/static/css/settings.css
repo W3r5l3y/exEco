@@ -275,6 +275,17 @@ main {
     color: #ddd;
 }
 
+/* || Modal DESIGN||*/
+.modal-content-delete{
+    background: red;
+    color: white;
+}
+
+.modal-content-unlink{
+    background-color: var(--accessories_colour);
+    color: white;
+}
+
 @media (max-width: 768px) {
     .background-box {
         width: 650px;

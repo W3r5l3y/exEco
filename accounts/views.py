@@ -1,9 +1,11 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .models import CustomUser  # TODO Maybe remove later
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 
 
 def login_register_view(request):
@@ -50,6 +52,7 @@ def login_register_view(request):
     )
 
 
+@login_required(login_url="/login/")
 def settings_view(request):
     if request.method == "POST":
         user = request.user
@@ -87,5 +90,47 @@ def settings_view(request):
                 return HttpResponseRedirect(
                     reverse("settings") + f"?error={error_message}"
                 )
+        elif "log_out" in request.POST:
+            logout(request)
+        elif "delete_data" in request.POST:
+            return delete_account(request)
+        elif "unlink_strava" in request.POST:
+            return strava_unlink(request)
 
     return render(request, "accounts/settings.html")
+
+
+
+def log_out(request):
+    try:
+        user = request.user
+        if user.is_authenticated:
+            logout(request)
+            return HttpResponseRedirect(reverse("login"))
+        else:
+            return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
+
+    except Exception as e:
+        print(e)
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to log out. Please contact support."
+        )
+
+def delete_account(request):
+    try:
+        user = request.user
+        if user.is_authenticated:
+            user.delete()
+            return HttpResponseRedirect(reverse("login"))
+        else:
+            return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
+
+    except Exception as e:
+        print(e)
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to delete account. Please contact support."
+        )
+
+
+def strava_unlink(request):
+    return render(request, "dashboard/dashboard.html")

@@ -70,3 +70,35 @@ function adjustNavBarHeight(){
         content.style.paddingTop = navbarHeight + "px";
     }
 }
+
+function alterModalUnlink(serviceName){
+    document.getElementById("modal-content").className = "";
+    document.getElementById("modal-content").classList.add("modal-content");
+    document.getElementById("modal-content").classList.add("modal-content-unlink");
+
+    document.getElementById("modal_body_text").innerText = "You can re-link this service at any point";
+    document.getElementById("checkModalTitle").innerText = "Un-Link " + serviceName;
+    document.getElementById("modalConfirmButton").onclick = function() {
+        stravaUnlink();
+    };
+}
+
+function alterModalDelete(){
+    document.getElementById("modal-content").className = "";
+    document.getElementById("modal-content").classList.add("modal-content");
+    document.getElementById("modal-content").classList.add("modal-content-delete");
+
+    document.getElementById("modal_body_text").innerText = "This action cannot be undone";
+    document.getElementById("checkModalTitle").innerText = "DELETE ACCOUNT";
+    document.getElementById("modalConfirmButton").onclick = function() {
+        confirmDelete();
+    };
+}
+
+function confirmDelete() {
+    document.getElementById("delete_form").submit();
+}
+
+function stravaUnlink(){
+    document.getElementById("strava_form").submit();
+}
