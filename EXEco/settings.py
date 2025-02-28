@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "qrscanner",
     "bingame",
     "transport",
+    "inventory",
 ]
 
 MIDDLEWARE = [

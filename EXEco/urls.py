@@ -27,4 +27,5 @@ urlpatterns = [
     path("", include("qrscanner.urls")),
     path("", include("bingame.urls")),
     path("", include("transport.urls")),
+    path("", include("inventory.urls"))
 ]
