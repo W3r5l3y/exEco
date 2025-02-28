@@ -1,3 +1,4 @@
+<!-- templates/transport/transport.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,41 @@
 </head>
 <body>
     <main>
+        <!-- Left section: Garden, Garden Stats -->
+        <div id="left-section">
+            <div id="garden-wrapper">
+                <!-- Add garden elements using JS -->
+            </div>
+        </div>
+        <!-- Right section: User Inventory -->
+        <div id="right-section">
+            <div id="inventory-container">
+                <h3>Inventory</h3>
+                <div id="inventory-wrapper">
+                    <!-- Add inventory items using JS -->
+                    <!-- Example item -->
+                    <div class="inventory-item" id="inventory-item-1">
+                        <img src="{% static 'img/temp-leaf.png' %}" alt="temp-leaf">
+                        <p>Temp 1</p>
+                    </div>
+                    <div class="inventory-item" id="inventory-item-2">
+                        <img src="{% static 'img/temp-leaf.png' %}" alt="temp-leaf">
+                        <p>Temp 2</p>
+                    </div>
+                    <div class="inventory-item" id="inventory-item-3">
+                        <img src="{% static 'img/temp-leaf.png' %}" alt="temp-leaf">
+                        <p>Temp 3</p>
+                    </div>
+                </div>
+            </div>
 
+            <div id="garden-stat-wrapper">
+                <h3>Garden Stats</h3>
+                <p class="garden-stat">Biodiveristy: <span id="garden-stat-1">---</span></p>
+                <p class="garden-stat">Stat 2: <span id="garden-stat-2">---</span></p>
+                <p class="garden-stat">Score: <span id="garden-stat-3">---</span></p>
+            </div>
+        </div>
     </main>
 </body>
 </html>
