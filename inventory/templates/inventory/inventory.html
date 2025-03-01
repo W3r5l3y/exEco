@@ -29,9 +29,15 @@
 
                     <p> {{ item.name}} </p>
                     <p>x{{ item.quantity }} </p>
+                    <div class="button-container">
                     {% if item.item_type == "Lootbox" %}
-                        <a href="{% url 'open_lootbox' item.id %}" class="open-lootbox-btn">Open Lootbox</a>
+                        <div class="open-lootbox-btn" data-item-id="{{ item.id }}">Open lootbox</div>
+                        <!-- <a href="{% url 'open_lootbox' item.id %}" class="open-lootbox-btn">Open Lootbox</a> -->
                     {% endif %}
+                    {% if item.item_type == "regular" %}
+                        <div class="place-item-btn" data-item-id="{{ item.id }}">Place Item</div>
+                    {% endif %}
+                    </div>
                     
                 </div>      
             {% endfor %}

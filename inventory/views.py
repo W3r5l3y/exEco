@@ -3,6 +3,7 @@ import random
 from django.contrib import messages
 from .models import Inventory, InventoryItem, LootboxContents
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 # Create your views here.
 
 def inventory_view(request):
@@ -13,19 +14,26 @@ def inventory_view(request):
 #View to open a lootbox, takes in lootbox id, then opens the lootbox in backend (here) then returns the item, and adds it to user inventory
 @login_required
 def open_lootbox(request, lootbox_id):
+    try:
+        lootbox_id = int(lootbox_id)
+    except ValueError:
+        return JsonResponse({"error": "Invalid lootbox ID"}, status=400)
+    
+    if request.method != "POST": #Only allow POST requests
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     
     #Find the lootbox in the user's inventory
-    lootbox = inventory.items.filter(id=lootbox_id, item_type="lootbox").first()
+    lootbox = inventory.items.filter(id=lootbox_id).first()
     if not lootbox:
-        messages.error(request, "Lootbox not found")
-        return redirect('inventory')
+        errorMsg = "Lootbox not found ", lootbox_id, " in user's inventory" #DEBUG
+        return JsonResponse({"error": errorMsg}, status=404)
     
     #Get all possible items inside the lootbox
     lootbox_contents = LootboxContents.objects.filter(lootbox_template=lootbox.lootbox_template)
     if not lootbox_contents:
-        messages.error(request, "Lootbox is empty")
-        return redirect('inventory')
+        return JsonResponse({"error": "Lootbox is empty"}, status=400)
     
     #'Open box' by choosing first item that fails based on their probability (note does mean only probability checked at front of the loop) random item
     selected_item = None
@@ -48,5 +56,13 @@ def open_lootbox(request, lootbox_id):
     lootbox.quantity -= 1
     lootbox.save()
     
-    messages.success(request, f"You found a {selected_item.name}")
-    return redirect('inventory')
+    return JsonResponse({
+        "success": True,
+        "item_won": {
+            "name": selected_item.name,
+            "image": selected_item.image.url if selected_item.image else None,
+            "description": selected_item.description
+        },
+        "lootbox_removed": lootbox.quantity == 0  # Tell frontend if lootbox is gone
+    })
+

@@ -5,21 +5,33 @@
     --neutral_colour: #fff;
 }*/
 
-* {
+
+/*
+ *Positioning
+ *
+ */
+
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
 }
 
-body {
+body{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: var(--neutral_colour);
 }
 
+#inventory-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 
 #inventory-container {
     flex-grow: 1;
@@ -29,12 +41,7 @@ body {
     align-items: flex-start;
     width: 100%;
     padding: 20px;
-    border: 4px solid var(--accessories_colour);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-
-
 
 .inventory-slot {
     width: 120px;
@@ -45,47 +52,109 @@ body {
     justify-content: center;
     text-align: center;
     padding: 5px;
+}
+.inventory-slot img {
+    width: 60px;
+    height: auto;
+}
+
+.button-container{
+    display: inline-block;
+    margin-top: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+/*
+ *Styling
+ *
+ */
+
+* {
+    font-family: "roboto", sans-serif;
+}
+
+body {
+    background-color: var(--neutral_colour);
+}
+
+#inventory-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary_colour);
+    border: 4px solid var(--accessories_colour)
+}
+
+#inventory-container {
+    border: 4px solid var(--accessories_colour);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.inventory-slot {
     border: 3px solid #108600;
     background-color: var(--neutral_colour);
 }
+
 .inventory-slot img {
     max-width: 60px;
     max-height: 60px;
 }
 
-
-.open-lootbox-btn {
-    display: inline-block;
-    
-    margin-top: 5px;
+.button-container {
     font-size: 14px;
     font-weight: bold;
-    color: white;
     background: linear-gradient(45deg, #ff9800, #ff5722);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--display_color)
 }
 
-.open-lootbox-btn:hover {
+/*
+ *Dynamic styling
+ *
+ */
+
+.button-container:hover {
     background: linear-gradient(45deg, #ff5722, #d84315);
     transform: scale(1.05);
     box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
 }
 
-.open-lootbox-btn:active {
+.button-container:active {
     transform: scale(0.95);
     box-shadow: none;
 }
 
-
-#inventory-header{
-    border: 4px solid var(--primary_colour);
-    padding: 10px;
-    background-color: #f5f5f5;
+.lootbox-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
-    font-size: 34px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
 }
+
+.lootbox-popup img {
+    max-width: 100px;
+    margin: 10px 0;
+}
+
+.lootbox-popup button {
+    padding: 8px 15px;
+    background: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
