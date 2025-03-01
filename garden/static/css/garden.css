@@ -46,6 +46,9 @@ main {
     gap: 5px;
     border-radius: 10px;
     background-color: #c0fd97;
+    background-image: url("/static/img/grass.png");
+    background-size: cover;
+    background-repeat: no-repeat;
     padding: 10px;
     margin-bottom: 20px;
 }
@@ -68,8 +71,33 @@ main {
 }
 
 .grid-item:hover {
-    background-color: #497038;
+    background-color: #497038cc;
     scale: 1.1;
+}
+
+.grid-item-selected {
+    background-color: #497038bb;
+    scale: 1.05;
+}
+
+.grid-item-flash {
+    background-color: #914e4edd;
+    scale: 1.05;
+    animation: flash 0.5s infinite;
+}
+
+#save-garden-button {
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#save-garden-button:hover {
+    background-color: var(--accessories_colour);
 }
 
 /* --------------------------------------------------
@@ -129,6 +157,11 @@ main {
 .inventory-item p {
     font-size: 14px;
     font-weight: bold;
+}
+
+.inventory-item-selected {
+    background-color: #00000044;
+    scale: 1.05;
 }
 
 #garden-stat-wrapper {
