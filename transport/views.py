@@ -11,7 +11,7 @@ from django.utils.timezone import now
 from django.http import JsonResponse
 from .models import StravaToken, LoggedActivity, CumulativeStats, CustomUser
 from accounts.models import UserPoints
-
+from inventory.models import Inventory, LootboxTemplate
 
 @login_required
 def transport_view(request):
@@ -313,13 +313,36 @@ def log_activity(request):
 
             cumulative_stats.save()
 
-            # Update UserPoints
+            score = int(distance / 100)
+            #CHAT GPT NOTE: This part up until the comment is causing the issue
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
-            # 10 points per 1 km
-            user_points.transport_points += int(distance / 100)
-
+            
+            old_points = user_points.transport_points
+            
+            user_points.add_transport_points(score)
+            
+            new_points = user_points.transport_points
+            
+            old_multiple = old_points // 20
+            new_multiple = new_points // 20
+            lootboxes_to_reward = new_multiple - old_multiple
+            """
+            NOTE:
+            If the test for this rewards more than 20 points,
+            the test will fail.
+            
+            This is because Lootox template wont exist in the test, as
+            fixtures purposely dont run in test mode.
+            """
+            if lootboxes_to_reward > 0:
+                lootbox_template = LootboxTemplate.objects.get(name="Transport Lootbox")
+                # Fetch or create the user's inventory
+                user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
+                # Add the lootboxes
+                user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
+            
             user_points.save()
-
+            
             return JsonResponse({"success": "Activity logged successfully!"})
 
         except Exception as e:

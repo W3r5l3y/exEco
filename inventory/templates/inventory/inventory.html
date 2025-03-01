@@ -27,10 +27,10 @@
                         <p>{{ item.name }}</p>
                     {% endif %}
 
-                    <p> {{ item.name}} </p>
+                    <!-- <p> {{ item.name}} </p> -->
                     <p>x{{ item.quantity }} </p>
                     <div class="button-container">
-                    {% if item.item_type == "Lootbox" %}
+                    {% if item.item_type == "lootbox" %}
                         <div class="open-lootbox-btn" data-item-id="{{ item.id }}">Open lootbox</div>
                         <!-- <a href="{% url 'open_lootbox' item.id %}" class="open-lootbox-btn">Open Lootbox</a> -->
                     {% endif %}

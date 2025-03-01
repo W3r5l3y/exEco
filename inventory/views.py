@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 # Create your views here.
 
+@login_required
 def inventory_view(request):
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     items = inventory.items.all()
