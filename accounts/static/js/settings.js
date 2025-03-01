@@ -98,6 +98,9 @@ function alterModalDelete(){
 function confirmDelete() {
     document.getElementById("delete_form").submit();
 }
+function logOut() {
+    document.getElementById("log_out_form").submit();
+}
 
 function stravaUnlink(){
     document.getElementById("strava_form").submit();

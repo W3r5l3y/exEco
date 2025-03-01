@@ -77,12 +77,15 @@
                             <img class="connection-logo"  src="{% static 'img/strava-logo.png' %}" alt="strava_logo">
                             <h2 class="connection-name">Strava</h2>
                         </div>
+                        {% if strava_linked %}
                         <button class="connection-button" name="login" data-bs-toggle="modal" data-bs-target="#checkModal" onclick="alterModalUnlink('Strava')">Unlink</button>
-
+                        {% else %}
+                            <button class="connection-button" name="login" style="background-color: lightgray; color: white" disabled>Not Linked</button>
+                        {% endif %}
                     </div>
                     <form action="" id="strava_form" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="unlink_strava">
+                        {% csrf_token %}
+                        <input type="hidden" name="unlink_strava">
                     </form>
 
                 </div>
@@ -117,7 +120,7 @@
                         <div class="buttons-mini-div">
                             <h3>Log out</h3>
                             <p>Log out of your account.</p>
-                            <button class="buttons-mini-div-button" name="log_out_data" style="background-color: lightblue">Log out</button>
+                            <button class="buttons-mini-div-button" name="log_out_data" style="background-color: lightblue" onclick="logOut()">Log out</button>
                         </div>
                         <div  class="buttons-mini-div">
                             <h3>Delete account</h3>
