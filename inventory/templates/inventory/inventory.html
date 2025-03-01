@@ -15,8 +15,10 @@
 </head>
 <body>
     <main>
-        <h1></h1>
-        <div id = "inventory-grid">
+        <div id="inventory-header">
+            <p>{{user.first_name}}'s Inventory</p>
+        </div>
+        <div id = "inventory-container">
             {% for item in items %}
                 <div class="inventory-slot">
                     {% if item.image %}
@@ -28,7 +30,6 @@
                     <p> {{ item.name}} </p>
                     <p>x{{ item.quantity }} </p>
                     {% if item.item_type == "Lootbox" %}
-                        <p>(PENIS)</p>
                         <a href="{% url 'open_lootbox' item.id %}" class="open-lootbox-btn">Open Lootbox</a>
                     {% endif %}
                     
