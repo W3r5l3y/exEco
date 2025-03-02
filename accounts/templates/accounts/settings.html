@@ -18,12 +18,28 @@
         <p id="error-popup-title">Error</p>
         <p id="error-popup-message">An unexpected error occurred.</p>
     </div>
-    <div id="success-popup" style="background-color: lightgreen" class="popup"  >
+    <div id="success-popup" style="background-color: lightgreen" class="popup">
         <button class="close-btn" onclick="closeSuccessPopup()">&times;</button>
         <p id="success-popup-title">Success</p>
         <p id="success-popup-message">An unexpected success occurred.</p>
     </div>
 
+    <div class="modal fade" id="checkModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkModalTitle" aria-hidden="true">
+      <div class="modal-dialog" >
+        <div id="modal-content" class="modal-content modal-content-delete" >
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="checkModalTitle">Title</h1>
+          </div>
+          <div class="modal-body">
+              <p id="modal_body_text"> Main body Text </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="modalConfirmButton">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <main id="settings">
         <div class="background-box">
             <h1 class="main-title">Settings</h1>
@@ -61,8 +77,16 @@
                             <img class="connection-logo"  src="{% static 'img/strava-logo.png' %}" alt="strava_logo">
                             <h2 class="connection-name">Strava</h2>
                         </div>
-                        <button class="connection-button" name="login">Unlink</button>
+                        {% if strava_linked %}
+                        <button class="connection-button" name="login" data-bs-toggle="modal" data-bs-target="#checkModal" onclick="alterModalUnlink('Strava')">Unlink</button>
+                        {% else %}
+                            <button class="connection-button" name="login" style="background-color: lightgray; color: white" disabled>Not Linked</button>
+                        {% endif %}
                     </div>
+                    <form action="" id="strava_form" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="unlink_strava">
+                    </form>
 
                 </div>
                 <div class="password-grid">
@@ -94,16 +118,26 @@
                             <button class="buttons-mini-div-button" name="request_data">Request</button>
                         </div>
                         <div class="buttons-mini-div">
-                            <h3>Disable account</h3>
-                            <p>Your account will be disabled until further notice.</p>
-                            <button class="buttons-mini-div-button" name="request_data" style="background-color: lightblue">Disable</button>
+                            <h3>Log out</h3>
+                            <p>Log out of your account.</p>
+                            <button class="buttons-mini-div-button" name="log_out_data" style="background-color: lightblue" onclick="logOut()">Log out</button>
                         </div>
-                        <div class="buttons-mini-div">
+                        <div  class="buttons-mini-div">
                             <h3>Delete account</h3>
                             <p>Warning, this is an irreversible action</p>
-                            <button class="buttons-mini-div-button" name="request_data" style="background-color: red">Delete</button>
+                            <button class="buttons-mini-div-button" name="delete_data" style="background-color: red" data-bs-toggle="modal" data-bs-target="#checkModal" onclick="alterModalDelete()">Delete</button>
                         </div>
+
+
                     </div>
+                    <form action="" id="log_out_form" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="log_out">
+                    </form>
+                    <form action="" id="delete_form" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_data">
+                    </form>
                 </div>
             </div>
 

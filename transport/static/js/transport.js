@@ -1,30 +1,33 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("log-btn").addEventListener("click", function() {
-        document.getElementById("log-popup").style.display = "flex";
+    const logBtn = document.getElementById("log-btn");
+    if (logBtn) {
+        document.getElementById("log-btn").addEventListener("click", function() {
+            document.getElementById("log-popup").style.display = "flex";
 
-        // Fetch last 5 activities from Strava
-        fetch("/get-last-five-activities/")
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById("activity-select");
-                select.innerHTML = '<option value="" disabled selected>Select an activity</option>'; // Reset options
-                
-                if (data.error) {
-                    console.error("Error fetching activities:", data.error);
-                    return;
-                }
+            // Fetch last 5 activities from Strava
+            fetch("/get-last-five-activities/")
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById("activity-select");
+                    select.innerHTML = '<option value="" disabled selected>Select an activity</option>'; // Reset options
+                    
+                    if (data.error) {
+                        console.error("Error fetching activities:", data.error);
+                        return;
+                    }
 
-                data.forEach(activity => {
-                    const option = document.createElement("option");
-                    option.value = activity.id;
-                    option.textContent = `${activity.name} - ${(activity.distance / 1000).toFixed(2)} km`;
-                    option.dataset.distance = activity.distance; // Store distance
-                    option.dataset.type = activity.type; // Store type (walk, run, cycle)
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => console.error("Error fetching activities:", error));
-    });
+                    data.forEach(activity => {
+                        const option = document.createElement("option");
+                        option.value = activity.id;
+                        option.textContent = `${activity.name} - ${(activity.distance / 1000).toFixed(2)} km`;
+                        option.dataset.distance = activity.distance; // Store distance
+                        option.dataset.type = activity.type; // Store type (walk, run, cycle)
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching activities:", error));
+        });
+    }
 
     document.getElementById("submit-activity").addEventListener("click", function() {
         const selectedActivity = document.getElementById("activity-select").value; // Strava activity ID
