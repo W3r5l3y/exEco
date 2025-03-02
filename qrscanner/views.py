@@ -12,7 +12,7 @@ from django.utils.timezone import now
 from accounts.models import CustomUser
 from django.http import JsonResponse
 
-
+from inventory.models import Inventory, LootboxTemplate
 @login_required(login_url="/login/")
 def qrscanner(request):
     # Initialise variables
@@ -82,7 +82,31 @@ def qrscanner(request):
                         user_points, created = UserPoints.objects.get_or_create(
                             user=request.user
                         )
+                        old_points = user_points.qrscanner_points #LOOT BOX LOGIC
+                        
                         user_points.add_qrscanner_points(points_awarded)
+                        
+                        #LOOT BOX LOGIC
+                        new_points = user_points.qrscanner_points
+                        old_multiple = old_points // 20
+                        new_multiple = new_points // 20
+                        lootboxes_to_reward = new_multiple - old_multiple
+                        """
+                        NOTE:
+                        If the test for this rewards more than 20 points,
+                        the test will fail.
+                        
+                        This is because Lootbox template wont exist in the test, as
+                        fixtures purposely dont run in test mode.
+                        """
+                        if lootboxes_to_reward > 0:
+                            lootbox_template = LootboxTemplate.objects.get(name="QR Scanner Lootbox")
+                            # Fetch or create the user's inventory
+                            user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
+                            # Add the lootboxes
+                            user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
+                        #END OF LOOT BOX LOGIC
+
                         message = f"You earned {points_awarded} points!"
                 except Location.DoesNotExist:
                     message = f"Location not found for code: {result}"

@@ -1,5 +1,11 @@
 @import url("/static/css/colours.css");
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
 
 main {
     display: flex;
@@ -273,6 +279,17 @@ main {
 
 .close-btn:hover {
     color: #ddd;
+}
+
+/* || Modal DESIGN||*/
+.modal-content-delete{
+    background: red;
+    color: white;
+}
+
+.modal-content-unlink{
+    background-color: var(--accessories_colour);
+    color: white;
 }
 
 @media (max-width: 768px) {

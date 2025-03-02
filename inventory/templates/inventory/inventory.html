@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+    <script src="{% static 'js/inventory.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <div id="inventory-header">
+            <p>{{user.first_name}}'s Inventory</p>
+        </div>
+        <div id = "inventory-container">
+            {% include 'inventory/partials/inventory_list.html' %}
+        </div>
+    </main>
+</body>
+</html>

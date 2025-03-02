@@ -1,0 +1,21 @@
+{% for item in items %}
+    <div class="inventory-slot">
+        <p class="item-name">{{ item.name }}</p>
+        {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+        {% else %}
+            <p>{{ item.name }}</p>
+        {% endif %}
+        <p>x{{ item.quantity }} </p>
+        <div class="button-container">
+            {% if item.item_type == "lootbox" %}
+                <div class="open-lootbox-btn" data-item-id="{{ item.id }}">Open lootbox</div>
+            {% endif %}
+            {% if item.item_type == "regular" %}
+                <div class="place-item-btn" data-item-id="{{ item.id }}">Place Item</div>
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <p>Your inventory is empty.</p>
+{% endfor %}
