@@ -41,4 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateLeaderboard();
+
+
+    // Add event listener to garden wrapper to redirect to garden page
+    gardenWrapper.addEventListener("click", () => {
+        window.location.href = "/garden/";
+    });
 });
