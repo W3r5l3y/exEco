@@ -2,6 +2,72 @@ document.addEventListener("DOMContentLoaded", () => {
     // Map to store garden state
     const gardenState = new Map(); // key: <row>-<col>, value: inventory item id
 
+    async function loadGardenState() {
+        try {
+            const response = await fetch("/load-garden/");
+            const data = await response.json();
+
+            if (data.state) {
+                Object.entries(data.state).forEach(([key, itemId]) => {
+                    const cell = document.querySelector(`.grid-item-${key}`);
+                    if (cell) {
+                        const img = cell.querySelector("img");
+                        img.src = document.querySelector(`#${itemId} img`).src; // Set correct image
+                        gardenState.set(key, itemId);
+
+                        // Set inventory item as selected
+                        const inventoryItem = document.getElementById(itemId);
+                        if (inventoryItem) {
+                            inventoryItem.classList.add("inventory-item-selected");
+                        }
+                    }
+                });
+            }
+            console.log("Garden loaded:", gardenState);
+        } catch (error) {
+            console.error("Error loading garden state:", error);
+        }
+    }
+
+    async function saveGardenState() {
+        try {
+            const csrftoken = getCookie('csrftoken'); // Fetch CSRF token
+    
+            const stateObject = Object.fromEntries(gardenState); // Convert Map to JSON object
+            const response = await fetch("/save-garden/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken // Include CSRF token
+                },
+                body: JSON.stringify({ state: stateObject }),
+            });
+    
+            const data = await response.json();
+            console.log(data.message);
+        } catch (error) {
+            console.error("Error saving garden state:", error);
+        }
+    }
+    
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }    
+
+    loadGardenState();
+
     // Inventory items (will be loaded dynamically in the future)
     const inventoryItemsData = [
         { id: "inventory-item-1", src: "/static/img/temp-leaf.png", name: "Temp 1" },
@@ -80,8 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (placedGridKey) {
                 // If this inventory item is already placed, check if the user selected that grid item
-                const selectedGridItem = document.querySelector(".grid-item-selected");
-                if (selectedGridItem && selectedGridItem.classList.contains(`grid-item-${placedGridKey}`)) {
+                if (`grid-item-${placedGridKey}` === selectedGridItem.classList[1]) { 
                     // If the user selected the grid item containing this inventory item, remove it
                     selectedGridItem.querySelector("img").src = "/static/img/empty.png";
                     inventoryItem.classList.remove("inventory-item-selected");
@@ -134,9 +199,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add click event listener to save button
     const saveButton = document.querySelector("#save-garden-button");
-    saveButton.addEventListener("click", () => {
-        console.log("Saving garden state:", gardenState);
-
-        // TODO: Send the garden state to the server
-    });
+    saveButton.addEventListener("click", saveGardenState);
 });
