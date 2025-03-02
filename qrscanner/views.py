@@ -85,7 +85,7 @@ def qrscanner(request):
                         user_points.add_qrscanner_points(points_awarded)
                         message = f"You earned {points_awarded} points!"
                 except Location.DoesNotExist:
-                    result = "Location not found for code: " + result
+                    message = f"Location not found for code: {result}"
             else:
                 message = "No QR code found in the uploaded image. Please try again."
 
