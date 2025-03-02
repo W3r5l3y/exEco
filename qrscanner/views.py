@@ -14,7 +14,7 @@ from django.http import JsonResponse
 
 
 @login_required(login_url="/login/")
-def scan_qr(request):
+def qrscanner(request):
     # Initialise variables
     result = None
     location = None
@@ -91,7 +91,7 @@ def scan_qr(request):
     # Render the template with the form and result
     return render(
         request,
-        "qrscanner/scan_qr.html",
+        "qrscanner/qrscanner.html",
         context,
     )
 
