@@ -80,29 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* --------------------------------------------------
-    *  Function to save garden state to the server
-    * -------------------------------------------------- */
-    async function saveGardenState() {
-        try {
-            const csrftoken = getCookie('csrftoken'); // Fetch CSRF token
-            const stateObject = Object.fromEntries(gardenState); // Convert Map to JSON object
-            const response = await fetch("/save-garden/", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrftoken
-                },
-                body: JSON.stringify({ state: stateObject }),
-            });
-    
-            const data = await response.json();
-            console.log(data.message);
-        } catch (error) {
-            console.error("Error saving garden state:", error);
-        }
-    }
-
-    /* --------------------------------------------------
     *  Helper function to get CSRF token from cookies
     * -------------------------------------------------- */
     function getCookie(name) {
@@ -209,9 +186,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
     
-    // Attach click event listener to the save button.
-    const saveButton = document.querySelector("#save-garden-button");
-    saveButton.addEventListener("click", saveGardenState);
+    // Save the garden state to the server when the button is clicked and render the image.
+    document.querySelector("#save-garden-button").addEventListener("click", async () => {
+        const gardenStateData = Object.fromEntries(gardenState);
+        const csrftoken = getCookie('csrftoken');
+        const userId = document.querySelector("body").dataset.userId;
+    
+        try {
+            // First, call the endpoint that saves the garden state.
+            const saveResponse = await fetch("/save-garden/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ state: gardenStateData }),
+            });
+            const saveData = await saveResponse.json();
+            console.log(saveData.message);
+    
+            // Then, call the endpoint that renders the image.
+            const imageResponse = await fetch("/save-garden-as-image/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                // Send the garden state and user_id if needed.
+                body: JSON.stringify({ state: gardenStateData, user_id: userId }),
+            });
+            const imageData = await imageResponse.json();
+            console.log(imageData.message);
+        } catch (error) {
+            console.error("Error saving garden image:", error);
+        }
+    });    
     
     // Set the tree image in the center of the garden (cell 5,5).
     const gridItem55 = document.querySelector(".grid-item-5-5");
