@@ -3,6 +3,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import GardenState
+from inventory.models import Inventory
 
 @login_required
 def garden_view(request):
@@ -39,3 +40,24 @@ def save_garden(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+@login_required
+def load_inventory(request):
+    try:
+        inventory = Inventory.objects.get(user=request.user)
+        items = inventory.items.all()
+        items_list = []
+        for item in items:
+            items_list.append({
+                # Format the id so that it matches the format used in garden state.
+                'id': f"inventory-item-{item.id}",
+                'src': item.image.url,   # Use .url to serve the image
+                'name': item.name,
+                'quantity': item.quantity,
+                'item_type': item.item_type,
+            })
+        return JsonResponse({'items': items_list})
+    except Inventory.DoesNotExist:
+        return JsonResponse({'items': []})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
