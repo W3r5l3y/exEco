@@ -67,3 +67,8 @@ def open_lootbox(request, lootbox_id):
         "lootbox_removed": lootbox.quantity == 0  # Tell frontend if lootbox is gone
     })
 
+@login_required
+def get_inventory(request):
+    inventory, created = Inventory.objects.get_or_create(user=request.user)
+    items = inventory.items.all()
+    return render(request, 'inventory/partials/inventory_list.html', {'items': items})

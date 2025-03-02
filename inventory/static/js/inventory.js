@@ -28,6 +28,7 @@ function openLootbox(lootboxId, button) {
     .catch(error => console.error("Error:", error));
 }
 
+//NOTE - add fetch new data to update the inventory after opening a lootbox
 function displayLootboxResult(item, button, lootboxRemoved) {
     // Create a pop-up message
     const popup = document.createElement("div");
@@ -41,11 +42,29 @@ function displayLootboxResult(item, button, lootboxRemoved) {
 
     document.body.appendChild(popup);
 
-    // Remove lootbox from inventory if it's gone
-    if (lootboxRemoved) {
-        button.closest(".inventory-slot").remove();
-    }
+    updateInventory();
+
 }
+    
+function updateInventory() {
+    fetch("/get-inventory/")
+        .then(response => response.text())
+        .then(html => {
+            document.querySelector("#inventory-container").innerHTML = html;
+            attachEventListeners();  //Add event listeners to remade buttons from getting new inventory
+        })
+        .catch(error => console.error("Error updating inventory:", error));
+}
+
+function attachEventListeners() {
+    document.querySelectorAll(".open-lootbox-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const lootboxId = this.getAttribute("data-item-id");
+            openLootbox(lootboxId, this);
+        });
+    });
+}
+
 
 function getCSRFToken() {
     const cookies = document.cookie.split("; ");
