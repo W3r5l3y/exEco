@@ -44,8 +44,8 @@ body{
 }
 
 .inventory-slot {
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,7 +54,7 @@ body{
     padding: 5px;
 }
 .inventory-slot img {
-    width: 60px;
+    width: 50%;
     height: auto;
 }
 
@@ -109,6 +109,11 @@ body {
     border: 3px solid var(--display_color)
 }
 
+.item-name{
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--primary_colour);
+}
 /*
  *Dynamic styling
  *
@@ -151,6 +156,10 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.inventory-slot:hover {
+    transform: scale(1.05);
 }
 
 @keyframes fadeIn {
