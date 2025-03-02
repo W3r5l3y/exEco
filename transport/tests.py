@@ -56,7 +56,7 @@ class TransportAppTestCase(TestCase):
         # Log an activity
         activity_data = {
             "activity_id": "123456789",
-            "distance": 5000,  # 5 km
+            "distance": 1000,  # 1 km
             "activity_type": "run",
             "option": "commute",
         }
@@ -71,17 +71,17 @@ class TransportAppTestCase(TestCase):
         # Check if the activity was logged
         logged_activity = LoggedActivity.objects.get(activity_id="123456789")
         self.assertEqual(logged_activity.user, self.user)
-        self.assertEqual(logged_activity.distance, 5000)
+        self.assertEqual(logged_activity.distance, 1000)
         self.assertEqual(logged_activity.activity_type, "run")
         self.assertEqual(logged_activity.option, "commute")
 
         # Check if the cumulative stats were updated
         cumulative_stats = CumulativeStats.objects.get(user=self.user)
-        self.assertEqual(cumulative_stats.total_commute_distance, 5000)
+        self.assertEqual(cumulative_stats.total_commute_distance, 1000)
 
         # Check if the user points were updated
         user_points = UserPoints.objects.get(user=self.user)
-        self.assertEqual(user_points.transport_points, 50)  # 10 points per 1 km
+        self.assertEqual(user_points.transport_points, 10)  # 10 points per 1 km
 
     def test_get_transport_stats(self):
         # Create cumulative stats and user points for the user

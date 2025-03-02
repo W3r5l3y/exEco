@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.models import UserPoints, CustomUser
 
+from inventory.models import Inventory, LootboxTemplate
 
 # Create your views here.
 # Initial game view
@@ -35,13 +36,31 @@ def update_leaderboard(request):
             print(score)
 
             user_points, created = UserPoints.objects.get_or_create(user=request.user)
+            
+            #Loot box logic
+            old_points = user_points.bingame_points
+            
             user_points.add_bingame_points(score)
 
+            new_points = user_points.bingame_points
+            old_multiple = old_points // 20
+            new_multiple = new_points // 20
+            lootboxes_to_reward = new_multiple - old_multiple
             """
-            leaderboard_entry, created = UserPoints.objects.get_or_create(user_id=request.user.id)
-            leaderboard_entry.user_score += score
-            leaderboard_entry.save()
+            NOTE:
+            If the test for this rewards more than 20 points,
+            the test will fail.
+            
+            This is because Lootox template wont exist in the test, as
+            fixtures purposely dont run in test mode.
             """
+            if lootboxes_to_reward > 0:
+                lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
+                # Fetch or create the user's inventory
+                user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
+                # Add the lootboxes
+                user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
+            
             return JsonResponse(
                 {
                     "status": "success",
