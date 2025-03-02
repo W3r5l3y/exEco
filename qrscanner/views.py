@@ -73,6 +73,8 @@ def qrscanner(request):
                         message = f"You earned {points_awarded} points!"
                 except Location.DoesNotExist:
                     result = "Location not found for code: " + result
+            else:
+                message = "No QR code found in the uploaded image."
 
     else:
         # If request method is not POST, create a new form
