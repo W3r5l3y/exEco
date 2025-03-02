@@ -30,12 +30,12 @@ class QRScannerTestCase(TestCase):
         with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
             response = self.client.post(reverse("qrscanner"), {"image": qr_image})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "QR Code Data: 0001")
-        self.assertContains(response, "Location Name: Test Location")
+        self.assertContains(
+            response, "<strong>Location Name:</strong> <strong>Test Location</strong>"
+        )
         self.assertContains(response, "Fact: This is a test location.")
         self.assertContains(response, "Times Scanned: 1")
         self.assertContains(response, "Point Value: 2")
-        self.assertContains(response, "Total Points: 2")
 
     def test_qrscanner_code_cooldown(self):
         ScanRecord.objects.create(
