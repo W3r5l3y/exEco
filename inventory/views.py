@@ -32,27 +32,33 @@ def open_lootbox(request, lootbox_id):
         return JsonResponse({"error": errorMsg}, status=404)
     
     #Get all possible items inside the lootbox
-    lootbox_contents = LootboxContents.objects.filter(lootbox_template=lootbox.lootbox_template)
+    lootbox_contents = list(LootboxContents.objects.filter(lootbox_template=lootbox.lootbox_template))
     if not lootbox_contents:
         return JsonResponse({"error": "Lootbox is empty"}, status=400)
     
-    #'Open box' by choosing first item that fails based on their probability (note does mean only probability checked at front of the loop) random item
-    selected_item = None
-    for content in lootbox_contents:
-        if random.random() < content.probability:
-            selected_item = content.item
-            break 
+    #Sort elements by probability - used for probability logic
+    lootbox_contents.sort(key=lambda x: x.probability, reverse=True)
     
-    #If no item was selected, choose a random (incase like 3 items all 25% individual coiuld loose so force it)
-    if not selected_item:
-        selected_item = random.choice(lootbox_contents).item
+    #Group the probabilities i.e [0.1, 0.1, 0.3, 0.5], then matches sorted lootbox_contents list
+    cumulative_probability = 0
+    probability_ranges = []
+    for content in lootbox_contents:
+        cumulative_probability += content.probability
+        probability_ranges.append([cumulative_probability, content.item])
+        
+    #Generate random number, pick item based on where it lands in ranges
+    random_number = random.random()
+    selected_item = None
+    
+    for probability, content in probability_ranges:
+        if random_number <= probability:
+            selected_item = content
+            break
+    
     
     #Add the selected item to users inventory
-    inventory_item, created = InventoryItem.objects.get_or_create(inventory=inventory, name=selected_item.name, defaults={'image': selected_item.image, 'item_type': "regular", 'quantity': 1})
-    if not created:
-        inventory_item.quantity += 1
-        inventory_item.save()
-    
+    inventory.addItem(selected_item.name, selected_item.image, selected_item.description)
+
     #Remove the lootbox after its opened - the save() change on models means can just minus one from quantity and it will delete if it goes to 0
     lootbox.quantity -= 1
     lootbox.save()
