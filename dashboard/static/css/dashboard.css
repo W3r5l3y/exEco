@@ -35,15 +35,16 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     padding: 20px;
     background-color: #fff; 
     gap: 20px;
 }
 
 /* Leaderboard and Garden Container */
-.leaderboard, #garden {
-    flex: 1; /* Ensures equal width */
+.leaderboard, 
+#garden {
+    flex: 1;
     max-width: 50%;
     display: flex;
     flex-direction: column;
@@ -54,6 +55,7 @@ main {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Leaderboard Styles */
 .leaderboard h3 {
     align-self: flex-start;
     margin-bottom: 10px;
@@ -62,7 +64,6 @@ main {
     color: var(--primary_colour);
 }
 
-/* Leaderboard Styles */
 .leaderboard ol {
     list-style: none;
     padding: 0;
@@ -95,31 +96,21 @@ main {
     align-items: center;
 }
 
-.garden-wrapper {
-    display: grid;
-    grid-template-columns: repeat(9, 30px);
-    grid-template-rows: repeat(9, 30px);
-    gap: 5px;
-    border-radius: 10px;
-    background-color: #c0fd97;
-    padding: 10px;
-}
-
-.grid-item {
+#garden-wrapper {
+    width: 100%;
+    height: 100%;  /* Fill parent height */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    background-color: #5e994c;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
 }
 
-.grid-item:hover {
-    background-color: #497038;
-    scale: 1.1;
+#garden-wrapper img {
+    height: 100%;   /* Image height equals container height */
+    width: auto;    /* Preserve aspect ratio */
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    max-height: 330px;
 }
 
 /* --------------------------------------------------
