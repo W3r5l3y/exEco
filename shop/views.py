@@ -7,6 +7,7 @@ from inventory.models import Inventory
 from django.conf import settings
 import os
 import shutil
+
 # Create your views here.
 
 #Get the shop items to frontend
@@ -41,8 +42,9 @@ def buy_item(request, item_id):
         new_image_dir = os.path.join(settings.BASE_DIR, 'inventory/static/img/items/')
         new_image_path = os.path.join(new_image_dir, os.path.basename(shop_item.image.name))
 
+#
         # Copy the file only if it doesnt exist
-        if not os.path.exists(new_image_path):
+        if not settings.TESTING and not os.path.exists(new_image_path):
             shutil.copy(old_image_path, new_image_path)
 
         new_image_relative_path = f"static/img/items/{os.path.basename(shop_item.image.name)}"
@@ -51,6 +53,6 @@ def buy_item(request, item_id):
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     inventory.addItem(shop_item.name,  new_image_relative_path, item_type="regular")
     
-    return JsonResponse({"success": "Item purchased succesfully"}, status=200)
+    return JsonResponse({"success": "Item purchased successfully"}, status=200)
     
     
