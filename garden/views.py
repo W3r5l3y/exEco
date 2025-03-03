@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import GardenState
-from inventory.models import Inventory
+from inventory.models import Inventory, ItemType, InventoryItem
 
 import pygame
 from inventory.models import InventoryItem  # to lookup image paths
@@ -51,7 +51,7 @@ def save_garden(request):
 def load_inventory(request):
     try:
         inventory = Inventory.objects.get(user=request.user)
-        items = inventory.items.all()
+        items = inventory.items.filter(item_type=ItemType.REGULAR)
         items_list = []
         for item in items:
             items_list.append({
