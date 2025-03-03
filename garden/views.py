@@ -166,3 +166,12 @@ def save_garden_as_image(request):
         pygame.quit()
 
     return JsonResponse(response_data)
+
+
+@login_required
+def fetch_user_garden_image(request):
+    user_id = request.user.id
+    file_name = f"garden_state_user{user_id}.png"
+    # Assuming your static files are served from /static/...
+    image_url = f"/static/img/gardens/{file_name}"
+    return JsonResponse({"image_url": image_url})
