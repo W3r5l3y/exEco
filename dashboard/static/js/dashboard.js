@@ -1,14 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the garden wrapper element and add the grid items
-    const gardenWrapper = document.querySelector(".garden-wrapper");
-    for (let row = 1; row <= 9; row++) {
-        for (let col = 1; col <= 9; col++) {
-            const cell = document.createElement("div");
-            cell.classList.add("grid-item", `grid-item-${row}-${col}`);
-            cell.textContent = `${row},${col}`; // For debugging
+    const gardenWrapper = document.getElementById("garden-wrapper");
+    // Put user's garden image in garden wrapper [.../garden/static/gardens/garden_state_user<x>.png]
+    
+    // Function to get user's garden state image
+    function getUserGardenImage() {
+        fetch("/fetch-user-garden-image/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Error fetching user garden image:", data.error);
+                    return;
+                }
 
-            gardenWrapper.appendChild(cell);
-        }
+                // Append user's garden image to garden wrapper child element
+                const gardenImage = document.createElement("img");
+                gardenImage.src = data.image_url;
+                gardenImage.alt = "Garden state";
+                gardenWrapper.appendChild(gardenImage);
+            })
+            .catch(error => console.error("Error fetching user garden image:", error));
     }
 
     // Function to update leaderboard on page
@@ -42,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateLeaderboard();
 
+    getUserGardenImage();
 
     // Add event listener to garden wrapper to redirect to garden page
     gardenWrapper.addEventListener("click", () => {

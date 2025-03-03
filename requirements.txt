@@ -6,3 +6,4 @@ pyzbar
 numpy
 pillow
 requests
+pygame
