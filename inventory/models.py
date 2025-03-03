@@ -41,7 +41,7 @@ class Inventory(models.Model):
         return lootbox
 
     def __str__(self):
-        return f"{self.user.username}'s Inventory"
+        return f"{self.user.email}'s Inventory"
 
 # Item Type - Regular Item or Lootbox
 class ItemType(models.TextChoices):

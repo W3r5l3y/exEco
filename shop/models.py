@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class shopItems(models.Model):
+class ShopItems(models.Model):
     itemId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
