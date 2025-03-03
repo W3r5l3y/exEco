@@ -14,7 +14,7 @@ from django.http import JsonResponse
 
 from inventory.models import Inventory, LootboxTemplate
 @login_required(login_url="/login/")
-def scan_qr(request):
+def qrscanner(request):
     # Initialise variables
     result = None
     location = None
@@ -30,7 +30,20 @@ def scan_qr(request):
             image_array = np.asarray(bytearray(image.read()), dtype=np.uint8)
             # Decode image
             img = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-            decoded_objects = decode(img)
+
+            # Image preprocessing
+            # Tilted images are still not being read even though very clear.
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+            optimal_ret, thresh = cv2.threshold(
+                blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+            )  # BINARY + OTSU thresholding for some reason works the best
+            decoded_objects = decode(thresh)
+
+            if not decoded_objects:
+                # Try decoding the original image if thresholding fails
+                decoded_objects = decode(img)
+
             if decoded_objects:
                 result = decoded_objects[0].data.decode(
                     "utf-8"
@@ -96,7 +109,9 @@ def scan_qr(request):
 
                         message = f"You earned {points_awarded} points!"
                 except Location.DoesNotExist:
-                    result = "Location not found for code: " + result
+                    message = f"Location not found for code: {result}"
+            else:
+                message = "No QR code found in the uploaded image. Please try again."
 
     else:
         # If request method is not POST, create a new form
@@ -115,7 +130,7 @@ def scan_qr(request):
     # Render the template with the form and result
     return render(
         request,
-        "qrscanner/scan_qr.html",
+        "qrscanner/qrscanner.html",
         context,
     )
 

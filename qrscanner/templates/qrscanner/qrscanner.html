@@ -7,8 +7,8 @@
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/scan_qr.css' %}">
-    <script src="{% static 'js/scan_qr.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'css/qrscanner.css' %}">
+    <script src="{% static 'js/qrscanner.js' %}" defer></script>
 </head>
 <body>
     <main>
@@ -56,15 +56,11 @@
             <section class="last-upload column-item">
                 <h3>Last Upload</h3>
                 {% if result %}
-                    <p>QR Code Data: {{ result }}</p>
                     {% if location %}
-                        <p>Location Name: {{ location.location_name }}</p>
+                        <p><strong>Location Name:</strong> <strong>{{ location.location_name }}</strong></p>
                         <p>Fact: {{ location.location_fact }}</p>
                         <p>Times Scanned: {{ location.times_visited }}</p>
                         <p>Point Value: {{ location.location_value }}</p>
-                    {% endif %}
-                    {% if user_points %}
-                        <p>Total Points: {{ user_points.qrscanner_points }}</p>
                     {% endif %}
                 {% endif %}
             </section>
