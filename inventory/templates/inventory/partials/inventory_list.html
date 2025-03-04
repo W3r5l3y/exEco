@@ -1,5 +1,5 @@
 {% for item in items %}
-    <div class="inventory-slot">
+    <div class="inventory-slot" data-type="{{ item.item_type }}">
         <p class="item-name">{{ item.name }}</p>
         {% if item.image %}
             <img src="{{ item.image.url }}" alt="{{ item.name }}">
