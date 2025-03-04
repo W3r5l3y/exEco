@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+    <script src="{% static 'js/shop.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Shop</h1>
+        <div id="shop-container">
+            {% for item in shop_items %}
+                <div class="shop-item">
+                    <p class="item-name">{{ item.name }}</p>
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    {% endif %}
+                    <p>{{ item.description }}</p>
+                    <p>Price: {{ item.cost }} coins</p>
+                    <div class = "buy-item-btn" data-item-id={{item.itemId}}>Buy Item</div>
+                </div>
+            {% empty %}
+                <p>No items available in the shop.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

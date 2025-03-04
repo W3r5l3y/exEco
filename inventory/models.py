@@ -9,6 +9,7 @@ class Inventory(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def addItem(self, name, image=None, item_type="regular", quantity=1):
+        print(f"Adding item to inventory: {name}, {quantity}")
         #Add an item to the user inventory, if it already exists add 1 to quantity
         if quantity < 1:
             return False  # Prevent adding zero or negative quantities
@@ -22,7 +23,7 @@ class Inventory(models.Model):
         if not created:
             item.quantity += quantity
             item.save()
-
+        #print(f"Item added to inventory: {item.name}, {item.quantity}") #DEBUG
         return item
 
     def addLootbox(self, lootbox_template, quantity=1):
@@ -41,7 +42,7 @@ class Inventory(models.Model):
         return lootbox
 
     def __str__(self):
-        return f"{self.user.username}'s Inventory"
+        return f"{self.user.email}'s Inventory"
 
 # Item Type - Regular Item or Lootbox
 class ItemType(models.TextChoices):

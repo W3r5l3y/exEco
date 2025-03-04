@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "inventory",
     "garden",
     "forum",
+    "shop",
 ]
 
 MIDDLEWARE = [
