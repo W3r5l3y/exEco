@@ -191,9 +191,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const gardenStateData = Object.fromEntries(gardenState);
         const csrftoken = getCookie('csrftoken');
         const userId = document.querySelector("body").dataset.userId;
+        const tooltip = document.getElementById("save-tooltip");
     
         try {
-            // First, call the endpoint that saves the garden state.
+            // First endpoint: save the garden state.
             const saveResponse = await fetch("/save-garden/", {
                 method: "POST",
                 headers: { 
@@ -205,20 +206,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             const saveData = await saveResponse.json();
             console.log(saveData.message);
     
-            // Then, call the endpoint that renders the image.
+            // Second endpoint: render the garden image.
             const imageResponse = await fetch("/save-garden-as-image/", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
                     "X-CSRFToken": csrftoken
                 },
-                // Send the garden state and user_id if needed.
                 body: JSON.stringify({ state: gardenStateData, user_id: userId }),
             });
             const imageData = await imageResponse.json();
             console.log(imageData.message);
+    
+            // Show success tooltip
+            tooltip.textContent = "Garden saved successfully!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
         } catch (error) {
             console.error("Error saving garden image:", error);
+    
+            // Show error tooltip
+            tooltip.textContent = "Error saving garden!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
         }
     });    
     
