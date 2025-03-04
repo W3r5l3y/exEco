@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .backends import EmailBackend
+from .models import UserPoints, UserCoins, CustomUser
 
 
 class FormsTestCase(TestCase):
@@ -243,3 +244,99 @@ class SettingsViewTestCase(TestCase):
         self.assertRedirects(
             response, reverse("settings") + "?error=Passwords do not match."
         )
+
+"""
+MODELS TESTING - UserPoints and UserCoins
+"""
+
+class UserPointsModelTests(TestCase):
+
+    def setUp(self):
+        # Create a test user
+        self.user = CustomUser.objects.create_user(
+            email="testuser@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123"
+        )
+        self.user_points = UserPoints.objects.create(user=self.user)
+
+    def test_userpoints_creation(self):
+        # Verify that a UserPoints object is created with default values
+        self.assertEqual(self.user_points.bingame_points, 0)
+        self.assertEqual(self.user_points.qrscanner_points, 0)
+        self.assertEqual(self.user_points.transport_points, 0)
+        self.assertEqual(self.user_points.total_points, 0)
+
+    def test_add_bingame_points(self):
+        # Test adding points to bingame category
+        self.user_points.add_bingame_points(5)
+        self.assertEqual(self.user_points.bingame_points, 5)
+        self.assertEqual(self.user_points.total_points, 5)
+
+    def test_add_qrscanner_points(self):
+        # Test adding points to QR scanner category
+        self.user_points.add_qrscanner_points(10)
+        self.assertEqual(self.user_points.qrscanner_points, 10)
+        self.assertEqual(self.user_points.total_points, 10)
+
+    def test_add_transport_points(self):
+        # Test adding points to transport category
+        self.user_points.add_transport_points(3)
+        self.assertEqual(self.user_points.transport_points, 3)
+        self.assertEqual(self.user_points.total_points, 3)
+
+    def test_total_points_calculation(self):
+        # Verify that total points correctly sum up individual categories
+        self.user_points.add_bingame_points(4)
+        self.user_points.add_qrscanner_points(6)
+        self.user_points.add_transport_points(10)
+        self.assertEqual(self.user_points.total_points, 20)
+
+class UserCoinsModelTests(TestCase):
+
+    def setUp(self):
+        # Create a test user
+        self.user = CustomUser.objects.create_user(
+            email="testuser@example.com",
+            first_name="Test",
+            last_name="User",
+            password="password123"
+        )
+        self.user_coins = UserCoins.objects.create(user=self.user)
+
+    def test_usercoins_creation(self):
+        # Verify that a UserCoins object is created with default values
+        self.assertEqual(self.user_coins.coins, 0)
+
+    def test_add_coins(self):
+        # Test adding coins to user's balance
+        self.user_coins.add_coins(10)
+        self.assertEqual(self.user_coins.coins, 10)
+
+    def test_spend_coins_success(self):
+        # Ensure coins are deducted correctly when user has enough balance
+        self.user_coins.add_coins(15)
+        result = self.user_coins.spend_coins(5)
+        self.assertTrue(result)
+        self.assertEqual(self.user_coins.coins, 10)
+
+    def test_spend_coins_failure(self):
+        # Ensure spending fails if balance is insufficient
+        self.user_coins.add_coins(3)
+        result = self.user_coins.spend_coins(5)
+        self.assertFalse(result)
+        self.assertEqual(self.user_coins.coins, 3)  # Coins should remain unchanged
+
+    def test_usercoins_str_representation(self):
+        # Ensure the __str__ method returns the correct format
+        self.user_coins.add_coins(20)
+        expected_str = f"{self.user.id} - 20 coins"
+        self.assertEqual(str(self.user_coins), expected_str)
+
+
+
+
+
+
+

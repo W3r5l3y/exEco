@@ -79,3 +79,23 @@ class UserPoints(models.Model):
     def add_transport_points(self, points=1):
         self.transport_points += points
         self.save()
+        
+class UserCoins(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
+    )
+    coins = models.IntegerField(default=0)
+
+    def add_coins(self, coins=1):
+        self.coins += coins
+        self.save()
+
+    def spend_coins(self, coins=1):
+        if self.coins >= coins:
+            self.coins -= coins
+            self.save()
+            return True
+        return False
+
+    def __str__(self):
+        return f"{self.user.id} - {self.coins} coins"
