@@ -128,12 +128,14 @@ main {
     justify-content: flex-start;
     align-items: flex-start;
     height: 100%;
+    max-height: 400px;
     width: 100%;
     gap: 10px;
     background-color: var(--accessories_colour);
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 20px;
+    overflow-y: auto;
 }
 
 .inventory-item {
@@ -156,9 +158,15 @@ main {
     margin-bottom: 10px;
 }
 
-.inventory-item p {
+/* max 1 line and with ellipses */
+.inventory-item p { 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
     font-size: 14px;
     font-weight: bold;
+    padding: 0 5px;
 }
 
 .inventory-item-selected {
@@ -188,7 +196,19 @@ main {
     margin-bottom: 10px;
 }
 
+/* Inventory Scrollbar Styling */
+#inventory-wrapper::-webkit-scrollbar {
+    width: 10px;
+}
 
+#inventory-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--primary_colour);
+    border-radius: 10px;
+}
+
+#inventory-wrapper::-webkit-scrollbar-track {
+    background-color: var(--accessories_colour);
+}
 
 /* --------------------------------------------------
     Responsive Styling
