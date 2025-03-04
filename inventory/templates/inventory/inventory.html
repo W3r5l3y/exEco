@@ -16,6 +16,11 @@
 <body>
     <main>
         <h1 id="inventory-header">{{user.first_name}}'s Inventory</h1>
+
+        <div id="highlight-buttons">
+            <button id="toggle-regular" class="toggle-button">Highlight Normal Items</button>
+            <button id="toggle-lootbox" class="toggle-button">Highlight Lootboxes</button>
+        </div>
         
         <div id = "inventory-container">
             {% include 'inventory/partials/inventory_list.html' %}
