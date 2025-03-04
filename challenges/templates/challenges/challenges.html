@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/challenges.css' %}">
+    <script src="{% static 'js/challenges.js' %}" defer></script>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <main>
+        <h1>Challenges</h1>
+        <section id="challenges-container">   
+            <div id="daily-challenges">
+                <h2>Daily Challenges</h2>
+                <!-- Daily challenges will be inserted here by JavaScript -->
+            </div>
+            <div id="weekly-challenges">
+                <h2>Weekly Challenges</h2>
+                <!-- Weekly challenges will be inserted here by JavaScript -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>
