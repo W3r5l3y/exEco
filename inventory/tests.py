@@ -68,6 +68,15 @@ class InventoryModelTests(TestCase):
         item.quantity = 0
         item.save()
         self.assertEqual(InventoryItem.objects.filter(name="Wilted Leaf").count(), 0)
+    
+    def test_addItem_method(self):
+        #Check using the '.addItem()' method to add an item to inventory
+        item = self.inventory.addItem(name="Rose", quantity=1)
+        self.assertIsNotNone(item)
+        self.assertEqual(item.name, "Rose")
+        self.assertEqual(item.quantity, 1)
+        self.assertEqual(item.inventory, self.inventory)
+        self.assertEqual(self.inventory.items.count(), 1)
         
 class LootboxModelTests(TestCase):
 

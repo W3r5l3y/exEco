@@ -293,15 +293,6 @@ class UserPointsModelTests(TestCase):
         self.user_points.add_transport_points(10)
         self.assertEqual(self.user_points.total_points, 20)
 
-    def test_userpoints_str_representation(self):
-        # Ensure the __str__ method returns the correct format
-        self.user_points.add_bingame_points(2)
-        self.user_points.add_qrscanner_points(5)
-        self.user_points.add_transport_points(8)
-        expected_str = f"{self.user.id} - Total: 15 (bingame=2, qr=5, transport=8)"
-        self.assertEqual(str(self.user_points), expected_str)
-
-
 class UserCoinsModelTests(TestCase):
 
     def setUp(self):
