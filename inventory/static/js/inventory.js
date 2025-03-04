@@ -1,4 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Toggle highlight for normal items
+    const toggleRegularBtn = document.getElementById("toggle-regular");
+    toggleRegularBtn.addEventListener("click", function() {
+        this.classList.toggle("active");
+
+        // Get all inventory items
+        const inventoryItems = document.querySelectorAll(".inventory-slot");
+
+        // Filter out regular items
+        const regularItems = Array.from(inventoryItems).filter(item => {
+            return item.getAttribute("data-type") === "regular";
+        });
+
+        regularItems.forEach(item => {
+        item.classList.toggle("highlighted");
+        });
+    });
+
+    // Toggle highlight for lootboxes
+    const toggleLootboxBtn = document.getElementById("toggle-lootbox");
+    toggleLootboxBtn.addEventListener("click", function() {
+        this.classList.toggle("active");
+        
+        // Get all inventory items
+        const inventoryItems = document.querySelectorAll(".inventory-slot");
+
+        // Filter out lootboxes using
+        const lootboxItems = Array.from(inventoryItems).filter(item => {
+            return item.getAttribute("data-type") === "lootbox";
+        });
+
+        lootboxItems.forEach(item => {
+        item.classList.toggle("highlighted");
+        });
+    });
+
     // Function to open a lootbox
     function openLootbox(lootboxId, button) {
         fetch(`/open-lootbox/${lootboxId}/`, {
