@@ -73,6 +73,17 @@ docs/_build/
 
 # PyBuilder
 .pybuilder/
+
+# Media files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+*.svg
+*.webp
 target/
 
 # Jupyter Notebook

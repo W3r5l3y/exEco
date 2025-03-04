@@ -47,24 +47,25 @@
 
         <section class="game-dashboard">
             <div class="game-card-wrapper">
-                <a href="{% url 'qrscanner' %}" class="game-card" id="game-card-1">
+                <a href="{% url 'qrscanner' %}" class="game-card" id="game-card-1"> <!-- QR Scanner -->
                     <h2>QR Scanner</h2>
                     <img src="{% static 'img/qr-logo.png' %}" alt="QR Scanner">
                 </a>
 
-                <a href="{% url 'bingame' %}" class="game-card" id="game-card-2">
+                <a href="{% url 'bingame' %}" class="game-card" id="game-card-2"> <!-- Bin game -->
                     <h2>Bin Game</h2>
                     <img src="{% static 'img/BinGame_icon.png' %}" alt="Bin game">
                 </a>
+                
                 <a href="{% url 'transport' %}" class="game-card" id="game-card-3"> <!-- Transport game -->
                     <h2>Transport</h2>
                     <img src="{% static 'img/transport-game-icon.png' %}" alt="Transport">
                 </a>
 
-                <div class="game-card" id="game-card-4">
-                    <h2>Game 4</h2>
-                    <img src="{% static 'img/blank-card.png' %}" alt="Game 4">
-                </div>
+                <a href="{% url 'forum_home' %}" class="game-card" id="game-card-4"> <!-- Forum -->
+                    <h2>Forum</h2>
+                    <img src="{% static 'img/blank-card.png' %}" alt="Forum">
+                </a>
                 <!-- Add more game cards here -->
             </div>
         </section>

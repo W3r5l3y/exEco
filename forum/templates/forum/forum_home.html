@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Forum</h1>
+    <a href="{% url 'create_post' %}">Create a new post</a>
+    <div id="posts">
+        {% for post in posts %}
+            <div class="post">
+                <h2>{{ post.user.email }}</h2>
+                <img src="{{ post.image.url }}" alt="Post Image">
+                <p>{{ post.description }}</p>
+                <p>Likes: {{ post.likes }}</p>
+                <form action="{% url 'like_post' post.post_id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Like</button>
+                </form>
+                <form action="{% url 'report_post' post.post_id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Report</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
