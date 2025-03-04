@@ -88,6 +88,33 @@ main {
     animation: flash 0.5s infinite;
 }
 
+/* Save Button and Tooltip Styling */
+.save-button-container {
+    position: relative;
+    display: inline-block;
+}
+
+#save-tooltip {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 2px solid var(--primary_colour);
+    color: var(--primary_colour);
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+#save-tooltip.show {
+    opacity: 1;
+}
+
 #save-garden-button {
     background-color: var(--primary_colour);
     color: var(--neutral_colour);
