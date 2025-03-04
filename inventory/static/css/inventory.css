@@ -32,6 +32,30 @@ main {
 }
 
 /* --------------------------------------------------
+    Toggle Button Styles
+-------------------------------------------------- */
+
+.toggle-button {
+    padding: 10px 20px;
+    background-color: var(--display_color);
+    color: var(--neutral_colour);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.toggle-button.active {
+    background-color: var(--accessories_colour);
+}
+
+.highlighted {
+    scale: 1.05;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    background-color: var(--accessories_colour);
+}
+
+/* --------------------------------------------------
     Inventory Styles
 -------------------------------------------------- */
 
@@ -66,6 +90,7 @@ main {
     border-radius: 10px;
     box-shadow: 0px 0 10px rgba(0, 0, 0, 0.3);
     padding: 10px;
+    transition: all 0.2s ease-in-out;
 }
 
 .item-name {
