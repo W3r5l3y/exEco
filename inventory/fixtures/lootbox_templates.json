@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "name": "Bingame Lootbox",
-            "lootbox_image": "static/img/lootboxes/bingame_lootbox.png"
+            "lootbox_image": "img/lootboxes/bingame_lootbox.png"
         }
     },
     {
@@ -12,7 +12,7 @@
         "pk": 2,
         "fields": {
             "name": "QR Scanner Lootbox",
-            "lootbox_image": "static/img/lootboxes/qrscanner_lootbox.png"
+            "lootbox_image": "img/lootboxes/qrscanner_lootbox.png"
         }
     },
     {
@@ -20,7 +20,7 @@
         "pk": 3,
         "fields": {
             "name": "Transport Lootbox",
-            "lootbox_image": "static/img/lootboxes/transport_lootbox.png"
+            "lootbox_image": "img/lootboxes/transport_lootbox.png"
         }
     }
 ]

@@ -4,6 +4,8 @@ from django.contrib import messages
 from .models import Inventory, InventoryItem, LootboxContents
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+
+from django.templatetags.static import static
 # Create your views here.
 
 @login_required
@@ -57,7 +59,13 @@ def open_lootbox(request, lootbox_id):
     
     print(f"Opening lootbox: {lootbox.name}, Selected Item: {selected_item.name}") #DEBUG
     #Add the selected item to users inventory
-    inventory.addItem(selected_item.name, selected_item.image, selected_item.description)
+    inventory.addItem(
+        name=selected_item.name, 
+        image=selected_item.image, 
+        item_type="regular",
+        description=selected_item.description,
+        quantity=1
+        )
 
     #Remove the lootbox after its opened - the save() change on models means can just minus one from quantity and it will delete if it goes to 0
     lootbox.quantity -= 1
@@ -67,8 +75,8 @@ def open_lootbox(request, lootbox_id):
         "success": True,
         "item_won": {
             "name": selected_item.name,
-            "image": selected_item.image.url if selected_item.image else None,
-            "description": selected_item.description
+            "image": f"{selected_item.image}",
+            "item_type": "regular"
         },
         "lootbox_removed": lootbox.quantity == 0  # Tell frontend if lootbox is gone
     })

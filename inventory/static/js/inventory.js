@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Show the lootbox result
             popupTitle.innerText = `${item.name}`;
             if (item.image) {
-                popupImage.src = item.image;
+                popupImage.src = `/static/${item.image}`; //`/static/${itemData.item_image}`;
                 popupImage.alt = item.name;
                 popupImage.style.display = "flex";
             } else {

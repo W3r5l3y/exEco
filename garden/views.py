@@ -57,7 +57,7 @@ def load_inventory(request):
             items_list.append({
                 # Format the id so that it matches the format used in garden state.
                 'id': f"inventory-item-{item.id}",
-                'src': item.image.url,   # Use .url to serve the image
+                'src': f"img/{item.item_image}",##item.image.url,   # Use .url to serve the image
                 'name': item.name,
                 'quantity': item.quantity,
                 'item_type': item.item_type,
@@ -154,7 +154,7 @@ def save_garden_as_image(request):
 
     file_name = f"garden_state_user{user_id}.png"
     output_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "gardens", file_name)
-
+    #TODO - fix so it goes to media
     try:
         pygame.image.save(surface, output_path)
         print(f"Garden image saved to {output_path}")
@@ -173,5 +173,5 @@ def fetch_user_garden_image(request):
     user_id = request.user.id
     file_name = f"garden_state_user{user_id}.png"
     # Assuming your static files are served from /static/...
-    image_url = f"/static/img/gardens/{file_name}"
+    image_url = f"/static/img/gardens/{file_name}" #TODO - Check it loads media
     return JsonResponse({"image_url": image_url})

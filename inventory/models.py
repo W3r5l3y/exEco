@@ -8,7 +8,7 @@ class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    def addItem(self, name, image=None, item_type="regular", quantity=1):
+    def addItem(self, name, image=None, item_type="regular", description=None, quantity=1):
         print(f"Adding item to inventory: {name}, {quantity}")
         #Add an item to the user inventory, if it already exists add 1 to quantity
         if quantity < 1:
@@ -17,7 +17,7 @@ class Inventory(models.Model):
         item, created = InventoryItem.objects.get_or_create(
             inventory=self,
             name=name,
-            defaults={"image": image, "item_type": item_type, "quantity": quantity}
+            defaults={"image": image, "item_type": item_type, "description": description, "quantity": quantity}
         )
         
         if not created:
@@ -53,7 +53,7 @@ class ItemType(models.TextChoices):
 class LootboxTemplate(models.Model):
     lootbox_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
-    lootbox_image = models.ImageField(upload_to="static/img/lootboxes/")
+    lootbox_image = models.CharField(max_length=255)
     
     def __str__(self):
         return self.name
@@ -62,7 +62,7 @@ class LootboxTemplate(models.Model):
 class LootboxItem(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to="static/img/items/")
+    image = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
@@ -80,9 +80,9 @@ class LootboxContents(models.Model):
 class InventoryItem(models.Model):
     inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name="items")
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
     item_type = models.CharField(max_length=10, choices=ItemType.choices, default=ItemType.REGULAR)
-    image = models.ImageField(upload_to="static/img/items/")
+    description = models.TextField(blank=True, null=True)
+    image = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField(default=1)
 
     # If it's a lootbox, link it to a LootboxTemplate
