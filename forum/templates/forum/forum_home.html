@@ -1,30 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum</title>
+    <title>Forum Home</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/forum_home.css' %}">
 </head>
 <body>
-    <h1>Forum</h1>
-    <a href="{% url 'create_post' %}">Create a new post</a>
-    <div id="posts">
-        {% for post in posts %}
-            <div class="post">
-                <h2>{{ post.user.email }}</h2>
-                <img src="{{ post.image.url }}" alt="Post Image">
-                <p>{{ post.description }}</p>
-                <p>Likes: {{ post.likes }}</p>
-                <form action="{% url 'like_post' post.post_id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Like</button>
-                </form>
-                <form action="{% url 'report_post' post.post_id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Report</button>
-                </form>
-            </div>
-        {% endfor %}
+    <main>
+        <div id="posts">
+
+        </div>
+        <div id="posts" class="posts">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-top">
+                        <h3>{{ post.user.email }}</h3>
+                        <div class="like-count-container">
+                            <div class="like-count">
+                                <p class="like-count-text">{{ post.likes }}</p>
+                                <img class="like-count-image" src="{% static 'img/heart.svg' %}" alt="like_count">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="post-image-container">
+                        <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
+                    </div>
+                    <div class="post-bottom">
+                        <div class="post-description">
+                            <h3 class="post-description-text">{{ post.description }}</h3>
+                        </div>
+                        <div class="post-actions">
+                            <form action="{% url 'like_post' post.post_id %}" method="post">
+                                {% csrf_token %}
+                                <button class="post-action-button" type="submit"><img alt="like-post" class="post-action-img" src="{% static 'img/like.svg' %}"></button>
+                            </form>
+                            <form action="{% url 'report_post' post.post_id %}" method="post">
+                                {% csrf_token %}
+                                <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+    <div class="bottom-navbar-container">
+        <div class="bottom-navbar">
+            <a href="#"><img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/home_selected.svg' %}" alt="home"></a>
+            <a href="#"><img class="bottom-navbar-image" src="{% static 'img/archive.svg' %}" alt="My posts"></a>
+            <a href="{% url 'create_post' %}"><img class="bottom-navbar-image" src="{% static 'img/new_post.svg' %}" alt="New Post"></a>
+        </div>
     </div>
+
 </body>
 </html>
+
