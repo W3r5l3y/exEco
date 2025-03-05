@@ -1,14 +1,9 @@
-/*:root {
-    --primary_colour: #003b3c;
-    --accessories_colour: #00c592;
-    --display_color: #002727;
-    --neutral_colour: #fff;
-}*/
+@import url("/static/css/colours.css");
 
-/*
- * Positioning
- */
- * {
+/* --------------------------------------------------
+    General Positioning
+-------------------------------------------------- */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -19,81 +14,158 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: var(--neutral-colour);
+    background-color: var(--neutral-color);
+    overflow: auto; /* Allow scrolling */
 }
 
-#shop-container {
+main {
     flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
     width: 100%;
-    padding: 20px;
+    height: 100%;
+    padding-top: 140px;
+    background-image: url(../img/shop-stall.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; /* Keep the background positioned */
 }
 
-/*
- * Styling
- */
-#shop-header {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary-colour);
+/* --------------------------------------------------
+    Shop Items Grid
+-------------------------------------------------- */
+.shop-items-grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     padding: 20px;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    max-width: 800px;
+    height: 300px;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .shop-item {
-    width: 200px;
-    padding: 15px;
-    background-color: white;
-    border: 3px solid var(--secondary-colour);
+    display: flex;
+    align-items: center;
+    width: 130px;
+    height: 130px;
+    background-color: #fff;
     border-radius: 10px;
-    text-align: center;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
+}
+
+.left-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.shop-item img {
-    width: 100px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 5px;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.shop-item p {
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-/*
- * Buttons
- */
-.buy-item-btn {
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     padding: 10px;
-    background: var(--primary-colour);
-    color: var(--neutral-colour);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-left: 5px;
+}
+
+.shop-item-img {
+    width: 75px;
+    height: auto;
+}
+
+.shop-item-cost-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-item-cost {
+    font-size: 1.5rem;
     font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease-in-out;
+    color: #000;
 }
 
-/*
- * Dynamic Styling
- */
-.buy-item-btn:hover {
-    background: linear-gradient(45deg, var(--hover-colour), #d84315);
+.shop-item-cost-container img {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+}
+
+/* Initially hidden right content */
+.right-content {
+    flex: 0 0 0;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: flex 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* Trigger expansion only when left-content is hovered */
+.shop-item:has(.left-content:hover) {
+    width: 300px;
     transform: scale(1.05);
-    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 5;
 }
 
-.buy-item-btn:active {
-    transform: scale(0.95);
-    box-shadow: none;
+.shop-item:has(.left-content:hover) .right-content {
+    flex: 1;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.shop-item-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.shop-item-desc {
+    font-size: 1rem;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+/* --------------------------------------------------
+    Scroll Button
+-------------------------------------------------- */
+.scroll-btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 120px;
+    width: 60px;
+    bottom: 50%;
+    right: 10%;
+    transform: translateY(50%);
+    gap: 10px;
+    background-color: #003b3c;
+    border-radius: 10px;
+}
+
+.scroll-btn {
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 10;
+    background-color: transparent;
+}
+
+.scroll-btn img {
+    width: 50px;
+    height: auto;
 }
