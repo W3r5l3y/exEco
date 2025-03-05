@@ -5,7 +5,7 @@
         "fields": {
             "name": "Grey Bin",
             "description": "Bad grey bin",
-            "image": "static/img/items/grey_bin.png"
+            "image": "img/items/grey_bin.png"
         }
     },
     {
@@ -25,7 +25,7 @@
         "fields": {
             "name": "Gold Bin",
             "description": "A awesome gold bin",
-            "image": "static/img/items/gold_bin.png"
+            "image": "img/items/gold_bin.png"
         }
     },
     {
@@ -45,7 +45,7 @@
         "fields": {
             "name": "Bad qr code",
             "description": "Not good :(",
-            "image": "static/img/items/bad_qr.png"
+            "image": "img/items/bad_qr.png"
         }
     },
     {
@@ -65,7 +65,7 @@
         "fields": {
             "name": "Good qr code",
             "description": " good :)",
-            "image": "static/img/items/good_qr.png"
+            "image": "img/items/good_qr.png"
         }
     },
     {
@@ -85,7 +85,7 @@
         "fields": {
             "name": "Bad transport item",
             "description": "Not good :(",
-            "image": "static/img/items/bad_transport.png"
+            "image": "img/items/bad_transport.png"
         }
     },
     {
@@ -105,7 +105,7 @@
         "fields": {
             "name": "Good transport item",
             "description": "good :)",
-            "image": "static/img/items/good_transport.png"
+            "image": "img/items/good_transport.png"
         }
     },
     {

@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import garden_view, save_garden, load_garden, load_inventory, save_garden_as_image, fetch_user_garden_image
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("garden/", garden_view, name="garden"),
@@ -9,3 +11,6 @@ urlpatterns = [
     path("save-garden-as-image/", save_garden_as_image, name="save_garden_as_image"),
     path("fetch-user-garden-image/", fetch_user_garden_image, name="fetch_user_garden_image"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

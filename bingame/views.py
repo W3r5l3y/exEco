@@ -20,6 +20,7 @@ def game_view(request):
     random_items = sample(all_items, min(6, len(all_items)))
     # Get all bins from the database
     bins = Bins.objects.all()
+    print("DEBUG 123 - ", random_items)
     return render(
         request, "bingame/bingame.html", {"items": random_items, "bins": bins}
     )
@@ -65,6 +66,7 @@ def update_leaderboard(request):
                 {
                     "status": "success",
                     "new_score": UserPoints.bingame_points,
+                    "lootboxes_to_reward": lootboxes_to_reward,
                 }
             )
         except Exception as e:
@@ -98,7 +100,7 @@ def get_bingame_leaderboard(request):
 def fetch_random_items(request):
     all_items = list(Items.objects.all())
     random_items = sample(all_items, min(6, len(all_items)))
-
+    print("DEBUG _ RANDOM ITEMS: ", random_items)
     # Prepare the data to be sent
     item_data = []
     for item in random_items:
@@ -107,7 +109,7 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image_url": item.item_image.url,
+                "item_image": f"{item.item_image}",
             }
         )
 

@@ -265,6 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.status === 'success'){
                 console.log('New total score:', data.new_score, score);
+                
+                // Show lootboxes awarded
+                if (data.lootboxes_awarded > 0) {
+                    showlootboxesAwarded(data.lootboxes_awarded);
+                }
             } else{
                 console.error('error updating leaderboard');
             }
@@ -314,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const data = await response.json();
             const items = data.items; 
+            console.log('New random items:', items);
     
             //Remove the items
             const itemsContainer = document.getElementById('items-container');
@@ -328,7 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemDiv.setAttribute('data-correct-bin-id', itemData.bin_id);
     
                 const img = document.createElement('img');
-                img.src = itemData.item_image_url;
+                console.log("ITEM IMAGE: ", itemData.item_image)
+                img.src = `/static/${itemData.item_image}`;
                 img.alt = itemData.item_name;
                 const itemName = document.createElement('p');
                 itemName.textContent = itemData.item_name;
@@ -345,6 +352,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --------------------------------------------------
+    // Lootbox popup
+    // --------------------------------------------------
+
+    function showlootboxesAwarded(lootboxesAwarded) {
+        const lootboxPopup = document.getElementById('lootbox-popup');
+        lootboxPopup.style.display = 'block';
+    
+        const lootboxCountElem = document.getElementById('lootbox-count');
+        lootboxCountElem.textContent = `+${lootboxesAwarded} lootboxes!`;
+    
+        setTimeout(() => {
+            lootboxPopup.style.display = 'none';
+        }, 3000);
+    }
     // --------------------------------------------------
     // Initial setup
     // --------------------------------------------------
