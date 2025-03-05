@@ -41,7 +41,13 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-#### **5. Run the Development Server**
+#### **5. Load Fixtures
+
+````sh
+python manage.py load_fixtures
+````
+
+#### **6. Run the Development Server**
 
 ```sh
 python manage.py runserver

@@ -158,15 +158,6 @@ STRAVA_CLIENT_ID = 149186
 STRAVA_CLIENT_SECRET = "bca1d6a01353f0c0197a8aed8f331db3aebd37d1"
 REDIRECT_URI = "http://localhost:8000/strava-callback/"
 
-
-TESTING = "test" in sys.argv
-
-# Skip migrations for regular tests, but apply them for migration tests
-if TESTING:
-    MIGRATION_MODULES = {
-        "bingame": None,  # Disable migrations for bingame during regular tests
-    }
-
 # Media settings
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
