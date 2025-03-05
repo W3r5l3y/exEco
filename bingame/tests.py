@@ -22,63 +22,63 @@ class BingameTestCase(TestCase):
         #Create the bins & items - 7 items in total, as it ensures the test getting 6 random items works
         self.bin1 = Bins.objects.create(
             bin_name="Plastic",
-            bin_image="static/img/bins/plastic.png"
+            bin_image="/img/bins/plastic.png"
         )
         
         self.bin2 = Bins.objects.create(
             bin_name="Glass",
-            bin_image="static/img/bins/glass.png"
+            bin_image="/img/bins/glass.png"
         )
         
         self.bin3 = Bins.objects.create(
             bin_name="Card and Paper",
-            bin_image="static/img/bins/card_paper.png"
+            bin_image="/img/bins/card_paper.png"
         )
         
         self.bin4 = Bins.objects.create(
             bin_name="Tins and Cans",
-            bin_image="static/img/bins/tins_cans.png"
+            bin_image="/img/bins/tins_cans.png"
         )
         
         self.item1 = Items.objects.create(
             item_name="Plastic Bottle",
-            item_image="static/img/items/plastic_bottle.png",
+            item_image="/img/items/plastic_bottle.png",
             bin_id=self.bin1
         )
         
         self.item2 = Items.objects.create(
             item_name="Glass Bottle",
-            item_image="static/img/items/glass_bottle.png",
+            item_image="/img/items/glass_bottle.png",
             bin_id=self.bin2
         )
         
         self.item3 = Items.objects.create(
             item_name="Cardboard",
-            item_image="static/img/items/cardboard.png",
+            item_image="/img/items/cardboard.png",
             bin_id=self.bin3
         )
         
         self.item4 = Items.objects.create(
             item_name="Chip Packet",
-            item_image="static/img/items/chip_packet.png",
+            item_image="/img/items/chip_packet.png",
             bin_id=self.bin1
         )
         
         self.item5 = Items.objects.create(
             item_name="Drink Can",
-            item_image="static/img/items/drink_can.png",
+            item_image="/img/items/drink_can.png",
             bin_id=self.bin4
         )
         
         self.item6 = Items.objects.create(
             item_name="Envelope",
-            item_image="static/img/items/envelope.png",
+            item_image="/img/items/envelope.png",
             bin_id=self.bin3
         )
         
         self.item7 = Items.objects.create(
             item_name="Broken mirror",
-            item_image="static/img/items/broken_mirror.png",
+            item_image="/img/items/broken_mirror.png",
             bin_id=self.bin2
         )
     
@@ -214,7 +214,7 @@ class BingameTestCase(TestCase):
             self.assertIn('id', item)
             self.assertIn('bin_id', item)
             self.assertIn('item_name', item)
-            self.assertIn('item_image_url', item)
+            self.assertIn('item_image', item)
     
     def test_populate_bins_and_items(self):
         pass
