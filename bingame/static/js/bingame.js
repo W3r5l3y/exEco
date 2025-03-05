@@ -260,17 +260,21 @@ document.addEventListener('DOMContentLoaded', () => {
             body: `user_score=${tempScore}&csrfmiddlewaretoken=${getCSRFToken()}`,
         })
         .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
             if (data.status === 'success'){
                 console.log('New total score:', data.new_score, score);
-                
+                console.log('LOOTBOX TO REWARD',data.lootboxes_to_reward)
                 // Show lootboxes awarded
-                if (data.lootboxes_awarded > 0) {
-                    showlootboxesAwarded(data.lootboxes_awarded);
+                if (data.lootboxes_to_reward > 0) {
+                    showlootboxesAwarded(data.lootboxes_to_reward);
                 }
             } else{
+                console.log("ERROR UPDATING LEADERBOARD: ", data, data.lootboxes_to_reward)
                 console.error('error updating leaderboard');
             }
         })
@@ -357,15 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------
 
     function showlootboxesAwarded(lootboxesAwarded) {
-        const lootboxPopup = document.getElementById('lootbox-popup');
-        lootboxPopup.style.display = 'block';
-    
-        const lootboxCountElem = document.getElementById('lootbox-count');
-        lootboxCountElem.textContent = `+${lootboxesAwarded} lootboxes!`;
-    
-        setTimeout(() => {
-            lootboxPopup.style.display = 'none';
-        }, 3000);
+        alert("You have been awarded " + lootboxesAwarded + " lootboxes!");
+        // TODO - Add visual popup for lootboxes
     }
     // --------------------------------------------------
     // Initial setup

@@ -65,7 +65,7 @@ def update_leaderboard(request):
             return JsonResponse(
                 {
                     "status": "success",
-                    "new_score": UserPoints.bingame_points,
+                    "new_score": user_points.bingame_points,
                     "lootboxes_to_reward": lootboxes_to_reward,
                 }
             )
