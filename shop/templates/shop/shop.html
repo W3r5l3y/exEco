@@ -4,32 +4,361 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
-    
+
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
-    
+
     {% load static %}
-    
+
     <link rel="stylesheet" href="{% static 'css/shop.css' %}">
     <script src="{% static 'js/shop.js' %}" defer></script>
 </head>
 <body>
     <main>
-        <h1>Shop</h1>
-        <div id="shop-container">
+        <!-- <h1>Shop</h1> -->
+        
+        <!-- Grid container for shop items -->
+        <div class="shop-items-grid">
+            <!-- Shop item template -->
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+            <div class="shop-item" data-item-id="1">
+                <div class="left-content">
+                    <img class="shop-item-img" src="{% static 'img/coin.png' %}" alt="Coin">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+                <div class="right-content">
+                    <p class="shop-item-name">Coin</p>
+                    <p class="shop-item-desc">A shiny coin.</p>
+                </div>
+            </div>
+
+
+
             {% for item in shop_items %}
-                <div class="shop-item">
-                    <p class="item-name">{{ item.name }}</p>
-                    {% if item.image %}
-                        <img src="{% static item.image %}" alt="{{ item.name }}">
-                    {% endif %}
-                    <p>{{ item.description }}</p>
-                    <p>Price: {{ item.cost }} coins</p>
-                    <div class = "buy-item-btn" data-item-id={{item.itemId}}>Buy Item</div>
+                <div class="shop-item" data-item-id="{{ item.itemId }}">
+                    <div class="left-content">
+                        {% if item.image %}
+                            <img class="shop-item-img" src="{% static item.image %}" alt="{{ item.name }}">
+                        {% endif %}
+                        <div class="shop-item-cost-container">
+                            <p class="shop-item-cost">{{ item.cost }}</p>
+                            <img src="{% static 'img/coin.png' %}" alt="Coin">
+                        </div>
+                    </div>
+                    <div class="right-content">
+                        <p class="shop-item-name">{{ item.name }}</p>
+                        <p class="shop-item-desc">{{ item.description }}</p>
+                    </div>
                 </div>
             {% empty %}
                 <p>No items available in the shop.</p>
             {% endfor %}
+        </div>
+        
+        <div class="scroll-btn-container">
+            <button id="scroll-up-btn" class="scroll-btn"><img src="../../static/img/shop-up.png"></button>
+            <button id="scroll-down-btn" class="scroll-btn"><img src="../../static/img/shop-down.png"></button>
         </div>
     </main>
 </body>
