@@ -61,6 +61,10 @@ The app will be available at **http://127.0.0.1:8000/**.
 
 ```
 exEco/
+│── 
+│── 
+│── 
+│── 
 │── manage.py        # Django project management script
 │── exEco/           # Project settings and configuration
 │── accounts/        # User authentication (if applicable)

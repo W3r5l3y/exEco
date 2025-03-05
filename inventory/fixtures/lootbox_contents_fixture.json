@@ -1,51 +1,48 @@
 [
+
     {
         "model": "inventory.lootboxitem",
         "pk": 1,
         "fields": {
-            "name": "Grey Bin",
-            "description": "Bad grey bin",
-            "image": "img/items/grey_bin.png"
+            "name": "Golden Carrot",
+            "description": "The mystical golden carrot",
+            "image": "img/items/qrscanner_1.png"
         }
     },
     {
         "model": "inventory.lootboxcontents",
         "pk": 1,
         "fields": {
-            "lootbox_template": 1,  
-            "item": 1,  
-            "probability": 0.30  
+            "lootbox_template": 2,
+            "item": 1,
+            "probability": 0.01
         }
     },
-
-
     {
         "model": "inventory.lootboxitem",
         "pk": 2,
         "fields": {
-            "name": "Gold Bin",
-            "description": "A awesome gold bin",
-            "image": "img/items/gold_bin.png"
+            "name": "Weeping willow",
+            "description": "Mysterious willow ",
+            "image": "img/items/qrscanner_2.png"
         }
     },
     {
         "model": "inventory.lootboxcontents",
         "pk": 2,
         "fields": {
-            "lootbox_template": 1,
+            "lootbox_template": 2,
             "item": 2,
-            "probability": 0.70
+            "probability": 0.08
         }
     },
-
-
     {
         "model": "inventory.lootboxitem",
         "pk": 3,
         "fields": {
-            "name": "Bad qr code",
-            "description": "Not good :(",
-            "image": "img/items/bad_qr.png"
+            "name": "Yellow flower",
+            "description": "The yellow reflects sunlight",
+            "image": "img/items/qrscanner_3.png"
         }
     },
     {
@@ -54,18 +51,16 @@
         "fields": {
             "lootbox_template": 2,
             "item": 3,
-            "probability": 0.70
+            "probability": 0.08
         }
     },
-
-
     {
         "model": "inventory.lootboxitem",
         "pk": 4,
         "fields": {
-            "name": "Good qr code",
-            "description": " good :)",
-            "image": "img/items/good_qr.png"
+            "name": "Purple flower",
+            "description": "The brigh purple brings out the beauty of the garden",
+            "image": "img/items/qrscanner_4.png"
         }
     },
     {
@@ -74,47 +69,314 @@
         "fields": {
             "lootbox_template": 2,
             "item": 4,
-            "probability": 0.30
+            "probability": 0.08
         }
     },
-
-
     {
         "model": "inventory.lootboxitem",
         "pk": 5,
         "fields": {
-            "name": "Bad transport item",
-            "description": "Not good :(",
-            "image": "img/items/bad_transport.png"
+            "name": "Blue tulip",
+            "description": "A brilliant blue tulip",
+            "image": "img/items/qrscanner_5.png"
         }
     },
     {
         "model": "inventory.lootboxcontents",
         "pk": 5,
         "fields": {
-            "lootbox_template": 3,
+            "lootbox_template": 2,
             "item": 5,
-            "probability": 0.90
+            "probability": 0.08
         }
     },
-
-
     {
         "model": "inventory.lootboxitem",
         "pk": 6,
         "fields": {
-            "name": "Good transport item",
-            "description": "good :)",
-            "image": "img/items/good_transport.png"
+            "name": "Yellow tulip",
+            "description": "A bright yellow tulip",
+            "image": "img/items/qrscanner_6.png"
         }
     },
     {
         "model": "inventory.lootboxcontents",
         "pk": 6,
         "fields": {
-            "lootbox_template": 3,
+            "lootbox_template": 2,
             "item": 6,
-            "probability": 0.10
+            "probability": 0.11
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 7,
+        "fields": {
+            "name": "Purple tulip",
+            "description": "Little purple tulip",
+            "image": "img/items/qrscanner_7.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 7,
+        "fields": {
+            "lootbox_template": 2,
+            "item": 7,
+            "probability": 0.11
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 8,
+        "fields": {
+            "name": "Leaf scanner",
+            "description": "Two leafy leafs",
+            "image": "img/items/qrscanner_8.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 8,
+        "fields": {
+            "lootbox_template": 2,
+            "item": 8,
+            "probability": 0.15
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 9,
+        "fields": {
+            "name": "Four leaf clover",
+            "description": "Mysterical quadruple",
+            "image": "img/items/qrscanner_9.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 9,
+        "fields": {
+            "lootbox_template": 2,
+            "item": 9,
+            "probability": 0.15
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 10,
+        "fields": {
+            "name": "Rubbish Carrot",
+            "description": "Rubbish carrot not even golden :(",
+            "image": "img/items/qrscanner_10.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 10,
+        "fields": {
+            "lootbox_template": 2,
+            "item": 10,
+            "probability": 0.15
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 11,
+        "fields": {
+            "name": "The golden croc",
+            "description": "The most luxourious shoe-ware out there.",
+            "image": "img/items/transport_1.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 11,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 11,
+            "probability": 0.01
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 12,
+        "fields": {
+            "name": "Snake boots",
+            "description": "The illusive snake plant held within the mighty shoe!",
+            "image": "img/items/transport_2.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 12,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 12,
+            "probability": 0.08
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 13,
+        "fields": {
+            "name": "Rordans",
+            "description": "Fresh as hell, the Rordans are the best shoe out there!",
+            "image": "img/items/transport_3.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 13,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 13,
+            "probability": 0.08
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 14,
+        "fields": {
+            "name": "The blues",
+            "description": "Brings a casual look to the long grass equation ;)",
+            "image": "img/items/transport_4.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 14,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 14,
+            "probability": 0.08
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 15,
+        "fields": {
+            "name": "High end plantware",
+            "description": "For a more refined garden",
+            "image": "img/items/transport_5.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 15,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 15,
+            "probability": 0.08
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 16,
+        "fields": {
+            "name": "Boots",
+            "description": "They get the work done",
+            "image": "img/items/transport_6.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 16,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 16,
+            "probability": 0.11
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 17,
+        "fields": {
+            "name": "School shoes",
+            "description": "A plant sprouting from your year 4 school shoes.",
+            "image": "img/items/transport_7.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 17,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 17,
+            "probability": 0.11
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 18,
+        "fields": {
+            "name": "Magic sandals",
+            "description": "They provide a bare bone look into the plant world",
+            "image": "img/items/transport_8.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 18,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 18,
+            "probability": 0.15
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 19,
+        "fields": {
+            "name": "Converse",
+            "description": "A casual look to the garden world",
+            "image": "img/items/transport_9.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 19,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 19,
+            "probability": 0.15
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 20,
+        "fields": {
+            "name": "Wellington boots",
+            "description": "For the dirty work.",
+            "image": "img/items/transport_10.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 20,
+        "fields": {
+            "lootbox_template": 3,
+            "item": 20,
+            "probability": 0.15
+        }
+    },
+
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 21,
+        "fields": {
+            "name": "Grey Bin",
+            "description": "Bad grey bin",
+            "image": "img/items/grey_bin.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 21,
+        "fields": {
+            "lootbox_template": 1,  
+            "item": 15,  
+            "probability": 0.30  
         }
     }
 ]
