@@ -5,7 +5,7 @@
         "fields": {
             "name": "Slippery",
             "description": "Restores health.",
-            "image": "static/img/basic_ahh_plant.png",
+            "image": "img/basic_ahh_plant.png",
             "cost": 50
         }
     }

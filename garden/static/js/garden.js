@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         inventoryItem.dataset.itemId = uniqueId;
     
                         const img = document.createElement("img");
-                        img.src = item.src;
+                        img.src = item.img;
                         img.alt = item.name;
                         img.draggable = false; // Prevents dragging the image
     
@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Save the garden state to the server when the button is clicked and render the image.
     document.querySelector("#save-garden-button").addEventListener("click", async () => {
         const gardenStateData = Object.fromEntries(gardenState);
+        console.log("Saving garden state:", gardenStateData);
         const csrftoken = getCookie('csrftoken');
         const userId = document.querySelector("body").dataset.userId;
         const tooltip = document.getElementById("save-tooltip");

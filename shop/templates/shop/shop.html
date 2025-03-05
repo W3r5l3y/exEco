@@ -21,7 +21,7 @@
                 <div class="shop-item">
                     <p class="item-name">{{ item.name }}</p>
                     {% if item.image %}
-                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                        <img src="{% static item.image %}" alt="{{ item.name }}">
                     {% endif %}
                     <p>{{ item.description }}</p>
                     <p>Price: {{ item.cost }} coins</p>
