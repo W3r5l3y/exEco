@@ -83,6 +83,11 @@ def qrscanner(request):
 
                         request.session['lootboxes_to_reward'] = lootboxes_to_reward  # store reward in session
 
+                        request.session['location_name'] = location.location_name
+                        request.session['location_fact'] = location.location_fact
+                        request.session['location_value'] = location.location_value
+                        request.session['location_times_visited'] = location.times_visited
+                        
                         if lootboxes_to_reward > 0:
                             if not getattr(settings, 'TESTING', False):
                                 lootbox_template = LootboxTemplate.objects.get(name="QR Scanner Lootbox")
@@ -103,12 +108,21 @@ def qrscanner(request):
     lootboxes_to_reward = request.session.pop('lootboxes_to_reward', 0)  # CHANGED: get lootboxes from session
     message = request.session.pop('message', "")  # CHANGED: get message from session
 
+    location_name = request.session.pop('location_name', None)
+    location_fact = request.session.pop('location_fact', None)
+    location_value = request.session.pop('location_value', None)
+    location_times_visited = request.session.pop('location_times_visited', None)
+    
     leaderboard_data = UserPoints.objects.order_by("-qrscanner_points")[:10]
 
     context = {
         "form": form,
         "result": result,
         "location": location,
+        "location_name": location_name,                 # CHANGED
+        "location_fact": location_fact,                 # CHANGED
+        "location_value": location_value,               # CHANGED
+        "location_times_visited": location_times_visited, # CHANGED
         "user_points": user_points,
         "message": message,
         "leaderboard_data": leaderboard_data,
