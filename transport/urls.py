@@ -22,9 +22,5 @@ urlpatterns = [
     ),
     path("log-activity/", log_activity, name="log_activity"),
     path("get-transport-stats/", get_transport_stats, name="get_transport_stats"),
-    path(
-        "get-transport-leaderboard/",
-        get_transport_leaderboard,
-        name="get_transport_leaderboard",
-    ),
+    path("get-transport-leaderboard/",get_transport_leaderboard,name="get_transport_leaderboard"),
 ]
