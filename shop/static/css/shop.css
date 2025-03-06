@@ -1,14 +1,9 @@
-/*:root {
-    --primary_colour: #003b3c;
-    --accessories_colour: #00c592;
-    --display_color: #002727;
-    --neutral_colour: #fff;
-}*/
+@import url("/static/css/colours.css");
 
-/*
- * Positioning
- */
- * {
+/* --------------------------------------------------
+    General Positioning
+-------------------------------------------------- */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -19,81 +14,323 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: var(--neutral-colour);
+    background-color: var(--neutral-color);
+    overflow: auto;
 }
 
-#shop-container {
+main {
     flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
     width: 100%;
-    padding: 20px;
+    height: 100%;
+    padding-top: 140px;
+    position: relative;
+
+    background-image: url(../../../static/img/background-general.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/*
- * Styling
- */
-#shop-header {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary-colour);
-    padding: 20px;
-    text-align: center;
+main::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../img/shop-stall.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 10;
+    pointer-events: none; /* Allow clicks to pass through */
 }
 
+/* --------------------------------------------------
+    Shop Items Grid
+-------------------------------------------------- */
+.shop-items-grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    padding: 160px 20px 150px 20px;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    max-width: 800px;
+    height: 600px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    row-gap: 20px;
+}
+
+/* Basic shop item card styling */
 .shop-item {
-    width: 200px;
-    padding: 15px;
-    background-color: white;
-    border: 3px solid var(--secondary-colour);
-    border-radius: 10px;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 130px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
 }
 
-.shop-item img {
+.shop-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.shop-item-img {
+    width: 75px;
+    height: auto;
+}
+
+.shop-item-cost-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-item-cost {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+}
+
+.shop-item-cost-container img {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+}
+
+/* --------------------------------------------------
+    Scroll Button
+-------------------------------------------------- */
+.scroll-btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 120px;
+    width: 60px;
+    bottom: 50%;
+    right: 10%;
+    transform: translateY(50%);
+    gap: 10px;
+    background-color: #003b3c;
+    border-radius: 10px;
+    z-index:15;
+}
+
+.scroll-btn {
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 10;
+    background-color: transparent;
+}
+
+.scroll-btn img {
+    width: 50px;
+    height: auto;
+}
+
+/* --------------------------------------------------
+    Shop Modal Styles
+-------------------------------------------------- */
+.shop-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.shop-modal.active {
+    display: flex; /* Show when active */
+}
+
+.shop-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.shop-modal-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.shop-modal-item-img {
     width: 100px;
     height: auto;
-    object-fit: cover;
+    margin-right: 20px;
     border-radius: 5px;
-    max-width: 100%;
-    max-height: 100%;
+    object-fit: cover;
 }
 
-.shop-item p {
-    font-size: 14px;
-    margin: 5px 0;
+.shop-modal-item-info {
+    flex: 1;
 }
 
-/*
- * Buttons
- */
-.buy-item-btn {
-    padding: 10px;
-    background: var(--primary-colour);
-    color: var(--neutral-colour);
+.shop-modal-item-name {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+.shop-modal-item-desc {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.shop-modal-cost-container {
+    display: flex;
+    align-items: center;
+}
+
+.shop-modal-item-cost {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+}
+
+.shop-modal-cost-container img {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+}
+
+.shop-modal-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.shop-modal-btns button {
+    padding: 8px 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
 }
 
-/*
- * Dynamic Styling
- */
-.buy-item-btn:hover {
-    background: linear-gradient(45deg, var(--hover-colour), #d84315);
-    transform: scale(1.05);
-    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+.shop-modal-purchase-btn {
+    background-color: #003b3c;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
 }
 
-.buy-item-btn:active {
-    transform: scale(0.95);
-    box-shadow: none;
+.shop-modal-purchase-btn:hover {
+    background-color: #002020;
+}
+
+.shop-modal-close-btn {
+    background-color: #ff4f4f;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.shop-modal-close-btn:hover {
+    background-color: #fd3636;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* --------------------------------------------------
+    Responsive Styles
+-------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+    /* main {
+        padding-top: 100px;
+        width: 100%;
+    } */
+
+    .shop-items-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 200px 20px 120px 20px;
+        width: 80%;
+    }
+
+    .shop-item {
+        width: 100px;
+        height: 100px;
+    }
+
+    .shop-item-img {
+        width: 50px;
+    }
+
+    .shop-item-cost {
+        font-size: 1rem;
+    }
+
+    .scroll-btn-container {
+        display: none;
+    }
+
+    .scroll-btn img {
+        width: 30px;
+    }
+
+    .shop-modal-item-img {
+        width: 75px;
+    }
+
+    .shop-modal-item-name {
+        font-size: 1.5rem;
+    }
+
+    .shop-modal-item-desc {
+        font-size: 0.9rem;
+    }
+
+    .shop-modal-item-cost {
+        font-size: 1.2rem;
+    }
+
+    .shop-modal-btns button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 }

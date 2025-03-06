@@ -4,33 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
-    
+
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
-    
+
     {% load static %}
-    
+
     <link rel="stylesheet" href="{% static 'css/shop.css' %}">
     <script src="{% static 'js/shop.js' %}" defer></script>
 </head>
 <body>
     <main>
-        <h1>Shop</h1>
-        <div id="shop-container">
+        <!-- <h1>Shop</h1> -->
+        
+        <!-- Grid container for shop items -->
+        <div class="shop-items-grid">
+
+            <!-- Shop item example -->
+            <div class="shop-item" 
+                data-item-id="1" 
+                data-item-name="Item Name 1" 
+                data-item-desc="Item Description" 
+                data-item-cost="100" 
+                data-item-img-src="{% static 'img/item.png' %}">
+                <div class="shop-item-inner">
+                    <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item" 
+            data-item-id="1" 
+            data-item-name="Item Name" 
+            data-item-desc="Item Description" 
+            data-item-cost="100" 
+            data-item-img-src="{% static 'img/item.png' %}">
+            <div class="shop-item-inner">
+                <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                <div class="shop-item-cost-container">
+                    <p class="shop-item-cost">100</p>
+                    <img src="{% static 'img/coin.png' %}" alt="Coin">
+                </div>
+            </div>
+        </div>
+        <div class="shop-item" 
+        data-item-id="1" 
+        data-item-name="Item Name" 
+        data-item-desc="Item Description" 
+        data-item-cost="100" 
+        data-item-img-src="{% static 'img/item.png' %}">
+        <div class="shop-item-inner">
+            <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+            <div class="shop-item-cost-container">
+                <p class="shop-item-cost">100</p>
+                <img src="{% static 'img/coin.png' %}" alt="Coin">
+            </div>
+        </div>
+    </div>
+    <div class="shop-item" 
+    data-item-id="1" 
+    data-item-name="Item Name" 
+    data-item-desc="Item Description" 
+    data-item-cost="100" 
+    data-item-img-src="{% static 'img/item.png' %}">
+    <div class="shop-item-inner">
+        <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+        <div class="shop-item-cost-container">
+            <p class="shop-item-cost">100</p>
+            <img src="{% static 'img/coin.png' %}" alt="Coin">
+        </div>
+    </div>
+</div>
+<div class="shop-item" 
+                data-item-id="1" 
+                data-item-name="Item Name" 
+                data-item-desc="Item Description" 
+                data-item-cost="100" 
+                data-item-img-src="{% static 'img/item.png' %}">
+                <div class="shop-item-inner">
+                    <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item" 
+            data-item-id="1" 
+            data-item-name="Item Name" 
+            data-item-desc="Item Description" 
+            data-item-cost="100" 
+            data-item-img-src="{% static 'img/item.png' %}">
+            <div class="shop-item-inner">
+                <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                <div class="shop-item-cost-container">
+                    <p class="shop-item-cost">100</p>
+                    <img src="{% static 'img/coin.png' %}" alt="Coin">
+                </div>
+            </div>
+        </div>
+        <div class="shop-item" 
+        data-item-id="1" 
+        data-item-name="Item Name" 
+        data-item-desc="Item Description" 
+        data-item-cost="100" 
+        data-item-img-src="{% static 'img/item.png' %}">
+        <div class="shop-item-inner">
+            <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+            <div class="shop-item-cost-container">
+                <p class="shop-item-cost">100</p>
+                <img src="{% static 'img/coin.png' %}" alt="Coin">
+            </div>
+        </div>
+    </div>
+    <div class="shop-item" 
+    data-item-id="1" 
+    data-item-name="Item Name" 
+    data-item-desc="Item Description" 
+    data-item-cost="100" 
+    data-item-img-src="{% static 'img/item.png' %}">
+    <div class="shop-item-inner">
+        <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+        <div class="shop-item-cost-container">
+            <p class="shop-item-cost">100</p>
+            <img src="{% static 'img/coin.png' %}" alt="Coin">
+        </div>
+    </div>
+</div>
+<div class="shop-item" 
+                data-item-id="1" 
+                data-item-name="Item Name" 
+                data-item-desc="Item Description" 
+                data-item-cost="100" 
+                data-item-img-src="{% static 'img/item.png' %}">
+                <div class="shop-item-inner">
+                    <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item" 
+            data-item-id="1" 
+            data-item-name="Item Name" 
+            data-item-desc="Item Description" 
+            data-item-cost="100" 
+            data-item-img-src="{% static 'img/item.png' %}">
+            <div class="shop-item-inner">
+                <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                <div class="shop-item-cost-container">
+                    <p class="shop-item-cost">100</p>
+                    <img src="{% static 'img/coin.png' %}" alt="Coin">
+                </div>
+            </div>
+        </div>
+        <div class="shop-item" 
+        data-item-id="1" 
+        data-item-name="Item Name" 
+        data-item-desc="Item Description" 
+        data-item-cost="100" 
+        data-item-img-src="{% static 'img/item.png' %}">
+        <div class="shop-item-inner">
+            <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+            <div class="shop-item-cost-container">
+                <p class="shop-item-cost">100</p>
+                <img src="{% static 'img/coin.png' %}" alt="Coin">
+            </div>
+        </div>
+    </div>
+    <div class="shop-item" 
+    data-item-id="1" 
+    data-item-name="Item Name" 
+    data-item-desc="Item Description" 
+    data-item-cost="100" 
+    data-item-img-src="{% static 'img/item.png' %}">
+    <div class="shop-item-inner">
+        <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+        <div class="shop-item-cost-container">
+            <p class="shop-item-cost">100</p>
+            <img src="{% static 'img/coin.png' %}" alt="Coin">
+        </div>
+    </div>
+</div>
+<div class="shop-item" 
+                data-item-id="1" 
+                data-item-name="Item Name" 
+                data-item-desc="Item Description" 
+                data-item-cost="100" 
+                data-item-img-src="{% static 'img/item.png' %}">
+                <div class="shop-item-inner">
+                    <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item" 
+            data-item-id="1" 
+            data-item-name="Item Name" 
+            data-item-desc="Item Description" 
+            data-item-cost="100" 
+            data-item-img-src="{% static 'img/item.png' %}">
+            <div class="shop-item-inner">
+                <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                <div class="shop-item-cost-container">
+                    <p class="shop-item-cost">100</p>
+                    <img src="{% static 'img/coin.png' %}" alt="Coin">
+                </div>
+            </div>
+        </div>
+        <div class="shop-item" 
+        data-item-id="1" 
+        data-item-name="Item Name" 
+        data-item-desc="Item Description" 
+        data-item-cost="100" 
+        data-item-img-src="{% static 'img/item.png' %}">
+        <div class="shop-item-inner">
+            <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+            <div class="shop-item-cost-container">
+                <p class="shop-item-cost">100</p>
+                <img src="{% static 'img/coin.png' %}" alt="Coin">
+            </div>
+        </div>
+    </div>
+    <div class="shop-item" 
+    data-item-id="1" 
+    data-item-name="Item Name" 
+    data-item-desc="Item Description" 
+    data-item-cost="100" 
+    data-item-img-src="{% static 'img/item.png' %}">
+    <div class="shop-item-inner">
+        <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+        <div class="shop-item-cost-container">
+            <p class="shop-item-cost">100</p>
+            <img src="{% static 'img/coin.png' %}" alt="Coin">
+        </div>
+    </div>
+</div>
+<div class="shop-item" 
+                data-item-id="1" 
+                data-item-name="Item Name" 
+                data-item-desc="Item Description" 
+                data-item-cost="100" 
+                data-item-img-src="{% static 'img/item.png' %}">
+                <div class="shop-item-inner">
+                    <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                    <div class="shop-item-cost-container">
+                        <p class="shop-item-cost">100</p>
+                        <img src="{% static 'img/coin.png' %}" alt="Coin">
+                    </div>
+                </div>
+            </div>
+            <div class="shop-item" 
+            data-item-id="1" 
+            data-item-name="Item Name" 
+            data-item-desc="Item Description" 
+            data-item-cost="100" 
+            data-item-img-src="{% static 'img/item.png' %}">
+            <div class="shop-item-inner">
+                <img class="shop-item-img" src="{% static 'img/item.png' %}" alt="Item Name">
+                <div class="shop-item-cost-container">
+                    <p class="shop-item-cost">100</p>
+                    <img src="{% static 'img/coin.png' %}" alt="Coin">
+                </div>
+            </div>
+        </div>
+
+
             {% for item in shop_items %}
-                <div class="shop-item">
-                    <p class="item-name">{{ item.name }}</p>
-                    {% if item.image %}
-                        <img src="{% static item.image %}" alt="{{ item.name }}">
-                    {% endif %}
-                    <p>{{ item.description }}</p>
-                    <p>Price: {{ item.cost }} coins</p>
-                    <div class = "buy-item-btn" data-item-id={{item.itemId}}>Buy Item</div>
+                <div class="shop-item" 
+                    data-item-id="{{ item.itemId }}" 
+                    data-item-name="{{ item.name }}" 
+                    data-item-desc="{{ item.description }}" 
+                    data-item-cost="{{ item.cost }}" 
+                    data-item-img-src="{% static item.image %}">
+                    <div class="shop-item-inner">
+                        {% if item.image %}
+                            <img class="shop-item-img" src="{% static item.image %}" alt="{{ item.name }}">
+                        {% endif %}
+                        <div class="shop-item-cost-container">
+                            <p class="shop-item-cost">{{ item.cost }}</p>
+                            <img src="{% static 'img/coin.png' %}" alt="Coin">
+                        </div>
+                    </div>
                 </div>
             {% empty %}
                 <p>No items available in the shop.</p>
             {% endfor %}
         </div>
+        
+        <div class="scroll-btn-container">
+            <button id="scroll-up-btn" class="scroll-btn"><img src="../../static/img/shop-up.png"></button>
+            <button id="scroll-down-btn" class="scroll-btn"><img src="../../static/img/shop-down.png"></button>
+        </div>
     </main>
+
+    <!-- Shop modal -->
+    <div class="shop-modal">
+        <div class="shop-modal-content">
+            <div class="shop-modal-item">
+                <img class="shop-modal-item-img" src="" alt="Item"> <!-- Item image -->
+                <div class="shop-modal-item-info">
+                    <p class="shop-modal-item-name"></p> <!-- Item name -->
+                    <p class="shop-modal-item-desc"></p> <!-- Item description -->
+                    <div class="shop-modal-cost-container">
+                        <p class="shop-modal-item-cost"></p> <!-- Item cost -->
+                        <img src="{% static 'img/coin.png' %}" alt="Coin"> <!-- Coin image -->
+                    </div>
+                </div>
+            </div>
+            <div class="shop-modal-btns">
+                <button class="shop-modal-close-btn">Close</button>
+                <button class="shop-modal-purchase-btn">Purchase</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
