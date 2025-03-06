@@ -24,6 +24,11 @@ main {
     height: 100%;
     padding-top: 140px;
     position: relative;
+
+    background-image: url(../../../static/img/background-general.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 main::before {
@@ -127,6 +132,7 @@ main::before {
     gap: 10px;
     background-color: #003b3c;
     border-radius: 10px;
+    z-index:15;
 }
 
 .scroll-btn {
