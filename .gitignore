@@ -75,7 +75,6 @@ docs/_build/
 .pybuilder/
 
 # Media files
-*.png
 *.jpg
 *.jpeg
 *.gif
