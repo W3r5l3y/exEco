@@ -57,12 +57,12 @@ main::before {
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    padding: 100px 20px 40px 20px;
+    padding: 160px 20px 150px 20px;
     justify-content: center;
     align-items: center;
     width: 50%;
     max-width: 800px;
-    height: 500px;
+    height: 600px;
     overflow-y: auto;
     scrollbar-width: none;
     row-gap: 20px;
@@ -274,4 +274,63 @@ main::before {
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+/* --------------------------------------------------
+    Responsive Styles
+-------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+    /* main {
+        padding-top: 100px;
+        width: 100%;
+    } */
+
+    .shop-items-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 200px 20px 120px 20px;
+        width: 80%;
+    }
+
+    .shop-item {
+        width: 100px;
+        height: 100px;
+    }
+
+    .shop-item-img {
+        width: 50px;
+    }
+
+    .shop-item-cost {
+        font-size: 1rem;
+    }
+
+    .scroll-btn-container {
+        display: none;
+    }
+
+    .scroll-btn img {
+        width: 30px;
+    }
+
+    .shop-modal-item-img {
+        width: 75px;
+    }
+
+    .shop-modal-item-name {
+        font-size: 1.5rem;
+    }
+
+    .shop-modal-item-desc {
+        font-size: 0.9rem;
+    }
+
+    .shop-modal-item-cost {
+        font-size: 1.2rem;
+    }
+
+    .shop-modal-btns button {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 }
