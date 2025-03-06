@@ -63,9 +63,12 @@ main::before {
     row-gap: 20px;
 }
 
+/* Basic shop item card styling */
 .shop-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 130px;
     height: 130px;
     background-color: #fff;
@@ -77,16 +80,10 @@ main::before {
     position: relative;
 }
 
-.left-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    margin-left: 5px;
+.shop-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    cursor: pointer;
 }
 
 .shop-item-img {
@@ -104,49 +101,13 @@ main::before {
     font-size: 1.5rem;
     font-weight: bold;
     color: #000;
+    margin: 0;
 }
 
 .shop-item-cost-container img {
     width: 20px;
     height: auto;
     margin-left: 5px;
-}
-
-/* Initially hidden right content */
-.right-content {
-    flex: 0 0 0;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: flex 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-    padding: 10px;
-    background-color: #fff;
-}
-
-/* Trigger expansion only when left-content is hovered */
-.shop-item:has(.left-content:hover) {
-    width: 300px;
-    transform: scale(1.05);
-    cursor: pointer;
-    z-index: 5;
-}
-
-.shop-item:has(.left-content:hover) .right-content {
-    flex: 1;
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.shop-item-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 10px;
-}
-
-.shop-item-desc {
-    font-size: 1rem;
-    color: #000;
-    margin-bottom: 10px;
 }
 
 /* --------------------------------------------------
@@ -181,4 +142,130 @@ main::before {
 .scroll-btn img {
     width: 50px;
     height: auto;
+}
+
+/* --------------------------------------------------
+    Shop Modal Styles
+-------------------------------------------------- */
+.shop-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.shop-modal.active {
+    display: flex; /* Show when active */
+}
+
+.shop-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.shop-modal-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.shop-modal-item-img {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.shop-modal-item-info {
+    flex: 1;
+}
+
+.shop-modal-item-name {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+.shop-modal-item-desc {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.shop-modal-cost-container {
+    display: flex;
+    align-items: center;
+}
+
+.shop-modal-item-cost {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+}
+
+.shop-modal-cost-container img {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+}
+
+.shop-modal-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.shop-modal-btns button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.shop-modal-purchase-btn {
+    background-color: #003b3c;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.shop-modal-purchase-btn:hover {
+    background-color: #002020;
+}
+
+.shop-modal-close-btn {
+    background-color: #ff4f4f;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.shop-modal-close-btn:hover {
+    background-color: #fd3636;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
