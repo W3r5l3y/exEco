@@ -84,10 +84,6 @@ def strava_callback(request):
     """
     Handles the callback from Strava, exchanging the code for tokens and storing them.
     """
-    print(f"Request Host: {request.get_host()}")
-    print(f"Request URL: {request.build_absolute_uri()}")
-    print(f"Cookies in callback: {request.COOKIES}")  # Debugging session cookies
-    print(f"Session Data: {request.session.items()}")  # Check if session persists
 
     # Get the code and error from the query parameters
     code = request.GET.get("code")
@@ -356,7 +352,7 @@ def get_transport_stats(request):
     try:
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
-
+        
         return JsonResponse(
             {
                 "total_commute_distance": cumulative_stats.total_commute_distance,
@@ -364,13 +360,11 @@ def get_transport_stats(request):
                 "points_earned": user_points.transport_points,
             }
         )
-
     except CumulativeStats.DoesNotExist:
         return JsonResponse({"error": "No stats available."}, status=400)
 
     except UserPoints.DoesNotExist:
         return JsonResponse({"error": "No leaderboard entry available."}, status=400)
-
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
