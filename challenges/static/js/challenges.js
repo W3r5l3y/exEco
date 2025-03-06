@@ -1,71 +1,82 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    try {
-        // Ensure new challenges are assigned before fetching them
-        await fetch("/api/assign_challenges/", { method: "GET", credentials: "same-origin" });
-        
-        const response = await fetch("/api/challenges/", { method: "GET", credentials: "same-origin" });
-        const data = await response.json();
+document.addEventListener("DOMContentLoaded", function () {
+    // Function to update the countdown timers
+    function updateCountdown(timerElement, deadline) {
+        function calculateTimeLeft() {
+            const now = new Date().getTime();
+            const timeLeft = deadline - now;
 
-        const dailyContainer = document.getElementById("daily-challenges");
-        const weeklyContainer = document.getElementById("weekly-challenges");
+            if (timeLeft <= 0) {
+                timerElement.innerHTML = "00:00:00"; // Reset when expired
+                return;
+            }
 
-        dailyContainer.innerHTML = ""; // Clear existing content
-        weeklyContainer.innerHTML = "";
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        // Populate daily challenges
-        data.daily.forEach(challenge => {
-            const challengeElement = document.createElement("div");
-            challengeElement.classList.add("daily-challenge");
-            challengeElement.innerHTML = `
-                <p>${challenge.description}</p>
-                <p>${challenge.points} Points</p>
-                <button onclick="submitChallenge('${challenge.id}')">Submit</button>
-            `;
-            dailyContainer.appendChild(challengeElement);
-        });
+            if (days > 0) {
+                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+            }
+        }
 
-        // Populate weekly challenges
-        data.weekly.forEach(challenge => {
-            const challengeElement = document.createElement("div");
-            challengeElement.classList.add("weekly-challenge");
-            challengeElement.innerHTML = `
-                <p>${challenge.description}</p>
-                <p>${challenge.points} Points</p>
-                <button onclick="submitChallenge('${challenge.id}')">Submit</button>
-            `;
-            weeklyContainer.appendChild(challengeElement);
-        });
-    } catch (error) {
-        console.error("Error fetching challenges:", error);
+        calculateTimeLeft();
+        setInterval(calculateTimeLeft, 1000);
     }
-});
 
-// Function to handle challenge submission
-async function submitChallenge(challengeId) {
-    try {
-        const response = await fetch("/api/submit_challenge/", {
+    // Set deadlines for daily and weekly challenges (next midnight and next Monday)
+    const now = new Date();
+    
+    // Daily Challenge Reset at midnight
+    const dailyReset = new Date();
+    dailyReset.setHours(24, 0, 0, 0); 
+
+    // Weekly Challenge Reset next Monday at midnight
+    const weeklyReset = new Date();
+    weeklyReset.setDate(now.getDate() + (8 - now.getDay()) % 7); // Next Monday
+    weeklyReset.setHours(0, 0, 0, 0);
+
+    updateCountdown(document.getElementById("daily-timer"), dailyReset.getTime());
+    updateCountdown(document.getElementById("weekly-timer"), weeklyReset.getTime());
+
+    // Handling challenge submission
+    function handleChallengeSubmission(button) {
+        const challengeId = button.getAttribute("data-challenge-id");
+
+        fetch("/submit-challenge/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken() // Ensure CSRF token is included
+                "X-CSRFToken": getCSRFToken() // CSRF Protection
             },
             body: JSON.stringify({ challenge_id: challengeId })
-        });
-        const result = await response.json();
-        alert(result.message);
-    } catch (error) {
-        console.error("Error submitting challenge:", error);
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                button.innerText = "Completed";
+                button.disabled = true;
+                button.style.backgroundColor = "#888";
+            } else {
+                alert("Error: " + data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
     }
-}
 
-// Helper function to get CSRF token
-function getCSRFToken() {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.startsWith("csrftoken=")) {
-            return cookie.substring("csrftoken=".length, cookie.length);
-        }
+    // Add event listeners to all submit buttons
+    document.querySelectorAll(".submit-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            handleChallengeSubmission(this);
+        });
+    });
+
+    // Function to get CSRF token for Django security
+    function getCSRFToken() {
+        return document.cookie.split("; ")
+            .find(row => row.startsWith("csrftoken="))
+            ?.split("=")[1];
     }
-    return "";
-}
+});
