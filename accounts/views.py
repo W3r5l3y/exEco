@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from transport.models import StravaToken
 from datetime import date
+from .utils import create_empty_garden_image, generate_profile_picture
 
 import os
 import pygame
@@ -44,7 +45,11 @@ def login_register_view(request):
                 new_user = register_form.save()
                 # Create an empty garden image for the new user
                 create_empty_garden_image(new_user)
-                print("REGISTRATION SUCCESSFUL! Empty garden image created.") ## TODO REMOVE
+                # Generate a profile picture using first and last name
+                profile_pic_path = generate_profile_picture(new_user.first_name, new_user.last_name, new_user.email, new_user.id)
+                new_user.profile_picture = profile_pic_path
+                new_user.save()
+                print("REGISTRATION SUCCESSFUL! Empty garden and profile picture created.")  ## TODO REMOVE
                 return HttpResponseRedirect(reverse("login") + "?tab=login")
             else:
                 # Extract the first error message
@@ -106,9 +111,8 @@ def settings_view(request):
         elif "unlink_strava" in request.POST:
             return strava_unlink(request)
 
-    strava_linked = StravaToken.objects.filter(expires_at__gt= date.today(), user_id= user.id).exists()
+    strava_linked = StravaToken.objects.filter(expires_at__gt=date.today(), user_id=user.id).exists()
     return render(request, "accounts/settings.html", {"strava_linked": strava_linked})
-
 
 
 def log_out(request):
@@ -158,50 +162,3 @@ def strava_unlink(request):
         )
 
     return render(request, "dashboard/dashboard.html")
-
-
-def create_empty_garden_image(user):
-    pygame.init()
-    
-    grid_size = 9
-    cell_size = 64
-    width = grid_size * cell_size
-    height = grid_size * cell_size
-    
-    surface = pygame.Surface((width, height))
-    
-    grass_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "grass.png")
-    try:
-        grass_img = pygame.image.load(grass_img_path)
-        grass_img = pygame.transform.scale(grass_img, (width, height))
-        surface.blit(grass_img, (0, 0))
-    except Exception as e:
-        print("Error loading grass background:", e)
-        surface.fill((255, 255, 255))
-    
-    center_rect = pygame.Rect((5 - 1) * cell_size, (5 - 1) * cell_size, cell_size, cell_size)
-    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "temp-tree.png")
-    try:
-        tree_img = pygame.image.load(tree_img_path)
-        tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))
-        surface.blit(tree_img, center_rect)
-    except Exception as e:
-        print("Error loading tree image:", e)
-    
-    file_name = f"empty_garden_user{user.id}.png"
-    output_dir = os.path.join(settings.BASE_DIR, "garden", "static", "img", "gardens")
-    
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir, exist_ok=True)
-    
-    output_path = os.path.join(output_dir, file_name)
-    
-    try:
-        pygame.image.save(surface, output_path)
-        print(f"Empty garden image saved to {output_path}")
-    except Exception as e:
-        print("Error saving empty garden image:", e)
-    finally:
-        pygame.quit()
-    
-    return output_path
