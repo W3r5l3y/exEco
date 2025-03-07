@@ -57,7 +57,6 @@ def qrscanner(request):
                         user=request.user, location=location
                     )
 
-                    # Calculate time since last scan
                     time_since_last_scan = now() - scan_record.last_scanned
                     # Check if cooldown has passed
                     if not created and time_since_last_scan < timedelta(
