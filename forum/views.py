@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post, PostLike
 from .forms import PostForm
 
 
@@ -29,8 +29,12 @@ def create_post(request):
 
 @login_required
 def like_post(request, post_id):
-    post = Post.objects.get(post_id=post_id)
-    post.likes += 1
+    post = get_object_or_404(Post, post_id=post_id)
+    post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
+    if not created:
+        post_like.liked = not post_like.liked
+        post_like.save()
+    post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
     return redirect("forum_home")
 
