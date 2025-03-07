@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
 
 
 def forum_home(request):
+    post_id = request.GET.get("post_id")
+    if post_id:
+        post = get_object_or_404(Post, post_id=post_id)
+        return render(request, "forum/forum_home.html", {"posts": [post]})
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "forum/forum_home.html", {"posts": posts})
 
