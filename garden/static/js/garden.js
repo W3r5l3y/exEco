@@ -231,7 +231,56 @@ document.addEventListener("DOMContentLoaded", async () => {
             tooltip.classList.add("show");
             setTimeout(() => tooltip.classList.remove("show"), 3000);
         }
-    });    
+    });  
+    
+    // Add reset garden functionality
+document.querySelector("#reset-garden-button").addEventListener("click", async () => {
+    // Clear the in-memory garden state.
+    gardenState.clear();
+
+    // Loop through all grid cells and set them to the empty image,
+    // except cell 5-5 if you want to keep your tree there.
+    document.querySelectorAll(".grid-item").forEach(cell => {
+        if (!cell.classList.contains("grid-item-5-5")) {
+            const img = cell.querySelector("img");
+            if (img) {
+                img.src = "/static/img/empty.png";
+            }
+        }
+    });
+
+    
+    document.querySelectorAll(".inventory-item").forEach(item => {
+        item.classList.remove("inventory-item-selected");
+    });
+
+    
+    try {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch("/save-garden/", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({ state: {} }),
+        });
+        const data = await response.json();
+        console.log("Garden reset:", data);
+        // Show a success tooltip
+        const tooltip = document.getElementById("reset-tooltip");
+        tooltip.textContent = "Garden reset successfully!";
+        tooltip.classList.add("show");
+        setTimeout(() => tooltip.classList.remove("show"), 3000);
+    } catch (error) {
+        console.error("Error resetting garden on server:", error);
+        const tooltip = document.getElementById("reset-tooltip");
+        tooltip.textContent = "Error resetting garden!";
+        tooltip.classList.add("show");
+        setTimeout(() => tooltip.classList.remove("show"), 3000);
+    }
+    });
+
     
     // Set the tree image in the center of the garden (cell 5,5).
     const gridItem55 = document.querySelector(".grid-item-5-5");

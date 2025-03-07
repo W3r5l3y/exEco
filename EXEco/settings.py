@@ -163,15 +163,9 @@ SESSION_COOKIE_SECURE = False # Allow session cookies to be sent over HTTP
 SESSION_COOKIE_SAMESITE = None # Allow session cookies to be sent with GET requests
 
 
-
-TESTING = "test" in sys.argv
-
-# Skip migrations for regular tests, but apply them for migration tests
-if TESTING:
-    MIGRATION_MODULES = {
-        "bingame": None,  # Disable migrations for bingame during regular tests
-    }
-
 # Media settings
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Testing settings
+TESTING = "test" in sys.argv

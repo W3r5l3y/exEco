@@ -41,7 +41,13 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-#### **5. Run the Development Server**
+#### **5. Load Fixtures
+
+````sh
+python manage.py load_fixtures
+````
+
+#### **6. Run the Development Server**
 
 ```sh
 python manage.py runserver
@@ -55,6 +61,10 @@ The app will be available at **http://127.0.0.1:8000/**.
 
 ```
 exEco/
+│── 
+│── 
+│── 
+│── 
 │── manage.py        # Django project management script
 │── exEco/           # Project settings and configuration
 │── accounts/        # User authentication (if applicable)

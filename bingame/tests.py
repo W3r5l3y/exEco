@@ -136,7 +136,7 @@ class BingameTestCase(TestCase):
         
         #Send a score of 10 to view to update the leaderboard
         response = self.client.post(
-            reverse('update-leaderboard'),
+            reverse('update_leaderboard'),
             {'user_score': 10}
         )
         
