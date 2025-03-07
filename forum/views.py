@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Post, PostLike
 from .forms import PostForm
+from accounts.models import CustomUser
 
 
 def forum_home(request):
@@ -50,5 +51,8 @@ def report_post(request, post_id):
 
 @login_required
 def user_profile(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    return render(request, "forum/user_profile.html", {"user": user})
+    user = get_object_or_404(CustomUser, id=user_id)
+    user_posts = Post.objects.filter(user=user).order_by("-created_at")
+    return render(
+        request, "forum/user_profile.html", {"user": user, "posts": user_posts}
+    )
