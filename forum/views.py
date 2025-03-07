@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from .models import Post, PostLike
 from .forms import PostForm
 
@@ -38,7 +39,7 @@ def like_post(request, post_id):
         post_like.save()
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
-    return redirect("forum_home")
+    return JsonResponse({"likes": post.likes, "liked": post_like.liked})
 
 
 @login_required
