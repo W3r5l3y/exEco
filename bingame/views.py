@@ -4,12 +4,11 @@ from random import sample
 
 # Leaderboard imports
 from django.http import JsonResponse
-
-# from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from accounts.models import UserPoints, CustomUser
-
 from inventory.models import Inventory, LootboxTemplate
+from django.http import JsonResponse, HttpResponseBadRequest
+from inventory.models import LootboxTemplate
 
 # Create your views here.
 # Initial game view
@@ -26,47 +25,39 @@ def game_view(request):
 
 
 # Handling post for updating leaderboard with received score
-# @csrf_exempt
 @login_required
 def update_leaderboard(request):
-    print(request)
     if request.method == "POST":
         try:
-            score = int(request.POST.get("user_score", 0))  # One passed in
+            score = int(request.POST.get("user_score", 0))
             print(score)
 
             user_points, created = UserPoints.objects.get_or_create(user=request.user)
             
-            #Loot box logic
+            # Lootbox logic
             old_points = user_points.bingame_points
-            
             user_points.add_bingame_points(score)
-
             new_points = user_points.bingame_points
+            
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
-            """
-            NOTE:
-            If the test for this rewards more than 20 points,
-            the test will fail.
-            
-            This is because Lootox template wont exist in the test, as
-            fixtures purposely dont run in test mode.
-            """
+
+            lootbox_id = None  # Default value
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
                 # Fetch or create the user's inventory
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                 # Add the lootboxes
                 user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
+                lootbox_id = lootbox_template.lootbox_id  # Return the actual lootbox id
             
-            return JsonResponse(
-                {
-                    "status": "success",
-                    "new_score": UserPoints.bingame_points,
-                }
-            )
+            return JsonResponse({
+                "status": "success",
+                "new_score": user_points.bingame_points,
+                "lootboxes_to_reward": lootboxes_to_reward,
+                "lootbox_id": lootbox_id,  # Now included in the response
+            })
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
     return JsonResponse({"success": False, "error": "Invalid request method"})
@@ -90,7 +81,6 @@ def get_bingame_leaderboard(request):
         return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=500)
 
 
@@ -98,7 +88,6 @@ def get_bingame_leaderboard(request):
 def fetch_random_items(request):
     all_items = list(Items.objects.all())
     random_items = sample(all_items, min(6, len(all_items)))
-
     # Prepare the data to be sent
     item_data = []
     for item in random_items:
@@ -107,8 +96,28 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image_url": item.item_image.url,
+                "item_image": f"{item.item_image}",
             }
         )
 
     return JsonResponse({"items": item_data})
+
+def get_lootbox_data(request):
+    # Get the lootbox_id from the GET parameters
+    lootbox_id = request.GET.get('lootbox_id')
+    
+    if not lootbox_id:
+        return HttpResponseBadRequest("Missing lootbox_id parameter")
+
+    try:
+        # Retrieve the lootbox template by its primary key (lootbox_id)
+        lootbox = LootboxTemplate.objects.get(lootbox_id=lootbox_id)
+    except LootboxTemplate.DoesNotExist:
+        return HttpResponseBadRequest("Invalid lootbox_id")
+    
+    data = {
+        'lootbox_name': lootbox.name,
+        'lootbox_image': lootbox.lootbox_image,
+    }
+    
+    return JsonResponse(data)

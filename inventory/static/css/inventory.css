@@ -1,169 +1,277 @@
-/*:root {
-    --primary_colour: #003b3c;
-    --accessories_colour: #00c592;
-    --display_color: #002727;
-    --neutral_colour: #fff;
-}*/
+/* set variables */
+:root {
+    --lootbox-animation-final-colour: #f0f0f0;
+}
 
 
-/*
- *Positioning
- *
- */
-
-*{
+/* --------------------------------------------------
+    General Positioning
+-------------------------------------------------- */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100%;
+    /* image in django static folder */
+    background-image: url('/static/img/background-general.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
-#inventory-header {
+main {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%;
-    padding: 20px;
+    height: 100%;
+    padding: 150px 20px 20px 20px;
+}
+
+/* --------------------------------------------------
+    Toggle Button Styles
+-------------------------------------------------- */
+
+#highlight-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
     margin-bottom: 20px;
 }
 
-#inventory-container {
-    flex-grow: 1;
+.toggle-button {
+    padding: 10px 20px;
+    background-color: var(--display_color);
+    color: var(--neutral_colour);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.toggle-button.active {
+    background-color: var(--accessories_colour);
+}
+
+.inventory-slot.highlighted {
+    scale: 1.05;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    background-color: var(--accessories_colour);
+}
+
+/* --------------------------------------------------
+    Inventory Styles
+-------------------------------------------------- */
+
+#inventory-header {
+    align-self: center;
+    padding: 20px 0;
+    size: 24px;
+    font-weight: 600;
+    color: var(--primary_colour);
+    margin-left: 20px;
+}
+
+#inventory-container { /* This is the container for the inventory slots */
+    flex-wrap: wrap;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
+    min-width: 250px;
     padding: 20px;
+    gap: 20px;
 }
 
-.inventory-slot {
+.inventory-slot { /* Inventory slots */
     width: 160px;
-    height: 160px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0px 0 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    background-color: #fff;
 }
+
+.item-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Adjust as needed */
+}
+
 .inventory-slot img {
     width: 50%;
     height: auto;
 }
 
-.button-container{
-    display: inline-block;
-    margin-top: 5px;
+#item-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.inventory-btn {
+    flex: 1;
+    width: 100%;
+    padding: 5px 10px;
+    margin-top: 10px;
+    background-color: var(--display_color);
+    color: var(--neutral_colour);
+    border: none;
+    border-radius: 30px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
 }
 
-
-/*
- *Styling
- *
- */
-
-* {
-    font-family: "roboto", sans-serif;
+.merge-btn {
+    flex: 1;
+    width: 100%;
+    padding: 5px 10px;
+    margin-top: 10px;
+    background-color: var(--display_color);
+    color: var(--neutral_colour);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-body {
-    background-color: var(--neutral_colour);
+.open-lootbox-btn:hover {
+    background-color: var(--accessories_colour);
+    color: var(--neutral_colour);
 }
 
-#inventory-header {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary_colour);
-    border: 4px solid var(--accessories_colour)
+/* --------------------------------------------------
+    Modal Styles
+-------------------------------------------------- */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-#inventory-container {
-    border: 4px solid var(--accessories_colour);
+.lootbox-media {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.inventory-slot {
-    border: 3px solid #108600;
-    background-color: var(--neutral_colour);
-}
-
-.inventory-slot img {
-    max-width: 60px;
-    max-height: 60px;
-}
-
-.button-container {
-    font-size: 14px;
-    font-weight: bold;
-    background: linear-gradient(45deg, #ff9800, #ff5722);
-    border: 3px solid var(--display_color)
-}
-
-.item-name{
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--primary_colour);
-}
-/*
- *Dynamic styling
- *
- */
-
-.button-container:hover {
-    background: linear-gradient(45deg, #ff5722, #d84315);
-    transform: scale(1.05);
-    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
-}
-
-.button-container:active {
-    transform: scale(0.95);
-    box-shadow: none;
+    cursor: pointer;
 }
 
 .lootbox-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    text-align: center;
     z-index: 1000;
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.lootbox-popup img {
-    max-width: 100px;
-    margin: 10px 0;
+/* Lootbox popup result styles */
+
+#lootbox-item-result, #lootbox-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.lootbox-popup button {
-    padding: 8px 15px;
-    background: #ff5722;
-    color: white;
+#lootbox-item-result {
+    background-color: var(--lootbox-animation-final-colour);
+}
+
+#lootbox-item-result h2 {
+    margin-bottom: 20px;
+    color: var(--primary_colour);
+}
+
+#lootbox-item-result img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#lootbox-item-result p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#lootbox-item-result button {
+    padding: 10px 20px;
+    background-color: var(--display_color);
+    color: var(--neutral_colour);
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-.inventory-slot:hover {
-    transform: scale(1.05);
+#lootbox-item-result button:hover {
+    background-color: var(--accessories_colour);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -60%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
-}
 
+/* --------------------------------------------------
+    Responsive Styles (Mobile)
+-------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+    main {
+        padding: 100px 20px 20px 20px;
+    }
+
+    #highlight-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    #inventory-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .inventory-slot {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        max-width: 300px;
+    }
+}

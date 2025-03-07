@@ -9,6 +9,7 @@ import pygame
 from inventory.models import InventoryItem  # to lookup image paths
 import os
 from django.conf import settings
+from django.templatetags.static import static
 
 @login_required
 def garden_view(request):
@@ -30,8 +31,6 @@ def load_garden(request):
 @login_required
 def save_garden(request):
     if request.method == "POST":
-        print("hello")
-        print(request.body)
         try:
             data = json.loads(request.body)
             garden_state = data.get("state", {})
@@ -57,7 +56,7 @@ def load_inventory(request):
             items_list.append({
                 # Format the id so that it matches the format used in garden state.
                 'id': f"inventory-item-{item.id}",
-                'src': item.image.url,   # Use .url to serve the image
+                'img': static(item.image),
                 'name': item.name,
                 'quantity': item.quantity,
                 'item_type': item.item_type,
@@ -98,7 +97,6 @@ def save_garden_as_image(request):
         # Blit the grass image as the background.
         surface.blit(grass_img, (0, 0))
     except Exception as e:
-        print("Error loading grass image:", e)
         # Fallback to a white background if the image fails to load.
         surface.fill((255, 255, 255))
 
@@ -114,7 +112,7 @@ def save_garden_as_image(request):
         base_pk = parts[2]
         try:
             item = InventoryItem.objects.get(pk=base_pk)
-            path = item.image.path
+            path = item.image
             # If the file doesn't exist at the returned path, try the known inventory static folder.
             if not os.path.exists(path):
                 alt_path = os.path.join(settings.BASE_DIR, "inventory", "static", "img", "items", os.path.basename(path))
@@ -122,7 +120,6 @@ def save_garden_as_image(request):
                     path = alt_path
             return path
         except Exception as e:
-            print(f"Error retrieving image for {unique_id}: {e}")
             return empty_img_path
 
     for row in range(1, grid_size + 1):
@@ -153,8 +150,11 @@ def save_garden_as_image(request):
                 print(f"Error loading image for cell {key} from {img_path}: {e}")
 
     file_name = f"garden_state_user{user_id}.png"
-    output_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "gardens", file_name)
+    garden_media_dir = os.path.join(settings.MEDIA_ROOT, "gardens")
+    os.makedirs(garden_media_dir, exist_ok=True)  # Ensure directory exists
 
+    output_path = os.path.join(garden_media_dir, file_name)
+    #TODO - fix so it goes to media
     try:
         pygame.image.save(surface, output_path)
         print(f"Garden image saved to {output_path}")
@@ -173,5 +173,5 @@ def fetch_user_garden_image(request):
     user_id = request.user.id
     file_name = f"garden_state_user{user_id}.png"
     # Assuming your static files are served from /static/...
-    image_url = f"/static/img/gardens/{file_name}"
+    image_url = f"/media/gardens/{file_name}" #TODO - Check it loads media
     return JsonResponse({"image_url": image_url})

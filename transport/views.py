@@ -24,8 +24,6 @@ def strava_login(request):
     Check if user has valid Strava credentials; otherwise, redirect to Strava OAuth.
     """
 
-    print(f"Redirect URI: {settings.REDIRECT_URI}")  # Debugging output
-
     user = request.user
 
     try:
@@ -75,7 +73,6 @@ def strava_login(request):
             f"&response_type={response_type}"
             f"&scope={scope}"
         )
-        print(request.COOKIES)
         return redirect(strava_auth_url)
 
 
@@ -84,10 +81,6 @@ def strava_callback(request):
     """
     Handles the callback from Strava, exchanging the code for tokens and storing them.
     """
-    print(f"Request Host: {request.get_host()}")
-    print(f"Request URL: {request.build_absolute_uri()}")
-    print(f"Cookies in callback: {request.COOKIES}")  # Debugging session cookies
-    print(f"Session Data: {request.session.items()}")  # Check if session persists
 
     # Get the code and error from the query parameters
     code = request.GET.get("code")
@@ -307,7 +300,6 @@ def log_activity(request):
             )
             if option == "commute".lower():
                 cumulative_stats.total_commute_distance += distance
-                print("commute")
             elif option == "hobby".lower():
                 cumulative_stats.total_hobby_distance += distance
 
@@ -343,7 +335,11 @@ def log_activity(request):
             
             user_points.save()
             
-            return JsonResponse({"success": "Activity logged successfully!"})
+            return JsonResponse(
+                {"success": "Activity logged successfully!",
+                "lootboxes_to_reward": lootboxes_to_reward}, 
+                status=200
+                )
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
@@ -356,7 +352,7 @@ def get_transport_stats(request):
     try:
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
-
+        
         return JsonResponse(
             {
                 "total_commute_distance": cumulative_stats.total_commute_distance,
@@ -364,13 +360,11 @@ def get_transport_stats(request):
                 "points_earned": user_points.transport_points,
             }
         )
-
     except CumulativeStats.DoesNotExist:
         return JsonResponse({"error": "No stats available."}, status=400)
 
     except UserPoints.DoesNotExist:
         return JsonResponse({"error": "No leaderboard entry available."}, status=400)
-
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
@@ -392,5 +386,4 @@ def get_transport_leaderboard(request):
         return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=500)

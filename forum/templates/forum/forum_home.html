@@ -46,19 +46,43 @@
                                 {% csrf_token %}
                                 <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
                             </form>
+                            <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
+                        </div>
+                        <div class="post-comments">
+                            <button onclick="toggleComments({{ post.post_id }})">Show Comments</button>
+                            <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;">
+                                {% for comment in post.comments.all %}
+                                    <div class="comment">
+                                        <p><strong>{{ comment.user.email }}</strong>: {{ comment.text }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-
-
-
-
-
                 </div>
             {% endfor %}
         </div>
     </main>
-    {% include 'forum/bottom_navbar.html' %}
+    <div class="bottom-navbar-container">
+        <div class="bottom-navbar">
+            <a href="#"><img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/home_selected.svg' %}" alt="home"></a>
+            <a href="#"><img class="bottom-navbar-image" src="{% static 'img/archive.svg' %}" alt="My posts"></a>
+            <a href="{% url 'create_post' %}"><img class="bottom-navbar-image" src="{% static 'img/new_post.svg' %}" alt="New Post"></a>
+        </div>
+    </div>
+    <script>
+    function sharePost(postId) {
+        const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
 
+    function toggleComments(postId) {
+        const commentsContainer = document.getElementById(`comments-${postId}`);
+        commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
+    }
+    </script>
 </body>
 </html>
 

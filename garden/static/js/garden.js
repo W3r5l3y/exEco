@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         inventoryItem.dataset.itemId = uniqueId;
     
                         const img = document.createElement("img");
-                        img.src = item.src;
+                        img.src = item.img;
                         img.alt = item.name;
                         img.draggable = false; // Prevents dragging the image
     
@@ -189,11 +189,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Save the garden state to the server when the button is clicked and render the image.
     document.querySelector("#save-garden-button").addEventListener("click", async () => {
         const gardenStateData = Object.fromEntries(gardenState);
+        console.log("Saving garden state:", gardenStateData);
         const csrftoken = getCookie('csrftoken');
         const userId = document.querySelector("body").dataset.userId;
+        const tooltip = document.getElementById("save-tooltip");
     
         try {
-            // First, call the endpoint that saves the garden state.
+            // First endpoint: save the garden state.
             const saveResponse = await fetch("/save-garden/", {
                 method: "POST",
                 headers: { 
@@ -205,22 +207,80 @@ document.addEventListener("DOMContentLoaded", async () => {
             const saveData = await saveResponse.json();
             console.log(saveData.message);
     
-            // Then, call the endpoint that renders the image.
+            // Second endpoint: render the garden image.
             const imageResponse = await fetch("/save-garden-as-image/", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
                     "X-CSRFToken": csrftoken
                 },
-                // Send the garden state and user_id if needed.
                 body: JSON.stringify({ state: gardenStateData, user_id: userId }),
             });
             const imageData = await imageResponse.json();
             console.log(imageData.message);
+    
+            // Show success tooltip
+            tooltip.textContent = "Garden saved successfully!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
         } catch (error) {
             console.error("Error saving garden image:", error);
+    
+            // Show error tooltip
+            tooltip.textContent = "Error saving garden!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
         }
-    });    
+    });  
+    
+    // Add reset garden functionality
+document.querySelector("#reset-garden-button").addEventListener("click", async () => {
+    // Clear the in-memory garden state.
+    gardenState.clear();
+
+    // Loop through all grid cells and set them to the empty image,
+    // except cell 5-5 if you want to keep your tree there.
+    document.querySelectorAll(".grid-item").forEach(cell => {
+        if (!cell.classList.contains("grid-item-5-5")) {
+            const img = cell.querySelector("img");
+            if (img) {
+                img.src = "/static/img/empty.png";
+            }
+        }
+    });
+
+    
+    document.querySelectorAll(".inventory-item").forEach(item => {
+        item.classList.remove("inventory-item-selected");
+    });
+
+    
+    try {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch("/save-garden/", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({ state: {} }),
+        });
+        const data = await response.json();
+        console.log("Garden reset:", data);
+        // Show a success tooltip
+        const tooltip = document.getElementById("reset-tooltip");
+        tooltip.textContent = "Garden reset successfully!";
+        tooltip.classList.add("show");
+        setTimeout(() => tooltip.classList.remove("show"), 3000);
+    } catch (error) {
+        console.error("Error resetting garden on server:", error);
+        const tooltip = document.getElementById("reset-tooltip");
+        tooltip.textContent = "Error resetting garden!";
+        tooltip.classList.add("show");
+        setTimeout(() => tooltip.classList.remove("show"), 3000);
+    }
+    });
+
     
     // Set the tree image in the center of the garden (cell 5,5).
     const gridItem55 = document.querySelector(".grid-item-5-5");

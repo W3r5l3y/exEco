@@ -1,18 +1,31 @@
+{% load static %}
 {% for item in items %}
-    <div class="inventory-slot">
+    <div class="inventory-slot" data-type="{{ item.item_type }}">
         <p class="item-name">{{ item.name }}</p>
         {% if item.image %}
-            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+            <img src="{% static item.image %}" alt="{{ item.name }}">
         {% else %}
             <p>{{ item.name }}</p>
         {% endif %}
         <p>x{{ item.quantity }} </p>
-        <div class="button-container">
+        
+
+        <div id="item-buttons">
+            <!-- Add a button to open lootboxes -->
             {% if item.item_type == "lootbox" %}
-                <div class="open-lootbox-btn" data-item-id="{{ item.id }}">Open lootbox</div>
+            <button class="lootbox-btn inventory-btn" data-item-id="{{ item.id }}" data-static-src="{% static item.lootbox_template.lootbox_image %}">Open lootbox</button>
+    
             {% endif %}
+
+            <!-- Add a button to use send users to garden -->
+            <p>  </p>
             {% if item.item_type == "regular" %}
-                <div class="place-item-btn" data-item-id="{{ item.id }}">Place Item</div>
+                <button class="item-btn inventory-btn" data-item-id="{{ item.id }}">Garden</button>
+            {% endif %}
+
+            <!-- If regular item quantity greater than 5 show merge button -->
+            {% if item.item_type == "regular" and item.quantity >= 5 %}
+                <button class="merge-btn merge-btn" data-item-id="{{ item.id }}">Merge</button>
             {% endif %}
         </div>
     </div>

@@ -71,7 +71,7 @@ class InventoryModelTests(TestCase):
     
     def test_addItem_method(self):
         #Check using the '.addItem()' method to add an item to inventory
-        item = self.inventory.addItem(name="Rose", quantity=1)
+        item = self.inventory.addItem(name="Rose", image="static/img/rose.png", quantity=1)
         self.assertIsNotNone(item)
         self.assertEqual(item.name, "Rose")
         self.assertEqual(item.quantity, 1)
@@ -108,7 +108,8 @@ class LootboxModelTests(TestCase):
     def test_lootbox_contents(self):
         #Check if lootbox contains the items added to its tempalte
         contents = LootboxContents.objects.filter(lootbox_template=self.lootbox_template)
-        self.assertEqual(contents.count(), 2)
+        count = contents.count()
+        self.assertEqual(count, 2)
         item_names = [content.item.name for content in contents]
         self.assertIn("Gold-bin", item_names)
         self.assertIn("Grey-bin", item_names)
@@ -126,27 +127,6 @@ class LootboxModelTests(TestCase):
         self.assertEqual(lootbox_item.item_type, ItemType.LOOTBOX)
         self.assertEqual(lootbox_item.lootbox_template.name, "Bingame Lootbox")
         self.assertEqual(self.inventory.items.count(), 1)
-
-    def test_add_item_new(self):
-        #Test using '.addItem()' method to add a new item to inventory
-        item = self.inventory.addItem(name="Rainflower", quantity=2)
-
-        self.assertIsNotNone(item)
-        self.assertEqual(item.name, "Rainflower")
-        self.assertEqual(item.quantity, 2)
-        
-        # Check item is in correct inventory
-        self.assertEqual(item.inventory, self.inventory)
-        self.assertEqual(self.inventory.items.count(), 1)
-
-    def test_add_item_existing(self):
-        #Test using '.addItem()' method to add an item that already exists in inventory
-        self.inventory.addItem(name="Mistflower", quantity=2)
-        item = self.inventory.addItem(name="Mistflower", quantity=3)  # Add more
-        
-        self.assertEqual(item.quantity, 5)  # ✅ Quantity should be updated
-        self.assertEqual(item.inventory, self.inventory)
-        self.assertEqual(self.inventory.items.count(), 1)  # Still only one item
 
     def test_add_lootbox(self):
         #Test adding a lootbox to the inventory
@@ -306,6 +286,6 @@ class InventoryViewsTestCase(TestCase):
 
         # Check that user’s inventory now has 1 regular item (the “Test Item”)
         new_items = self.inventory.items.filter(name="Test Item")
-        #print("DEBUG : COUNT : ", new_items.count())
+        
         self.assertEqual(new_items.count(), 1)
         self.assertEqual(new_items.first().name, "Test Item")

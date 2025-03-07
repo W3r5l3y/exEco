@@ -1,0 +1,159 @@
+[
+    {
+        "model": "bingame.bins",
+        "pk": 1,
+        "fields": {
+            "bin_name": "Plastic",
+            "bin_image": "img/bins/plastic.png"
+        }
+    },
+    {
+        "model": "bingame.bins",
+        "pk": 2,
+        "fields": {
+            "bin_name": "Glass",
+            "bin_image": "img/bins/glass.png"
+        }
+    },
+    {
+        "model": "bingame.bins",
+        "pk": 3,
+        "fields": {
+            "bin_name": "Card and Paper",
+            "bin_image": "img/bins/card_paper.png"
+        }
+    },
+    {
+        "model": "bingame.bins",
+        "pk": 4,
+        "fields": {
+            "bin_name": "Tins and Cans",
+            "bin_image": "img/bins/tins_cans.png"
+        }
+    },
+    {
+        "model": "bingame.bins",
+        "pk": 5,
+        "fields": {
+            "bin_name": "General Waste",
+            "bin_image": "img/bins/general_waste.png"
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 1,
+        "fields": {
+            "item_name": "Plastic Bottle",
+            "item_image": "img/items/plastic_bottle.png",
+            "bin_id": 1
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 2,
+        "fields": {
+            "item_name": "Cardboard",
+            "item_image": "img/items/cardboard.png",
+            "bin_id": 3
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 3,
+        "fields": {
+            "item_name": "Glass Bottle",
+            "item_image": "img/items/glass_bottle.png",
+            "bin_id": 2
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 4,
+        "fields": {
+            "item_name": "Chip Packet",
+            "item_image": "img/items/chip_packet.png",
+            "bin_id": 5
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 5,
+        "fields": {
+            "item_name": "Drink Can",
+            "item_image": "img/items/drink_can.png",
+            "bin_id": 4
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 6,
+        "fields": {
+            "item_name": "Banana Peel",
+            "item_image": "img/items/banana_peel.png",
+            "bin_id": 5
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 7,
+        "fields": {
+            "item_name": "Newspaper",
+            "item_image": "img/items/newspaper.png",
+            "bin_id": 3
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 8,
+        "fields": {
+            "item_name": "Pizza box",
+            "item_image": "img/items/pizza_box.png",
+            "bin_id": 5
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 9,
+        "fields": {
+            "item_name": "Milk carton",
+            "item_image": "img/items/milk_carton.png",
+            "bin_id": 3
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 10,
+        "fields": {
+            "item_name": "Soap dispenser",
+            "item_image": "img/items/soap_dispenser.png",
+            "bin_id": 1
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 11,
+        "fields": {
+            "item_name": "Envelope",
+            "item_image": "img/items/envelope.png",
+            "bin_id": 3
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 12,
+        "fields": {
+            "item_name": "Broken mirror",
+            "item_image": "img/items/broken_mirror.png",
+            "bin_id": 2
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 13,
+        "fields": {
+            "item_name": "Coffee cup",
+            "item_image": "img/items/coffee_cup.png",
+            "bin_id": 5
+        }
+    }
+]
