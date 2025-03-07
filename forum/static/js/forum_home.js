@@ -1,0 +1,63 @@
+function sharePost(postId) {
+        const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+
+    function toggleComments(postId) {
+        const commentsContainer = document.getElementById(`comments-${postId}`);
+        const commentsChevron = document.getElementById(`post-comments-toggle-image`)
+        commentsChevron.src = commentsContainer.style.display === 'none' ? chevronUp : chevronDown;
+        commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function likePost(postId) {
+        fetch(`{% url 'like_post' 0 %}`.replace('0', postId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            const likeCountText = document.querySelector(`#like-count-${postId}`);
+            likeCountText.textContent = data.likes;
+            const likeButton = document.querySelector(`#like-button-${postId}`);
+            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : '{% static "img/like.svg" %}';
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function addComment(event, postId) {
+        event.preventDefault();
+        const form = event.target;
+        const commentText = form.comment.value;
+
+        fetch(`{% url 'add_comment' 0 %}`.replace('0', postId), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'text': commentText
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const commentsContainer = document.getElementById(`comments-${postId}`);
+                const newComment = document.createElement('div');
+                newComment.classList.add('comment');
+                newComment.innerHTML = `<p><strong>${data.user_email}</strong>: ${data.text}</p>`;
+                commentsContainer.insertBefore(newComment, form);
+                form.reset();
+            } else {
+                alert('Error adding comment');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
