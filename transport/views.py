@@ -343,7 +343,11 @@ def log_activity(request):
             
             user_points.save()
             
-            return JsonResponse({"success": "Activity logged successfully!"})
+            return JsonResponse(
+                {"success": "Activity logged successfully!",
+                "lootboxes_to_reward": lootboxes_to_reward}, 
+                status=200
+                )
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
