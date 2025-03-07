@@ -46,6 +46,7 @@
                                 {% csrf_token %}
                                 <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
                             </form>
+                            <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
                         </div>
                     </div>
 
@@ -64,7 +65,14 @@
             <a href="{% url 'create_post' %}"><img class="bottom-navbar-image" src="{% static 'img/new_post.svg' %}" alt="New Post"></a>
         </div>
     </div>
-
+    <script>
+    function sharePost(postId) {
+        const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+    </script>
 </body>
 </html>
 
