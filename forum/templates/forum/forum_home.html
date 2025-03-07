@@ -10,6 +10,7 @@
     {% block css %}{% endblock %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/forum_home.css' %}">
+    <script src="{% static 'js/forum_home.js' %}" defer></script>
 </head>
 <body>
     <main>
@@ -32,18 +33,30 @@
                         <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
                     </div>
                     <div class="post-bottom">
-                        <div class="post-description">
-                            <h3 class="post-description-text">{{ post.description }}</h3>
-                        </div>
-                        <div class="post-comments">
-                            <div class="post-comments-button" onclick="toggleComments({{ post.post_id }})">
+                        <div class="post-bottom-content">
+                            <div class="post-description">
+                                <h3 class="post-description-text">{{ post.description }}</h3>
+                            </div>
+                            <div class="post-comments-button" onclick="toggleComments({{ post.post_id }})" id="post-comments-toggle">
                                 <div>
-                                    <p class="post-comments-down-text">
+                                    <p class="post-comments-toggle-text">
                                         Comments
                                     </p>
-                                    <img src="{% static 'img/chevron-down.svg' %}" alt="comments down" class="post-comments-down-image">
+                                    <img src="{% static 'img/chevron-down.svg' %}" alt="comments down" class="post-comments-toggle-image" id="post-comments-toggle-image">
                                 </div>
                             </div>
+                            <div class="post-actions">
+                                <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
+                                    <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" src="{% static 'img/like.svg' %}">
+                                </button>
+                                <form action="{% url 'report_post' post.post_id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
+                                </form>
+                                <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
+                            </div>
+                        </div>
+                        <div class="post-comments">
                             <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;">
                                 {% for comment in post.comments.all %}
                                     <div class="comment">
@@ -57,86 +70,16 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="post-actions">
-                            <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
-                                <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" src="{% static 'img/like.svg' %}">
-                            </button>
-                            <form action="{% url 'report_post' post.post_id %}" method="post">
-                                {% csrf_token %}
-                                <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
-                            </form>
-                            <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
-                        </div>
-
                     </div>
                 </div>
             {% endfor %}
         </div>
     </main>
-    {% include 'forum/bottom_navbar.html' %}
     <script>
-    function sharePost(postId) {
-        const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
-        navigator.clipboard.writeText(url).then(() => {
-            alert('Link copied to clipboard!');
-        });
-    }
-
-    function toggleComments(postId) {
-        const commentsContainer = document.getElementById(`comments-${postId}`);
-        commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function likePost(postId) {
-        fetch(`{% url 'like_post' 0 %}`.replace('0', postId), {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-            const likeCountText = document.querySelector(`#like-count-${postId}`);
-            likeCountText.textContent = data.likes;
-            const likeButton = document.querySelector(`#like-button-${postId}`);
-            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : '{% static "img/like.svg" %}';
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    function addComment(event, postId) {
-        event.preventDefault();
-        const form = event.target;
-        const commentText = form.comment.value;
-
-        fetch(`{% url 'add_comment' 0 %}`.replace('0', postId), {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                'text': commentText
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const commentsContainer = document.getElementById(`comments-${postId}`);
-                const newComment = document.createElement('div');
-                newComment.classList.add('comment');
-                newComment.innerHTML = `<p><strong>${data.user_email}</strong>: ${data.text}</p>`;
-                commentsContainer.insertBefore(newComment, form);
-                form.reset();
-            } else {
-                alert('Error adding comment');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        const chevronUp = "{% static 'img/chevron-up.svg' %}";
+        const chevronDown = "{% static 'img/chevron-down.svg' %}";
     </script>
+    {% include 'forum/bottom_navbar.html' %}
 </body>
 </html>
 
