@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from .models import Post, PostLike
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+from .models import Post, PostLike, Comment
 from .forms import PostForm
 from accounts.models import CustomUser
 
@@ -56,3 +58,16 @@ def user_profile(request, user_id):
     return render(
         request, "forum/user_profile.html", {"user": user, "posts": user_posts}
     )
+
+
+@require_POST
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, post_id=post_id)
+    text = request.POST.get("text")
+    if text:
+        comment = Comment.objects.create(user=request.user, post=post, text=text)
+        return JsonResponse(
+            {"success": True, "text": comment.text, "user_email": comment.user.email}
+        )
+    return JsonResponse({"success": False})
