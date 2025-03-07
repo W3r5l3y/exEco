@@ -375,7 +375,26 @@
         "pk": 21,
         "fields": {
             "lootbox_template": 1,  
-            "item": 15,  
+            "item": 21,  
+            "probability": 0.70  
+        }
+    },
+
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 22,
+        "fields": {
+            "name": "Gold Bin",
+            "description": "Good gold bin",
+            "image": "img/items/gold_bin.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 22,
+        "fields": {
+            "lootbox_template": 1,  
+            "item": 22,  
             "probability": 0.30  
         }
     }

@@ -38,7 +38,7 @@ def buy_item(request, item_id):
     
     #Copy image to inventory
     if shop_item.image:
-        old_image_path = os.path.join(settings.BASE_DIR, f"shop/{shop_item.image}")
+        old_image_path = os.path.join(settings.BASE_DIR, f"shop/static/{shop_item.image}")
         new_image_dir = os.path.join(settings.BASE_DIR, 'inventory/static/img/items/')
         new_image_path = os.path.join(new_image_dir, os.path.basename(shop_item.image))
 
