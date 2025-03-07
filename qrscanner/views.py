@@ -119,10 +119,10 @@ def qrscanner(request):
         "form": form,
         "result": result,
         "location": location,
-        "location_name": location_name,                 # CHANGED
-        "location_fact": location_fact,                 # CHANGED
-        "location_value": location_value,               # CHANGED
-        "location_times_visited": location_times_visited, # CHANGED
+        "location_name": location_name,                 
+        "location_fact": location_fact,                 
+        "location_value": location_value,               
+        "location_times_visited": location_times_visited, 
         "user_points": user_points,
         "message": message,
         "leaderboard_data": leaderboard_data,

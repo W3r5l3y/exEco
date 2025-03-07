@@ -55,14 +55,14 @@
             <!-- Last Upload Section (Bottom Right) -->
             <section class="last-upload column-item">
                 <h3>Last Upload</h3>
-                {% if result %}
-                    {% if location %}
-                        <p><strong>Location Name:</strong> <strong>{{ location_name }}</strong></p>
-                        <p>Fact: {{ location_fact }}</p>
-                        <p>Times Scanned: {{ location_times_visited }}</p>
-                        <p>Point Value: {{ location_value }}</p>
-                    {% endif %}
+            
+                {% if location_name %}
+                    <p><strong>Location Name:</strong> <strong>{{ location_name }}</strong></p>
+                    <p>Fact: {{ location_fact }}</p>
+                    <p>Times Scanned: {{ location_times_visited }}</p>
+                    <p>Point Value: {{ location_value }}</p>
                 {% endif %}
+                
             </section>
         </div>
     <div id="lootbox-popup" style="display: none"></div>
