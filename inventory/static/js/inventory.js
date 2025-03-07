@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get the static image source and replace it with the video source
         const staticSrc = button.getAttribute("data-static-src");
         const videoSrc = staticSrc.replace(".png", "_animation.mp4");
-        console.log("DUBUG 69: ", videoSrc);
     
         // Create video element
         const video = document.createElement("video");
