@@ -6,7 +6,7 @@ from .forms import PostForm
 
 def forum_home(request):
     posts = Post.objects.all().order_by("-created_at")
-    return render(request, "forum/forum_home.html", {"posts": posts})
+    return render(request, "forum/forum_home.html", {"posts": posts, "active_page": "home"})
 
 
 @login_required
@@ -18,9 +18,8 @@ def create_post(request):
             post.user = request.user
             post.save()
             return redirect("forum_home")
-    else:
-        form = PostForm()
-    return render(request, "forum/create_post.html", {"form": form})
+
+    return render(request, "forum/create_post.html", {"active_page": "create_post"})
 
 
 @login_required
