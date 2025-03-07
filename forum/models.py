@@ -12,3 +12,12 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.description[:20]}"
+
+
+class PostLike(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    liked = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ("user", "post")
