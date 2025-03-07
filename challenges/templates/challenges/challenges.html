@@ -14,37 +14,44 @@
 <body>
     <main>
         <h1 class="challenges-title">Challenges</h1>
+        <p id="user-coins">Coins: {{ request.user.usercoins.coins }}</p>
 
         <section class="challenges-container">
             <!-- Daily Challenges -->
             <div class="challenges-box daily-challenges">
                 <h2>Daily Challenges</h2>
-                <p class="duration">Resets in: <span id="daily-timer">24:00:00</span></p>
-                
+                <p class="duration">Resets in: <span id="daily-timer">Loading...</span></p>
                 <div class="challenge-list">
-                    {% for challenge in daily_challenges %}
-                    <div class="challenge-item">
-                        <p class="challenge-description">{{ challenge.description }}</p>
-                        <p class="challenge-reward">{{ challenge.reward }} Points</p>
-                        <button class="submit-btn" data-challenge-id="{{ challenge.id }}">Submit</button>
+                    {% for user_challenge in daily_challenges %}
+                    <div class="challenge-item {% if user_challenge.completed %}completed{% endif %}">
+                        <p class="challenge-description">{{ user_challenge.challenge.description }}</p>
+                        <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
+                        {% if user_challenge.completed %}
+                            <button class="submit-btn" disabled>Completed</button>
+                        {% else %}
+                            <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
+                        {% endif %}
                     </div>
                     {% empty %}
                         <p>No daily challenges available.</p>
                     {% endfor %}
-                </div>       
+                </div>
             </div>
 
             <!-- Weekly Challenges -->
             <div class="challenges-box weekly-challenges">
                 <h2>Weekly Challenges</h2>
-                <p class="duration">Resets in: <span id="weekly-timer">7d 00:00:00</span></p>
-                
+                <p class="duration">Resets in: <span id="weekly-timer">Loading...</span></p>
                 <div class="challenge-list">
-                    {% for challenge in weekly_challenges %}
-                    <div class="challenge-item">
-                        <p class="challenge-description">{{ challenge.description }}</p>
-                        <p class="challenge-reward">{{ challenge.reward }} Points</p>
-                        <button class="submit-btn" data-challenge-id="{{ challenge.id }}">Submit</button>
+                    {% for user_challenge in weekly_challenges %}
+                    <div class="challenge-item {% if user_challenge.completed %}completed{% endif %}">
+                        <p class="challenge-description">{{ user_challenge.challenge.description }}</p>
+                        <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
+                        {% if user_challenge.completed %}
+                            <button class="submit-btn" disabled>Completed</button>
+                        {% else %}
+                            <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
+                        {% endif %}
                     </div>
                     {% empty %}
                         <p>No weekly challenges available.</p>

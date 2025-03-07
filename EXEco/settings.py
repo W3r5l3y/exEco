@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     "transport",
     "inventory",
     "garden",
+    "forum",
+    "shop",
+    "challenges",
 ]
 
 MIDDLEWARE = [

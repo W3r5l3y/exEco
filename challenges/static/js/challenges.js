@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeLeft = deadline - now;
 
             if (timeLeft <= 0) {
-                timerElement.innerHTML = "00:00:00"; // Reset when expired
+                if (timerElement) timerElement.innerHTML = "00:00:00"; // Reset when expired
                 return;
             }
 
@@ -15,10 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            if (days > 0) {
-                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            } else {
-                timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+            if (timerElement) {
+                if (days > 0) {
+                    timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                } else {
+                    timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+                }
             }
         }
 
@@ -26,50 +28,53 @@ document.addEventListener("DOMContentLoaded", function () {
         setInterval(calculateTimeLeft, 1000);
     }
 
+    // Fix: Ensure these elements exist before using them
+    const dailyTimer = document.getElementById("daily-timer");
+    const weeklyTimer = document.getElementById("weekly-timer");
+
     // Set deadlines for daily and weekly challenges (next midnight and next Monday)
     const now = new Date();
     
-    // Daily Challenge Reset at midnight
     const dailyReset = new Date();
     dailyReset.setHours(24, 0, 0, 0); 
 
-    // Weekly Challenge Reset next Monday at midnight
     const weeklyReset = new Date();
-    weeklyReset.setDate(now.getDate() + (8 - now.getDay()) % 7); // Next Monday
+    weeklyReset.setDate(now.getDate() + (8 - now.getDay()) % 7);
     weeklyReset.setHours(0, 0, 0, 0);
 
-    updateCountdown(document.getElementById("daily-timer"), dailyReset.getTime());
-    updateCountdown(document.getElementById("weekly-timer"), weeklyReset.getTime());
+    if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
+    if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
 
     // Handling challenge submission
-    function handleChallengeSubmission(button) {
-        const challengeId = button.getAttribute("data-challenge-id");
-
-        fetch("/submit-challenge/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken() // CSRF Protection
-            },
-            body: JSON.stringify({ challenge_id: challengeId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                button.innerText = "Completed";
-                button.disabled = true;
-                button.style.backgroundColor = "#888";
-            } else {
-                alert("Error: " + data.error);
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    }
-
-    // Add event listeners to all submit buttons
     document.querySelectorAll(".submit-btn").forEach(button => {
         button.addEventListener("click", function () {
-            handleChallengeSubmission(this);
+            const challengeId = this.getAttribute("data-challenge-id");
+
+            fetch("/submit-challenge/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken(),
+                },
+                body: JSON.stringify({ challenge_id: challengeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.innerText = "Completed";
+                    this.disabled = true;
+                    this.style.backgroundColor = "#888";
+
+                    // Update user's coin balance if element exists
+                    const coinElement = document.getElementById("user-coins");
+                    if (coinElement && data.new_coins !== null) {
+                        coinElement.innerText = `Coins: ${data.new_coins}`;
+                    }
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
         });
     });
 

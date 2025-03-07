@@ -154,3 +154,13 @@ main {
         width: 100%;
     }
 }
+
+.challenge-item.completed {
+    background-color: #ccc;
+    color: #777;
+}
+
+.challenge-item.completed .submit-btn {
+    background-color: #888;
+    cursor: not-allowed;
+}
