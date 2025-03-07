@@ -73,6 +73,7 @@ input {
 }
 
 button {
+    align-self: flex-end;
     margin-top: 20px;
     padding: 10px 20px;
     border: 2px solid var(--primary_colour);
