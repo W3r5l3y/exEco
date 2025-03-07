@@ -13,6 +13,11 @@ body {
     display: flex;
     height: 100vh;
     background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 main {
@@ -119,7 +124,8 @@ option {
     width: 80%;
     padding: 20px;
     border-radius: 10px;
-    background-color: var(--neutral_colour);
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
     border: 4px solid var(--accessories_colour);
     box-shadow: 0 0 10px #000;
     gap: 20px;
@@ -138,6 +144,8 @@ option {
     padding: 20px;
     border-radius: 10px;
     gap: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .gamekeeper-section:nth-child(even) .gamekeeper-sub-section {
