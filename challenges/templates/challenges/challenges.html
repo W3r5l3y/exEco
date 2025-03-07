@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/challenges.css' %}">
+    <script src="{% static 'js/challenges.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1 class="challenges-title">Challenges</h1>
+
+        <section class="challenges-container">
+            <!-- Daily Challenges -->
+            <div class="challenges-box daily-challenges">
+                <h2>Daily Challenges</h2>
+                <p class="duration">Resets in: <span id="daily-timer">24:00:00</span></p>
+                
+                <div class="challenge-list">
+                    {% for challenge in daily_challenges %}
+                    <div class="challenge-item">
+                        <p class="challenge-description">{{ challenge.description }}</p>
+                        <p class="challenge-reward">{{ challenge.reward }} Points</p>
+                        <button class="submit-btn" data-challenge-id="{{ challenge.id }}">Submit</button>
+                    </div>
+                    {% empty %}
+                        <p>No daily challenges available.</p>
+                    {% endfor %}
+                </div>       
+            </div>
+
+            <!-- Weekly Challenges -->
+            <div class="challenges-box weekly-challenges">
+                <h2>Weekly Challenges</h2>
+                <p class="duration">Resets in: <span id="weekly-timer">7d 00:00:00</span></p>
+                
+                <div class="challenge-list">
+                    {% for challenge in weekly_challenges %}
+                    <div class="challenge-item">
+                        <p class="challenge-description">{{ challenge.description }}</p>
+                        <p class="challenge-reward">{{ challenge.reward }} Points</p>
+                        <button class="submit-btn" data-challenge-id="{{ challenge.id }}">Submit</button>
+                    </div>
+                    {% empty %}
+                        <p>No weekly challenges available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

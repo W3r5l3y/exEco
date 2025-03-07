@@ -29,6 +29,10 @@ urlpatterns = [
     path("", include("transport.urls")),
     path("", include("inventory.urls")),
     path("", include("garden.urls")),
+<<<<<<< HEAD
     path("", include("forum.urls")),
     path("", include("shop.urls")),
+=======
+    path("", include("challenges.urls")),
+>>>>>>> 156b3840f1af70cff909294b6c86aa74b7d5ec26
 ]
