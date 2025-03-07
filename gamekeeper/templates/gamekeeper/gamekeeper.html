@@ -17,26 +17,37 @@
         <h1>Gamekeeper</h1>
 
         <!-- QR Scanner -->
-        <section id="qrscanner-gamekeeper">
+        <section id="qrscanner-gamekeeper" class="gamekeeper-section">
             <!-- Add QR code entries into database -->
-            
-            
+            <form id="qrscanner-form">
+                <label for="qrscanner-location-code">Location Code</label>
+                <input type="text" id="qrscanner-location-code" placeholder="Location code" name="location_code" required>
+                <label for="qrscanner-location-name">Location Name</label>
+                <input type="text" id="qrscanner-location-name" placeholder="Location name" name="location_name" required>
+                <label for="qrscanner-location-fact">Location Fact</label>
+                <input type="text" id="qrscanner-location-fact" placeholder="Location fact" name="location_fact" required>
+                <label for="qrscanner-location-cooldown">Location Cooldown</label>
+                <input type="text" id="qrscanner-location-cooldown" placeholder="Location cooldown" name="location_cooldown"> <!-- Optional: default 60s -->
+                <label for="qrscanner-location-value">Location Value</label>
+                <input type="text" id="qrscanner-location-value" placeholder="Location value" name="location_value"> <!-- Optional: default 1 -->
+                <button type="submit">Submit</button>
+            </form>
         </section>
 
         <!-- Bin game -->
-        <section id="bingame-gamekeeper">
+        <section id="bingame-gamekeeper" class="gamekeeper-section">
             <!-- Add bin game entries into database -->
             
         </section>
 
         <!-- Transport -->
-        <section id="transport-gamekeeper">
+        <section id="transport-gamekeeper" class="gamekeeper-section">
             <!-- Manually unlink accounts -->
         
         </section>
 
         <!-- Forum -->
-        <section id="forum-gamekeeper">
+        <section id="forum-gamekeeper" class="gamekeeper-section">
             <!-- Moderate forum posts -->
 
         </section>
