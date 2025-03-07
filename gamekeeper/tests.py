@@ -26,7 +26,8 @@ class QRCodeGenerationTests(TestCase):
             "location_code": "L123",
             "location_name": "Test Park",
             "location_fact": "A scenic park with lakes.",
-            "cooldown_length": 120
+            "cooldown_length": 120,
+            "location_value": 10,
         }
         
         # Generate the correct URL with arguments
@@ -37,6 +38,7 @@ class QRCodeGenerationTests(TestCase):
                 "location_name": self.location_data["location_name"],
                 "location_fact": self.location_data["location_fact"],
                 "cooldown_length": self.location_data["cooldown_length"],
+                "location_value": self.location_data["location_value"],
             }
         )
 
@@ -58,7 +60,7 @@ class QRCodeGenerationTests(TestCase):
         self.assertTrue(os.path.exists(qr_code_path))
 
     def test_generate_qr_code_duplicate_location(self):
-        """Test that attempting to add a duplicate location does not generate a new QR code."""
+        # Test that adding duplicated qr code doesnt work
 
         # Create a location first
         Location.addLocation(**self.location_data)
@@ -72,7 +74,7 @@ class QRCodeGenerationTests(TestCase):
         self.assertEqual(response.json()["error"], "Code already exists")
 
     def tearDown(self):
-        """Cleanup any generated QR code files after tests."""
+        # Cleanup test qr codes
         qr_code_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", f"{self.location_data['location_code']}.png")
         if os.path.exists(qr_code_path):
             os.remove(qr_code_path)

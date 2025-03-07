@@ -16,14 +16,15 @@ def gamekeeper_view(request):
 QR Scanner Gamekeeper Views
 """
 @login_required
-def add_location_to_qr(request, location_code, location_name, location_fact, cooldown_length):
+def add_location_to_qr(request, location_code, location_name, location_fact, cooldown_length, location_value):
     # Add relevant information for a qr code to the qrscanner database, then return a Json showing the new qr code location in media
     # Add qr code location to qrscanner database
     location = Location.addLocation(
         location_code=location_code,
         location_name=location_name,
         location_fact=location_fact,
-        cooldown_length=cooldown_length
+        cooldown_length=cooldown_length,
+        location_value=location_value
     )
     if location == "Code already exists":
         return JsonResponse({"error": "Code already exists"}, status=400)
@@ -45,3 +46,12 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
     # Return JSON response with the QR code URL
     qr_url = f"{settings.MEDIA_URL}{qr_filename}"
     return JsonResponse({"message": "Location added", "qr_code_url": qr_url})
+
+"""
+Transport Gamekeeper Views
+"""
+
+
+"""
+Bingame Gamekeeper Views
+"""
