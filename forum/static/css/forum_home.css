@@ -141,6 +141,7 @@ main {
 
 .post-comments {
     padding-top: 10px;
+    width: 100%;
 }
 
 .post-description-text{
@@ -165,6 +166,34 @@ main {
     width: 30px;
     height: 30px;
     margin-left: 20px;
+}
+
+#comment {
+    width: 100%;
+    background-color: red;
+}
+
+.comment-input {
+    width: 100%;
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px;
+    border: 2px solid grey;
+}
+
+.comment-post {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid white;
+    width: 13%;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.comment-post:hover {
+    background-color: var(--accessories_colour);
+
 }
 
 

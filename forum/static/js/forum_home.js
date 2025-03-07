@@ -13,10 +13,10 @@ function sharePost(postId) {
     }
 
     function likePost(postId) {
-        fetch(`{% url 'like_post' 0 %}`.replace('0', postId), {
+        fetch(`/like/${postId}/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({})
@@ -26,7 +26,7 @@ function sharePost(postId) {
             const likeCountText = document.querySelector(`#like-count-${postId}`);
             likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
-            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : '{% static "img/like.svg" %}';
+            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : likeButton;
         })
         .catch(error => console.error('Error:', error));
     }
@@ -36,10 +36,10 @@ function sharePost(postId) {
         const form = event.target;
         const commentText = form.comment.value;
 
-        fetch(`{% url 'add_comment' 0 %}`.replace('0', postId), {
+        fetch(`/add_comment/${postId}/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({

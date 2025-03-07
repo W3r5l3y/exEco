@@ -11,10 +11,10 @@ function sharePost(postId) {
     }
 
     function likePost(postId) {
-        fetch(`{% url 'like_post' 0 %}`.replace('0', postId), {
+        fetch(`/like/${postId}/`.replace('0', postId), {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({})
@@ -24,7 +24,7 @@ function sharePost(postId) {
             const likeCountText = document.querySelector(`#like-count-${postId}`);
             likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
-            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : '{% static "img/like.svg" %}';
+            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : likeButton;
         })
         .catch(error => console.error('Error:', error));
     }
