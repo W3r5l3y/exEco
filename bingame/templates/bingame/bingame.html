@@ -40,7 +40,7 @@
                     {% for item in items %}
                         <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
                             <p>{{ item.item_name }}</p>
-                            <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}">
+                            <img src="{% static item.item_image %}" alt="{{ item.item_name }}">
                         </div>
                     {% endfor %}
                     
@@ -49,7 +49,7 @@
                 <div id="bins-container">
                     {% for bin in bins %}
                         <div class="bin"  data-bin-id="{{ bin.bin_id }}">
-                            <img src="{{ bin.bin_image.url }}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
+                            <img src="{% static bin.bin_image %}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
                             <p>{{ bin.bin_name }}</p>
                             <!-- For future better item placement in bins-->
                             <!-- <div class="bin-items" data-bin-id="{{ bin.bin_id }}"> --> 
@@ -59,7 +59,7 @@
 
                 <!-- Check Answer-->
                 <div id="check-answer-tile" >
-                    Check Answers
+                    <span id="check-answer-label">Check Answers</span>
                     <p id="attempts-left" style="color: rgb(253, 106, 106);"></p>
                 </div>
             </div>

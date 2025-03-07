@@ -156,17 +156,16 @@ LOGIN_URL = "/login/"
 # Strava environment variables
 STRAVA_CLIENT_ID = 149186
 STRAVA_CLIENT_SECRET = "bca1d6a01353f0c0197a8aed8f331db3aebd37d1"
-REDIRECT_URI = "http://localhost:8000/strava-callback/"
+REDIRECT_URI = "http://127.0.0.1:8000/strava-callback/"
 
+# Session settings
+SESSION_COOKIE_SECURE = False # Allow session cookies to be sent over HTTP
+SESSION_COOKIE_SAMESITE = None # Allow session cookies to be sent with GET requests
 
-TESTING = "test" in sys.argv
-
-# Skip migrations for regular tests, but apply them for migration tests
-if TESTING:
-    MIGRATION_MODULES = {
-        "bingame": None,  # Disable migrations for bingame during regular tests
-    }
 
 # Media settings
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Testing settings
+TESTING = "test" in sys.argv

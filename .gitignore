@@ -75,15 +75,16 @@ docs/_build/
 .pybuilder/
 
 # Media files
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.tiff
-*.ico
-*.svg
-*.webp
+
+media/**/*.png
+media/**/*.jpg
+media/**/*.jpeg
+media/**/*.gif
+media/**/*.bmp
+media/**/*.tiff
+media/**/*.ico
+media/**/*.svg
+media/**/*.webp
 target/
 
 # Jupyter Notebook

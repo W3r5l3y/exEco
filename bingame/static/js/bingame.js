@@ -206,14 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         itemsContainer.appendChild(resultMessage);
-    
-        checkAnswerBtn.innerText = 'Next Round';
+        
+        document.getElementById('check-answer-label').innerText = 'Next Round'
+
         checkAnswerBtn.removeEventListener('click', checkAnswers);
         checkAnswerBtn.addEventListener('click', resetGame);
     
-        if (attemptsLeftElem) {
-            attemptsLeftElem.style.display = 'none'; // Hide attempts left
-        }
+        //if (attemptsLeftElem) {
+        //    attemptsLeftElem.style.display = 'none'; // Hide attempts left
+        //}
     }    
 
     function resetGame() {
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemsContainer = document.getElementById('items-container');
         const checkAnswerBtn = document.getElementById('check-answer-tile');
         const attemptsLeftElem = document.getElementById('attempts-left');
-    
+        
         // Reset container styling and remove game result message
         itemsContainer.style.backgroundColor = '';
         itemsContainer.innerHTML = '';
@@ -231,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         getLeaderboard();
         fetchNewRandomItems();
     
-        checkAnswerBtn.innerText = 'Check Answers';
+        document.getElementById('check-answer-label').innerText = 'Check Answers';
         checkAnswerBtn.removeEventListener('click', resetGame);
         checkAnswerBtn.addEventListener('click', checkAnswers);
     
@@ -260,12 +261,21 @@ document.addEventListener('DOMContentLoaded', () => {
             body: `user_score=${tempScore}&csrfmiddlewaretoken=${getCSRFToken()}`,
         })
         .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
             if (data.status === 'success'){
                 console.log('New total score:', data.new_score, score);
+                console.log('LOOTBOX TO REWARD',data.lootboxes_to_reward)
+                // Show lootboxes awarded
+                if (data.lootboxes_to_reward > 0) {
+                    showlootboxesAwarded(data.lootbox_id, data.lootboxes_to_reward);
+                }
             } else{
+                console.log("ERROR UPDATING LEADERBOARD: ", data, data.lootboxes_to_reward)
                 console.error('error updating leaderboard');
             }
         })
@@ -307,13 +317,14 @@ document.addEventListener('DOMContentLoaded', () => {
     * -------------------------------------------------- */
     async function fetchNewRandomItems() {
         try {
-            const response = await fetch('/fetch_random_items/');
+            const response = await fetch('/fetch-random-items/');
             if (!response.ok) {
                 throw new Error('Failed to fetch random items');
             }
             
             const data = await response.json();
             const items = data.items; 
+            console.log('New random items:', items);
     
             //Remove the items
             const itemsContainer = document.getElementById('items-container');
@@ -328,7 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemDiv.setAttribute('data-correct-bin-id', itemData.bin_id);
     
                 const img = document.createElement('img');
-                img.src = itemData.item_image_url;
+                console.log("ITEM IMAGE: ", itemData.item_image)
+                img.src = `/static/${itemData.item_image}`;
                 img.alt = itemData.item_name;
                 const itemName = document.createElement('p');
                 itemName.textContent = itemData.item_name;
@@ -344,6 +356,56 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching new random items:', error);
         }
     }
+
+    // --------------------------------------------------
+    // Lootbox popup
+    // --------------------------------------------------
+
+    function showlootboxesAwarded(lootbox_id, quantity) { // Pass in lootbox_id and quantity of lootboxes to show
+        // Create div element for lootbox popup
+        const lootboxPopup = document.createElement('div');
+        lootboxPopup.id = 'lootbox-popup';
+        
+        // Create div element for lootbox content and append to popup
+        const lootboxContent = document.createElement('div');
+        lootboxContent.id = 'lootbox-content';
+        lootboxPopup.appendChild(lootboxContent);
+    
+        // Make request to get lootbox data from views.py get_lootbox_data function
+        fetch(`/get-lootbox-data/?lootbox_id=${lootbox_id}`)
+        .then(response => response.json())
+        .then(data => {
+            // Create lootbox image element and append to lootbox content
+            const lootboxImage = document.createElement('img');
+            lootboxImage.src = `/static/${data.lootbox_image}`;
+            lootboxImage.alt = data.lootbox_name;
+            lootboxContent.appendChild(lootboxImage);
+    
+            // Create lootbox name element and append to lootbox content
+            const lootboxName = document.createElement('p');
+            lootboxName.textContent = data.lootbox_name;
+            lootboxContent.appendChild(lootboxName);
+    
+            // Create lootbox quantity element and append to lootbox content
+            const lootboxQuantity = document.createElement('p');
+            lootboxQuantity.textContent = `Quantity: ${quantity}`;
+            lootboxContent.appendChild(lootboxQuantity);
+    
+            // Create lootbox close button and append to lootbox content
+            const lootboxCloseBtn = document.createElement('button');
+            lootboxCloseBtn.textContent = 'Close';
+            lootboxCloseBtn.addEventListener('click', () => {
+                lootboxPopup.remove();
+            });
+            lootboxContent.appendChild(lootboxCloseBtn);
+    
+            // Append the popup to the document so it becomes visible
+            document.body.appendChild(lootboxPopup);
+        })
+        .catch(error => console.error("Error fetching lootbox data:", error));
+    }
+    
+
 
     // --------------------------------------------------
     // Initial setup
