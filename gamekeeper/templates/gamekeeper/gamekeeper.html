@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamekeeper</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/gamekeeper.css' %}">
+    <script src="{% static 'js/gamekeeper.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Gamekeeper</h1>
+    </main>
+</body>
+</html>
