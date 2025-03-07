@@ -1,4 +1,3 @@
-@import url("/static/css/colours.css");
 * {
     margin: 0;
     padding: 0;
@@ -21,46 +20,21 @@ main {
     min-height: 100%;
 }
 
-
-
-.posts {
+.create-post-form {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-}
-.like-count-container {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: end;
 }
 
-.like-count {
-    display: flex;
-    flex-direction: row;
-
-}
-
-.like-count-image {
-    width: 30px;
-    height: 30px;
-}
-
-.like-count-text{
-    color: white;
-    font-size: 18px;
-    margin-right: 5px;
-}
-
-.post{
+.create-post-div {
     background-color: white;
     border-radius: 10px;
     width: 40%;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
     margin-bottom: 30px;
+
 }
+
 
 .post-top{
     background-color: var(--primary_colour);
@@ -75,10 +49,10 @@ main {
 }
 
 
-
 .post-image-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     min-height: 50vh;
     padding: 10px;
 }
@@ -89,6 +63,17 @@ main {
     height: auto;
     border-radius: 10px;
     object-fit: contain;
+}
+
+.post-image-empty {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.post-image-empty h4 {
+    color: gray;
+    margin-top: 10px;
 }
 
 .post-bottom{
@@ -103,12 +88,15 @@ main {
 .post-description{
     display: flex;
     align-items: center;
+    width: 90%;
 }
 
-.post-description-text{
-    font-size: 21px;
+.post-description-input {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: lightgrey;
+    width: 100%;
     color: white;
-    text-align: center;
 }
 
 .post-actions {
@@ -126,7 +114,4 @@ main {
     height: 30px;
     margin-left: 20px;
 }
-
-
-
 
