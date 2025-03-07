@@ -281,8 +281,8 @@ h3 {
 
 input[type="radio"]:checked {
     accent-color: #fc4c02;
-  }
-  
+    }
+    
 
 /* Submit button styles */
 #submit-activity {
