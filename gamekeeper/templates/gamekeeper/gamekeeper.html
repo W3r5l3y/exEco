@@ -19,37 +19,106 @@
         <!-- QR Scanner -->
         <section id="qrscanner-gamekeeper" class="gamekeeper-section">
             <!-- Add QR code entries into database -->
-            <form id="qrscanner-form">
-                <label for="qrscanner-location-code">Location Code</label>
-                <input type="text" id="qrscanner-location-code" placeholder="Location code" name="location_code" required>
-                <label for="qrscanner-location-name">Location Name</label>
-                <input type="text" id="qrscanner-location-name" placeholder="Location name" name="location_name" required>
-                <label for="qrscanner-location-fact">Location Fact</label>
-                <input type="text" id="qrscanner-location-fact" placeholder="Location fact" name="location_fact" required>
-                <label for="qrscanner-location-cooldown">Location Cooldown</label>
-                <input type="text" id="qrscanner-location-cooldown" placeholder="Location cooldown" name="location_cooldown"> <!-- Optional: default 60s -->
-                <label for="qrscanner-location-value">Location Value</label>
-                <input type="text" id="qrscanner-location-value" placeholder="Location value" name="location_value"> <!-- Optional: default 1 -->
-                <button type="submit">Submit</button>
-            </form>
+            <h2>QR Scanner</h2>
+            <div class="gamekeeper-section-task">
+                <p>Add QR code entries into the database</p>
+                <form id="qrscanner-form">
+                    <label for="qrscanner-location-code">Location Code</label>
+                    <input type="text" id="qrscanner-location-code" placeholder="Location code" name="location_code" required>
+                    <label for="qrscanner-location-name">Location Name</label>
+                    <input type="text" id="qrscanner-location-name" placeholder="Location name" name="location_name" required>
+                    <label for="qrscanner-location-fact">Location Fact</label>
+                    <input type="text" id="qrscanner-location-fact" placeholder="Location fact" name="location_fact" required>
+                    <label for="qrscanner-location-cooldown">Location Cooldown</label>
+                    <input type="text" id="qrscanner-location-cooldown" placeholder="Location cooldown" name="location_cooldown"> <!-- Optional: default 60s -->
+                    <label for="qrscanner-location-value">Location Value</label>
+                    <input type="text" id="qrscanner-location-value" placeholder="Location value" name="location_value"> <!-- Optional: default 1 -->
+                    <button type="qrscanner-qr-button">Submit</button>
+                </form>
+            </div>
+            <div class="gamekeeper-section-task">
+                <p>Add points to a user</p>
+                <form id="qrscanner-points-form">
+                    <label for="qrscanner-points-user-id">User Id</label>
+                    <input type="text" id="qrscanner-points-user-id" placeholder="User id" name="user_id" required>
+                    <label for="qrscanner-points-amount">Amount</label>
+                    <input type="text" id="qrscanner-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="qrscanner-points-button">Submit</button>
+                </form>
+            </div>
         </section>
 
         <!-- Bin game -->
         <section id="bingame-gamekeeper" class="gamekeeper-section">
             <!-- Add bin game entries into database -->
-            
+            <h2>Bin Game</h2>
+            <div class="gamekeeper-section-task">
+                <p>Add bin game entries into the database</p>
+                <form id="bingame-form">
+                    <label for="bingame-item-picture">Item Picture</label>
+                    <input type="text" id="bingame-item-picture" placeholder="Item picture" name="item_picture" required>
+                    <label for="bingame-item-name">Item Name</label>
+                    <input type="text" id="bingame-item-name" placeholder="Item name" name="item_name" required>
+                    <label for="bingame-item-bin-id">Bin Id</label>
+                    <input type="text" id="bingame-item-bin-id" placeholder="Bin id" name="item_bin_id" required>
+                </form>
+            </div>
+            <div class="gamekeeper-section-task">
+                <p>Manually add points to a user</p>
+                <form id="bingame-points-form">
+                    <label for="bingame-points-user-id">User Id</label>
+                    <input type="text" id="bingame-points-user-id" placeholder="User id" name="user_id" required>
+                    <label for="bingame-points-amount">Amount</label>
+                    <input type="text" id="bingame-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="bingame-points-button">Submit</button>
+                </form>
+            </div>
         </section>
 
         <!-- Transport -->
         <section id="transport-gamekeeper" class="gamekeeper-section">
             <!-- Manually unlink accounts -->
-        
+            <h2>Transport</h2>
+            <div class="gamekeeper-section-task">
+                <p>Manually unlink accounts</p>
+                <select id="transport-unlink-account"> 
+                    <!-- List of accounts with Strava connected -->
+                    <option value="1">Temp Account 1</option>
+                    <option value="2">Temp Account 2</option>
+                    <option value="3">Temp Account 3</option>
+                </select>
+                <button id="transport-unlink-button">Unlink</button>
+            </div>
+            <div class="gamekeeper-section-task">
+                <p>Manually add points to a user</p>
+                <form id="transport-points-form">
+                    <label for="transport-points-user-id">User Id</label>
+                    <input type="text" id="transport-points-user-id" placeholder="User id" name="user_id" required>
+                    <label for="transport-points-amount">Amount</label>
+                    <input type="text" id="transport-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="transport-points-button">Submit</button>
+                </form>
+            </div>
         </section>
 
         <!-- Forum -->
         <section id="forum-gamekeeper" class="gamekeeper-section">
             <!-- Moderate forum posts -->
-
+            <h2>Forum</h2>
+            <div class="gamekeeper-section-task">
+                <!-- List of forum posts -->
+                <!-- TODO ADD LOGIC HERE -->
+            </div>
+            <div class="gamekeeper-section-task">
+                <p>Manually add points to a user</p>
+                <form id="forum-points-form">
+                    <label for="forum-points-user-id">User Id</label>
+                    <input type="text" id="forum-points-user-id" placeholder="User id" name="user_id" required>
+                    <label for="forum-points-amount">Amount</label>
+                    <input type="text" id="forum-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="forum-points-button">Submit</button>
+                </form>
+            </div>
         </section>
     </main>
 </body>
