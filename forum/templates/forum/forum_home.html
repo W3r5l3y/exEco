@@ -48,12 +48,17 @@
                             </form>
                             <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
                         </div>
+                        <div class="post-comments">
+                            <button onclick="toggleComments({{ post.post_id }})">Show Comments</button>
+                            <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;">
+                                {% for comment in post.comments.all %}
+                                    <div class="comment">
+                                        <p><strong>{{ comment.user.email }}</strong>: {{ comment.text }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-
-
-
-
-
                 </div>
             {% endfor %}
         </div>
@@ -71,6 +76,11 @@
         navigator.clipboard.writeText(url).then(() => {
             alert('Link copied to clipboard!');
         });
+    }
+
+    function toggleComments(postId) {
+        const commentsContainer = document.getElementById(`comments-${postId}`);
+        commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
     }
     </script>
 </body>
