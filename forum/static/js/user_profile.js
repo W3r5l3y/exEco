@@ -24,7 +24,7 @@ function sharePost(postId) {
             const likeCountText = document.querySelector(`#like-count-${postId}`);
             likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
-            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : likeButton;
+            likeButton.src = data.liked ? likedButton : likeButton;
         })
         .catch(error => console.error('Error:', error));
     }

@@ -193,8 +193,18 @@ main {
 
 .comment-post:hover {
     background-color: var(--accessories_colour);
-
 }
+
+.comment {
+    color: white;
+    padding:0px;
+}
+
+.comment p {
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
 
 
 

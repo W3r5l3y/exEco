@@ -26,7 +26,7 @@ function sharePost(postId) {
             const likeCountText = document.querySelector(`#like-count-${postId}`);
             likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
-            likeButton.src = data.liked ? '{% static "img/liked.svg" %}' : likeButton;
+            likeButton.src = data.liked ? likedButton : likeButton;
         })
         .catch(error => console.error('Error:', error));
     }
@@ -53,7 +53,7 @@ function sharePost(postId) {
                 const newComment = document.createElement('div');
                 newComment.classList.add('comment');
                 newComment.innerHTML = `<p><strong>${data.user_email}</strong>: ${data.text}</p>`;
-                commentsContainer.insertBefore(newComment, form);
+                commentsContainer.insertBefore(newComment, form.nextSibling);
                 form.reset();
             } else {
                 alert('Error adding comment');
