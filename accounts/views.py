@@ -9,7 +9,8 @@ from transport.models import StravaToken
 from datetime import date
 from .utils import create_empty_garden_image, generate_profile_picture
 from django.conf import settings
-
+import pygame
+import os
 def login_register_view(request):
     login_form = LoginForm()
     register_form = RegisterForm()
