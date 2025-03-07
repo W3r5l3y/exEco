@@ -19,7 +19,6 @@ def game_view(request):
     random_items = sample(all_items, min(6, len(all_items)))
     # Get all bins from the database
     bins = Bins.objects.all()
-    print("DEBUG 123 - ", random_items)
     return render(
         request, "bingame/bingame.html", {"items": random_items, "bins": bins}
     )
@@ -28,7 +27,6 @@ def game_view(request):
 # Handling post for updating leaderboard with received score
 @login_required
 def update_leaderboard(request):
-    print(request)
     if request.method == "POST":
         try:
             score = int(request.POST.get("user_score", 0))
@@ -83,7 +81,6 @@ def get_bingame_leaderboard(request):
         return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=500)
 
 
@@ -91,7 +88,6 @@ def get_bingame_leaderboard(request):
 def fetch_random_items(request):
     all_items = list(Items.objects.all())
     random_items = sample(all_items, min(6, len(all_items)))
-    print("DEBUG _ RANDOM ITEMS: ", random_items)
     # Prepare the data to be sent
     item_data = []
     for item in random_items:

@@ -24,16 +24,12 @@ def login_register_view(request):
             if login_form.is_valid():
                 email = login_form.cleaned_data["email"]
                 password = login_form.cleaned_data["password"]
-                print("Logging in user", email, password)  ## TODO REMOVE
                 user = authenticate(request, email=email, password=password)
-                print("Authenticated user:", user)  ## TODO REMOVE
                 if user is not None:
                     login(request, user)
                     request.session["user_id"] = user.id
-                    print("LOGIN SUCCESSFUL!")  ## TODO REMOVE
                     return redirect("dashboard")  # Redirect to a home page.
                 else:
-                    print("Invalid login credentials")  ## TODO REMOVE
                     error_message = "Invalid login credentials"
                     return HttpResponseRedirect(
                         reverse("login") + f"?error={error_message}&tab=login"
@@ -44,7 +40,6 @@ def login_register_view(request):
                 new_user = register_form.save()
                 # Create an empty garden image for the new user
                 create_empty_garden_image(new_user)
-                print("REGISTRATION SUCCESSFUL! Empty garden image created.") ## TODO REMOVE
                 return HttpResponseRedirect(reverse("login") + "?tab=login")
             else:
                 # Extract the first error message
@@ -72,7 +67,6 @@ def settings_view(request):
                 return HttpResponseRedirect(
                     reverse("settings") + f"?success=Profile changed successfully"
                 )
-                print("PROFILE CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
                 # Extract the first error message
                 error_message = list(form.errors.values())[0][0]
@@ -91,10 +85,8 @@ def settings_view(request):
                 return HttpResponseRedirect(
                     reverse("settings") + f"?success=Password changed successfully"
                 )
-                print("PASSWORD CHANGES SUCCESSFUL!")  ## TODO REMOVE
             else:
                 # Extract the first error message
-                print(form.errors)
                 error_message = list(form.errors.values())[0][0]
                 return HttpResponseRedirect(
                     reverse("settings") + f"?error={error_message}"
@@ -121,7 +113,6 @@ def log_out(request):
             return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
 
     except Exception as e:
-        print(e)
         return HttpResponseRedirect(
             reverse("settings") + f"?error=Failed to log out. Please contact support."
         )
@@ -136,7 +127,6 @@ def delete_account(request):
             return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
 
     except Exception as e:
-        print(e)
         return HttpResponseRedirect(
             reverse("settings") + f"?error=Failed to delete account. Please contact support."
         )
@@ -152,7 +142,6 @@ def strava_unlink(request):
             return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
 
     except Exception as e:
-        print(e)
         return HttpResponseRedirect(
             reverse("settings") + f"?error=Failed to unlink Strava. Please contact support."
         )

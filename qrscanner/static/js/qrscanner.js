@@ -74,11 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error("Error fetching lootbox data:", error));
     }
-    
-
-    function getCSRFToken() {
-        return document.querySelector("[name=csrfmiddlewaretoken]").value;
-    }
 
     // Function to update leaderboard on page
     function updateLeaderboard() {
@@ -108,6 +103,4 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error("Error fetching leaderboard:", error));
     }
-
-    updateLeaderboard();
 });

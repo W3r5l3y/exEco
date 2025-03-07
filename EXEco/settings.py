@@ -161,3 +161,6 @@ REDIRECT_URI = "http://localhost:8000/strava-callback/"
 # Media settings
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Testing settings
+TESTING = "test" in sys.argv

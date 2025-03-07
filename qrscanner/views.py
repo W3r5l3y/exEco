@@ -149,5 +149,4 @@ def get_qrscanner_leaderboard(request):
         return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
 
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=500)
