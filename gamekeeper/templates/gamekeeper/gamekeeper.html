@@ -20,8 +20,8 @@
         <section id="qrscanner-gamekeeper" class="gamekeeper-section">
             <!-- Add QR code entries into database -->
             <h2>QR Scanner</h2>
-            <div class="gamekeeper-section-task">
-                <p>Add QR code entries into the database</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add QR code entries into the database</h3>
                 <form id="qrscanner-form">
                     <label for="qrscanner-location-code">Location Code</label>
                     <input type="text" id="qrscanner-location-code" placeholder="Location code" name="location_code" required>
@@ -36,8 +36,8 @@
                     <button type="qrscanner-qr-button">Submit</button>
                 </form>
             </div>
-            <div class="gamekeeper-section-task">
-                <p>Add points to a user</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add points to a user</h3>
                 <form id="qrscanner-points-form">
                     <label for="qrscanner-points-user-id">User Id</label>
                     <input type="text" id="qrscanner-points-user-id" placeholder="User id" name="user_id" required>
@@ -52,8 +52,8 @@
         <section id="bingame-gamekeeper" class="gamekeeper-section">
             <!-- Add bin game entries into database -->
             <h2>Bin Game</h2>
-            <div class="gamekeeper-section-task">
-                <p>Add bin game entries into the database</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add bin game entries into the database</h3>
                 <form id="bingame-form">
                     <label for="bingame-item-picture">Item Picture</label>
                     <input type="text" id="bingame-item-picture" placeholder="Item picture" name="item_picture" required>
@@ -63,8 +63,8 @@
                     <input type="text" id="bingame-item-bin-id" placeholder="Bin id" name="item_bin_id" required>
                 </form>
             </div>
-            <div class="gamekeeper-section-task">
-                <p>Manually add points to a user</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually add points to a user</h3>
                 <form id="bingame-points-form">
                     <label for="bingame-points-user-id">User Id</label>
                     <input type="text" id="bingame-points-user-id" placeholder="User id" name="user_id" required>
@@ -79,8 +79,8 @@
         <section id="transport-gamekeeper" class="gamekeeper-section">
             <!-- Manually unlink accounts -->
             <h2>Transport</h2>
-            <div class="gamekeeper-section-task">
-                <p>Manually unlink accounts</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually unlink accounts</h3>
                 <select id="transport-unlink-account"> 
                     <!-- List of accounts with Strava connected -->
                     <option value="1">Temp Account 1</option>
@@ -89,8 +89,8 @@
                 </select>
                 <button id="transport-unlink-button">Unlink</button>
             </div>
-            <div class="gamekeeper-section-task">
-                <p>Manually add points to a user</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually add points to a user</h3>
                 <form id="transport-points-form">
                     <label for="transport-points-user-id">User Id</label>
                     <input type="text" id="transport-points-user-id" placeholder="User id" name="user_id" required>
@@ -105,12 +105,12 @@
         <section id="forum-gamekeeper" class="gamekeeper-section">
             <!-- Moderate forum posts -->
             <h2>Forum</h2>
-            <div class="gamekeeper-section-task">
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
                 <!-- List of forum posts -->
                 <!-- TODO ADD LOGIC HERE -->
             </div>
-            <div class="gamekeeper-section-task">
-                <p>Manually add points to a user</p>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually add points to a user</h3>
                 <form id="forum-points-form">
                     <label for="forum-points-user-id">User Id</label>
                     <input type="text" id="forum-points-user-id" placeholder="User id" name="user_id" required>
