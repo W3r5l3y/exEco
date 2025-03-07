@@ -49,7 +49,10 @@ def report_post(request, post_id):
     return redirect("forum_home")
 
 
-@login_required4
+@login_required
 def user_profile(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
-    return render(request, "forum/user_profile.html", {"user": user})
+    user_posts = Post.objects.filter(user=user).order_by("-created_at")
+    return render(
+        request, "forum/user_profile.html", {"user": user, "posts": user_posts}
+    )
