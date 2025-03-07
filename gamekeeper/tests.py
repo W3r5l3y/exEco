@@ -17,8 +17,10 @@ class QRCodeGenerationTests(TestCase):
             email="test@example.com",
             first_name="Test",
             last_name="User",
-            password="password123",
+            password="password123"
         )
+        self.user.is_staff = True
+        self.user.save()
         self.client.login(email="test@example.com", password="password123")
 
         # Mock location data

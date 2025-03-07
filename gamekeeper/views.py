@@ -7,8 +7,10 @@ from django.shortcuts import render
 from qrscanner.models import Location
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from accounts.decorators import is_gamekeeper
 
 @login_required
+@is_gamekeeper
 def gamekeeper_view(request):
     return render(request, 'gamekeeper/gamekeeper.html')
 
@@ -16,6 +18,7 @@ def gamekeeper_view(request):
 QR Scanner Gamekeeper Views
 """
 @login_required
+@is_gamekeeper
 def add_location_to_qr(request, location_code, location_name, location_fact, cooldown_length, location_value):
     # Add relevant information for a qr code to the qrscanner database, then return a Json showing the new qr code location in media
     # Add qr code location to qrscanner database
