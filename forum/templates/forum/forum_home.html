@@ -63,13 +63,7 @@
             {% endfor %}
         </div>
     </main>
-    <div class="bottom-navbar-container">
-        <div class="bottom-navbar">
-            <a href="#"><img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/home_selected.svg' %}" alt="home"></a>
-            <a href="#"><img class="bottom-navbar-image" src="{% static 'img/archive.svg' %}" alt="My posts"></a>
-            <a href="{% url 'create_post' %}"><img class="bottom-navbar-image" src="{% static 'img/new_post.svg' %}" alt="New Post"></a>
-        </div>
-    </div>
+    {% include 'forum/bottom_navbar.html' %}
     <script>
     function sharePost(postId) {
         const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
