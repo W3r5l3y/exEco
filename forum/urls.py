@@ -8,7 +8,7 @@ urlpatterns = [
     path("create/", create_post, name="create_post"),
     path("like/<int:post_id>/", like_post, name="like_post"),
     path("report/<int:post_id>/", report_post, name="report_post"),
-    path("user/<int:user_id>/", user_profile, name="user_profile"),
+    path("profile/<int:user_id>/", user_profile, name="user_profile"),
 ]
 
 if settings.DEBUG:

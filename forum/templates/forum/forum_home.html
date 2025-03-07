@@ -20,15 +20,13 @@
             {% for post in posts %}
                 <div class="post">
                     <div class="post-top">
-                        <h3>{{ post.user.email }}</h3>
+                        <h3><a href="{% url 'user_profile' post.user.id %}">{{ post.user.email }}</a></h3>
                         <div class="like-count-container">
                             <div class="like-count">
                                 <p class="like-count-text">{{ post.likes }}</p>
                                 <img class="like-count-image" src="{% static 'img/heart.svg' %}" alt="like_count">
                             </div>
-
                         </div>
-
                     </div>
                     <div class="post-image-container">
                         <img class="post-image" src="{{ post.image.url }}" alt="Post Image">

@@ -11,7 +11,9 @@ def forum_home(request):
         post = get_object_or_404(Post, post_id=post_id)
         return render(request, "forum/forum_home.html", {"posts": [post]})
     posts = Post.objects.all().order_by("-created_at")
-    return render(request, "forum/forum_home.html", {"posts": posts, "active_page": "home"})
+    return render(
+        request, "forum/forum_home.html", {"posts": posts, "active_page": "home"}
+    )
 
 
 @login_required
@@ -48,7 +50,4 @@ def report_post(request, post_id):
 @login_required
 def user_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    posts = Post.objects.filter(user=user).order_by("-created_at")
-    return render(
-        request, "forum/user_profile.html", {"posts": posts, "profile_user": user}
-    )
+    return render(request, "forum/user_profile.html", {"user": user})
