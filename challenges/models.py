@@ -1,53 +1,54 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
-import random
 
 class Challenge(models.Model):
     DAILY = 'daily'
     WEEKLY = 'weekly'
-
     CHALLENGE_TYPES = [
         (DAILY, 'Daily'),
         (WEEKLY, 'Weekly'),
     ]
 
+    GAME_CATEGORIES = [
+        ('bingame', 'Bin Game'),
+        ('transport', 'Transport'),
+        ('qrscanner', 'QR Scanner'),
+        ('forum', 'Forum'),
+        ('general', 'General'),
+    ]
+
     description = models.CharField(max_length=255)
-    reward = models.PositiveIntegerField(default=10)  # Default reward is 10 coins
+    reward = models.PositiveIntegerField(default=10)
     challenge_type = models.CharField(max_length=10, choices=CHALLENGE_TYPES)
+    game_category = models.CharField(max_length=20, choices=GAME_CATEGORIES, default="general")
+    goal = models.IntegerField(default=1)  # The target number required to complete the challenge
 
     def __str__(self):
-        return f"{self.description} ({self.challenge_type})"
+        return f"{self.description} ({self.challenge_type} - {self.game_category})"
 
 
 class UserChallenge(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
-    assigned_at = models.DateTimeField(auto_now_add=True)  # Tracks when the challenge was assigned
+    progress = models.IntegerField(default=0)  # Track how far the user has progressed toward completion
 
     def __str__(self):
-        return f"{self.user.email} - {self.challenge.description} - {'Completed' if self.completed else 'Pending'}"
+        return f"{self.user.email} - {self.challenge.description} - {self.progress}/{self.challenge.goal} {'(Completed)' if self.completed else '(In Progress)'}"
 
-def assign_new_challenges():
-    """ Assign new daily and weekly challenges to all users and reset old completions """
-    from accounts.models import CustomUser  # Import user model
-    from challenges.models import Challenge, UserChallenge
+    def update_progress(self, amount=1):
+        """ Increments progress and checks for completion """
+        if not self.completed:
+            self.progress += amount
+            if self.progress >= self.challenge.goal:
+                self.progress = self.challenge.goal
+                self.completed = True
+                self.reward_user()
+            self.save()
 
-    now = timezone.now()
-    daily_challenges = random.sample(list(Challenge.objects.filter(challenge_type="daily")), 3)
-    weekly_challenges = random.sample(list(Challenge.objects.filter(challenge_type="weekly")), 5)
-
-    for user in CustomUser.objects.all():
-        # Clear old challenges (resets completed state)
-        UserChallenge.objects.filter(user=user).delete()
-
-        # Assign new daily challenges
-        for challenge in daily_challenges:
-            UserChallenge.objects.create(user=user, challenge=challenge)
-
-        # Assign new weekly challenges
-        for challenge in weekly_challenges:
-            UserChallenge.objects.create(user=user, challenge=challenge)
-
-    print("New challenges assigned to all users!")
+    def reward_user(self):
+        """ Rewards the user when the challenge is completed """
+        from accounts.models import UserCoins
+        user_coins, created = UserCoins.objects.get_or_create(user=self.user)
+        user_coins.coins += self.challenge.reward
+        user_coins.save()
