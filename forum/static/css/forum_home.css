@@ -75,6 +75,16 @@ main {
     align-items: center;
 }
 
+.user_profile_link {
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
+.user_profile_link:hover{
+    color: var(--accessories_colour);
+}
+
 
 
 .post-image-container {

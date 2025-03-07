@@ -22,7 +22,7 @@
             {% for post in posts %}
                 <div class="post">
                     <div class="post-top">
-                        <h3><a href="{% url 'user_profile' post.user.id %}">{{ post.user.email }}</a></h3>
+                        <h3><a href="{% url 'user_profile' post.user.id %}" class="user_profile_link">{{ post.user.email }}</a></h3>
                         <div class="like-count-container">
                             <div class="like-count">
                                 <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
@@ -82,7 +82,7 @@
     <script>
         const chevronUp = "{% static 'img/chevron-up.svg' %}";
         const chevronDown = "{% static 'img/chevron-down.svg' %}";
-        const likeButton = "{% static 'img/like.svg' %}";
+        const notLikedButton = "{% static 'img/like.svg' %}";
         const likedButton = "{% static 'img/liked.svg' %}";
     </script>
     {% include 'forum/bottom_navbar.html' %}
