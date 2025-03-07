@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from .models import Post, PostLike
 from .forms import PostForm
 
@@ -11,7 +12,9 @@ def forum_home(request):
         post = get_object_or_404(Post, post_id=post_id)
         return render(request, "forum/forum_home.html", {"posts": [post]})
     posts = Post.objects.all().order_by("-created_at")
-    return render(request, "forum/forum_home.html", {"posts": posts, "active_page": "home"})
+    return render(
+        request, "forum/forum_home.html", {"posts": posts, "active_page": "home"}
+    )
 
 
 @login_required
@@ -36,7 +39,7 @@ def like_post(request, post_id):
         post_like.save()
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
-    return redirect("forum_home")
+    return JsonResponse({"likes": post.likes, "liked": post_like.liked})
 
 
 @login_required
@@ -48,7 +51,4 @@ def report_post(request, post_id):
 @login_required
 def user_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    posts = Post.objects.filter(user=user).order_by("-created_at")
-    return render(
-        request, "forum/user_profile.html", {"posts": posts, "profile_user": user}
-    )
+    return render(request, "forum/user_profile.html", {"user": user})
