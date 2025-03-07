@@ -21,7 +21,7 @@ main {
     width: 100%;
     padding: 0;
     margin: 0;
-    margin-top: 110px;
+    padding-top: 150px;
 }
 
 /* Challenges Title */
@@ -164,3 +164,4 @@ main {
     background-color: #888;
     cursor: not-allowed;
 }
+

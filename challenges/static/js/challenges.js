@@ -45,7 +45,30 @@ document.addEventListener("DOMContentLoaded", function () {
     if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
     if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
 
-    // Handling challenge submission
+    // Update progress bars
+    document.querySelectorAll(".progress-bar").forEach(bar => {
+        let progressElement = bar.querySelector(".progress");
+        let challengeItem = bar.closest(".challenge-item");
+
+        if (progressElement && challengeItem) {
+            let progressText = challengeItem.querySelector(".challenge-progress").innerText;
+            let progressParts = progressText.match(/(\d+)\/(\d+)/);
+
+            if (progressParts) {
+                let currentProgress = parseInt(progressParts[1]);
+                let goal = parseInt(progressParts[2]);
+                let percentage = (currentProgress / goal) * 100;
+
+                progressElement.style.width = `${percentage}%`;
+
+                if (percentage >= 100) {
+                    challengeItem.classList.add("completed");
+                }
+            }
+        }
+    });
+
+    // Handle challenge submission
     document.querySelectorAll(".submit-btn").forEach(button => {
         button.addEventListener("click", function () {
             const challengeId = this.getAttribute("data-challenge-id");
@@ -54,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRFToken": getCSRFToken(),
+                    "X-CSRFToken": getCSRFToken()
                 },
                 body: JSON.stringify({ challenge_id: challengeId })
             })
@@ -64,21 +87,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.innerText = "Completed";
                     this.disabled = true;
                     this.style.backgroundColor = "#888";
-
-                    // Update user's coin balance if element exists
-                    const coinElement = document.getElementById("user-coins");
-                    if (coinElement && data.new_coins !== null) {
-                        coinElement.innerText = `Coins: ${data.new_coins}`;
-                    }
                 } else {
-                    alert("Error: " + data.error);
+                    alert("Error submitting challenge. Try again later.");
                 }
             })
             .catch(error => console.error("Error:", error));
         });
     });
 
-    // Function to get CSRF token for Django security
+    // Function to get CSRF token
     function getCSRFToken() {
         return document.cookie.split("; ")
             .find(row => row.startsWith("csrftoken="))

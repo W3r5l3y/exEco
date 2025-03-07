@@ -9,21 +9,16 @@ from django.shortcuts import render
 from .models import UserChallenge
 
 def challenges_view(request):
-    """ Fetch challenges assigned to the logged-in user """
-    if not request.user.is_authenticated:
-        return render(request, "challenges/challenges.html", {"daily_challenges": [], "weekly_challenges": []})
+    user = request.user
 
-    # Fetch the user's assigned challenges
-    user_challenges = UserChallenge.objects.filter(user=request.user)
-
-    # Filter daily and weekly challenges separately
-    daily_challenges = user_challenges.filter(challenge__challenge_type="daily")
-    weekly_challenges = user_challenges.filter(challenge__challenge_type="weekly")
+    daily_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="daily")
+    weekly_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly")
 
     return render(request, "challenges/challenges.html", {
         "daily_challenges": daily_challenges,
-        "weekly_challenges": weekly_challenges,
+        "weekly_challenges": weekly_challenges
     })
+
 
 
 from django.http import JsonResponse

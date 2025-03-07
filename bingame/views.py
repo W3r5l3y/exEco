@@ -11,6 +11,9 @@ from accounts.models import UserPoints, CustomUser
 
 from inventory.models import Inventory, LootboxTemplate
 
+# Import Challenge tracking model
+from challenges.models import UserChallenge 
+
 # Create your views here.
 # Initial game view
 @login_required
@@ -33,44 +36,41 @@ def update_leaderboard(request):
     print(request)
     if request.method == "POST":
         try:
-            score = int(request.POST.get("user_score", 0))  # One passed in
+            score = int(request.POST.get("user_score", 0))  # Score passed in
             print(score)
 
             user_points, created = UserPoints.objects.get_or_create(user=request.user)
-            
-            #Loot box logic
-            old_points = user_points.bingame_points
-            
-            user_points.add_bingame_points(score)
 
+            # Loot box logic
+            old_points = user_points.bingame_points
+            user_points.add_bingame_points(score)
             new_points = user_points.bingame_points
+
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
-            """
-            NOTE:
-            If the test for this rewards more than 20 points,
-            the test will fail.
-            
-            This is because Lootox template wont exist in the test, as
-            fixtures purposely dont run in test mode.
-            """
+
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
-                # Fetch or create the user's inventory
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
-                # Add the lootboxes
                 user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
-            
+
+            # 🔹 **NEW: Track Bingame Challenges**
+            if score > 0:  # Assuming a win means scoring > 0
+                user_challenges = UserChallenge.objects.filter(user=request.user, challenge__game_category="bingame", completed=False)
+                for user_challenge in user_challenges:
+                    user_challenge.update_progress(amount=1)  # Increment progress by 1 win
+
             return JsonResponse(
                 {
                     "status": "success",
-                    "new_score": UserPoints.bingame_points,
+                    "new_score": user_points.bingame_points,
                     "lootboxes_to_reward": lootboxes_to_reward,
                 }
             )
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+    
     return JsonResponse({"success": False, "error": "Invalid request method"})
 
 

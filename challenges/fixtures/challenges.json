@@ -3,117 +3,110 @@
         "model": "challenges.challenge",
         "pk": 1,
         "fields": {
-            "description": "Walk 5000 steps",
+            "description": "Win Bingame 4 times",
             "reward": 10,
-            "challenge_type": "daily"
+            "challenge_type": "weekly",
+            "game_category": "bingame",
+            "goal": 4
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 2,
         "fields": {
-            "description": "Recycle 3 items",
-            "reward": 15,
-            "challenge_type": "daily"
+            "description": "Win Bingame 10 times",
+            "reward": 25,
+            "challenge_type": "weekly",
+            "game_category": "bingame",
+            "goal": 10
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 3,
         "fields": {
-            "description": "Take a reusable bag when shopping",
-            "reward": 10,
-            "challenge_type": "daily"
+            "description": "Run 5km in Transport",
+            "reward": 15,
+            "challenge_type": "weekly",
+            "game_category": "transport",
+            "goal": 5
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 4,
         "fields": {
-            "description": "Turn off unused lights for the entire day",
-            "reward": 10,
-            "challenge_type": "daily"
+            "description": "Run 10km in Transport",
+            "reward": 30,
+            "challenge_type": "weekly",
+            "game_category": "transport",
+            "goal": 10
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 5,
         "fields": {
-            "description": "Use a reusable water bottle",
-            "reward": 10,
-            "challenge_type": "daily"
+            "description": "Scan 3 QR codes",
+            "reward": 5,
+            "challenge_type": "daily",
+            "game_category": "qrscanner",
+            "goal": 3
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 6,
         "fields": {
-            "description": "Use public transport instead of a car",
+            "description": "Scan 10 QR codes",
             "reward": 20,
-            "challenge_type": "weekly"
+            "challenge_type": "weekly",
+            "game_category": "qrscanner",
+            "goal": 10
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 7,
         "fields": {
-            "description": "Avoid single-use plastic for an entire day",
-            "reward": 25,
-            "challenge_type": "weekly"
+            "description": "Create 2 forum posts",
+            "reward": 10,
+            "challenge_type": "weekly",
+            "game_category": "forum",
+            "goal": 2
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 8,
         "fields": {
-            "description": "Take part in a local cleanup event",
-            "reward": 30,
-            "challenge_type": "weekly"
+            "description": "Comment on 5 forum posts",
+            "reward": 15,
+            "challenge_type": "weekly",
+            "game_category": "forum",
+            "goal": 5
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 9,
         "fields": {
-            "description": "Walk or bike to work/school instead of driving",
-            "reward": 20,
-            "challenge_type": "weekly"
+            "description": "Recycle 3 items",
+            "reward": 5,
+            "challenge_type": "daily",
+            "game_category": "general",
+            "goal": 3
         }
     },
     {
         "model": "challenges.challenge",
         "pk": 10,
         "fields": {
-            "description": "Educate someone on sustainability",
-            "reward": 15,
-            "challenge_type": "weekly"
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 11,
-        "fields": {
-            "description": "Donate unused clothes or items",
-            "reward": 20,
-            "challenge_type": "weekly"
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 12,
-        "fields": {
-            "description": "Plant a tree or a small plant",
-            "reward": 25,
-            "challenge_type": "weekly"
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 13,
-        "fields": {
-            "description": "Spend a day completely plastic-free",
-            "reward": 30,
-            "challenge_type": "weekly"
+            "description": "Use public transport once",
+            "reward": 5,
+            "challenge_type": "daily",
+            "game_category": "general",
+            "goal": 1
         }
     }
 ]
