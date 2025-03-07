@@ -57,7 +57,7 @@ class QRScannerTestCase(TestCase):
             response = self.client.post(reverse('qrscanner'), {'image': qr_image}) 
         self.assertEqual(response.status_code, 302)  # Correctly expecting redirect
         self.assertIn('/login/', response.url)
-
+        
 
 class QRScannerLeaderboardTestCase(TestCase):
     def setUp(self):
@@ -100,3 +100,52 @@ class QRScannerLeaderboardTestCase(TestCase):
         for i in range(6, 16):
             self.assertContains(response, f"User{i} Test{i}")
             self.assertContains(response, f"{i * 3}")
+
+
+class LocationTestCase(TestCase):
+    def test_add_new_location(self):
+        # Test that adding a new location works correctly
+        location = Location.addLocation(
+            location_code="L001",
+            location_name="Bin by forum",
+            location_fact="Pretty nice bin",
+            cooldown_length=180,
+            location_value=10
+        )
+
+        # Ensure a location object is returned
+        self.assertIsInstance(location, Location)
+        self.assertEqual(location.location_code, "L001")
+        self.assertEqual(location.location_name, "Bin by forum")
+        self.assertEqual(location.location_fact, "Pretty nice bin")
+        self.assertEqual(location.cooldown_length, 180)
+        self.assertEqual(location.location_value, 10)
+
+        # Ensure the location is in the database
+        self.assertTrue(Location.objects.filter(location_code="L001").exists())
+
+    def test_add_duplicate_location(self):
+        # Test if location code already exists returns -1
+        # Create initial location
+        Location.objects.create(
+            location_code="L002",
+            location_name="The buisness block male toilets",
+            location_fact="Smelly",
+            cooldown_length=300,
+            location_value=15
+        )
+
+        # Try to add the same location again
+        result = Location.addLocation(
+            location_code="L002",
+            location_name="The buisness block male toilets",
+            location_fact="Smelly",
+            cooldown_length=300,
+            location_value=15
+        )
+
+        # Ensure it returns -1 for a duplicate location
+        self.assertEqual(result, "Code already exists")
+
+        # Ensure only one instance exists in the database
+        self.assertEqual(Location.objects.filter(location_code="L002").count(), 1)
