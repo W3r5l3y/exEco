@@ -93,10 +93,8 @@ main {
 
 .post-bottom{
     background-color: var(--primary_colour);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 33.33%);
     padding: 20px 10px;
 }
 
@@ -105,7 +103,15 @@ main {
     align-items: center;
 }
 
+.post-comments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .post-description-text{
+    margin-left: 10px;
     font-size: 21px;
     color: white;
     text-align: center;
@@ -115,6 +121,7 @@ main {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 .post-action-button {
     background-color: transparent;
