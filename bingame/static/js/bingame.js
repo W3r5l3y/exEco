@@ -206,14 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         itemsContainer.appendChild(resultMessage);
-    
-        checkAnswerBtn.innerText = 'Next Round';
+        
+        document.getElementById('check-answer-label').innerText = 'Next Round'
+
         checkAnswerBtn.removeEventListener('click', checkAnswers);
         checkAnswerBtn.addEventListener('click', resetGame);
     
-        if (attemptsLeftElem) {
-            attemptsLeftElem.style.display = 'none'; // Hide attempts left
-        }
+        //if (attemptsLeftElem) {
+        //    attemptsLeftElem.style.display = 'none'; // Hide attempts left
+        //}
     }    
 
     function resetGame() {
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemsContainer = document.getElementById('items-container');
         const checkAnswerBtn = document.getElementById('check-answer-tile');
         const attemptsLeftElem = document.getElementById('attempts-left');
-    
+        
         // Reset container styling and remove game result message
         itemsContainer.style.backgroundColor = '';
         itemsContainer.innerHTML = '';
@@ -231,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         getLeaderboard();
         fetchNewRandomItems();
     
-        checkAnswerBtn.innerText = 'Check Answers';
+        document.getElementById('check-answer-label').innerText = 'Check Answers';
         checkAnswerBtn.removeEventListener('click', resetGame);
         checkAnswerBtn.addEventListener('click', checkAnswers);
     
