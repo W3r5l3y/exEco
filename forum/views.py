@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import Post, PostLike
 from .forms import PostForm
 
@@ -43,3 +44,12 @@ def like_post(request, post_id):
 def report_post(request, post_id):
     # Implement report functionality here
     return redirect("forum_home")
+
+
+@login_required
+def user_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    posts = Post.objects.filter(user=user).order_by("-created_at")
+    return render(
+        request, "forum/user_profile.html", {"posts": posts, "profile_user": user}
+    )
