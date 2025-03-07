@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("success-popup").style.display = "flex";
 
                 if (data.lootboxes_to_reward > 0) {
-                    showLootboxesAwarded(2, data.lootboxes_to_reward);
+                    showLootboxesAwarded(3, data.lootboxes_to_reward);
                 }
 
                 updateStats();
