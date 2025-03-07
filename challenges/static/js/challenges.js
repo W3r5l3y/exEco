@@ -84,9 +84,18 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    this.innerText = "Completed";
-                    this.disabled = true;
-                    this.style.backgroundColor = "#888";
+                    const challengeItem = this.closest(".challenge-item");
+                    const progressText = challengeItem.querySelector(".challenge-progress");
+                    progressText.textContent = `Progress: ${data.progress}/${data.goal}`;
+
+                    if (data.completed) {
+                        this.innerText = "Completed";
+                        this.disabled = true;
+                        challengeItem.classList.add("completed");
+                    } else {
+                        this.innerText = "In Progress";
+                        this.disabled = true;
+                    }
                 } else {
                     alert("Error submitting challenge. Try again later.");
                 }

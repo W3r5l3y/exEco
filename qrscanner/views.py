@@ -11,8 +11,9 @@ from datetime import timedelta
 from django.utils.timezone import now
 from accounts.models import CustomUser
 from django.http import JsonResponse
-
+from challenges.models import UserChallenge
 from inventory.models import Inventory, LootboxTemplate
+
 @login_required(login_url="/login/")
 def qrscanner(request):
     # Initialise variables
@@ -37,7 +38,7 @@ def qrscanner(request):
             blurred = cv2.GaussianBlur(gray, (5, 5), 0)
             optimal_ret, thresh = cv2.threshold(
                 blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
-            )  # BINARY + OTSU thresholding for some reason works the best
+            )  # BINARY + OTSU thresholding works the best
             decoded_objects = decode(thresh)
 
             if not decoded_objects:
@@ -45,10 +46,7 @@ def qrscanner(request):
                 decoded_objects = decode(img)
 
             if decoded_objects:
-                result = decoded_objects[0].data.decode(
-                    "utf-8"
-                )  # Extracted string from QR code
-                print(result)  # TODO remove after debugging
+                result = decoded_objects[0].data.decode("utf-8")  # Extracted string from QR code
                 try:
                     location = Location.objects.get(location_code=result)
 
@@ -57,15 +55,11 @@ def qrscanner(request):
                         user=request.user, location=location
                     )
 
+                    # Calculate time since last scan
                     time_since_last_scan = now() - scan_record.last_scanned
                     # Check if cooldown has passed
-                    if not created and time_since_last_scan < timedelta(
-                        seconds=location.cooldown_length
-                    ):
-                        remaining_time = (
-                            timedelta(seconds=location.cooldown_length)
-                            - time_since_last_scan
-                        )
+                    if not created and time_since_last_scan < timedelta(seconds=location.cooldown_length):
+                        remaining_time = (timedelta(seconds=location.cooldown_length) - time_since_last_scan)
                         message = f"This QR code is on cooldown. Try again in {remaining_time.seconds} seconds."
                     else:
                         # Update last scanned time
@@ -78,35 +72,36 @@ def qrscanner(request):
 
                         # Award points
                         points_awarded = location.location_value
-                        user_points, created = UserPoints.objects.get_or_create(
-                            user=request.user
-                        )
-                        old_points = user_points.qrscanner_points #LOOT BOX LOGIC
-                        
+                        user_points, created = UserPoints.objects.get_or_create(user=request.user)
+                        old_points = user_points.qrscanner_points  # LOOT BOX LOGIC
+
                         user_points.add_qrscanner_points(points_awarded)
-                        
-                        #LOOT BOX LOGIC
+
+                        # Update Challenge Progress
+                        user_challenges = UserChallenge.objects.filter(
+                            user=request.user, challenge__game_category="qrscanner", completed=False
+                        )
+                        for user_challenge in user_challenges:
+                            user_challenge.progress += 1
+                            if user_challenge.progress >= user_challenge.challenge.goal:
+                                user_challenge.completed = True
+                            user_challenge.save()
+
+                        # LOOT BOX LOGIC
                         new_points = user_points.qrscanner_points
                         old_multiple = old_points // 20
                         new_multiple = new_points // 20
                         lootboxes_to_reward = new_multiple - old_multiple
-                        """
-                        NOTE:
-                        If the test for this rewards more than 20 points,
-                        the test will fail.
-                        
-                        This is because Lootbox template wont exist in the test, as
-                        fixtures purposely dont run in test mode.
-                        """
+
                         if lootboxes_to_reward > 0:
                             lootbox_template = LootboxTemplate.objects.get(name="QR Scanner Lootbox")
-                            # Fetch or create the user's inventory
                             user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                             # Add the lootboxes
                             user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
                         #END OF LOOT BOX LOGIC
 
                         message = f"You earned {points_awarded} points!"
+
                 except Location.DoesNotExist:
                     message = f"Location not found for code: {result}"
             else:
@@ -126,12 +121,7 @@ def qrscanner(request):
         "leaderboard_data": leaderboard_data,
     }
 
-    # Render the template with the form and result
-    return render(
-        request,
-        "qrscanner/qrscanner.html",
-        context,
-    )
+    return render(request, "qrscanner/qrscanner.html", context)
 
 
 @login_required
