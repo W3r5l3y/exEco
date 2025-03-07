@@ -36,7 +36,14 @@
                             <h3 class="post-description-text">{{ post.description }}</h3>
                         </div>
                         <div class="post-comments">
-                            <button onclick="toggleComments({{ post.post_id }})">Show Comments</button>
+                            <div class="post-comments-button" onclick="toggleComments({{ post.post_id }})">
+                                <div>
+                                    <p class="post-comments-down-text">
+                                        Comments
+                                    </p>
+                                    <img src="{% static 'img/chevron-down.svg' %}" alt="comments down" class="post-comments-down-image">
+                                </div>
+                            </div>
                             <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;">
                                 {% for comment in post.comments.all %}
                                     <div class="comment">
