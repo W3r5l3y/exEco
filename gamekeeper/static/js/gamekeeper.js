@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+    /* --------------------------------------------------
+        QR Scanner
+    -------------------------------------------------- */
     const qrScannerForm = document.getElementById("qrscanner-form");
 
     if (qrScannerForm) {
@@ -10,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const locationName = document.getElementById("qrscanner-location-name").value;
             const locationFact = document.getElementById("qrscanner-location-fact").value;
             const cooldownLength = document.getElementById("qrscanner-location-cooldown").value || 60; // Default 60s
-            const locationValue = document.getElementById("qrscanner-location-value").value;
+            const locationValue = document.getElementById("qrscanner-location-value").value || 1; // Default 1
             
             // API endpoint (adjust URL if necessary)
             const apiUrl = `/add-location-to-qr/${encodeURIComponent(locationCode)}/${encodeURIComponent(locationName)}/${encodeURIComponent(locationFact)}/${cooldownLength}/${locationValue}/`;
@@ -45,4 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+
+    /* --------------------------------------------------
+        Bingame
+    -------------------------------------------------- */
+
+
+    /* --------------------------------------------------
+        Transport
+    -------------------------------------------------- */
+
+
+    /* --------------------------------------------------
+        Forum
+    -------------------------------------------------- */
 });
