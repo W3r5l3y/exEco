@@ -61,7 +61,11 @@ Transport Gamekeeper Views
 """
 Bingame Gamekeeper Views
 """
-
+@login_required
+@is_gamekeeper
+def add_bingame_item(request, item_name, item_value):
+    # Add a bingame item to the bingame database - assumes that the items img url is item_name.png
+    pass
 
 """
 Accounts Gamekeeper views (kinda)
