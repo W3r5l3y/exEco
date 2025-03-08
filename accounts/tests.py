@@ -4,6 +4,10 @@ from django.contrib.auth import get_user_model
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .backends import EmailBackend
 from .models import UserPoints, UserCoins, CustomUser
+from .decorators import is_gamekeeper
+from django.test import RequestFactory
+from django.http import HttpResponse
+
 
 
 class FormsTestCase(TestCase):
@@ -334,6 +338,51 @@ class UserCoinsModelTests(TestCase):
         expected_str = f"{self.user.id} - 20 coins"
         self.assertEqual(str(self.user_coins), expected_str)
 
+
+class IsGamekeeperDecoratorTestCase(TestCase):
+    # Test the is_gamekeeper decorator, used in gamekeeper and navbar for gamekeeper tab
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            email="user@example.com",
+            first_name="Regular",
+            last_name="User",
+            password="password123",
+        )
+        self.staff_user = get_user_model().objects.create_user(
+            email="staff@example.com",
+            first_name="Staff",
+            last_name="User",
+            password="password123",
+        )
+        self.staff_user.is_staff = True
+        self.staff_user.save()
+
+    def test_is_gamekeeper_redirects_non_staff(self):
+        # Test it sends none gamekeepers to the dashboard
+        request = self.factory.get("/some-protected-url/")
+        request.user = self.user
+
+        @is_gamekeeper
+        def dummy_view(request):
+            return HttpResponse("Allowed")
+
+        response = dummy_view(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/dashboard/"))
+
+    def test_is_gamekeeper_allows_staff(self):
+        # Should allow gamekeepers to access the view
+        request = self.factory.get("/some-protected-url/")
+        request.user = self.staff_user
+
+        @is_gamekeeper
+        def dummy_view(request):
+            return HttpResponse("Allowed")
+
+        response = dummy_view(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"Allowed")
 
 
 

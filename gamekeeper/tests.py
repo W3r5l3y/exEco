@@ -80,3 +80,5 @@ class QRCodeGenerationTests(TestCase):
         qr_code_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", f"{self.location_data['location_code']}.png")
         if os.path.exists(qr_code_path):
             os.remove(qr_code_path)
+
+

@@ -20,7 +20,9 @@ class Items(models.Model):
     item_image = models.CharField(max_length=255)
     bin_id = models.ForeignKey(Bins, on_delete=models.CASCADE)
     
-    def add_item(self, item_name, bin_id, item_image=item_name+".png",):
+    def add_item(self, item_name, bin_id, item_image=""):
+        if item_image == "":
+            item_image = f"/img/items/{item_name}.png"
         # Add a bingame item to the bingame database - assumes that the items img url is item_name.png
         # Check if the item already exists
         if Items.objects.filter(item_name=item_name).exists():

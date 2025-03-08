@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
 from accounts.models import CustomUser
-
+from bingame.models import Items
 
 @login_required
 @is_gamekeeper
@@ -63,13 +63,22 @@ Bingame Gamekeeper Views
 """
 @login_required
 @is_gamekeeper
-def add_bingame_item(request, item_name, item_value):
+def add_bingame_item(request, item_name, bin_id):
     # Add a bingame item to the bingame database - assumes that the items img url is item_name.png
-    pass
-
+    
+    # Add the image to the filesystem
+    # TODO - Add image upload - currently assumes that the image exists with image name as item_name.png
+    item_added = Items.add_item(item_name, bin_id)
+    if item_added:
+        return JsonResponse({"message": "Item added"})
+    else:
+        return JsonResponse({"message": "Item already exists"}, status=400)
+    
 """
 Accounts Gamekeeper views (kinda)
 """
+@login_required
+@is_gamekeeper
 def add_points(request, type, user_id, amount):
     # Add points to a user's minigame points
     user = CustomUser.objects.get(id=user_id)
