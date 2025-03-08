@@ -95,6 +95,7 @@ def qrscanner(request):
 
                         if lootboxes_to_reward > 0:
                             lootbox_template = LootboxTemplate.objects.get(name="QR Scanner Lootbox")
+                            # Fetch or create the user's inventory
                             user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                             # Add the lootboxes
                             user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)

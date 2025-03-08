@@ -7,7 +7,9 @@ import json
 from accounts.models import UserCoins 
 from django.shortcuts import render
 from .models import UserChallenge
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="/login/")
 def challenges_view(request):
     user = request.user
 
@@ -27,6 +29,7 @@ import json
 from .models import UserChallenge
 from accounts.models import UserCoins
 
+@login_required
 @csrf_exempt
 def submit_challenge(request):
     if request.method == "POST":
