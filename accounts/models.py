@@ -60,6 +60,20 @@ class UserPoints(models.Model):
     def total_points(self):
         return self.bingame_points + self.qrscanner_points + self.transport_points
 
+    def add_points(self, points=1, category="bingame"):
+        # Check if the users points wont go below 0. If they do return False. If true perform the add and return true.
+        if category == "bingame" and self.bingame_points + points >= 0:
+            self.bingame_points += points
+        elif category == "qr" and self.qrscanner_points + points >= 0:
+            self.qrscanner_points += points
+        elif category == "transport" and self.transport_points + points >= 0:
+            self.transport_points += points
+        else:
+            return False
+        
+        self.save()
+        return True 
+    
     def __str__(self):
         # Example: "john@example.com - Total: 20 (bingame=5, qr=10, transport=5)"
         return (

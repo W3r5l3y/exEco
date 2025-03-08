@@ -8,6 +8,8 @@ from qrscanner.models import Location
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
+from accounts.models import CustomUser
+
 
 @login_required
 @is_gamekeeper
@@ -50,6 +52,7 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
     qr_url = f"{settings.MEDIA_URL}{qr_filename}"
     return JsonResponse({"message": "Location added", "qr_code_url": qr_url})
 
+
 """
 Transport Gamekeeper Views
 """
@@ -58,3 +61,18 @@ Transport Gamekeeper Views
 """
 Bingame Gamekeeper Views
 """
+
+
+"""
+Accounts Gamekeeper views (kinda)
+"""
+def add_points(request, type, user_id, amount):
+    # Add points to a user's minigame points
+    user = CustomUser.objects.get(id=user_id)
+    if type not in ["bingame", "qr", "transport"]:
+        return JsonResponse({"message": "Invalid type"}, status=400)
+    userPoints = user.add_points(amount, type)
+    if userPoints:
+        return JsonResponse({"message": "Points added"})
+    else:
+        return JsonResponse({"message": "Goes below zero"}, status=404)
