@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
 from accounts.models import CustomUser
 from bingame.models import Items
+from transport.models import StravaToken
 
 @login_required
 @is_gamekeeper
@@ -56,7 +57,25 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
 """
 Transport Gamekeeper Views
 """
-
+@login_required
+@is_gamekeeper
+def unlink_strava(request, user_id):
+    # Tale in user_id and unlink the strava account from the user
+    try:
+        user = CustomUser.objects.get(id=user_id)    
+    except CustomUser.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+    
+    deleted, _ = StravaToken.objects.filter(user_id=user_id).delete()
+    
+    if deleted:
+        return JsonResponse({"message": "Strava account unlinked successfully"})
+    else:
+        return JsonResponse({"error": "No linked Strava account found"}, status=400)
+    
+def get_strava_links(request):
+    # Get all the user with linked strava accounts
+    pass # TODO - Implement this view
 
 """
 Bingame Gamekeeper Views
