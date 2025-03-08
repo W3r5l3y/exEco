@@ -8,7 +8,7 @@ from qrscanner.models import Location
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UserPoints
 from bingame.models import Items
 from transport.models import StravaToken
 
@@ -100,11 +100,24 @@ Accounts Gamekeeper views (kinda)
 @is_gamekeeper
 def add_points(request, type, user_id, amount):
     # Add points to a user's minigame points
-    user = CustomUser.objects.get(id=user_id)
-    if type not in ["bingame", "qr", "transport"]:
-        return JsonResponse({"message": "Invalid type"}, status=400)
-    userPoints = user.add_points(amount, type)
-    if userPoints:
+    try:
+        user = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    # Ensure the UserPoints instance exists for this user
+    user_points, created = UserPoints.objects.get_or_create(user=user)
+
+    if type == "bingame":
+        success = user_points.add_points(amount, "bingame")
+    elif type == "qr":
+        success = user_points.add_points(amount, "qr")
+    elif type == "transport":
+        success = user_points.add_points(amount, "transport")
+    else:
+        return JsonResponse({"error": "Invalid type"}, status=400)
+
+    if success:
         return JsonResponse({"message": "Points added"})
     else:
-        return JsonResponse({"message": "Goes below zero"}, status=404)
+        return JsonResponse({"message": "Goes below zero"}, status=400)
