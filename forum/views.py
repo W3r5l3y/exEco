@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from .models import Post, PostLike, Comment
 from .forms import PostForm
 from accounts.models import CustomUser
+from django.contrib import messages
 
 
 def forum_home(request):
@@ -56,7 +57,9 @@ def user_profile(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user_posts = Post.objects.filter(user=user).order_by("-created_at")
     return render(
-        request, "forum/user_profile.html", {"user": user, "posts": user_posts}
+        request,
+        "forum/user_profile.html",
+        {"user": user, "posts": user_posts, "logged_in_user": request.user},
     )
 
 
@@ -71,3 +74,35 @@ def add_comment(request, post_id):
             {"success": True, "text": comment.text, "user_email": comment.user.email}
         )
     return JsonResponse({"success": False})
+
+
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, post_id=post_id)
+    if post.user != request.user:
+        messages.error(request, "You are not authorized to edit this post.")
+        return redirect("user_profile", user_id=request.user.id)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post updated successfully.")
+            return redirect("user_profile", user_id=request.user.id)
+    else:
+        form = PostForm(instance=post)
+    return render(request, "forum/edit_post.html", {"form": form, "post": post})
+
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, post_id=post_id)
+    if post.user != request.user:
+        messages.error(request, "You are not authorized to delete this post.")
+        return redirect("user_profile", user_id=request.user.id)
+
+    if request.method == "POST":
+        post.delete()
+        messages.success(request, "Post deleted successfully.")
+        return redirect("user_profile", user_id=request.user.id)
+    return render(request, "forum/delete_post.html", {"post": post})

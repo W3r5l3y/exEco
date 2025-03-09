@@ -6,6 +6,8 @@ from .views import (
     report_post,
     user_profile,
     add_comment,
+    delete_post,
+    edit_post,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -17,6 +19,8 @@ urlpatterns = [
     path("report/<int:post_id>/", report_post, name="report_post"),
     path("profile/<int:user_id>/", user_profile, name="user_profile"),
     path("add_comment/<int:post_id>/", add_comment, name="add_comment"),
+    path("delete_post/<int:post_id>/", delete_post, name="delete_post"),
+    path("edit_post/<int:post_id>/", edit_post, name="edit_post"),
 ]
 
 if settings.DEBUG:
