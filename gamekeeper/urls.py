@@ -6,6 +6,9 @@ from .views import (
     get_strava_links,
     add_bingame_item,
     add_points,
+    get_qr_codes,
+    enable_qr,
+    disable_qr,
 )
 
 urlpatterns = [
@@ -15,4 +18,7 @@ urlpatterns = [
     path('get-strava-links/', get_strava_links, name='get_strava_links'),
     path('add-bingame-item/<str:item_name>/<int:bin_id>/', add_bingame_item, name='add_bingame_item'),
     path('add-points/<str:type>/<int:user_id>/<int:amount>/', add_points, name='add_points'),
+    path('get-qr-codes/', get_qr_codes, name='get_qr_codes'),
+    path('enable-qr/<str:qr_id>/', enable_qr, name='enable_qr'),
+    path('disable-qr/<str:qr_id>/', disable_qr, name='disable_qr'),
 ]
