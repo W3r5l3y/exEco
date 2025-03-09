@@ -126,6 +126,58 @@ document.addEventListener("DOMContentLoaded", function () {
         Transport
     -------------------------------------------------- */
 
+    // Select elements
+    const dropdown = document.getElementById("transport-unlink-account");
+    const unlinkButton = document.getElementById("transport-unlink-button");
+
+    // Fetch linked Strava users and populate dropdown
+    fetch("/get-strava-links/")
+        .then(response => response.json())
+        .then(data => {
+            dropdown.innerHTML = ""; 
+
+            if (data.strava_links && data.strava_links.length > 0) {
+                data.strava_links.forEach(userId => {
+                    const option = document.createElement("option");
+                    option.value = userId;
+                    option.textContent = `User ID: ${userId}`;
+                    dropdown.appendChild(option);
+                });
+            } else {
+                dropdown.innerHTML = '<option value="">No linked accounts found</option>';
+            }
+        })
+        .catch(error => console.error("Error fetching Strava links:", error));
+
+    // Handle Unlink Confirmation
+    unlinkButton.addEventListener("click", function () {
+        const selectedUserId = dropdown.value;
+        if (!selectedUserId) {
+            alert("Please select a user to unlink.");
+            return;
+        }
+
+        fetch(`/unlink-strava/${selectedUserId}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRFToken() } // Needed for Django's CSRF protection
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message); // Show success/error message TODO: Show in HTML clearererer
+            location.reload(); // Refresh the dropdown after unlinking
+        })
+        .catch(error => console.error("Error unlinking Strava:", error));
+    });
+
+    // Function to get CSRF token from cookies (needed for POST requests)
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split("; ")
+            .find(row => row.startsWith("csrftoken="))
+            ?.split("=")[1];
+        return cookieValue || "";
+    }
+
     // Add transport points to user
     const transportPointsForm = document.getElementById("transport-points-form");
     if (transportPointsForm) {

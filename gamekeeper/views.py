@@ -61,6 +61,9 @@ Transport Gamekeeper Views
 @is_gamekeeper
 def unlink_strava(request, user_id):
     # Tale in user_id and unlink the strava account from the user
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=400)
+    
     try:
         user = CustomUser.objects.get(id=user_id)    
     except CustomUser.DoesNotExist:

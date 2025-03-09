@@ -80,16 +80,16 @@
         <section id="transport-gamekeeper" class="gamekeeper-section">
             <!-- Manually unlink accounts -->
             <h2>Transport</h2>
+            <!-- Strava Account Management Section -->
             <div class="gamekeeper-section-task gamekeeper-sub-section">
-                <h3>Manually unlink accounts</h3>
-                <select id="transport-unlink-account"> 
-                    <!-- List of accounts with Strava connected -->
-                    <option value="1">Temp Account 1</option>
-                    <option value="2">Temp Account 2</option>
-                    <option value="3">Temp Account 3</option>
+                <h3>Manually unlink Strava accounts</h3>
+                <label for="transport-unlink-account">Select a User:</label>
+                <select id="transport-unlink-account">
+                    <option value="">Loading...</option>
                 </select>
                 <button id="transport-unlink-button">Unlink</button>
             </div>
+
             <div class="gamekeeper-section-task gamekeeper-sub-section">
                 <h3>Manually add points to a user</h3>
                 <form id="transport-points-form">
