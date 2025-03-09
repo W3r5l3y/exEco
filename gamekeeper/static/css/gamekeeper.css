@@ -170,6 +170,27 @@ option {
     Bingame
 -------------------------------------------------- */
 
+input[type="file"] {
+    font-family: inherit; /* Ensure font consistency */
+    font-size: 1rem;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 5px 10px;
+    border: 2px solid var(--primary_colour);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--neutral_colour);
+    background-color: var(--primary_colour);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--neutral_colour);
+    color: var(--primary_colour);
+}
 
 /* --------------------------------------------------
     Transport
