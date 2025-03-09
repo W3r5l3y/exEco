@@ -1,21 +1,45 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import Challenge
+from .models import UserChallenge, Challenge, ChallengeResetTracker
 from django.views.decorators.csrf import csrf_exempt
 import json
 from accounts.models import UserCoins 
 from django.shortcuts import render
-from .models import UserChallenge
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 
 @login_required(login_url="/login/")
 def challenges_view(request):
     user = request.user
+    tracker = ChallengeResetTracker.get_reset_tracker()
+    current_time = now()
 
+    # 🎯 **Reset Daily Challenges if past midnight**
+    if current_time.date() > tracker.last_daily_reset.date():
+        UserChallenge.objects.filter(challenge__challenge_type="daily").delete()
+        tracker.last_daily_reset = current_time
+
+        # Reassign new daily challenges
+        daily_challenges = list(Challenge.objects.filter(challenge_type="daily")[:3])
+        for challenge in daily_challenges:
+            UserChallenge.objects.create(user=user, challenge=challenge)
+
+    # 🎯 **Reset Weekly Challenges if it's Monday and not reset this week**
+    if current_time.weekday() == 0 and current_time.date() > tracker.last_weekly_reset.date():
+        UserChallenge.objects.filter(challenge__challenge_type="weekly").delete()
+        tracker.last_weekly_reset = current_time
+
+        # Reassign new weekly challenges
+        weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly")[:5])
+        for challenge in weekly_challenges:
+            UserChallenge.objects.create(user=user, challenge=challenge)
+
+    tracker.save()
+
+    # Fetch updated challenges
     daily_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="daily")
     weekly_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly")
-
     return render(request, "challenges/challenges.html", {
         "daily_challenges": daily_challenges,
         "weekly_challenges": weekly_challenges

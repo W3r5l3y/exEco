@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.timezone import now
 
 class Challenge(models.Model):
     DAILY = 'daily'
@@ -52,3 +53,13 @@ class UserChallenge(models.Model):
         user_coins, created = UserCoins.objects.get_or_create(user=self.user)
         user_coins.coins += self.challenge.reward
         user_coins.save()
+
+class ChallengeResetTracker(models.Model):
+    last_daily_reset = models.DateTimeField(default=now)
+    last_weekly_reset = models.DateTimeField(default=now)
+
+    @classmethod
+    def get_reset_tracker(cls):
+        """Fetch the reset tracker or create one if missing."""
+        tracker, created = cls.objects.get_or_create(id=1)
+        return tracker
