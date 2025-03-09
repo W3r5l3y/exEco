@@ -10,6 +10,7 @@ class Location(models.Model):
     cooldown_length = models.IntegerField()  # Cooldown is in seconds
     times_visited = models.IntegerField(default=0)  # Tracks number of scans/visits
     location_value = models.IntegerField(default=1)  # Amount of points awarded
+    is_active = models.BooleanField(default=True)
 
     @classmethod
     def addLocation(cls, location_code, location_name, location_fact, cooldown_length=0, location_value=5):
