@@ -30,9 +30,13 @@ class QRScannerTestCase(TestCase):
         session = self.client.session
         session.save()
         with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
-            response = self.client.post(reverse("qrscanner"), {'image': qr_image}, follow=True)  
-        self.assertEqual(response.status_code, 200) 
-        self.assertContains(response, "<strong>Location Name:</strong> <strong>Test Location</strong>")
+            response = self.client.post(
+                reverse("qrscanner"), {"image": qr_image}, follow=True
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, "<strong>Location Name:</strong> <strong>Test Location</strong>"
+        )
         self.assertContains(response, "You earned 2 points!")
 
     def test_qrscanner_code_cooldown(self):
@@ -40,24 +44,27 @@ class QRScannerTestCase(TestCase):
             user=self.user, location=self.location, last_scanned=now()
         )
         with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
-            response = self.client.post(reverse('qrscanner'), {'image': qr_image}, follow=True)
+            response = self.client.post(
+                reverse("qrscanner"), {"image": qr_image}, follow=True
+            )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This QR code is on cooldown.")
 
     def test_qrscanner_code_location_not_found(self):
         with open("qrscanner/tests/qr0002.png", "rb") as qr_image:
-            response = self.client.post(reverse('qrscanner'), {'image': qr_image}, follow=True)
+            response = self.client.post(
+                reverse("qrscanner"), {"image": qr_image}, follow=True
+            )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Location not found for code: 0002")
-
 
     def test_qrscanner_code_anonymous_user(self):
         self.client.logout()
         with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
-            response = self.client.post(reverse('qrscanner'), {'image': qr_image}) 
+            response = self.client.post(reverse("qrscanner"), {"image": qr_image})
         self.assertEqual(response.status_code, 302)  # Correctly expecting redirect
-        self.assertIn('/login/', response.url)
-        
+        self.assertIn("/login/", response.url)
+
 
 class QRScannerLeaderboardTestCase(TestCase):
     def setUp(self):
@@ -110,7 +117,7 @@ class LocationTestCase(TestCase):
             location_name="Bin by forum",
             location_fact="Pretty nice bin",
             cooldown_length=180,
-            location_value=10
+            location_value=10,
         )
 
         # Ensure a location object is returned
@@ -132,7 +139,7 @@ class LocationTestCase(TestCase):
             location_name="The buisness block male toilets",
             location_fact="Smelly",
             cooldown_length=300,
-            location_value=15
+            location_value=15,
         )
 
         # Try to add the same location again
@@ -141,7 +148,7 @@ class LocationTestCase(TestCase):
             location_name="The buisness block male toilets",
             location_fact="Smelly",
             cooldown_length=300,
-            location_value=15
+            location_value=15,
         )
 
         # Ensure it returns -1 for a duplicate location
@@ -149,3 +156,34 @@ class LocationTestCase(TestCase):
 
         # Ensure only one instance exists in the database
         self.assertEqual(Location.objects.filter(location_code="L002").count(), 1)
+
+    def test_location_is_active(self):
+        # Create a location with is_active set to True
+        active_location = Location.objects.create(
+            location_code="L003",
+            location_name="Active Location",
+            location_fact="This location is active.",
+            cooldown_length=120,
+            location_value=5,
+            is_active=True,
+        )
+
+        # Create a location with is_active set to False
+        inactive_location = Location.objects.create(
+            location_code="L004",
+            location_name="Inactive Location",
+            location_fact="This location is inactive.",
+            cooldown_length=120,
+            location_value=5,
+            is_active=False,
+        )
+
+        # Ensure the active location is active
+        self.assertTrue(active_location.is_active)
+
+        # Ensure the inactive location is not active
+        self.assertFalse(inactive_location.is_active)
+
+        # Ensure the locations are in the database
+        self.assertTrue(Location.objects.filter(location_code="L003").exists())
+        self.assertTrue(Location.objects.filter(location_code="L004").exists())
