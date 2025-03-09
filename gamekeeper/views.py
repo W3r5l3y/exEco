@@ -53,6 +53,49 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
     qr_url = f"{settings.MEDIA_URL}{qr_filename}"
     return JsonResponse({"message": "Location added", "qr_code_url": qr_url})
 
+@login_required
+@is_gamekeeper
+def get_qr_codes(request):
+    if request.method == "GET":
+        # Retrieve all locations
+        locations = Location.objects.all()
+        qr_codes = [
+            {
+                "id": loc.location_code,
+                "location_name": loc.location_name,
+                "is_active": loc.is_active,
+            }
+            for loc in locations
+        ]
+        return JsonResponse({"qr_codes": qr_codes})
+    return JsonResponse({"message": "Method not allowed."}, status=405)
+
+@login_required
+@is_gamekeeper
+def enable_qr(request, qr_id):
+    if request.method == "POST":
+        try:
+            location = Location.objects.get(location_code=qr_id)
+            location.is_active = True
+            location.save()
+            return JsonResponse({"message": f"QR code '{location.location_name}' enabled."})
+        except Location.DoesNotExist:
+            return JsonResponse({"message": "QR code not found."}, status=404)
+    return JsonResponse({"message": "Method not allowed."}, status=405)
+
+@login_required
+@is_gamekeeper
+def disable_qr(request, qr_id):
+    if request.method == "POST":
+        try:
+            location = Location.objects.get(location_code=qr_id)
+            location.is_active = False
+            location.save()
+            return JsonResponse({"message": f"QR code '{location.location_name}' disabled."})
+        except Location.DoesNotExist:
+            return JsonResponse({"message": "QR code not found."}, status=404)
+    return JsonResponse({"message": "Method not allowed."}, status=405)
+
 
 """
 Transport Gamekeeper Views
