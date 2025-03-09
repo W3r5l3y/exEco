@@ -71,7 +71,7 @@
                 <h3>Add bin game entries into the database</h3>
                 <form id="bingame-form">
                     <label for="bingame-item-picture">Item Picture</label>
-                    <input type="text" id="bingame-item-picture" placeholder="Item picture" name="item_picture" required>
+                    <input type="file" id="bingame-item-picture" name="item_picture" required>
                     <label for="bingame-item-name">Item Name</label>
                     <input type="text" id="bingame-item-name" placeholder="Item name" name="item_name" required>
                     <label for="bingame-item-bin-id">Bin Id</label>
@@ -79,6 +79,8 @@
                     <button type="bingame-add-button">Submit</button>
                 </form>
             </div>
+
+            <!-- Add bin game points to a user -->
             <div class="gamekeeper-section-task gamekeeper-sub-section">
                 <h3>Manually add points to a user</h3>
                 <form id="bingame-points-form">
@@ -105,6 +107,7 @@
                 <button id="transport-unlink-button">Unlink</button>
             </div>
 
+            <!-- Add transport points to a user -->
             <div class="gamekeeper-section-task gamekeeper-sub-section">
                 <h3>Manually add points to a user</h3>
                 <form id="transport-points-form">
