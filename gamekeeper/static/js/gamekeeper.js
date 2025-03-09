@@ -177,6 +177,77 @@ document.addEventListener("DOMContentLoaded", function () {
         Bingame
     -------------------------------------------------- */
 
+    // <div class="gamekeeper-section-task gamekeeper-sub-section">
+    //             <h3>Add bin game entries into the database</h3>
+    //             <form id="bingame-form">
+    //                 <label for="bingame-item-picture">Item Picture</label>
+    //                 <input type="file" id="bingame-item-picture" name="item_picture" required>
+    //                 <label for="bingame-item-name">Item Name</label>
+    //                 <input type="text" id="bingame-item-name" placeholder="Item name" name="item_name" required>
+    //                 <label for="bingame-item-bin-id">Bin Id</label>
+    //                 <input type="text" id="bingame-item-bin-id" placeholder="Bin id" name="item_bin_id" required>
+    //                 <button type="bingame-add-button">Submit</button>
+    //             </form>
+    //         </div>
+
+    /* ----------
+        Add bingame item to database
+    ---------- */
+    const bingameForm = document.getElementById("bingame-form");
+    if (bingameForm) {
+        bingameForm.addEventListener("submit", function (event) {
+            // Clear previous result
+            const previousResult = document.getElementById("bingame-result");
+            if (previousResult) {
+                previousResult.remove();
+            }
+            
+            event.preventDefault(); // Prevent form from reloading the page
+
+            // Get input values
+            const itemPicture = document.getElementById("bingame-item-picture").files[0];
+            const itemName = document.getElementById("bingame-item-name").value;
+            const itemBinId = document.getElementById("bingame-item-bin-id").value;
+
+            // Create FormData object to send file and text data
+            const formData = new FormData();
+            formData.append("item_picture", itemPicture);
+            formData.append("item_name", itemName);
+            formData.append("item_bin_id", itemBinId);
+
+            // API endpoint
+            const apiUrl = "/add-item-to-bingame/";
+
+            // Send request to Django view
+            fetch(apiUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCSRFToken(),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultContainer = document.createElement("div");
+                resultContainer.id = "bingame-result";
+            
+                if (data.item_id) {
+                    resultContainer.innerHTML = `<p>Item added successfully with ID: ${data.item_id}</p>`;
+                } else if (data.error) {
+                    resultContainer.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                }
+            
+                // Append result below form
+                bingameForm.appendChild(resultContainer);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while adding the item.");
+            });
+        });
+    }
+
     /* ----------
         Add bingame points to user
     ---------- */
