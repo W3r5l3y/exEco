@@ -8,6 +8,8 @@ from qrscanner.models import Location
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
+from django.views.decorators.http import require_POST
+from bingame.models import Bins
 from accounts.models import CustomUser, UserPoints
 from bingame.models import Items
 from transport.models import StravaToken
@@ -131,18 +133,40 @@ def get_strava_links(request):
 """
 Bingame Gamekeeper Views
 """
+@require_POST
 @login_required
 @is_gamekeeper
-def add_bingame_item(request, item_name, bin_id):
-    # Add a bingame item to the bingame database - assumes that the items img url is item_name.png
+def add_item_to_bingame(request):
+    item_name = request.POST.get("item_name")
+    item_bin_id = request.POST.get("item_bin_id")
+    item_picture = request.FILES.get("item_picture")
     
-    # Add the image to the filesystem
-    # TODO - Add image upload - currently assumes that the image exists with image name as item_name.png
-    item_added = Items.add_item(item_name, bin_id)
-    if item_added:
-        return JsonResponse({"message": "Item added"})
+    if not item_name or not item_bin_id:
+        return JsonResponse({"error": "Missing required fields."}, status=400)
+    
+    try:
+        bin_obj = Bins.objects.get(bin_id=item_bin_id)
+    except Bins.DoesNotExist:
+        return JsonResponse({"error": "Bin not found."}, status=404)
+    
+    if item_picture:
+        file_path = default_storage.save(f"items/{item_name}.png", ContentFile(item_picture.read()))
+        item_image_url = settings.MEDIA_URL + file_path
     else:
-        return JsonResponse({"message": "Item already exists"}, status=400)
+        return JsonResponse({"error": "Missing item picture."}, status=400)
+    
+    # Check if an item with the same name already exists
+    if Items.objects.filter(item_name=item_name).exists():
+        return JsonResponse({"error": "Item already exists."}, status=400)
+    
+    # Create the new item
+    item = Items.objects.create(
+        item_name=item_name,
+        item_image=item_image_url,
+        bin_id=bin_obj
+    )
+    
+    return JsonResponse({"item_id": item.item_id})
     
 """
 Accounts Gamekeeper views (kinda)
