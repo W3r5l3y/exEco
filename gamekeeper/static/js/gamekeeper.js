@@ -1,9 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Function to get CSRF token from cookies (needed for POST requests)
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split("; ")
+            .find(row => row.startsWith("csrftoken="))
+            ?.split("=")[1];
+        return cookieValue || "";
+    }
+
     /* --------------------------------------------------
         QR Scanner
     -------------------------------------------------- */
 
-    // Add qr code to database
+    /* ----------
+        Add QR location to database
+    ---------- */
     const qrScannerForm = document.getElementById("qrscanner-form");
     if (qrScannerForm) {
         qrScannerForm.addEventListener("submit", function (event) {
@@ -36,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p>QR Code Generated Successfully:</p>
                         <img src="${data.qr_code_url}" alt="QR Code for ${locationCode}" width="200">
                     `;
+                    refreshQrSelect(); // Refresh dropdown after adding new QR code
                 } else if (data.error) {
                     resultContainer.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
                 }
@@ -50,7 +62,84 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Add qr points to user
+    /* ----------
+        Review QR code entries and allow disabling
+    ---------- */
+    const qrScannerQrSelect = document.getElementById("qrscanner-qr-select");
+    const qrScannerQrEnable = document.getElementById("qrscanner-qr-enable");
+    const qrScannerQrDisable = document.getElementById("qrscanner-qr-disable");
+
+    function refreshQrSelect() {
+        fetch("/get-qr-codes/")
+        .then(response => response.json())
+        .then(data => {
+            qrScannerQrSelect.innerHTML = ""; // Clear dropdown
+
+            // Add a disabled option with 'Select a QR code' text
+            const defaultOption = document.createElement("option");
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a QR code";
+            qrScannerQrSelect.appendChild(defaultOption);
+            
+            if (data.qr_codes && data.qr_codes.length > 0) {
+                data.qr_codes.forEach(qrCode => {
+                    const option = document.createElement("option");
+                    option.value = qrCode.id;
+                    option.textContent = qrCode.location_name + (qrCode.is_active ? " (Active)" : " (Disabled)");
+                    qrScannerQrSelect.appendChild(option);
+                });
+            } else {
+                qrScannerQrSelect.innerHTML = '<option value="">No QR codes found</option>';
+            }
+        })
+        .catch(error => console.error("Error fetching QR codes:", error));
+    }
+
+    refreshQrSelect();
+
+    qrScannerQrEnable.addEventListener("click", function () {
+        const selectedQrId = qrScannerQrSelect.value;
+        if (!selectedQrId) {
+            alert("Please select a QR code to enable.");
+            return;
+        }
+        
+        fetch(`/enable-qr/${selectedQrId}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRFToken() }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => console.error("Error enabling QR code:", error));
+    });
+
+    qrScannerQrDisable.addEventListener("click", function () {
+        const selectedQrId = qrScannerQrSelect.value;
+        if (!selectedQrId) {
+            alert("Please select a QR code to disable.");
+            return;
+        }
+        
+        fetch(`/disable-qr/${selectedQrId}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRFToken() }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => console.error("Error disabling QR code:", error));
+    });
+
+    /* ----------
+        Add qr points to user
+    ---------- */
     const qrScannerPointsForm = document.getElementById("qrscanner-points-form");
     if (qrScannerPointsForm) {
         qrScannerPointsForm.addEventListener("submit", function (event) {
@@ -88,7 +177,9 @@ document.addEventListener("DOMContentLoaded", function () {
         Bingame
     -------------------------------------------------- */
 
-    // Add bingame points to user
+    /* ----------
+        Add bingame points to user
+    ---------- */
     const bingamePointsForm = document.getElementById("bingame-points-form");
     if (bingamePointsForm) {
         bingamePointsForm.addEventListener("submit", function (event) {
@@ -126,7 +217,9 @@ document.addEventListener("DOMContentLoaded", function () {
         Transport
     -------------------------------------------------- */
 
-    // Select elements
+    /* ----------
+        Get linked Strava users and allow unlinking
+    ---------- */
     const dropdown = document.getElementById("transport-unlink-account");
     const unlinkButton = document.getElementById("transport-unlink-button");
 
@@ -134,7 +227,15 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/get-strava-links/")
         .then(response => response.json())
         .then(data => {
-            dropdown.innerHTML = ""; 
+            dropdown.innerHTML = "";
+
+            // Add a disabled option with 'Select a user' text
+            const defaultOption = document.createElement("option");
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a user";
+            dropdown.appendChild(defaultOption);
 
             if (data.strava_links && data.strava_links.length > 0) {
                 data.strava_links.forEach(userId => {
@@ -169,16 +270,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error unlinking Strava:", error));
     });
 
-    // Function to get CSRF token from cookies (needed for POST requests)
-    function getCSRFToken() {
-        const cookieValue = document.cookie
-            .split("; ")
-            .find(row => row.startsWith("csrftoken="))
-            ?.split("=")[1];
-        return cookieValue || "";
-    }
-
-    // Add transport points to user
+    /* ----------
+        Add transport points to user
+    ---------- */
     const transportPointsForm = document.getElementById("transport-points-form");
     if (transportPointsForm) {
         transportPointsForm.addEventListener("submit", function (event) {
