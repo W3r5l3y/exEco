@@ -75,7 +75,12 @@ def unlink_strava(request, user_id):
     
 def get_strava_links(request):
     # Get all the user with linked strava accounts
-    pass # TODO - Implement this view
+    strava_links = list(StravaToken.objects.values_list("user_id", flat=True))
+    
+    if not strava_links:
+        return JsonResponse({"message": "No linked Strava accounts found"})
+    
+    return JsonResponse({"strava_links": strava_links})
 
 """
 Bingame Gamekeeper Views

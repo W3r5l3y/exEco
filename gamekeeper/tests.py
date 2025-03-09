@@ -4,6 +4,7 @@ from django.conf import settings
 from qrscanner.models import Location
 from accounts.models import CustomUser
 from django.contrib.auth import get_user_model
+from transport.models import StravaToken
 #from .views import add_location_to_qr
 import os
 
@@ -80,5 +81,55 @@ class QRCodeGenerationTests(TestCase):
         qr_code_path = os.path.join(settings.MEDIA_ROOT, "qr_codes", f"{self.location_data['location_code']}.png")
         if os.path.exists(qr_code_path):
             os.remove(qr_code_path)
+
+class StravaLinkTests(TestCase):
+
+    def setUp(self):
+        # Setup test client and users
+        self.client = Client()
+        self.user1 = get_user_model().objects.create_user(
+            email="user1@example.com",
+            first_name="User",
+            last_name="One",
+            password="password123"
+        )
+        self.user2 = get_user_model().objects.create_user(
+            email="user2@example.com",
+            first_name="User",
+            last_name="Two",
+            password="password123"
+        )
+
+        # URL for get_strava_links API
+        self.strava_links_url = reverse("get_strava_links")
+
+    def test_no_strava_links(self):
+        # Test if API returns no linked accounts, when there are no linked accounts
+        response = self.client.get(self.strava_links_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"message": "No linked Strava accounts found"})
+
+    def test_one_user_with_strava(self):
+        # Test view with a user in the database with a linked Strava account
+        StravaToken.objects.create(user=self.user1, access_token="token1")
+
+        response = self.client.get(self.strava_links_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("strava_links", response.json())
+        self.assertEqual(response.json()["strava_links"], [self.user1.id])
+
+    def test_multiple_users_with_strava(self):
+        # Test view with multiple users,and that it passed in the correct user IDs
+        StravaToken.objects.create(user=self.user1, access_token="token1")
+        StravaToken.objects.create(user=self.user2, access_token="token2")
+
+        response = self.client.get(self.strava_links_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("strava_links", response.json())
+
+        # Check that both user IDs are returned
+        expected_ids = [self.user1.id, self.user2.id]
+        self.assertCountEqual(response.json()["strava_links"], expected_ids)
+
 
 
