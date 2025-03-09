@@ -9,6 +9,7 @@ from .views import (
     get_qr_codes,
     enable_qr,
     disable_qr,
+    get_user_ids,
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
     path('get-qr-codes/', get_qr_codes, name='get_qr_codes'),
     path('enable-qr/<str:qr_id>/', enable_qr, name='enable_qr'),
     path('disable-qr/<str:qr_id>/', disable_qr, name='disable_qr'),
+    path('get-user-ids/', get_user_ids, name='get_user_ids'),
 ]

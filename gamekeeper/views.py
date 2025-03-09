@@ -196,3 +196,9 @@ def add_points(request, type, user_id, amount):
         return JsonResponse({"message": "Points added"})
     else:
         return JsonResponse({"message": "Goes below zero"}, status=400)
+    
+@login_required
+@is_gamekeeper
+def get_user_ids(request):
+    users = CustomUser.objects.values("id", "email")  # Fetch both ID and email
+    return JsonResponse({"user_ids": list(users)})

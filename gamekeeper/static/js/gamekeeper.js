@@ -9,6 +9,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* --------------------------------------------------
+    Drop down menu logic, for adding points to bingame, transport and qr scanner.
+    -------------------------------------------------- */
+    function fetchUserIds() {
+        fetch("/get-user-ids/")
+            .then(response => response.json())
+            .then(data => {
+                if (data.user_ids && data.user_ids.length > 0) {
+                    console.log("User IDs found:", data.user_ids);
+                    updateDropdowns(data.user_ids);
+                } else {
+                    console.error("No user IDs found.");
+                }
+            })
+            .catch(error => console.error("Error fetching user IDs:", error));
+    }
+
+    function updateDropdowns(users) {
+        const dropdowns = [
+            document.getElementById("qrscanner-points-user-id"),
+            document.getElementById("bingame-points-user-id"),
+            document.getElementById("transport-points-user-id"),
+        ];
+
+        dropdowns.forEach(dropdown => {
+            if (dropdown) {
+                dropdown.innerHTML = "";
+                const defaultOption = document.createElement("option");
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                defaultOption.value = "";
+                defaultOption.textContent = "Select a user";
+                dropdown.appendChild(defaultOption);
+
+                users.forEach(user => {
+                    const option = document.createElement("option");
+                    option.value = user.id;
+                    option.textContent = `${user.email || "Unknown"} (ID: ${user.id})`;
+                    dropdown.appendChild(option);
+                });
+            }
+        });
+    }
+
+    fetchUserIds();
+
+    /* --------------------------------------------------
         QR Scanner
     -------------------------------------------------- */
 
