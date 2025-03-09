@@ -27,7 +27,7 @@ function sharePost(postId) {
             likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
             const heartButton = document.querySelector(`#like-heart-${postId}`);
-            likeCountText.style.color = data.liked ? getComputedStyle(document.documentElement).getPropertyValue('--accessories_colour').trim() : "white";
+            likeCountText.style.color = data.liked ? "red" : "white";
             heartButton.src = data.liked ? activeHeart : nonActiveHeart;
             likeButton.src = data.liked ? likedButton : notLikedButton;
         })

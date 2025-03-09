@@ -1,2 +1,10 @@
-<!-- Image Source (open source and no attribution required) https://feathericons.com/!-->
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00c592" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+<!-- Image personally adapted from open source image !-->
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+	<title>liked</title>
+	<defs>
+		<image  width="24" height="24" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAAAXNSR0IB2cksfwAAAAZQTFRFAAAA/wAAG/+NIgAAAAJ0Uk5TAP9bkSK1AAAASklEQVR4nGNkYGBgBGH5E4KM9gf+MtY3/Afj/0AxdAyTA6mTf/CTkf/DR0b2Hw8Zmf8cZGT818jI8J+RkaGuiZHB5ggjg8QLkLkAsI8fBOCRzgQAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+	</style>
+	<use id="img1" href="#img1" x="0" y="0"/>
+</svg>

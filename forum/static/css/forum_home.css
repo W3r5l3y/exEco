@@ -41,6 +41,7 @@ main {
 .like-count {
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 
 }
 
@@ -96,7 +97,7 @@ main {
 
 .post-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 550px;
     height: auto;
     border-radius: 10px;
     object-fit: contain;
