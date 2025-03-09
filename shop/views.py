@@ -38,18 +38,19 @@ def buy_item(request, item_id):
     
     #Copy image to inventory
     if shop_item.image:
-        old_image_path = os.path.join(settings.BASE_DIR, f"shop/{shop_item.image}")
-        new_image_dir = os.path.join(settings.BASE_DIR, 'inventory/static/img/items/')
-        new_image_path = os.path.join(new_image_dir, os.path.basename(shop_item.image))
+        old_image_path = os.path.join(settings.BASE_DIR, f"media/{shop_item.image}")
+        new_image_dir = os.path.join(settings.BASE_DIR, 'media/inventory/items/')
+        new_image_path = os.path.join(new_image_dir, os.path.basename(shop_item.image.url))
 
-#
+
         # Copy the file only if it doesnt exist
         if not settings.TESTING and not os.path.exists(new_image_path):
             shutil.copy(old_image_path, new_image_path)
 
-        new_image_relative_path = f"img/items/{os.path.basename(shop_item.image)}"
+        new_image_relative_path = f"inventory/items/{os.path.basename(shop_item.image.name)}"
 
-        
+
+
     #Add item to user inventory
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     inventory.addItem(shop_item.name,  new_image_relative_path, item_type="regular")

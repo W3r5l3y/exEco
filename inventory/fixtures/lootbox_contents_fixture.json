@@ -6,7 +6,7 @@
         "fields": {
             "name": "Golden Carrot",
             "description": "The mystical golden carrot",
-            "image": "img/items/qrscanner_1.png"
+            "image": "inventory/items/qrscanner_1.png"
         }
     },
     {
@@ -24,7 +24,7 @@
         "fields": {
             "name": "Weeping willow",
             "description": "Mysterious willow ",
-            "image": "img/items/qrscanner_2.png"
+            "image": "inventory/items/qrscanner_2.png"
         }
     },
     {
@@ -42,7 +42,7 @@
         "fields": {
             "name": "Yellow flower",
             "description": "The yellow reflects sunlight",
-            "image": "img/items/qrscanner_3.png"
+            "image": "inventory/items/qrscanner_3.png"
         }
     },
     {
@@ -60,7 +60,7 @@
         "fields": {
             "name": "Purple flower",
             "description": "The brigh purple brings out the beauty of the garden",
-            "image": "img/items/qrscanner_4.png"
+            "image": "inventory/items/qrscanner_4.png"
         }
     },
     {
@@ -78,7 +78,7 @@
         "fields": {
             "name": "Blue tulip",
             "description": "A brilliant blue tulip",
-            "image": "img/items/qrscanner_5.png"
+            "image": "inventory/items/qrscanner_5.png"
         }
     },
     {
@@ -96,7 +96,7 @@
         "fields": {
             "name": "Yellow tulip",
             "description": "A bright yellow tulip",
-            "image": "img/items/qrscanner_6.png"
+            "image": "inventory/items/qrscanner_6.png"
         }
     },
     {
@@ -114,7 +114,7 @@
         "fields": {
             "name": "Purple tulip",
             "description": "Little purple tulip",
-            "image": "img/items/qrscanner_7.png"
+            "image": "inventory/items/qrscanner_7.png"
         }
     },
     {
@@ -132,7 +132,7 @@
         "fields": {
             "name": "Leaf scanner",
             "description": "Two leafy leafs",
-            "image": "img/items/qrscanner_8.png"
+            "image": "inventory/items/qrscanner_8.png"
         }
     },
     {
@@ -150,7 +150,7 @@
         "fields": {
             "name": "Four leaf clover",
             "description": "Mysterical quadruple",
-            "image": "img/items/qrscanner_9.png"
+            "image": "inventory/items/qrscanner_9.png"
         }
     },
     {
@@ -168,7 +168,7 @@
         "fields": {
             "name": "Rubbish Carrot",
             "description": "Rubbish carrot not even golden :(",
-            "image": "img/items/qrscanner_10.png"
+            "image": "inventory/items/qrscanner_10.png"
         }
     },
     {
@@ -186,7 +186,7 @@
         "fields": {
             "name": "The golden croc",
             "description": "The most luxourious shoe-ware out there.",
-            "image": "img/items/transport_1.png"
+            "image": "inventory/items/transport_1.png"
         }
     },
     {
@@ -204,7 +204,7 @@
         "fields": {
             "name": "Snake boots",
             "description": "The illusive snake plant held within the mighty shoe!",
-            "image": "img/items/transport_2.png"
+            "image": "inventory/items/transport_2.png"
         }
     },
     {
@@ -222,7 +222,7 @@
         "fields": {
             "name": "Rordans",
             "description": "Fresh as hell, the Rordans are the best shoe out there!",
-            "image": "img/items/transport_3.png"
+            "image": "inventory/items/transport_3.png"
         }
     },
     {
@@ -240,7 +240,7 @@
         "fields": {
             "name": "The blues",
             "description": "Brings a casual look to the long grass equation ;)",
-            "image": "img/items/transport_4.png"
+            "image": "inventory/items/transport_4.png"
         }
     },
     {
@@ -258,7 +258,7 @@
         "fields": {
             "name": "High end plantware",
             "description": "For a more refined garden",
-            "image": "img/items/transport_5.png"
+            "image": "inventory/items/transport_5.png"
         }
     },
     {
@@ -276,7 +276,7 @@
         "fields": {
             "name": "Boots",
             "description": "They get the work done",
-            "image": "img/items/transport_6.png"
+            "image": "inventory/items/transport_6.png"
         }
     },
     {
@@ -294,7 +294,7 @@
         "fields": {
             "name": "School shoes",
             "description": "A plant sprouting from your year 4 school shoes.",
-            "image": "img/items/transport_7.png"
+            "image": "inventory/items/transport_7.png"
         }
     },
     {
@@ -312,7 +312,7 @@
         "fields": {
             "name": "Magic sandals",
             "description": "They provide a bare bone look into the plant world",
-            "image": "img/items/transport_8.png"
+            "image": "inventory/items/transport_8.png"
         }
     },
     {
@@ -330,7 +330,7 @@
         "fields": {
             "name": "Converse",
             "description": "A casual look to the garden world",
-            "image": "img/items/transport_9.png"
+            "image": "inventory/items/transport_9.png"
         }
     },
     {
@@ -348,7 +348,7 @@
         "fields": {
             "name": "Wellington boots",
             "description": "For the dirty work.",
-            "image": "img/items/transport_10.png"
+            "image": "inventory/items/transport_10.png"
         }
     },
     {
@@ -367,7 +367,7 @@
         "fields": {
             "name": "Grey Bin",
             "description": "Bad grey bin",
-            "image": "img/items/grey_bin.png"
+            "image": "inventory/items/grey_bin.png"
         }
     },
     {
@@ -375,8 +375,27 @@
         "pk": 21,
         "fields": {
             "lootbox_template": 1,  
-            "item": 15,  
+            "item": 21,  
             "probability": 0.30  
+        }
+    },
+
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 22,
+        "fields": {
+            "name": "Gold Bin",
+            "description": "Gold grey bin",
+            "image": "inventory/items/gold_bin.png"
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 22,
+        "fields": {
+            "lootbox_template": 1,  
+            "item": 22,  
+            "probability": 0.70  
         }
     }
 ]

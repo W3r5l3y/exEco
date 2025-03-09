@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 import random
 from django.contrib import messages
-from .models import Inventory, InventoryItem, LootboxContents
+from .models import Inventory, InventoryItem, LootboxContents, LootboxTemplate
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
+from django.conf import settings
 from django.templatetags.static import static
 # Create your views here.
 
@@ -13,6 +13,7 @@ def inventory_view(request):
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     items = inventory.items.all()
     return render(request, 'inventory/inventory.html', {'items': items})
+
 
 #View to open a lootbox, takes in lootbox id, then opens the lootbox in backend (here) then returns the item, and adds it to user inventory
 @login_required
@@ -74,7 +75,7 @@ def open_lootbox(request, lootbox_id):
         "success": True,
         "item_won": {
             "name": selected_item.name,
-            "image": f"{selected_item.image}",
+            "image": request.build_absolute_uri(selected_item.image.url) if selected_item.image else None,
             "item_type": "regular"
         },
         "lootbox_removed": lootbox.quantity == 0  # Tell frontend if lootbox is gone

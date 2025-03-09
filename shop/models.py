@@ -5,7 +5,7 @@ class ShopItems(models.Model):
     itemId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="shop/", blank=True, null=True) 
     cost = models.PositiveIntegerField()  # Price in-game currency
     
     def __str__(self):

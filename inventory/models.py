@@ -53,7 +53,7 @@ class ItemType(models.TextChoices):
 class LootboxTemplate(models.Model):
     lootbox_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
-    lootbox_image = models.CharField(max_length=255)
+    lootbox_image = models.ImageField(upload_to="inventory/lootboxes/", blank=True, null=True) 
     
     def __str__(self):
         return self.name
@@ -62,7 +62,7 @@ class LootboxTemplate(models.Model):
 class LootboxItem(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="inventory/items/", blank=True, null=True) 
 
     def __str__(self):
         return self.name
@@ -82,7 +82,7 @@ class InventoryItem(models.Model):
     name = models.CharField(max_length=100)
     item_type = models.CharField(max_length=10, choices=ItemType.choices, default=ItemType.REGULAR)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="inventory/items/", blank=True, null=True) 
     quantity = models.PositiveIntegerField(default=1)
 
     # If it's a lootbox, link it to a LootboxTemplate

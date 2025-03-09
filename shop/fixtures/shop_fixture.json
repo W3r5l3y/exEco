@@ -5,7 +5,7 @@
         "fields": {
             "name": "Gnomeo",
             "description": "A cute lil gnome",
-            "image": "img/gnome.png",
+            "image": "shop/gnome.png",
             "cost": 50
         }
     }
