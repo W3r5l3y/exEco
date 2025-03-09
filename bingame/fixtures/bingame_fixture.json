@@ -44,7 +44,7 @@
         "pk": 1,
         "fields": {
             "item_name": "Plastic Bottle",
-            "item_image": "img/items/plastic_bottle.png",
+            "item_image": "bingame/items/plastic_bottle.png",
             "bin_id": 1
         }
     },
@@ -53,7 +53,7 @@
         "pk": 2,
         "fields": {
             "item_name": "Cardboard",
-            "item_image": "img/items/cardboard.png",
+            "item_image": "bingame/items/cardboard.png",
             "bin_id": 3
         }
     },
@@ -62,7 +62,7 @@
         "pk": 3,
         "fields": {
             "item_name": "Glass Bottle",
-            "item_image": "img/items/glass_bottle.png",
+            "item_image": "bingame/items/glass_bottle.png",
             "bin_id": 2
         }
     },
@@ -71,7 +71,7 @@
         "pk": 4,
         "fields": {
             "item_name": "Chip Packet",
-            "item_image": "img/items/chip_packet.png",
+            "item_image": "bingame/items/chip_packet.png",
             "bin_id": 5
         }
     },
@@ -80,7 +80,7 @@
         "pk": 5,
         "fields": {
             "item_name": "Drink Can",
-            "item_image": "img/items/drink_can.png",
+            "item_image": "bingame/items/drink_can.png",
             "bin_id": 4
         }
     },
@@ -89,7 +89,7 @@
         "pk": 6,
         "fields": {
             "item_name": "Banana Peel",
-            "item_image": "img/items/banana_peel.png",
+            "item_image": "bingame/items/banana_peel.png",
             "bin_id": 5
         }
     },
@@ -98,7 +98,7 @@
         "pk": 7,
         "fields": {
             "item_name": "Newspaper",
-            "item_image": "img/items/newspaper.png",
+            "item_image": "bingame/items/newspaper.png",
             "bin_id": 3
         }
     },
@@ -107,7 +107,7 @@
         "pk": 8,
         "fields": {
             "item_name": "Pizza box",
-            "item_image": "img/items/pizza_box.png",
+            "item_image": "bingame/items/pizza_box.png",
             "bin_id": 5
         }
     },
@@ -116,7 +116,7 @@
         "pk": 9,
         "fields": {
             "item_name": "Milk carton",
-            "item_image": "img/items/milk_carton.png",
+            "item_image": "bingame/items/milk_carton.png",
             "bin_id": 3
         }
     },
@@ -125,7 +125,7 @@
         "pk": 10,
         "fields": {
             "item_name": "Soap dispenser",
-            "item_image": "img/items/soap_dispenser.png",
+            "item_image": "bingame/items/soap_dispenser.png",
             "bin_id": 1
         }
     },
@@ -134,7 +134,7 @@
         "pk": 11,
         "fields": {
             "item_name": "Envelope",
-            "item_image": "img/items/envelope.png",
+            "item_image": "bingame/items/envelope.png",
             "bin_id": 3
         }
     },
@@ -143,7 +143,7 @@
         "pk": 12,
         "fields": {
             "item_name": "Broken mirror",
-            "item_image": "img/items/broken_mirror.png",
+            "item_image": "bingame/items/broken_mirror.png",
             "bin_id": 2
         }
     },
@@ -152,7 +152,52 @@
         "pk": 13,
         "fields": {
             "item_name": "Coffee cup",
-            "item_image": "img/items/coffee_cup.png",
+            "item_image": "bingame/items/coffee_cup.png",
+            "bin_id": 5
+        }
+    },
+    {
+        "model": "bingame.items",
+        "pk": 13,
+        "fields": {
+            "item_name": "Apple",
+            "item_image": "bingame/items/apple.png",
+            "bin_id": 5
+        }
+    }, 
+    {
+        "model": "bingame.items",
+        "pk": 14,
+        "fields": {
+            "item_name": "Aerosol Can",
+            "item_image": "bingame/items/aerosol_can.png",
+            "bin_id": 5
+        }
+    }, 
+    {
+        "model": "bingame.items",
+        "pk": 15,
+        "fields": {
+            "item_name": "Jam Jar",
+            "item_image": "bingame/items/jam_jar.png",
+            "bin_id": 2
+        }
+    }, 
+    {
+        "model": "bingame.items",
+        "pk": 16,
+        "fields": {
+            "item_name": "Ceramic Teapot",
+            "item_image": "bingame/items/teapot.png",
+            "bin_id": 5
+        }
+    }, 
+    {
+        "model": "bingame.items",
+        "pk": 17,
+        "fields": {
+            "item_name": "Toilet Roll",
+            "item_image": "bingame/items/toilet_roll.png",
             "bin_id": 5
         }
     }

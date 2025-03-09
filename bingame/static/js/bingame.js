@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 const img = document.createElement('img');
                 console.log("ITEM IMAGE: ", itemData.item_image)
-                img.src = `/static/${itemData.item_image}`;
+                img.src = itemData.item_image;
                 img.alt = itemData.item_name;
                 const itemName = document.createElement('p');
                 itemName.textContent = itemData.item_name;

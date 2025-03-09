@@ -9,6 +9,7 @@ from accounts.models import UserPoints, CustomUser
 from inventory.models import Inventory, LootboxTemplate
 from django.http import JsonResponse, HttpResponseBadRequest
 from inventory.models import LootboxTemplate
+from django.conf import settings
 
 # Create your views here.
 # Initial game view
@@ -96,7 +97,7 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image": f"{item.item_image}",
+                "item_image": request.build_absolute_uri(settings.MEDIA_URL + str(item.item_image)),
             }
         )
 

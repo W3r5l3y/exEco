@@ -40,7 +40,8 @@
                     {% for item in items %}
                         <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
                             <p>{{ item.item_name }}</p>
-                            <img src="{% static item.item_image %}" alt="{{ item.item_name }}">
+                            <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}">
+
                         </div>
                     {% endfor %}
                     
