@@ -427,4 +427,49 @@ document.addEventListener("DOMContentLoaded", function () {
         Forum
     -------------------------------------------------- */
 
+    /* --------------------------------------------------
+        Shop
+    -------------------------------------------------- */
+    const shopForm = document.getElementById("shop-form");
+    if (shopForm) {
+        shopForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const itemPicture = document.getElementById("shop-item-picture").files[0];
+            const itemName = document.getElementById("shop-item-name").value;
+            const itemPrice = document.getElementById("shop-item-price").value;
+            const itemDescription = document.getElementById("shop-item-description").value;
+
+            if (!itemPicture || !itemName || !itemPrice || !itemDescription) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("item_picture", itemPicture);
+            formData.append("item_name", itemName);
+            formData.append("item_price", itemPrice);
+            formData.append("item_description", itemDescription);
+
+            fetch("/add-item-to-shop/", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.item_id) {
+                    alert(`Item added successfully with ID: ${data.item_id}`);
+                } else if (data.error) {
+                    alert(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while adding the item.");
+            });
+        });
+    }
 });

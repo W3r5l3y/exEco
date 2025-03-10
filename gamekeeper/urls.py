@@ -10,6 +10,7 @@ from .views import (
     enable_qr,
     disable_qr,
     get_user_ids,
+    add_item_to_shop,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     path('enable-qr/<str:qr_id>/', enable_qr, name='enable_qr'),
     path('disable-qr/<str:qr_id>/', disable_qr, name='disable_qr'),
     path('get-user-ids/', get_user_ids, name='get_user_ids'),
+    path('add-item-to-shop/', add_item_to_shop, name='add_item_to_shop'),
 ]

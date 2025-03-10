@@ -13,6 +13,7 @@ from bingame.models import Bins
 from accounts.models import CustomUser, UserPoints
 from bingame.models import Items
 from transport.models import StravaToken
+from shop.models import ShopItems
 
 @login_required
 @is_gamekeeper
@@ -150,8 +151,7 @@ def add_item_to_bingame(request):
         return JsonResponse({"error": "Bin not found."}, status=404)
     
     if item_picture:
-        file_path = default_storage.save(f"items/{item_name}.png", ContentFile(item_picture.read()))
-        item_image_url = settings.MEDIA_URL + file_path
+        item_image_url = f"bingame/items/{item_name}.png"
     else:
         return JsonResponse({"error": "Missing item picture."}, status=400)
     
@@ -167,7 +167,46 @@ def add_item_to_bingame(request):
     )
     
     return JsonResponse({"item_id": item.item_id})
-    
+
+"""
+Shop gamekeeper views     
+"""
+
+@login_required
+@is_gamekeeper
+def add_item_to_shop(request):
+    # Add an item to the shop
+    item_name = request.POST.get("item_name")
+    item_price = request.POST.get("item_price")
+    item_description = request.POST.get("item_description")
+    item_picture = request.FILES.get("item_picture")
+
+    if not item_name or not item_price or not item_description:
+        return JsonResponse({"error": "Missing required fields."}, status=400)
+
+    if not item_picture:
+        return JsonResponse({"error": "Missing item picture."}, status=400)
+
+    # Save image to storage
+    image_path = f"shop/{item_picture.name}"  
+    saved_path = default_storage.save(image_path, ContentFile(item_picture.read()))
+
+    # Check if an item with the same name already exists
+    if ShopItems.objects.filter(name=item_name).exists():
+        return JsonResponse({"error": "Item already exists."}, status=400)
+
+    # Create the new shop item
+    item = ShopItems.objects.create(
+        name=item_name,
+        cost=item_price,  # Adjusted to match model field
+        description=item_description,
+        image=saved_path
+    )
+
+    return JsonResponse({"message": "Item added successfully", "item_id": item.itemId})
+
+
+
 """
 Accounts Gamekeeper views (kinda)
 """
