@@ -46,14 +46,19 @@ def buy_item(request, item_id):
         # Copy the file only if it doesnt exist
         if not settings.TESTING and not os.path.exists(new_image_path):
             shutil.copy(old_image_path, new_image_path)
-
+        print("DEUBG 69:, ",shop_item.image.name)
         new_image_relative_path = f"inventory/items/{os.path.basename(shop_item.image.name)}"
 
 
 
     #Add item to user inventory
     inventory, created = Inventory.objects.get_or_create(user=request.user)
-    inventory.addItem(shop_item.name,  new_image_relative_path, item_type="regular")
+    stats = {
+        "aesthetic_appeal": shop_item.aesthetic_appeal,
+        "habitat": shop_item.habitat,
+        "carbon_uptake": shop_item.carbon_uptake,
+    }
+    inventory.addItem(shop_item.name,  new_image_relative_path, item_type="regular", stats=stats)
     
     return JsonResponse({"success": "Item purchased successfully"}, status=200)
     

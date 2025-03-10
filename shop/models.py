@@ -7,6 +7,8 @@ class ShopItems(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to="shop/", blank=True, null=True) 
     cost = models.PositiveIntegerField()  # Price in-game currency
-    
+    aesthetic_appeal = models.IntegerField(default=0)
+    habitat = models.IntegerField(default=0)
+    carbon_uptake = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.name} - {self.cost} coins"

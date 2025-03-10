@@ -58,13 +58,24 @@ def open_lootbox(request, lootbox_id):
             selected_item = content
             break
     
+    # If wrong stat is added, it will be lootbox_id == logic
+    stats = {
+        "aesthetic_appeal": selected_item.aesthetic_appeal,
+        "habitat": selected_item.habitat,
+        "carbon_uptake": selected_item.carbon_uptake,
+        "waste_reduction": selected_item.waste_reduction if lootbox_id == 1 else 0,
+        "health_of_garden": selected_item.health_of_garden if lootbox_id == 3 else 0,
+        "innovation": selected_item.innovation if lootbox_id== 2 else 0
+    }
+    
     #Add the selected item to users inventory
     inventory.addItem(
         name=selected_item.name, 
         image=selected_item.image, 
         item_type="regular",
         description=selected_item.description,
-        quantity=1
+        quantity=1,
+        stats=stats
         )
 
     #Remove the lootbox after its opened - the save() change on models means can just minus one from quantity and it will delete if it goes to 0
