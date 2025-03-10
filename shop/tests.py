@@ -32,7 +32,7 @@ class ShopModelTests(TestCase):
         self.shop_item = ShopItems.objects.create(
             name="Test Item",
             description="Some form of item",
-            image="shop/static/img/test_plant_snake.png",
+            image="/img/test_plant_snake.png",
             cost=50
         )
         

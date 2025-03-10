@@ -57,7 +57,6 @@ def open_lootbox(request, lootbox_id):
             selected_item = content
             break
     
-    print(f"Opening lootbox: {lootbox.name}, Selected Item: {selected_item.name}") #DEBUG
     #Add the selected item to users inventory
     inventory.addItem(
         name=selected_item.name, 

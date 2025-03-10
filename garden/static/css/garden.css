@@ -36,6 +36,9 @@ main {
     padding: 20px;
 }
 
+#garden-buttons-container {
+    flex-direction: column;
+}
 /* --------------------------------------------------
     Garden Styling
 -------------------------------------------------- */
@@ -128,6 +131,49 @@ main {
 #save-garden-button:hover {
     background-color: var(--accessories_colour);
 }
+
+
+/* Save Button and Tooltip Styling */
+.reset-button-container {
+    position: relative;
+    display: inline-block;
+}
+
+#reset-tooltip {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 2px solid var(--primary_colour);
+    color: var(--primary_colour);
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+#reset-tooltip.show {
+    opacity: 1;
+}
+
+#reset-garden-button {
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#reset-garden-button:hover {
+    background-color: var(--accessories_colour);
+}
+
 
 /* --------------------------------------------------
     Inventory & Stats Styling
