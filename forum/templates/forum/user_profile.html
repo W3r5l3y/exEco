@@ -52,8 +52,14 @@
                             <div class="own-post-image-container">
                                 <img class="own-post-image" src="{{ post.image.url }}" alt="Post Image">
                             </div>
+                            <div class="own-post-description-div">
+                                <label>
+                                    <input value="{{ post.description }}" class="own-post-description" disabled>
+                                </label>
+                            </div>
                             <div class="own-post-actions">
-
+                                <img class="edit-image" onclick='href="{% url 'edit_post' post.post_id %}"' src="{% static 'img/edit.svg' %}" alt="edit" id="edit">
+                                <img class="delete-image"  onclick='href="{% url 'delete_post' post.post_id %}"'  src="{% static 'img/trash.svg' %}" alt="delete" id="delete">
                             </div>
 
 

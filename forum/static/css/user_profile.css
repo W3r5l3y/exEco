@@ -115,10 +115,43 @@ body {
     padding: 20px;
     background-color: var(--accessories_colour);
     border-bottom: 1px solid var(--primary_colour);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .own-post-image {
     height: 100%;
     max-height: 60px;
     width: auto;
+}
+
+.own-post-actions {
+    width: 30%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.own-post-actions img {
+    margin-left: 30px;
+}
+
+.own-post-description-div {
+    width: 40%;
+    display: flex;
+    align-items: center;
+}
+
+.own-post-description{
+    padding: 7px;
+    background-color: var(--accessories_colour);
+    width: 100%;
+    color: white;
+    border: none;
+}
+
+.own-post-description-editing {
+    border: 2px solid var(--primary_colour);
+    border-radius: 10px;
 }
