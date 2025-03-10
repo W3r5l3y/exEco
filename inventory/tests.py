@@ -70,8 +70,13 @@ class InventoryModelTests(TestCase):
         self.assertEqual(InventoryItem.objects.filter(name="Wilted Leaf").count(), 0)
     
     def test_addItem_method(self):
+        stats = {
+            "aesthetic_appeal": 5,
+            "habitat": 7,
+            "carbon_uptake": 2,
+        }
         #Check using the '.addItem()' method to add an item to inventory
-        item = self.inventory.addItem(name="Rose", image="static/img/rose.png", quantity=1)
+        item = self.inventory.addItem(name="Rose", image="static/img/rose.png", quantity=1, stats=stats)
         self.assertIsNotNone(item)
         self.assertEqual(item.name, "Rose")
         self.assertEqual(item.quantity, 1)

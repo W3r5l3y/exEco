@@ -25,10 +25,10 @@
                     data-item-name="{{ item.name }}" 
                     data-item-desc="{{ item.description }}" 
                     data-item-cost="{{ item.cost }}" 
-                    data-item-img-src="{% static item.image %}">
+                    data-item-img-src="{{ item.image.url }}">
                     <div class="shop-item-inner">
                         {% if item.image %}
-                            <img class="shop-item-img" src="{% static item.image %}" alt="{{ item.name }}">
+                            <img class="shop-item-img" src="{{ item.image.url }}" alt="{{ item.name }}">
                         {% endif %}
                         <div class="shop-item-cost-container">
                             <p class="shop-item-cost">{{ item.cost }}</p>

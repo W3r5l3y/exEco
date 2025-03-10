@@ -3,7 +3,7 @@
     <div class="inventory-slot" data-type="{{ item.item_type }}">
         <p class="item-name">{{ item.name }}</p>
         {% if item.image %}
-            <img src="{% static item.image %}" alt="{{ item.name }}">
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
         {% else %}
             <p>{{ item.name }}</p>
         {% endif %}
@@ -13,7 +13,7 @@
         <div id="item-buttons">
             <!-- Add a button to open lootboxes -->
             {% if item.item_type == "lootbox" %}
-            <button class="lootbox-btn inventory-btn" data-item-id="{{ item.id }}" data-static-src="{% static item.lootbox_template.lootbox_image %}">Open lootbox</button>
+            <button class="lootbox-btn inventory-btn" data-item-id="{{ item.id }}" data-static-src="{{ item.lootbox_template.lootbox_image.url }}">Open lootbox</button>
     
             {% endif %}
 

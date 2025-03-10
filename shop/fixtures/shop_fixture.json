@@ -3,10 +3,13 @@
         "model": "shop.shopitems",
         "pk": 1,
         "fields": {
-            "name": "Slippery",
-            "description": "Restores health.",
-            "image": "img/basic_ahh_plant.png",
-            "cost": 50
+            "name": "Gnomeo",
+            "description": "A cute lil gnome",
+            "image": "shop/gnome.png",
+            "cost": 50,
+            "aesthetic_appeal": 8,
+            "habitat": 3,
+            "carbon_uptake": 9
         }
     }
 ]

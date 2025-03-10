@@ -316,8 +316,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemDiv.setAttribute('data-correct-bin-id', itemData.bin_id);
                 
                 const img = document.createElement('img');
-                console.log("ITEM IMAGE: ", itemData.item_image);
-                img.src = `/static/${itemData.item_image}`;
+              
+                console.log("ITEM IMAGE: ", itemData.item_image)
+                img.src = itemData.item_image;
+
                 img.alt = itemData.item_name;
                 const itemName = document.createElement('p');
                 itemName.textContent = itemData.item_name;
@@ -344,8 +346,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`/get-lootbox-data/?lootbox_id=${lootbox_id}`)
         .then(response => response.json())
         .then(data => {
+
             const lootboxImage = document.createElement('img');
-            lootboxImage.src = `/static/${data.lootbox_image}`;
+            lootboxImage.src = data.lootbox_image;
             lootboxImage.alt = data.lootbox_name;
             lootboxContent.appendChild(lootboxImage);
             

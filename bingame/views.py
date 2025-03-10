@@ -9,6 +9,7 @@ from accounts.models import UserPoints, CustomUser
 from inventory.models import Inventory, LootboxTemplate
 from django.http import JsonResponse, HttpResponseBadRequest
 from inventory.models import LootboxTemplate
+from django.conf import settings
 
 # Import Challenge tracking model
 from challenges.models import UserChallenge 
@@ -98,7 +99,7 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image": f"{item.item_image}",
+                "item_image": request.build_absolute_uri(settings.MEDIA_URL + str(item.item_image)),
             }
         )
 
@@ -119,7 +120,7 @@ def get_lootbox_data(request):
     
     data = {
         'lootbox_name': lootbox.name,
-        'lootbox_image': lootbox.lootbox_image,
+        'lootbox_image': lootbox.lootbox_image.url,
     }
     
     return JsonResponse(data)

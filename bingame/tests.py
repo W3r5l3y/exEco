@@ -42,43 +42,43 @@ class BingameTestCase(TestCase):
         
         self.item1 = Items.objects.create(
             item_name="Plastic Bottle",
-            item_image="/img/items/plastic_bottle.png",
+            item_image="/bingame/items/plastic_bottle.png",
             bin_id=self.bin1
         )
         
         self.item2 = Items.objects.create(
             item_name="Glass Bottle",
-            item_image="/img/items/glass_bottle.png",
+            item_image="/bingame/items/glass_bottle.png",
             bin_id=self.bin2
         )
         
         self.item3 = Items.objects.create(
             item_name="Cardboard",
-            item_image="/img/items/cardboard.png",
+            item_image="/bingame/items/cardboard.png",
             bin_id=self.bin3
         )
         
         self.item4 = Items.objects.create(
             item_name="Chip Packet",
-            item_image="/img/items/chip_packet.png",
+            item_image="/bingame/items/chip_packet.png",
             bin_id=self.bin1
         )
         
         self.item5 = Items.objects.create(
             item_name="Drink Can",
-            item_image="/img/items/drink_can.png",
+            item_image="/bingame/items/drink_can.png",
             bin_id=self.bin4
         )
         
         self.item6 = Items.objects.create(
             item_name="Envelope",
-            item_image="/img/items/envelope.png",
+            item_image="/bingame/items/envelope.png",
             bin_id=self.bin3
         )
         
         self.item7 = Items.objects.create(
             item_name="Broken mirror",
-            item_image="/img/items/broken_mirror.png",
+            item_image="/bingame/items/broken_mirror.png",
             bin_id=self.bin2
         )
     
@@ -216,5 +216,3 @@ class BingameTestCase(TestCase):
             self.assertIn('item_name', item)
             self.assertIn('item_image', item)
     
-    def test_populate_bins_and_items(self):
-        pass

@@ -1,15 +1,13 @@
 //lootboxesFromHTML = 0;
 document.addEventListener('DOMContentLoaded', function() {
     // Get lootboxes count from the hidden input in HTML
-    const lootboxCountElem = document.getElementById("lootbox-count"); // CHANGED
-    if (lootboxCountElem) { // CHANGED
-        const lootboxesFromHTML = parseInt(lootboxCountElem.value, 10) || 0; // CHANGED
+    const lootboxCountElem = document.getElementById("lootbox-count"); 
+    if (lootboxCountElem) {
+        const lootboxesFromHTML = parseInt(lootboxCountElem.value, 10) || 0; 
         console.log("Lootboxes awarded from HTML,", lootboxesFromHTML);
         
-        if (lootboxesFromHTML > 0) { // CHANGED
-            showLootboxesAwarded(3 ,lootboxesFromHTML); // CHANGED
-            // Reset lootbox count value after showing the alert
-            //lootboxesFromHtml = 0; // CHANGED - Prevents multiple popups
+        if (lootboxesFromHTML > 0) {
+            showLootboxesAwarded(2 ,lootboxesFromHTML); 
         };
     };
     
@@ -47,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             // Create lootbox image element and append to lootbox content
             const lootboxImage = document.createElement('img');
-            lootboxImage.src = `/static/${data.lootbox_image}`;
+            lootboxImage.src = data.lootbox_image;
             lootboxImage.alt = data.lootbox_name;
             lootboxContent.appendChild(lootboxImage);
     

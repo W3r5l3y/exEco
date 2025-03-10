@@ -10,7 +10,25 @@ class Location(models.Model):
     cooldown_length = models.IntegerField()  # Cooldown is in seconds
     times_visited = models.IntegerField(default=0)  # Tracks number of scans/visits
     location_value = models.IntegerField(default=1)  # Amount of points awarded
+    is_active = models.BooleanField(default=True)
 
+    @classmethod
+    def addLocation(cls, location_code, location_name, location_fact, cooldown_length=0, location_value=5):
+        
+        location, created = cls.objects.get_or_create(
+            location_code=location_code,
+            defaults={
+                "location_name": location_name,
+                "location_fact": location_fact,
+                "cooldown_length": cooldown_length,
+                "location_value": location_value,
+            }
+        )
+
+        if not created:
+            return "Code already exists" # Location already exists
+        return location
+    
     def __str__(self):
         return f"{self.location_name} ({self.location_value} points)"
 
