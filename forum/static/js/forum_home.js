@@ -23,12 +23,12 @@ function sharePost(postId) {
         })
         .then(response => response.json())
         .then(data => {
-            const likeCountText = document.querySelector(`#like-count-${postId}`);
-            likeCountText.textContent = data.likes;
+            //const likeCountText = document.querySelector(`#like-count-${postId}`);
+            //likeCountText.textContent = data.likes;
             const likeButton = document.querySelector(`#like-button-${postId}`);
-            const heartButton = document.querySelector(`#like-heart-${postId}`);
-            likeCountText.style.color = data.liked ? "red" : "white";
-            heartButton.src = data.liked ? activeHeart : nonActiveHeart;
+            //const heartButton = document.querySelector(`#like-heart-${postId}`);
+            //likeCountText.style.color = data.liked ? "red" : "white";
+            //heartButton.src = data.liked ? activeHeart : nonActiveHeart;
             likeButton.src = data.liked ? likedButton : notLikedButton;
         })
         .catch(error => console.error('Error:', error));
