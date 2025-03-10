@@ -13,11 +13,9 @@ class GardenState(models.Model):
         stat_categories = ["aesthetic_appeal", "habitat", "carbon_uptake", "waste_reduction", "health_of_garden", "innovation"]
         total_stats = {stat: 0 for stat in stat_categories}
         item_count = 0
-        print("State: ", self.state.values())
         for item_id in self.state.values():
             try:
                 # Extract the item ID from unique inventory reference
-                print("Item ID: ", item_id)
                 item_pk = int(item_id.split("-")[2])  # "inventory-item-123" → 123
                 item = InventoryItem.objects.get(pk=item_pk)
 

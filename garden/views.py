@@ -45,7 +45,6 @@ def save_garden(request):
             )
             
             # Calculate the stats correctly
-            print("About to calculate stats: ", garden.state)
             stats_data = garden.calculate_stats()
 
             return JsonResponse({
