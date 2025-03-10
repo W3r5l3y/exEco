@@ -13,6 +13,8 @@ from django.http import JsonResponse
 from .models import StravaToken, LoggedActivity, CumulativeStats, CustomUser
 from accounts.models import UserPoints
 from inventory.models import Inventory, LootboxTemplate
+from challenges.models import UserChallenge
+
 
 @login_required
 def transport_view(request):
@@ -311,6 +313,25 @@ def log_activity(request):
                 cumulative_stats.total_hobby_distance += distance
 
             cumulative_stats.save()
+
+            # Convert distance from meters to kilometers
+            distance_km = distance / 1000  
+
+            # Update Transport Challenges
+            user_challenges = UserChallenge.objects.filter(
+                user=request.user, challenge__game_category="transport", completed=False
+            )
+
+            for user_challenge in user_challenges:
+                user_challenge.progress += distance_km  # Add logged distance in km
+
+                # Check if challenge is completed
+                if user_challenge.progress >= user_challenge.challenge.goal:
+                    user_challenge.progress = user_challenge.challenge.goal
+                    user_challenge.completed = True
+
+                user_challenge.save()
+
 
             score = int(distance / 100)
             
