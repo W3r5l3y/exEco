@@ -14,6 +14,7 @@ class Command(BaseCommand):
             "bingame/fixtures/bingame_fixture.json",
             "shop/fixtures/shop_fixture.json",
             "inventory/fixtures/lootbox_contents_fixture.json",
+            "challenges/fixtures/challenges.json",
         ]
 
         for fixture in fixtures:
