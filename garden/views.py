@@ -29,17 +29,30 @@ def load_garden(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 @login_required
+@login_required
 def save_garden(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
             garden_state = data.get("state", {})
 
+            # Ensure garden state is a dictionary before saving
+            if not isinstance(garden_state, dict):
+                return JsonResponse({"error": "Invalid garden state format"}, status=400)
+
             garden, created = GardenState.objects.update_or_create(
                 user=request.user, defaults={"state": garden_state}
             )
+            
+            # Calculate the stats correctly
+            print("About to calculate stats: ", garden.state)
+            stats_data = garden.calculate_stats()
 
-            return JsonResponse({"message": "Garden saved successfully!"}, safe=False)
+            return JsonResponse({
+                "message": "Garden saved successfully!",
+                "average_stats": stats_data["average_stats"],
+                "total_stat": stats_data["total_stats"]  # Ensure correct key for total stats
+            })
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:

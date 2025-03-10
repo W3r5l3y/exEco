@@ -206,7 +206,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const saveData = await saveResponse.json();
             console.log(saveData.message);
-    
+            
+            if (saveData.average_stats) {
+                updateGardenStats(saveData.average_stats, saveData.total_stats);
+            }
+            
             // Second endpoint: render the garden image.
             const imageResponse = await fetch("/save-garden-as-image/", {
                 method: "POST",
@@ -233,6 +237,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });  
     
+    function updateGardenStats(stats, totalStat) {
+        document.getElementById("garden-stat-1").textContent = stats.aesthetic_appeal.toFixed(1);
+        document.getElementById("garden-stat-2").textContent = stats.habitat.toFixed(1);
+        document.getElementById("garden-stat-3").textContent = stats.carbon_uptake.toFixed(1);
+        document.getElementById("garden-stat-4").textContent = stats.waste_reduction.toFixed(1);
+        document.getElementById("garden-stat-5").textContent = stats.health_of_garden.toFixed(1);
+        document.getElementById("garden-stat-6").textContent = stats.innovation.toFixed(1);
+        document.getElementById("garden-total-stat").textContent = totalStat.toFixed(1);
+    }
+    
+
     // Add reset garden functionality
 document.querySelector("#reset-garden-button").addEventListener("click", async () => {
     // Clear the in-memory garden state.
