@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(data => {
             // Create lootbox image element and append to lootbox content
             const lootboxImage = document.createElement('img');
-            lootboxImage.src = `/static/${data.lootbox_image}`;
+            lootboxImage.src = data.lootbox_image;
             lootboxImage.alt = data.lootbox_name;
             lootboxContent.appendChild(lootboxImage);
     

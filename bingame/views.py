@@ -118,7 +118,7 @@ def get_lootbox_data(request):
     
     data = {
         'lootbox_name': lootbox.name,
-        'lootbox_image': lootbox.lootbox_image,
+        'lootbox_image': lootbox.lootbox_image.url,
     }
     
     return JsonResponse(data)

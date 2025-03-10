@@ -122,7 +122,9 @@ def unlink_strava(request, user_id):
         return JsonResponse({"message": "Strava account unlinked successfully"})
     else:
         return JsonResponse({"error": "No linked Strava account found"}, status=400)
-    
+
+@login_required
+@is_gamekeeper
 def get_strava_links(request):
     # Get all the user with linked strava accounts
     strava_links = list(StravaToken.objects.values_list("user_id", flat=True))
