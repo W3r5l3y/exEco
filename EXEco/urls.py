@@ -31,4 +31,5 @@ urlpatterns = [
     path("", include("garden.urls")),
     path("", include("forum.urls")),
     path("", include("shop.urls")),
+    path("", include("challenges.urls")),
 ]
