@@ -1,6 +1,6 @@
+from django.utils.timezone import now
 from django.db import models
 from django.conf import settings
-from django.utils.timezone import now
 
 class Challenge(models.Model):
     DAILY = 'daily'

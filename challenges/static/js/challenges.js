@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const now = new Date();
     
     const dailyReset = new Date();
-    dailyReset.setHours(24, 0, 0, 0); 
+    dailyReset.setHours(0, 0, 0, 0);
+    dailyReset.setDate(dailyReset.getDate() + 1); 
+    
 
     const weeklyReset = new Date();
     weeklyReset.setDate(now.getDate() + (8 - now.getDay()) % 7);
@@ -55,10 +57,10 @@ document.addEventListener("DOMContentLoaded", function () {
             let progressParts = progressText.match(/(\d+)\/(\d+)/);
 
             if (progressParts) {
-                let currentProgress = parseInt(progressParts[1]);
-                let goal = parseInt(progressParts[2]);
-                let percentage = (currentProgress / goal) * 100;
-
+                let progressParts = progressText.match(/(\d+)\/(\d+)/);
+                let currentProgress = parseInt(progressParts[1], 10);
+                let goal = parseInt(progressParts[2], 10);
+                
                 progressElement.style.width = `${percentage}%`;
 
                 if (percentage >= 100) {
@@ -86,28 +88,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     const challengeItem = this.closest(".challenge-item");
                     const progressText = challengeItem.querySelector(".challenge-progress");
-                    progressText.textContent = `Progress: ${data.progress}/${data.goal}`;
-
+            
+                    if (data.progress !== undefined && data.goal !== undefined) {
+                        progressText.textContent = `Progress: ${data.progress}/${data.goal}`;
+                    }
+            
                     if (data.completed) {
                         this.innerText = "Completed";
                         this.disabled = true;
                         challengeItem.classList.add("completed");
-                    } else {
-                        this.innerText = "In Progress";
-                        this.disabled = true;
                     }
                 } else {
                     alert("Error submitting challenge. Try again later.");
                 }
             })
             .catch(error => console.error("Error:", error));
+            
         });
     });
 
     // Function to get CSRF token
     function getCSRFToken() {
-        return document.cookie.split("; ")
-            .find(row => row.startsWith("csrftoken="))
-            ?.split("=")[1];
+        let cookieValue = null;
+        document.cookie.split("; ").forEach(row => {
+            if (row.startsWith("csrftoken=")) {
+                cookieValue = row.split("=")[1];
+            }
+        });
+        return cookieValue;
     }
+    
 });
