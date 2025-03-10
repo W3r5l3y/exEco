@@ -132,4 +132,30 @@ class StravaLinkTests(TestCase):
         self.assertCountEqual(response.json()["strava_links"], expected_ids)
 
 
+class QRScannerTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = get_user_model().objects.create_user(
+            email="test@example.com", password="password123"
+        )
+        self.client.login(email="test@example.com", password="password123")
+
+    def test_add_location_to_qr(self):
+        url = reverse("add_location_to_qr", kwargs={
+            "location_code": "L123",
+            "location_name": "The forum",
+            "location_fact": "A nice area",
+            "cooldown_length": 120,
+            "location_value": 10
+        })
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("qr_code_url", response.json())
+
+    def test_get_qr_codes(self):
+        Location.objects.create(location_code="L123", location_name="Test Park", is_active=True)
+        url = reverse("get_qr_codes")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("qr_codes", response.json())
 

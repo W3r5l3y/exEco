@@ -446,7 +446,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const formData = new FormData();
-            formData.append("item_picture", itemPicture);
+            const item_picture = new File([itemPicture], itemPicture.name.replace(/ /g, "_"), { type: itemPicture.type });
+            //item_picture.name = itemPicture.name.replace(/ /g, "_")
+            formData.append("item_picture", item_picture);
             formData.append("item_name", itemName);
             formData.append("item_price", itemPrice);
             formData.append("item_description", itemDescription);

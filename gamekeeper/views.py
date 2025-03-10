@@ -14,6 +14,7 @@ from accounts.models import CustomUser, UserPoints
 from bingame.models import Items
 from transport.models import StravaToken
 from shop.models import ShopItems
+import re
 
 @login_required
 @is_gamekeeper
@@ -180,17 +181,19 @@ def add_item_to_shop(request):
     item_price = request.POST.get("item_price")
     item_description = request.POST.get("item_description")
     item_picture = request.FILES.get("item_picture")
-
     if not item_name or not item_price or not item_description:
         return JsonResponse({"error": "Missing required fields."}, status=400)
 
     if not item_picture:
         return JsonResponse({"error": "Missing item picture."}, status=400)
+    
+    
+    # Ensure filename is safe by replacing spaces and special characters
+    safe_filename = re.sub(r"[^\w\.-]", "_", item_picture.name)
 
-    # Save image to storage
-    image_path = f"shop/{item_picture.name}"  
-    saved_path = default_storage.save(image_path, ContentFile(item_picture.read()))
-
+    # Save the image using Django's storage system (saves into MEDIA_ROOT/shop/)
+    saved_path = default_storage.save(f"shop/{safe_filename}", item_picture)
+    
     # Check if an item with the same name already exists
     if ShopItems.objects.filter(name=item_name).exists():
         return JsonResponse({"error": "Item already exists."}, status=400)
