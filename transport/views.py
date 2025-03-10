@@ -313,7 +313,7 @@ def log_activity(request):
             cumulative_stats.save()
 
             score = int(distance / 100)
-            #CHAT GPT NOTE: This part up until the comment is causing the issue
+            
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
             
             old_points = user_points.transport_points

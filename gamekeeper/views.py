@@ -241,3 +241,9 @@ def add_points(request, type, user_id, amount):
 def get_user_ids(request):
     users = CustomUser.objects.values("id", "email")  # Fetch both ID and email
     return JsonResponse({"user_ids": list(users)})
+
+#All items have base stats, then items from lootboxes have the lootbox specific items
+#Base stats: Aesthetic_appeal, habitat, carbon_uptake
+#Bingame Lootbox: waste_reduction
+#Transport Lootbox: health_of_garden
+#QR Lootbox: innovation
