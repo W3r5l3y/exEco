@@ -11,13 +11,10 @@ from django.utils.timezone import now
 from inventory.models import Inventory, LootboxTemplate
 from accounts.models import CustomUser
 from django.http import JsonResponse
-<<<<<<< HEAD
 from challenges.models import UserChallenge
 from inventory.models import Inventory, LootboxTemplate
-=======
 from django.conf import settings
 
->>>>>>> origin/main
 
 @login_required(login_url="/login/")
 def qrscanner(request):
@@ -49,13 +46,9 @@ def qrscanner(request):
                 decoded_objects = decode(img)
 
             if decoded_objects:
-<<<<<<< HEAD
-                result = decoded_objects[0].data.decode("utf-8")  # Extracted string from QR code
-=======
                 result = decoded_objects[0].data.decode(
                     "utf-8"
                     )
->>>>>>> origin/main
                 try:
                     location = Location.objects.get(location_code=result)
                     # Check if the user has scanned this qr code before
@@ -64,17 +57,11 @@ def qrscanner(request):
                     )
                     # Calculate time since the last scan
                     time_since_last_scan = now() - scan_record.last_scanned
-<<<<<<< HEAD
-                    # Check if cooldown has passed
-                    if not created and time_since_last_scan < timedelta(seconds=location.cooldown_length):
-                        remaining_time = (timedelta(seconds=location.cooldown_length) - time_since_last_scan)
-=======
 
                     if not created and time_since_last_scan < timedelta(
                         seconds=location.cooldown_length
                     ):
                         remaining_time = timedelta(seconds=location.cooldown_length) - time_since_last_scan
->>>>>>> origin/main
                         message = f"This QR code is on cooldown. Try again in {remaining_time.seconds} seconds."
                     else:
                         scan_record.last_scanned = now()
@@ -85,7 +72,6 @@ def qrscanner(request):
 
                         # Award points to the user
                         points_awarded = location.location_value
-<<<<<<< HEAD
                         user_points, created = UserPoints.objects.get_or_create(user=request.user)
                         old_points = user_points.qrscanner_points  # LOOT BOX LOGIC
 
@@ -102,29 +88,10 @@ def qrscanner(request):
                             user_challenge.save()
 
                         # LOOT BOX LOGIC
-=======
-                        user_points, _ = UserPoints.objects.get_or_create(user=request.user)
-                        old_points = user_points.qrscanner_points
-
-                        user_points.add_qrscanner_points(location.location_value)
-
-                        # Lootbox logic
->>>>>>> origin/main
                         new_points = user_points.qrscanner_points
                         old_multiple = old_points // 20
                         new_multiple = new_points // 20
                         lootboxes_to_reward = new_multiple - old_multiple
-<<<<<<< HEAD
-
-                        if lootboxes_to_reward > 0:
-                            lootbox_template = LootboxTemplate.objects.get(name="QR Scanner Lootbox")
-                            # Fetch or create the user's inventory
-                            user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
-                            # Add the lootboxes
-                            user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
-                        #END OF LOOT BOX LOGIC
-=======
->>>>>>> origin/main
 
                         request.session['lootboxes_to_reward'] = lootboxes_to_reward  # store reward in session
 
@@ -175,13 +142,8 @@ def qrscanner(request):
         "lootboxes_to_reward": lootboxes_to_reward,
     }
 
-<<<<<<< HEAD
-    return render(request, "qrscanner/qrscanner.html", context)
-
-=======
     # Render the template with the form and result
     return render(request, "qrscanner/qrscanner.html", context)
->>>>>>> origin/main
 
 @login_required
 def get_qrscanner_leaderboard(request):
