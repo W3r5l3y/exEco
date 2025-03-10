@@ -33,21 +33,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch last reset timestamps from the server
     fetch("/get-reset-times/")
-        .then(response => response.json())
-        .then(data => {
-            if (data.daily_reset && dailyTimer) {
-                const dailyResetTime = new Date(data.daily_reset);
-                dailyResetTime.setDate(dailyResetTime.getDate() + 1); // Next midnight
-                updateCountdown(dailyTimer, dailyResetTime.getTime());
-            }
+    .then(response => response.json())
+    .then(data => {
+        if (data.daily_reset) {
+            const dailyResetTime = new Date(data.daily_reset);
+            dailyResetTime.setDate(dailyResetTime.getDate() + 1); // Next midnight
+            updateCountdown(dailyTimer, dailyResetTime.getTime());
+        }
 
-            if (data.weekly_reset && weeklyTimer) {
-                const weeklyResetTime = new Date(data.weekly_reset);
-                weeklyResetTime.setDate(weeklyResetTime.getDate() + 7); // Next week
-                updateCountdown(weeklyTimer, weeklyResetTime.getTime());
-            }
-        })
-        .catch(error => console.error("Error fetching reset times:", error));
+        if (data.weekly_reset) {
+            const weeklyResetTime = new Date(data.weekly_reset);
+            weeklyResetTime.setDate(weeklyResetTime.getDate() + 7); // Next week
+            updateCountdown(weeklyTimer, weeklyResetTime.getTime());
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching reset times:", error);
+        // If fetch fails, fall back to static logic
+        if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
+        if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
+    });
+
 
     // Set deadlines for daily and weekly challenges (next midnight and next Monday)
     const now = new Date();

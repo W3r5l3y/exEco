@@ -18,10 +18,10 @@ def challenges_view(request):
 
     # **Reset Daily Challenges if past midnight**
     if current_time.date() > tracker.last_daily_reset.date():
-        UserChallenge.objects.filter(challenge__challenge_type="daily").delete()
+        UserChallenge.objects.filter(user=user, challenge__challenge_type="daily").delete()
         all_daily_challenges = list(Challenge.objects.filter(challenge_type="daily"))
         if len(all_daily_challenges) >= 3:
-            daily_challenges = sample(all_daily_challenges, 3)  # Pick 3 random challenges
+            daily_challenges = sample(all_daily_challenges, min(3, len(all_daily_challenges)))  # Pick 3 random challenges
             for challenge in daily_challenges:
                 UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
         tracker.last_daily_reset = current_time
@@ -29,16 +29,18 @@ def challenges_view(request):
 
     # **Reset Weekly Challenges if it's Monday and not reset this week**
     if current_time.weekday() == 0 and current_time.date() > tracker.last_weekly_reset.date():
-        UserChallenge.objects.filter(challenge__challenge_type="weekly").delete()
-
+        UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly").delete()
         all_weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly"))
         if len(all_weekly_challenges) >= 5:
-            weekly_challenges = sample(all_weekly_challenges, 5)  # Pick 5 random challenges
+            weekly_challenges = sample(all_weekly_challenges, min(5, len(all_weekly_challenges)))  # Pick 5 random challenges
             for challenge in weekly_challenges:
                 UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
 
         tracker.last_weekly_reset = current_time
         tracker.save()
+
+    # Fetch user coins
+    user_coins, _ = UserCoins.objects.get_or_create(user=user)
 
     # Fetch updated challenges
     daily_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="daily")
@@ -46,7 +48,8 @@ def challenges_view(request):
 
     return render(request, "challenges/challenges.html", {
         "daily_challenges": daily_challenges,
-        "weekly_challenges": weekly_challenges
+        "weekly_challenges": weekly_challenges,
+        "user_coins": user_coins.coins 
     })
 
 
@@ -75,8 +78,8 @@ def submit_challenge(request):
 
             if user_challenge.completed:
                 return JsonResponse({"success": False, "message": "Challenge already completed."})
+            
 
-            # **Ensure progress matches the goal when completing the challenge**
             user_challenge.progress = user_challenge.challenge.goal
             user_challenge.completed = True
             user_challenge.save()
@@ -85,6 +88,8 @@ def submit_challenge(request):
             user_coins, created = UserCoins.objects.get_or_create(user=request.user)
             user_coins.coins += user_challenge.challenge.reward
             user_coins.save()
+
+
 
             return JsonResponse({
                 "success": True,
