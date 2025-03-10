@@ -1,6 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import JsonResponse
-from django.utils import timezone
 from .models import UserChallenge, Challenge, ChallengeResetTracker
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -8,11 +7,8 @@ from accounts.models import UserCoins
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
-from django.contrib.auth import get_user_model
-from datetime import timedelta
 
-
-
+from random import sample
 
 @login_required(login_url="/login/")
 def challenges_view(request):
@@ -23,21 +19,21 @@ def challenges_view(request):
     # **Reset Daily Challenges if past midnight**
     if current_time.date() > tracker.last_daily_reset.date():
         UserChallenge.objects.filter(challenge__challenge_type="daily").delete()
-        User = get_user_model()
-        for user in User.objects.all():
-            daily_challenges = list(Challenge.objects.filter(challenge_type="daily").order_by('?')[:3])
+        all_daily_challenges = list(Challenge.objects.filter(challenge_type="daily"))
+        if len(all_daily_challenges) >= 3:
+            daily_challenges = sample(all_daily_challenges, 3)  # Pick 3 random challenges
             for challenge in daily_challenges:
                 UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
-
-        tracker.last_daily_reset = current_time  # Update BEFORE assigning new challenges
-        tracker.save()  # Save changes
+        tracker.last_daily_reset = current_time
+        tracker.save()
 
     # **Reset Weekly Challenges if it's Monday and not reset this week**
-    if current_time.date() >= (tracker.last_weekly_reset + timedelta(days=7)).date():
+    if current_time.weekday() == 0 and current_time.date() > tracker.last_weekly_reset.date():
         UserChallenge.objects.filter(challenge__challenge_type="weekly").delete()
-        User = get_user_model()
-        for user in User.objects.all():
-            weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly").order_by('?')[:5])
+
+        all_weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly"))
+        if len(all_weekly_challenges) >= 5:
+            weekly_challenges = sample(all_weekly_challenges, 5)  # Pick 5 random challenges
             for challenge in weekly_challenges:
                 UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
 
@@ -56,6 +52,13 @@ def challenges_view(request):
 
 
 
+@login_required
+def get_reset_times(request):
+    tracker = ChallengeResetTracker.get_reset_tracker()
+    return JsonResponse({
+        "daily_reset": tracker.last_daily_reset.isoformat(),
+        "weekly_reset": tracker.last_weekly_reset.isoformat()
+    })
 
 @login_required
 @csrf_exempt

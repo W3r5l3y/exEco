@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to update the countdown timers
     function updateCountdown(timerElement, deadline) {
         function calculateTimeLeft() {
             const now = new Date().getTime();
@@ -32,6 +31,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const dailyTimer = document.getElementById("daily-timer");
     const weeklyTimer = document.getElementById("weekly-timer");
 
+    // Fetch last reset timestamps from the server
+    fetch("/get-reset-times/")
+        .then(response => response.json())
+        .then(data => {
+            if (data.daily_reset && dailyTimer) {
+                const dailyResetTime = new Date(data.daily_reset);
+                dailyResetTime.setDate(dailyResetTime.getDate() + 1); // Next midnight
+                updateCountdown(dailyTimer, dailyResetTime.getTime());
+            }
+
+            if (data.weekly_reset && weeklyTimer) {
+                const weeklyResetTime = new Date(data.weekly_reset);
+                weeklyResetTime.setDate(weeklyResetTime.getDate() + 7); // Next week
+                updateCountdown(weeklyTimer, weeklyResetTime.getTime());
+            }
+        })
+        .catch(error => console.error("Error fetching reset times:", error));
+
     // Set deadlines for daily and weekly challenges (next midnight and next Monday)
     const now = new Date();
     
@@ -47,28 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
     if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
 
-    // Update progress bars
-    document.querySelectorAll(".progress-bar").forEach(bar => {
-        let progressElement = bar.querySelector(".progress");
-        let challengeItem = bar.closest(".challenge-item");
-
-        if (progressElement && challengeItem) {
-            let progressText = challengeItem.querySelector(".challenge-progress").innerText;
-            let progressParts = progressText.match(/(\d+)\/(\d+)/);
-
-            if (progressParts) {
-                let progressParts = progressText.match(/(\d+)\/(\d+)/);
-                let currentProgress = parseInt(progressParts[1], 10);
-                let goal = parseInt(progressParts[2], 10);
-                
-                progressElement.style.width = `${percentage}%`;
-
-                if (percentage >= 100) {
-                    challengeItem.classList.add("completed");
-                }
-            }
-        }
-    });
 
     // Handle challenge submission
     document.querySelectorAll(".submit-btn").forEach(button => {
