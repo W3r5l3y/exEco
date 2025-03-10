@@ -39,6 +39,20 @@ def challenges_view(request):
         tracker.last_weekly_reset = current_time
         tracker.save()
 
+    if not UserChallenge.objects.filter(user=user, challenge__challenge_type="daily").exists():
+        all_daily_challenges = list(Challenge.objects.filter(challenge_type="daily"))
+        if len(all_daily_challenges) >= 3:
+            daily_challenges = sample(all_daily_challenges, 3)
+            for challenge in daily_challenges:
+                UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
+
+    if not UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly").exists():
+        all_weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly"))
+        if len(all_weekly_challenges) >= 5:
+            weekly_challenges = sample(all_weekly_challenges, 5)
+            for challenge in weekly_challenges:
+                UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
+
     # Fetch user coins
     user_coins, _ = UserCoins.objects.get_or_create(user=user)
 
