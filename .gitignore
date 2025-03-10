@@ -82,13 +82,14 @@ media/*
 # Allow tracking of specific folders
 !media/bingame/
 !media/garden/
-!media/inventory/items/
+!media/inventory/
 !media/shop/
 
 # Allow tracking of files inside these folders
 !media/bingame/*
 !media/garden/*
 !media/inventory/items/*
+!media/items/*
 !media/shop/*
 target/
 
