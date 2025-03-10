@@ -1,8 +1,16 @@
+/* :root {
+    --primary_colour: #003b3c;
+    --accessories_colour: #00c592;
+    --display_color: #002727;
+    --neutral_colour: #fff;
+} */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    transition: all 0.2s ease;
 }
 
 body {
@@ -11,6 +19,10 @@ body {
     align-items: center;
     height: 100vh;
     background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 main {
@@ -26,22 +38,51 @@ main {
     justify-content: space-between;
     height: 100%;
     padding: 20px;
-    gap: 20px; /* Adjust spacing between items */
+    gap: 20px;
 }
 
 .left-section {
-    width: 20%;
+    width: 30%;
 }
 
 .right-section {
-    width: 80%;
+    width: 70%;
+}
+
+/* --------------------------------------------------
+    Instructions Styles
+-------------------------------------------------- */
+.instructions {
+    flex: 1;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--neutral_colour);
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.instructions h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary_colour);
+}
+
+.instructions p {
+    font-size: 1rem;
+    margin-bottom: 10px;
 }
 
 /* --------------------------------------------------
     Leaderboard Styles
 -------------------------------------------------- */
 .leaderboard {
+    flex: 1;
     width: 100%;
+    padding: 10px;
+    background-color: var(--neutral_colour);
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .leaderboard ol {
@@ -71,12 +112,6 @@ main {
 }
 
 /* --------------------------------------------------
-    Statistics Styles
--------------------------------------------------- */
-
-/* Possible to add more styles here in the future */
-
-/* --------------------------------------------------
     Game Styles
 -------------------------------------------------- */
 
@@ -86,11 +121,10 @@ main {
     justify-content: space-between;
     align-items: center;
     height: 100%;
-
 }
 
 #items-container {
-    position: relative; /* Relative to allow items to be fixed */
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,13 +133,12 @@ main {
     height: 100%;
     width: 100%;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-    background-color: #cfcfcf;
+    background-color: #ffffff;
     border-radius: 10px;
-    z-index: 10;
 }
 
 .items {
-    position: fixed; /* Fix items to allow drag and drop */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -114,10 +147,23 @@ main {
     font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 0  10px rgba(0, 0, 0, 0.3);
-    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: #adfce7;
     height: 130px;
     width: 110px;
+    margin: 10px;
+}
+
+.items:hover {
+    background-color: var(--accessories_colour);
+}
+
+.items p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 5px;
 }
 
 .items img {
@@ -134,11 +180,14 @@ main {
     gap: 20px;
     margin: 20px 0;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-    background-color: #cfcfcf;
+    background-color: #fff;
     border-radius: 10px;
 }
 
+/* Bin structure remains the same */
 .bin {
+    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -147,6 +196,19 @@ main {
     font-weight: bold;
     text-align: center;
     border-radius: 10px;
+    min-width: 150px;
+}
+
+.bin:hover {
+    background-color: rgb(173, 173, 173);
+}
+
+.bin p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 5px;
 }
 
 .bin-image {
@@ -154,6 +216,40 @@ main {
     width: auto;
 }
 
+
+.bin-items {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 400px;
+    max-width: 250%;
+    overflow-y: auto;
+    background: rgb(63, 63, 63);
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+    /* display: flex; */ 
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.bin:hover .bin-items,
+.bin-items:hover {
+    display: flex;
+}
+
+.bin-items .items {
+    color: #fff;
+    background-color: #4d4d4d;
+}
+
+/* Check Answer Button */
 #check-answer-tile {
     display: flex;
     flex-direction: column;
@@ -176,4 +272,125 @@ main {
 
 #check-answer-tile p {
     font-size: 0.9rem;
+}
+
+/* --------------------------------------------------
+    Popup Styles
+-------------------------------------------------- */
+
+#lootbox-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#lootbox-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#lootbox-content img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+#lootbox-content p {
+    margin: 10px 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+#lootbox-content button {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#lootbox-content button:hover {
+    background: #2980b9;
+}
+
+/* --------------------------------------------------
+    Click-Based Selection Styles
+-------------------------------------------------- */
+
+.item-selected {
+    background-color: #00c592;
+}
+
+.item-selected:hover {
+    background-color: #00a176;
+}
+
+.bin-selectable {
+    cursor: pointer;
+    background-color: var(--accessories_colour);
+}
+
+/* --------------------------------------------------
+    Responsive Styles
+-------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column;
+        padding-top: 100px;
+    }
+
+    .left-section {
+        width: 100%;
+        height: auto;
+    }
+
+    .right-section {
+        width: 100%;
+        height: auto;
+    }
+
+    #items-container {
+        min-height: 200px;
+    }
+
+    .items {
+        height: 100px;
+        width: 80px;
+    }
+
+    .items p {
+        font-size: 0.8rem;
+    }
+
+    .items img {
+        height: 50px;
+    }
+
+    #bins-container {
+        gap: 10px;
+    }
+
+    .bin {
+        min-width: 100px;
+    }
+
+    #check-answer-tile {
+        width: 90%;
+    }
 }

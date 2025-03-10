@@ -31,8 +31,6 @@ def load_garden(request):
 @login_required
 def save_garden(request):
     if request.method == "POST":
-        print("hello")
-        print(request.body)
         try:
             data = json.loads(request.body)
             garden_state = data.get("state", {})
@@ -58,7 +56,7 @@ def load_inventory(request):
             items_list.append({
                 # Format the id so that it matches the format used in garden state.
                 'id': f"inventory-item-{item.id}",
-                'img': static(item.image),##item.image.url,   # Use .url to serve the image
+                'img': static(item.image),
                 'name': item.name,
                 'quantity': item.quantity,
                 'item_type': item.item_type,
@@ -99,7 +97,6 @@ def save_garden_as_image(request):
         # Blit the grass image as the background.
         surface.blit(grass_img, (0, 0))
     except Exception as e:
-        print("Error loading grass image:", e)
         # Fallback to a white background if the image fails to load.
         surface.fill((255, 255, 255))
 
@@ -123,7 +120,6 @@ def save_garden_as_image(request):
                     path = alt_path
             return path
         except Exception as e:
-            print(f"Error retrieving image for {unique_id}: {e}")
             return empty_img_path
 
     for row in range(1, grid_size + 1):
@@ -143,10 +139,8 @@ def save_garden_as_image(request):
             if key in garden_state:
                 unique_item_id = garden_state[key]
                 img_path = get_inventory_image_path(unique_item_id)
-                #print(f"Placing item {unique_item_id} at {key}, image path: {img_path}")  # ✅ Debugging output
             else:
                 img_path = empty_img_path
-                #print(f"Empty cell at {key}, using default image")  # ✅ Debugging output
 
             try:
                 img = pygame.image.load(img_path)

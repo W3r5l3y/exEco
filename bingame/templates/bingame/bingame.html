@@ -15,6 +15,13 @@
     <main>
         <!-- Left section -->
         <div class="left-section">
+            <section class="instructions">
+                <h3>Bin Game Instructions</h3>
+                <p>The idea of bin game is simple!</p>
+                <p>Select an item and the click on the bin you think it belongs to.</p>
+                <p>Once you have placed all the items in the correct bins, click on the "Check Answers" button to see how you did.</p>
+                <p>Good luck!</p>
+            </section>
             <section class="leaderboard">
                 <h3>Leaderboard</h3>
                 <ol id="leaderboard-list">
@@ -48,18 +55,20 @@
                 <!-- Bins -->
                 <div id="bins-container">
                     {% for bin in bins %}
-                        <div class="bin"  data-bin-id="{{ bin.bin_id }}">
+                        <div class="bin" data-bin-id="{{ bin.bin_id }}">
                             <img src="{% static bin.bin_image %}" alt="{{ bin.bin_name }}" class="bin-image" style="height:100px; width:auto;">
                             <p>{{ bin.bin_name }}</p>
-                            <!-- For future better item placement in bins-->
-                            <!-- <div class="bin-items" data-bin-id="{{ bin.bin_id }}"> --> 
+                            <!-- Container for dropped items -->
+                            <div class="bin-items" data-bin-id="{{ bin.bin_id }}">
+                                <!-- Dropped items will be appended here -->
+                            </div>
                         </div>
                     {% endfor %}
-                </div>
+                </div>                
 
                 <!-- Check Answer-->
                 <div id="check-answer-tile" >
-                    Check Answers
+                    <span id="check-answer-label">Check Answers</span>
                     <p id="attempts-left" style="color: rgb(253, 106, 106);"></p>
                 </div>
             </div>

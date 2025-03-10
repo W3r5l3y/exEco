@@ -9,7 +9,8 @@ from transport.models import StravaToken
 from datetime import date
 from .utils import create_empty_garden_image, generate_profile_picture
 from django.conf import settings
-
+import pygame
+import os
 def login_register_view(request):
     login_form = LoginForm()
     register_form = RegisterForm()
@@ -22,8 +23,6 @@ def login_register_view(request):
                 # Get the email and password from the form
                 email = login_form.cleaned_data["email"]
                 password = login_form.cleaned_data["password"]
-
-                # Authenticate the user
                 user = authenticate(request, email=email, password=password)
                 if user is not None:
                     # Check if the user has a profile picture, if not generate one
@@ -34,9 +33,8 @@ def login_register_view(request):
                     # Log the user in
                     login(request, user)
                     request.session["user_id"] = user.id
-                    return redirect("dashboard")
+                    return redirect("dashboard")  # Redirect to a home page.
                 else:
-                    # If the user is not authenticated, return an error message
                     error_message = "Invalid login credentials"
                     return HttpResponseRedirect(reverse("login") + f"?error={error_message}&tab=login")
         # ----- REGISTER -----
@@ -66,6 +64,7 @@ def settings_view(request):
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse("settings") + "?success=Profile changed successfully")
+
             else:
                 error_message = list(form.errors.values())[0][0]
                 return HttpResponseRedirect(reverse("settings") + f"?error={error_message}")
@@ -97,8 +96,10 @@ def log_out(request):
             logout(request)
             return redirect("login")
         return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
-    except Exception:
-        return HttpResponseRedirect(reverse("settings") + "?error=Failed to log out. Please contact support.")
+    except Exception as e:
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to log out. Please contact support."
+        )
 
 
 def delete_account(request):
@@ -106,18 +107,75 @@ def delete_account(request):
         if request.user.is_authenticated:
             request.user.delete()
             return HttpResponseRedirect(reverse("login"))
-        return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
-    except Exception:
-        return HttpResponseRedirect(reverse("settings") + "?error=Failed to delete account. Please contact support.")
+        else:
+            return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
+
+    except Exception as e:
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to delete account. Please contact support."
+        )
 
 
 def strava_unlink(request):
     try:
-        if request.user.is_authenticated:
-            StravaToken.objects.filter(user_id=request.user.id).delete()
-            return HttpResponseRedirect(reverse("settings") + "?success=Strava unlinked successfully")
-        return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
-    except Exception:
-        return HttpResponseRedirect(reverse("settings") + "?error=Failed to unlink Strava. Please contact support.")
+        user = request.user
+        if user.is_authenticated:
+            StravaToken.objects.filter(user_id=user.id).delete()
+            return HttpResponseRedirect(reverse("settings") + f"?success=Strava unlinked successfully")
+        else:
+            return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
+
+    except Exception as e:
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to unlink Strava. Please contact support."
+        )
 
     return render(request, "dashboard/dashboard.html")
+
+
+def create_empty_garden_image(user):
+    pygame.init()
+    
+    grid_size = 9
+    cell_size = 64
+    width = grid_size * cell_size
+    height = grid_size * cell_size
+    
+    surface = pygame.Surface((width, height))
+    
+    grass_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "grass.png")
+    try:
+        grass_img = pygame.image.load(grass_img_path)
+        grass_img = pygame.transform.scale(grass_img, (width, height))
+        surface.blit(grass_img, (0, 0))
+    except Exception as e:
+        print("Error loading grass background:", e)
+        surface.fill((255, 255, 255))
+    
+    center_rect = pygame.Rect((5 - 1) * cell_size, (5 - 1) * cell_size, cell_size, cell_size)
+    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "temp-tree.png")
+    try:
+        tree_img = pygame.image.load(tree_img_path)
+        tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))
+        surface.blit(tree_img, center_rect)
+    except Exception as e:
+        print("Error loading tree image:", e)
+    
+    file_name = f"empty_garden_user{user.id}.png"
+    output_dir = os.path.join(settings.BASE_DIR, "garden", "static", "img", "gardens")
+    
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
+    
+    output_path = os.path.join(output_dir, file_name)
+    
+    try:
+        pygame.image.save(surface, output_path)
+        print(f"Empty garden image saved to {output_path}")
+    except Exception as e:
+        print("Error saving empty garden image:", e)
+    finally:
+        pygame.quit()
+    
+    return output_path
+

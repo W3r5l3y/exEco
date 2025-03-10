@@ -40,5 +40,4 @@ def get_total_leaderboard(request):
         return JsonResponse(list(user_points), safe=False)
 
     except Exception as e:
-        print(e)
         return JsonResponse({"error": str(e)}, status=500)

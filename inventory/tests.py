@@ -286,6 +286,6 @@ class InventoryViewsTestCase(TestCase):
 
         # Check that user’s inventory now has 1 regular item (the “Test Item”)
         new_items = self.inventory.items.filter(name="Test Item")
-        #print("DEBUG : COUNT : ", new_items.count())
+        
         self.assertEqual(new_items.count(), 1)
         self.assertEqual(new_items.first().name, "Test Item")
