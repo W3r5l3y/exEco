@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(saveData.message);
             
             if (saveData.average_stats) {
-                updateGardenStats(saveData.average_stats, saveData.total_stats);
+                updateGardenStats(saveData.average_stats, saveData.total_stat);
             }
             
             // Second endpoint: render the garden image.
