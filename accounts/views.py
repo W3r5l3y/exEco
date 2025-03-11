@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
-from .models import CustomUser
+from .models import CustomUser, UserPoints, UserCoins
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from transport.models import StravaToken
@@ -11,6 +11,9 @@ from .utils import create_empty_garden_image, generate_profile_picture
 from django.conf import settings
 import pygame
 import os
+
+
+
 def login_register_view(request):
     login_form = LoginForm()
     register_form = RegisterForm()
@@ -47,6 +50,11 @@ def login_register_view(request):
                 profile_pic_path = generate_profile_picture(new_user.first_name, new_user.last_name, new_user.email, new_user.id) # Generate a profile picture for the user
                 new_user.profile_picture = profile_pic_path
                 new_user.save()
+
+                # Create a new UserPoints and UserCoins object for the new user
+                UserPoints.objects.get_or_create(user=new_user)
+                UserCoins.objects.get_or_create(user=new_user)
+
                 return HttpResponseRedirect(reverse("login") + "?tab=login")
             else:
                 error_message = list(register_form.errors.values())[0][0]
@@ -177,3 +185,6 @@ def create_empty_garden_image(user):
     
     return output_path
 
+def logout_view(request):
+    logout(request)
+    return redirect("login")
