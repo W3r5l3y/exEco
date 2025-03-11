@@ -1,332 +1,267 @@
 [
     {
-        "model": "challenges.challenge",
-        "pk": 1,
-        "fields": {
-            "description": "Daily Challenge 1",
-            "reward": 11,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 1,
+      "fields": {
+        "description": "Win 1 Bin Game",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "bingame",
+        "goal": 1
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 2,
-        "fields": {
-            "description": "Daily Challenge 2",
-            "reward": 12,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 2,
+      "fields": {
+        "description": "Win 3 Bin Games",
+        "reward": 25,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 3
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 3,
-        "fields": {
-            "description": "Daily Challenge 3",
-            "reward": 13,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 3,
+      "fields": {
+        "description": "Scan 3 QR codes",
+        "reward": 15,
+        "challenge_type": "daily",
+        "game_category": "qrscanner",
+        "goal": 3
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 4,
-        "fields": {
-            "description": "Daily Challenge 4",
-            "reward": 14,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 4,
+      "fields": {
+        "description": "Scan 15 QR codes",
+        "reward": 40,
+        "challenge_type": "weekly",
+        "game_category": "qrscanner",
+        "goal": 15
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 5,
-        "fields": {
-            "description": "Daily Challenge 5",
-            "reward": 15,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 5,
+      "fields": {
+        "description": "Walk 500 meters",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "transport",
+        "goal": 500
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 6,
-        "fields": {
-            "description": "Daily Challenge 6",
-            "reward": 16,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 6,
+      "fields": {
+        "description": "Travel 5 kilometers",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "transport",
+        "goal": 5000
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 7,
-        "fields": {
-            "description": "Daily Challenge 7",
-            "reward": 17,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 7,
+      "fields": {
+        "description": "Take a transport journey (log 1 activity)",
+        "reward": 20,
+        "challenge_type": "daily",
+        "game_category": "transport",
+        "goal": 1
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 8,
-        "fields": {
-            "description": "Daily Challenge 8",
-            "reward": 18,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 8,
+      "fields": {
+        "description": "Log 5 transport activities",
+        "reward": 60,
+        "challenge_type": "weekly",
+        "game_category": "transport",
+        "goal": 5
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 9,
-        "fields": {
-            "description": "Daily Challenge 9",
-            "reward": 19,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 9,
+      "fields": {
+        "description": "Win 5 Bin Games",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 5
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 10,
-        "fields": {
-            "description": "Daily Challenge 10",
-            "reward": 20,
-            "challenge_type": "daily",
-            "game_category": "general",
-            "goal": 1
-        }
+      "model": "challenges.challenge",
+      "pk": 10,
+      "fields": {
+        "description": "Complete a daily challenge",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "general",
+        "goal": 1
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 11,
-        "fields": {
-            "description": "Weekly Challenge 1",
-            "reward": 21,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 11,
+      "fields": {
+        "description": "Complete 3 daily challenges",
+        "reward": 30,
+        "challenge_type": "weekly",
+        "game_category": "general",
+        "goal": 3
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 12,
-        "fields": {
-            "description": "Weekly Challenge 2",
-            "reward": 22,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 12,
+      "fields": {
+        "description": "Scan 5 QR codes",
+        "reward": 25,
+        "challenge_type": "daily",
+        "game_category": "qrscanner",
+        "goal": 5
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 13,
-        "fields": {
-            "description": "Weekly Challenge 3",
-            "reward": 23,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 13,
+      "fields": {
+        "description": "Scan 20 QR codes",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "qrscanner",
+        "goal": 20
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 14,
-        "fields": {
-            "description": "Weekly Challenge 4",
-            "reward": 24,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 14,
+      "fields": {
+        "description": "Win 10 Bin Games",
+        "reward": 100,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 10
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 15,
-        "fields": {
-            "description": "Weekly Challenge 5",
-            "reward": 25,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 15,
+      "fields": {
+        "description": "Travel 1km without using motorized transport",
+        "reward": 25,
+        "challenge_type": "daily",
+        "game_category": "transport",
+        "goal": 1000
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 16,
-        "fields": {
-            "description": "Weekly Challenge 6",
-            "reward": 26,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 16,
+      "fields": {
+        "description": "Walk or cycle a total of 10km",
+        "reward": 80,
+        "challenge_type": "weekly",
+        "game_category": "transport",
+        "goal": 10000
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 17,
-        "fields": {
-            "description": "Weekly Challenge 7",
-            "reward": 27,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 17,
+      "fields": {
+        "description": "Complete any challenge today",
+        "reward": 5,
+        "challenge_type": "daily",
+        "game_category": "general",
+        "goal": 1
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 18,
-        "fields": {
-            "description": "Weekly Challenge 8",
-            "reward": 28,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 18,
+      "fields": {
+        "description": "Complete 5 challenges this week",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "general",
+        "goal": 5
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 19,
-        "fields": {
-            "description": "Weekly Challenge 9",
-            "reward": 29,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 19,
+      "fields": {
+        "description": "Win 15 Bin Games",
+        "reward": 150,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 15
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 20,
-        "fields": {
-            "description": "Weekly Challenge 10",
-            "reward": 30,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 20,
+      "fields": {
+        "description": "Scan 10 QR codes",
+        "reward": 30,
+        "challenge_type": "daily",
+        "game_category": "qrscanner",
+        "goal": 10
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 21,
-        "fields": {
-            "description": "Weekly Challenge 11",
-            "reward": 31,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 21,
+      "fields": {
+        "description": "Scan 25 QR codes",
+        "reward": 60,
+        "challenge_type": "weekly",
+        "game_category": "qrscanner",
+        "goal": 25
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 22,
-        "fields": {
-            "description": "Weekly Challenge 12",
-            "reward": 32,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 22,
+      "fields": {
+        "description": "Win 20 Bin Games",
+        "reward": 200,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 20
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 23,
-        "fields": {
-            "description": "Weekly Challenge 13",
-            "reward": 33,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 23,
+      "fields": {
+        "description": "Complete 2 daily challenges",
+        "reward": 20,
+        "challenge_type": "daily",
+        "game_category": "general",
+        "goal": 1
+      }
     },
     {
-        "model": "challenges.challenge",
-        "pk": 24,
-        "fields": {
-            "description": "Weekly Challenge 14",
-            "reward": 34,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 25,
-        "fields": {
-            "description": "Weekly Challenge 15",
-            "reward": 35,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 26,
-        "fields": {
-            "description": "Weekly Challenge 16",
-            "reward": 36,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 27,
-        "fields": {
-            "description": "Weekly Challenge 17",
-            "reward": 37,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 28,
-        "fields": {
-            "description": "Weekly Challenge 18",
-            "reward": 38,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 29,
-        "fields": {
-            "description": "Weekly Challenge 19",
-            "reward": 39,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
-    },
-    {
-        "model": "challenges.challenge",
-        "pk": 30,
-        "fields": {
-            "description": "Weekly Challenge 20",
-            "reward": 40,
-            "challenge_type": "weekly",
-            "game_category": "general",
-            "goal": 3
-        }
+      "model": "challenges.challenge",
+      "pk": 24,
+      "fields": {
+        "description": "Complete 10 challenges this week",
+        "reward": 100,
+        "challenge_type": "weekly",
+        "game_category": "general",
+        "goal": 10
+      }
     }
-]
+  ]
+  
