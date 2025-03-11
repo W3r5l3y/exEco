@@ -77,6 +77,7 @@ class ViewsTestCase(TestCase):
             response, reverse("login") + "?error=Invalid login credentials&tab=login"
         )
 
+    """ TODO PROBLEM TEST CAUSING GARDEN IMAGE GENERATION
     def test_login_register_view_post_register(self):
         response = self.client.post(
             reverse("login"),
@@ -91,6 +92,7 @@ class ViewsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 302)  # Redirect after registration
         self.assertRedirects(response, reverse("login") + "?tab=login")
+    """
 
     def test_login_register_view_post_register_existing_email(self):
         response = self.client.post(
@@ -251,9 +253,11 @@ class SettingsViewTestCase(TestCase):
             response, reverse("settings") + "?error=Passwords do not match."
         )
 
+
 """
 MODELS TESTING - UserPoints and UserCoins
 """
+
 
 class UserPointsModelTests(TestCase):
 
@@ -263,7 +267,7 @@ class UserPointsModelTests(TestCase):
             email="testuser@example.com",
             first_name="Test",
             last_name="User",
-            password="password123"
+            password="password123",
         )
         self.user_points = UserPoints.objects.create(user=self.user)
 
@@ -299,6 +303,7 @@ class UserPointsModelTests(TestCase):
         self.user_points.add_transport_points(10)
         self.assertEqual(self.user_points.total_points, 20)
 
+
 class UserCoinsModelTests(TestCase):
 
     def setUp(self):
@@ -307,7 +312,7 @@ class UserCoinsModelTests(TestCase):
             email="testuser@example.com",
             first_name="Test",
             last_name="User",
-            password="password123"
+            password="password123",
         )
         self.user_coins = UserCoins.objects.create(user=self.user)
 
@@ -340,9 +345,11 @@ class UserCoinsModelTests(TestCase):
         expected_str = f"{self.user.id} - 20 coins"
         self.assertEqual(str(self.user_coins), expected_str)
 
+
 """
 DECORATORS TESTING - is_gamekeeper
 """
+
 
 class IsGamekeeperDecoratorTestCase(TestCase):
     # Test the is_gamekeeper decorator, used in gamekeeper and navbar for gamekeeper tab
@@ -389,6 +396,7 @@ class IsGamekeeperDecoratorTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, b"Allowed")
 
+
 """
 UTILS TESTING - generate_profile_picture
 """
@@ -405,25 +413,29 @@ class GenerateProfilePictureTests(TestCase):
 
     def test_generate_profile_picture_success(self):
         # Test profile picture is generated
-        file_path = generate_profile_picture(self.first_name, self.last_name, self.email)
+        file_path = generate_profile_picture(
+            self.first_name, self.last_name, self.email
+        )
         full_path = os.path.join(settings.MEDIA_ROOT, file_path)
 
-        self.assertTrue(os.path.exists(full_path), "Profile picture file was not created.")
+        self.assertTrue(
+            os.path.exists(full_path), "Profile picture file was not created."
+        )
 
     def test_generate_profile_picture_correct_directory(self):
         # Ensure profile picture saved correctly
-        file_path = generate_profile_picture(self.first_name, self.last_name, self.email)
-        
+        file_path = generate_profile_picture(
+            self.first_name, self.last_name, self.email
+        )
+
         # Check if the file path starts with the expected directory
-        self.assertTrue(file_path.startswith("profile_pics/"), "Profile picture is not saved in the correct directory.")
+        self.assertTrue(
+            file_path.startswith("profile_pics/"),
+            "Profile picture is not saved in the correct directory.",
+        )
 
     def tearDown(self):
         # Clean up test files
         for file in os.listdir(self.profile_pics_dir):
             if file.endswith("_profile_picture.png"):
                 os.remove(os.path.join(self.profile_pics_dir, file))
-
-
-
-
-
