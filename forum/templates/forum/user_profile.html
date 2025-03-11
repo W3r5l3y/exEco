@@ -25,7 +25,7 @@
     <main>
         <div class="profile-div">
             <div class="profile-top">
-                    <h1>{{ user.email }}'s Profile</h1>
+                    <h1>{{ user.email }}'s Posts</h1>
             </div>
 
             {% if user != logged_in_user %}
@@ -43,14 +43,15 @@
                                 <img class="like-count-image" src="{% static 'img/like.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
                             </div>
                         </div>
-                </div>
                 {% endfor %}
+                </div>
             {% else %}
                 <div class="user-own-post-container">
                     {% for post in posts %}
                         <div class="own-post">
                             <div class="own-post-image-container">
                                 <img class="own-post-image" src="{{ post.image.url }}" alt="Post Image">
+                                <img class="change-image" src="" alt="change image" style="display: none" >
                             </div>
                             <div class="own-post-description-div">
                                 <label>
@@ -58,12 +59,11 @@
                                 </label>
                             </div>
                             <div class="own-post-actions">
-                                <img class="edit-image" onclick='href="{% url 'edit_post' post.post_id %}"' src="{% static 'img/edit.svg' %}" alt="edit" id="edit">
-                                <img class="delete-image"  onclick='href="{% url 'delete_post' post.post_id %}"'  src="{% static 'img/trash.svg' %}" alt="delete" id="delete">
+                                <!-- Use window.location.href to navigate -->
+                                <img class="left-image" src="{% static 'img/trash.svg' %}" alt="delete">
+                                <img class="right-image" src="{% static 'img/edit.svg' %}" alt="edit">
+
                             </div>
-
-
-                        </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -112,6 +112,10 @@
     <script>
         const notLikedButton = "{% static 'img/like.svg' %}";
         const likedButton = "{% static 'img/liked.svg' %}";
+        const checkButton = "{% static 'img/check.svg' %}";
+        const crossButton = "{% static 'img/cross.svg' %}";
+        const editButton = "{% static 'img/edit.svg' %}";
+        const deleteButton = "{% static 'img/trash.svg' %}";
     </script>
     {% include 'forum/bottom_navbar.html' %}
 

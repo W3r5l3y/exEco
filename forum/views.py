@@ -59,7 +59,7 @@ def user_profile(request, user_id):
     return render(
         request,
         "forum/user_profile.html",
-        {"user": user, "posts": user_posts, "logged_in_user": request.user},
+        {"user": user, "posts": user_posts, "logged_in_user": request.user,"active_page": "user_profile"},
     )
 
 

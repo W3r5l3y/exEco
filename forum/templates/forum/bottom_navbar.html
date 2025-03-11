@@ -23,7 +23,7 @@
                         {% endif %}
                     </a>
                     <a href="{% url 'user_profile' user_id=request.user.id %}">
-                        {% if active_page == 'manage' %}
+                        {% if active_page == 'user_profile' and user.id == request.user.id %}
                             <img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/archive_selected.svg' %}" alt="manage">
                         {% else %}
                             <img class="bottom-navbar-image" src="{% static 'img/archive.svg' %}" alt="manage">

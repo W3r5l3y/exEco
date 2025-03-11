@@ -107,17 +107,20 @@ body {
 .user-own-post-container {
     display: flex;
     flex-direction: column;
-
 }
 
 .own-post {
     width: 100%;
     padding: 20px;
-    background-color: var(--accessories_colour);
+    background-color: #003b3cCC;
     border-bottom: 1px solid var(--primary_colour);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.own-post:nth-child(even) {
+    background-color: #003b3cA6;
 }
 
 .own-post-image {
@@ -145,7 +148,7 @@ body {
 
 .own-post-description{
     padding: 7px;
-    background-color: var(--accessories_colour);
+    background-color: transparent;
     width: 100%;
     color: white;
     border: none;
