@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport Error</title>
+    {% include 'navbar.html' %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/transport-error.css' %}">
+</head>
+<body>
+    <main>
+        <h1>Error</h1>
+        <p>{{ error }}</p>
+        <a href="/transport/">Return to transport home page</a>
+    </main>
+</body>
+</html>

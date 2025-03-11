@@ -8,7 +8,7 @@ class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    def addItem(self, name, image=None, item_type="regular", description=None, quantity=1):
+    def addItem(self, name, image=None, item_type="regular", description=None, quantity=1, stats=None):
         print(f"Adding item to inventory: {name}, {quantity}")
         #Add an item to the user inventory, if it already exists add 1 to quantity
         if quantity < 1:
@@ -17,7 +17,18 @@ class Inventory(models.Model):
         item, created = InventoryItem.objects.get_or_create(
             inventory=self,
             name=name,
-            defaults={"image": image, "item_type": item_type, "description": description, "quantity": quantity}
+            defaults={
+                "image": image,
+                "item_type": item_type,
+                "description": description,
+                "quantity": quantity,
+                "aesthetic_appeal": stats.get("aesthetic_appeal", 0),
+                "habitat": stats.get("habitat", 0),
+                "carbon_uptake": stats.get("carbon_uptake", 0),
+                "waste_reduction": stats.get("waste_reduction", 0),
+                "health_of_garden": stats.get("health_of_garden", 0),
+                "innovation": stats.get("innovation", 0), 
+            }
         )
         
         if not created:
@@ -53,7 +64,7 @@ class ItemType(models.TextChoices):
 class LootboxTemplate(models.Model):
     lootbox_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
-    lootbox_image = models.CharField(max_length=255)
+    lootbox_image = models.ImageField(upload_to="inventory/lootboxes/", blank=True, null=True) 
     
     def __str__(self):
         return self.name
@@ -62,7 +73,13 @@ class LootboxTemplate(models.Model):
 class LootboxItem(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="inventory/items/", blank=True, null=True) 
+    aesthetic_appeal = models.IntegerField(default=2)
+    habitat = models.IntegerField(default=2)
+    carbon_uptake = models.IntegerField(default=0)
+    waste_reduction = models.IntegerField(default=0)
+    health_of_garden = models.IntegerField(default=0)
+    innovation = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -82,9 +99,18 @@ class InventoryItem(models.Model):
     name = models.CharField(max_length=100)
     item_type = models.CharField(max_length=10, choices=ItemType.choices, default=ItemType.REGULAR)
     description = models.TextField(blank=True, null=True)
-    image = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="inventory/items/", blank=True, null=True) 
     quantity = models.PositiveIntegerField(default=1)
-
+    # Stats
+    aesthetic_appeal = models.IntegerField(default=0) 
+    habitat = models.IntegerField(default=0)
+    carbon_uptake = models.IntegerField(default=0)
+    waste_reduction = models.IntegerField(default=0)
+    health_of_garden = models.IntegerField(default=0)
+    innovation = models.IntegerField(default=0)
+    
+    
+    
     # If it's a lootbox, link it to a LootboxTemplate
     lootbox_template = models.ForeignKey(LootboxTemplate, on_delete=models.SET_NULL, null=True, blank=True)
 

@@ -76,15 +76,21 @@ docs/_build/
 
 # Media files
 
-media/**/*.png
-media/**/*.jpg
-media/**/*.jpeg
-media/**/*.gif
-media/**/*.bmp
-media/**/*.tiff
-media/**/*.ico
-media/**/*.svg
-media/**/*.webp
+# Ignore everything in /media/
+media/*
+
+# Allow tracking of specific folders
+!media/bingame/
+!media/garden/
+!media/inventory/
+!media/shop/
+
+# Allow tracking of files inside these folders
+!media/bingame/*
+!media/garden/*
+!media/inventory/items/*
+!media/items/*
+!media/shop/*
 target/
 
 # Jupyter Notebook

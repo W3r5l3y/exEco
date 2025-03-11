@@ -130,8 +130,6 @@ def strava_unlink(request):
             reverse("settings") + f"?error=Failed to unlink Strava. Please contact support."
         )
 
-    return render(request, "dashboard/dashboard.html")
-
 
 def create_empty_garden_image(user):
     pygame.init()

@@ -29,17 +29,29 @@ def load_garden(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 @login_required
+@login_required
 def save_garden(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
             garden_state = data.get("state", {})
 
+            # Ensure garden state is a dictionary before saving
+            if not isinstance(garden_state, dict):
+                return JsonResponse({"error": "Invalid garden state format"}, status=400)
+
             garden, created = GardenState.objects.update_or_create(
                 user=request.user, defaults={"state": garden_state}
             )
+            
+            # Calculate the stats correctly
+            stats_data = garden.calculate_stats()
 
-            return JsonResponse({"message": "Garden saved successfully!"}, safe=False)
+            return JsonResponse({
+                "message": "Garden saved successfully!",
+                "average_stats": stats_data["average_stats"],
+                "total_stat": stats_data["total_stats"]  # Ensure correct key for total stats
+            })
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:
@@ -56,7 +68,7 @@ def load_inventory(request):
             items_list.append({
                 # Format the id so that it matches the format used in garden state.
                 'id': f"inventory-item-{item.id}",
-                'img': static(item.image),
+                'img': item.image.url,
                 'name': item.name,
                 'quantity': item.quantity,
                 'item_type': item.item_type,
@@ -102,8 +114,9 @@ def save_garden_as_image(request):
 
 
     # Build paths based on your folder structure.
-    empty_img_path = os.path.join(settings.BASE_DIR, "inventory", "static", "img", "items", "empty.png")
-    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "temp-tree.png")
+    empty_img_path = os.path.join(settings.MEDIA_ROOT, "inventory/items/empty.png")
+    tree_img_path = os.path.join(settings.MEDIA_ROOT, "garden/temp-tree.png")
+
 
     def get_inventory_image_path(unique_id):
         parts = unique_id.split("-")
@@ -112,10 +125,10 @@ def save_garden_as_image(request):
         base_pk = parts[2]
         try:
             item = InventoryItem.objects.get(pk=base_pk)
-            path = item.image
+            path = item.image.url
             # If the file doesn't exist at the returned path, try the known inventory static folder.
             if not os.path.exists(path):
-                alt_path = os.path.join(settings.BASE_DIR, "inventory", "static", "img", "items", os.path.basename(path))
+                alt_path = os.path.join(settings.MEDIA_ROOT, "inventory/items/", os.path.basename(path))
                 if os.path.exists(alt_path):
                     path = alt_path
             return path
@@ -135,7 +148,7 @@ def save_garden_as_image(request):
                 except Exception as e:
                     print("Error loading tree image:", e)
                 continue
-
+            
             if key in garden_state:
                 unique_item_id = garden_state[key]
                 img_path = get_inventory_image_path(unique_item_id)

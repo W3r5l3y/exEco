@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamekeeper</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/gamekeeper.css' %}">
+    <script src="{% static 'js/gamekeeper.js' %}" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Gamekeeper</h1>
+
+        <!-- QR Scanner -->
+        <section id="qrscanner-gamekeeper" class="gamekeeper-section">
+            <!-- Add QR code entries into database -->
+            <h2>QR Scanner</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add QR code entries into the database</h3>
+                <form id="qrscanner-form">
+                    <label for="qrscanner-location-code">Location Code</label>
+                    <input type="text" id="qrscanner-location-code" placeholder="Location code" name="location_code" required>
+                    <label for="qrscanner-location-name">Location Name</label>
+                    <input type="text" id="qrscanner-location-name" placeholder="Location name" name="location_name" required>
+                    <label for="qrscanner-location-fact">Location Fact</label>
+                    <input type="text" id="qrscanner-location-fact" placeholder="Location fact" name="location_fact" required>
+                    <label for="qrscanner-location-cooldown">Location Cooldown</label>
+                    <input type="text" id="qrscanner-location-cooldown" placeholder="Location cooldown" name="location_cooldown"> <!-- Optional: default 60s -->
+                    <label for="qrscanner-location-value">Location Value</label>
+                    <input type="text" id="qrscanner-location-value" placeholder="Location value" name="location_value"> <!-- Optional: default 1 -->
+                    <button type="qrscanner-qr-button">Submit</button>
+                </form>
+            </div>
+
+            <!-- Review QR code entries and allow disabling -->
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Review QR code entries</h3>
+                <select id="qrscanner-qr-select">
+                    <!-- List of dynamic QR codes -->
+                </select>
+                <div id="qrscanner-enable-disable-btns">
+                    <button id="qrscanner-qr-enable">Enable</button>
+                    <button id="qrscanner-qr-disable">Disable</button>
+                </div>
+            </div>
+                    
+
+            <!-- Manually add points to a user -->
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add points to a user</h3>
+                <form id="qrscanner-points-form">
+                    <label for="qrscanner-points-user-id">User Id</label>
+                    <select id="qrscanner-points-user-id" name="user_id" required>
+                        <option value="">Loading...</option>
+                    </select>
+                    <label for="qrscanner-points-amount">Amount</label>
+                    <input type="text" id="qrscanner-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="qrscanner-points-button">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Bin game -->
+        <section id="bingame-gamekeeper" class="gamekeeper-section">
+            <!-- Add bin game entries into database -->
+            <h2>Bin Game</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add bin game entries into the database</h3>
+                <form id="bingame-form">
+                    <label for="bingame-item-picture">Item Picture</label>
+                    <input type="file" id="bingame-item-picture" name="item_picture" required>
+                    <label for="bingame-item-name">Item Name</label>
+                    <input type="text" id="bingame-item-name" placeholder="Item name" name="item_name" required>
+                    <label for="bingame-item-bin-id">Bin Id</label>
+                    <input type="text" id="bingame-item-bin-id" placeholder="Bin id" name="item_bin_id" required>
+                    <button type="bingame-add-button">Submit</button>
+                </form>
+            </div>
+
+            <!-- Add bin game points to a user -->
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually add points to a user</h3>
+                <form id="bingame-points-form">
+                    <label for="bingame-points-user-id">User Id</label>
+                    <select id="bingame-points-user-id" name="user_id" required>
+                        <option value="">Loading...</option>
+                    </select>
+                    
+                    <label for="bingame-points-amount">Amount</label>
+                    <input type="text" id="bingame-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="bingame-points-button">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Transport -->
+        <section id="transport-gamekeeper" class="gamekeeper-section">
+            <!-- Manually unlink accounts -->
+            <h2>Transport</h2>
+            <!-- Strava Account Management Section -->
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually unlink Strava accounts</h3>
+                <label for="transport-unlink-account">Select a User:</label>
+                <select id="transport-unlink-account">
+                    <option value="">Loading...</option>
+                </select>
+                <button id="transport-unlink-button">Unlink</button>
+            </div>
+
+            <!-- Add transport points to a user -->
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Manually add points to a user</h3>
+                <form id="transport-points-form">
+                    <label for="transport-points-user-id">User Id</label>
+                    <select id="transport-points-user-id" name="user_id" required>
+                        <option value="">Loading...</option>
+                    </select>                    
+                    <label for="transport-points-amount">Amount</label>
+                    <input type="text" id="transport-points-amount" placeholder="Amount" name="amount" required>
+                    <button type="transport-points-button">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Forum -->
+        <section id="forum-gamekeeper" class="gamekeeper-section">
+            <!-- Moderate forum posts -->
+            <h2>Forum</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Moderate forum posts</h3>
+                <!-- List of forum posts -->
+                <!-- TODO ADD LOGIC HERE -->
+            </div>
+        </section>
+
+        <!-- Shop -->
+        <section id="shop-gamekeeper" class="gamekeeper-section">
+            <!-- Add shop items -->
+            <h2>Shop</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add shop items</h3>
+                <form id="shop-form">
+                    <label for="shop-item-name">Item Name</label>
+                    <input type="text" id="shop-item-name" placeholder="Item name" name="item_name" required>
+                
+                    <label for="shop-item-picture">Item Picture</label> 
+                    <input type="file" id="shop-item-picture" name="item_picture" required> 
+                
+                    <label for="shop-item-price">Item Price</label>
+                    <input type="text" id="shop-item-price" placeholder="Item price" name="item_price" required>
+                
+                    <label for="shop-item-description">Item Description</label>
+                    <input type="text" id="shop-item-description" placeholder="Item description" name="item_description" required>
+                
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

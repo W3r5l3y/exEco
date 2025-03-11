@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .backends import EmailBackend
 from .models import UserPoints, UserCoins, CustomUser
+from .decorators import is_gamekeeper
+from django.test import RequestFactory
+from django.http import HttpResponse
+from .utils import generate_profile_picture
+import os
+from django.conf import settings
 
 
 class FormsTestCase(TestCase):
@@ -334,7 +340,88 @@ class UserCoinsModelTests(TestCase):
         expected_str = f"{self.user.id} - 20 coins"
         self.assertEqual(str(self.user_coins), expected_str)
 
+"""
+DECORATORS TESTING - is_gamekeeper
+"""
 
+class IsGamekeeperDecoratorTestCase(TestCase):
+    # Test the is_gamekeeper decorator, used in gamekeeper and navbar for gamekeeper tab
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            email="user@example.com",
+            first_name="Regular",
+            last_name="User",
+            password="password123",
+        )
+        self.staff_user = get_user_model().objects.create_user(
+            email="staff@example.com",
+            first_name="Staff",
+            last_name="User",
+            password="password123",
+        )
+        self.staff_user.is_staff = True
+        self.staff_user.save()
+
+    def test_is_gamekeeper_redirects_non_staff(self):
+        # Test it sends none gamekeepers to the dashboard
+        request = self.factory.get("/some-protected-url/")
+        request.user = self.user
+
+        @is_gamekeeper
+        def dummy_view(request):
+            return HttpResponse("Allowed")
+
+        response = dummy_view(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/dashboard/"))
+
+    def test_is_gamekeeper_allows_staff(self):
+        # Should allow gamekeepers to access the view
+        request = self.factory.get("/some-protected-url/")
+        request.user = self.staff_user
+
+        @is_gamekeeper
+        def dummy_view(request):
+            return HttpResponse("Allowed")
+
+        response = dummy_view(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"Allowed")
+
+"""
+UTILS TESTING - generate_profile_picture
+"""
+
+
+class GenerateProfilePictureTests(TestCase):
+
+    def setUp(self):
+        # Set up test enviroment
+        self.first_name = "John"
+        self.last_name = "Doe"
+        self.email = "johndoe@example.com"
+        self.profile_pics_dir = os.path.join(settings.MEDIA_ROOT, "profile_pics")
+
+    def test_generate_profile_picture_success(self):
+        # Test profile picture is generated
+        file_path = generate_profile_picture(self.first_name, self.last_name, self.email)
+        full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+
+        self.assertTrue(os.path.exists(full_path), "Profile picture file was not created.")
+
+    def test_generate_profile_picture_correct_directory(self):
+        # Ensure profile picture saved correctly
+        file_path = generate_profile_picture(self.first_name, self.last_name, self.email)
+        
+        # Check if the file path starts with the expected directory
+        self.assertTrue(file_path.startswith("profile_pics/"), "Profile picture is not saved in the correct directory.")
+
+    def tearDown(self):
+        # Clean up test files
+        for file in os.listdir(self.profile_pics_dir):
+            if file.endswith("_profile_picture.png"):
+                os.remove(os.path.join(self.profile_pics_dir, file))
 
 
 

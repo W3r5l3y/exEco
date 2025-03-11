@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
         // Get the static image source and replace it with the video source
         const staticSrc = button.getAttribute("data-static-src");
-        const videoSrc = staticSrc.replace(".png", "_animation.mp4");
+        const videoSrc = staticSrc.replace(/\.png$/, "_animation.mp4");  
     
         // Create video element
         const video = document.createElement("video");
@@ -125,8 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
             // Show the lootbox result
             popupTitle.innerText = `${item.name}`;
+            console.log("ITEM IMGAE: ", item.image.url);
             if (item.image) {
-                popupImage.src = `/static/${item.image}`; //`/static/${itemData.item_image}`;
+                popupImage.src = item.image;
                 popupImage.alt = item.name;
                 popupImage.style.display = "flex";
             } else {

@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* <main>
+        <h1>Error</h1>
+        <p>{{ error }}</p>
+        <a href="/transport/">Return to transport home page</a>
+    </main> */
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding-top: 150px;
+}
+
+main h1 {
+    color: var(--primary_colour);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+main p {
+    color: var(--accessories_colour);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+main a {
+    color: var(--accessories_colour);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    border-radius: 30px;
+    padding: 10px 20px;
+    border: 4px solid var(--accessories_colour);
+}
+
+main a:hover {
+    background-color: var(--accessories_colour);
+    color: var(--neutral_colour);
+}

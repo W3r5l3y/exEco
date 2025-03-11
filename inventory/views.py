@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 import random
 from django.contrib import messages
-from .models import Inventory, InventoryItem, LootboxContents
+from .models import Inventory, InventoryItem, LootboxContents, LootboxTemplate
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
+from django.conf import settings
 from django.templatetags.static import static
 # Create your views here.
 
@@ -13,6 +13,7 @@ def inventory_view(request):
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     items = inventory.items.all()
     return render(request, 'inventory/inventory.html', {'items': items})
+
 
 #View to open a lootbox, takes in lootbox id, then opens the lootbox in backend (here) then returns the item, and adds it to user inventory
 @login_required
@@ -57,13 +58,24 @@ def open_lootbox(request, lootbox_id):
             selected_item = content
             break
     
+    # If wrong stat is added, it will be lootbox_id == logic
+    stats = {
+        "aesthetic_appeal": selected_item.aesthetic_appeal,
+        "habitat": selected_item.habitat,
+        "carbon_uptake": selected_item.carbon_uptake,
+        "waste_reduction": selected_item.waste_reduction if lootbox_id == 1 else 0,
+        "health_of_garden": selected_item.health_of_garden if lootbox_id == 3 else 0,
+        "innovation": selected_item.innovation if lootbox_id== 2 else 0
+    }
+    
     #Add the selected item to users inventory
     inventory.addItem(
         name=selected_item.name, 
         image=selected_item.image, 
         item_type="regular",
         description=selected_item.description,
-        quantity=1
+        quantity=1,
+        stats=stats
         )
 
     #Remove the lootbox after its opened - the save() change on models means can just minus one from quantity and it will delete if it goes to 0
@@ -74,7 +86,7 @@ def open_lootbox(request, lootbox_id):
         "success": True,
         "item_won": {
             "name": selected_item.name,
-            "image": f"{selected_item.image}",
+            "image": request.build_absolute_uri(selected_item.image.url) if selected_item.image else None,
             "item_type": "regular"
         },
         "lootbox_removed": lootbox.quantity == 0  # Tell frontend if lootbox is gone

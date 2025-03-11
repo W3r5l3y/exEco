@@ -7,15 +7,23 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from accounts.decorators import is_gamekeeper
 from django.utils.timezone import now
 from django.http import JsonResponse
 from .models import StravaToken, LoggedActivity, CumulativeStats, CustomUser
 from accounts.models import UserPoints
 from inventory.models import Inventory, LootboxTemplate
+from challenges.models import UserChallenge
+
 
 @login_required
 def transport_view(request):
     return render(request, "transport/transport.html")
+
+@login_required
+@is_gamekeeper
+def transport_error(request):
+    return render(request, "transport/transport-error.html")
 
 
 @login_required
@@ -83,16 +91,17 @@ def strava_callback(request):
     """
 
     # Get the code and error from the query parameters
+    # code = request.GET.get("code")
     code = request.GET.get("code")
     error = request.GET.get("error")
 
     # Handle any errors
     if error:
-        return render(request, "transport/error.html", {"error": error})
+        return render(request, "transport/transport-error.html", {"error": error})
     # Ensure the code is present, otherwise show an error
     if not code:
         return render(
-            request, "transport/error.html", {"error": "No code returned from Strava"}
+            request, "transport/transport-error.html", {"error": "No code returned from Strava"}
         )
 
     # Exchange the code for tokens
@@ -115,7 +124,7 @@ def strava_callback(request):
     # Ensure all tokens are present
     if not access_token or not refresh_token or not expires_at:
         return render(
-            request, "transport/error.html", {"error": "Invalid response from Strava"}
+            request, "transport/transport-error.html", {"error": "Invalid response from Strava"}
         )
 
     # Ensure the user is logged in (CustomUser from your accounts app)
@@ -132,7 +141,7 @@ def strava_callback(request):
     if not athlete_id:
         return render(
             request,
-            "transport/error.html",
+            "transport/transport-error.html",
             {"error": "Could not get athlete ID from Strava"},
         )
 
@@ -140,7 +149,7 @@ def strava_callback(request):
     if StravaToken.objects.filter(athlete_id=athlete_id).exists():
         return render(
             request,
-            "transport/error.html",
+            "transport/transport-error.html",
             {"error": "This Strava account is already linked to another user"},
         )
 
@@ -305,8 +314,27 @@ def log_activity(request):
 
             cumulative_stats.save()
 
+            # Convert distance from meters to kilometers
+            distance_km = distance / 1000  
+
+            # Update Transport Challenges
+            user_challenges = UserChallenge.objects.filter(
+                user=request.user, challenge__game_category="transport", completed=False
+            )
+
+            for user_challenge in user_challenges:
+                user_challenge.progress += distance_km  # Add logged distance in km
+
+                # Check if challenge is completed
+                if user_challenge.progress >= user_challenge.challenge.goal:
+                    user_challenge.progress = user_challenge.challenge.goal
+                    user_challenge.completed = True
+
+                user_challenge.save()
+
+
             score = int(distance / 100)
-            #CHAT GPT NOTE: This part up until the comment is causing the issue
+            
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
             
             old_points = user_points.transport_points

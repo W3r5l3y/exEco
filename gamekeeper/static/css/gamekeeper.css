@@ -1,0 +1,202 @@
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    padding-top: 150px;
+    gap: 40px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+input {
+    width: 50%;
+    padding: 10px 20px;
+    border: 2px solid var(--primary_colour);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+    background-color: var(--neutral_colour);
+}
+
+button {
+    align-self: flex-end;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 2px solid var(--primary_colour);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+    background-color: var(--neutral_colour);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    gap: 20px;
+}
+
+select {
+    width: 50%;
+    padding: 10px 20px;
+    border: 2px solid var(--primary_colour);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+    background-color: var(--neutral_colour);
+}
+
+option {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+}
+
+.gamekeeper-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    border: 4px solid var(--accessories_colour);
+    box-shadow:
+        0 0 5px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.1);
+    gap: 20px;
+}
+
+.gamekeeper-section:nth-child(even) {
+    border: 4px solid var(--primary_colour);
+}
+
+.gamekeeper-sub-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 20px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.gamekeeper-section:nth-child(even) .gamekeeper-sub-section {
+    box-shadow: 0 0 10px var(--primary_colour);
+}
+
+.gamekeeper-section:nth-child(odd) .gamekeeper-sub-section {
+    box-shadow: 0 0 10px var(--accessories_colour);
+}
+
+
+/* --------------------------------------------------
+    QR Scanner
+-------------------------------------------------- */
+
+
+/* --------------------------------------------------
+    Bingame
+-------------------------------------------------- */
+
+input[type="file"] {
+    font-family: inherit; /* Ensure font consistency */
+    font-size: 1rem;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 5px 10px;
+    border: 2px solid var(--primary_colour);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--neutral_colour);
+    background-color: var(--primary_colour);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--neutral_colour);
+    color: var(--primary_colour);
+}
+
+/* --------------------------------------------------
+    Transport
+-------------------------------------------------- */
+
+
+/* --------------------------------------------------
+    Forum
+-------------------------------------------------- */

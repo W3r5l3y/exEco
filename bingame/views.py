@@ -9,6 +9,10 @@ from accounts.models import UserPoints, CustomUser
 from inventory.models import Inventory, LootboxTemplate
 from django.http import JsonResponse, HttpResponseBadRequest
 from inventory.models import LootboxTemplate
+from django.conf import settings
+
+# Import Challenge tracking model
+from challenges.models import UserChallenge 
 
 # Create your views here.
 # Initial game view
@@ -46,9 +50,7 @@ def update_leaderboard(request):
             lootbox_id = None  # Default value
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
-                # Fetch or create the user's inventory
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
-                # Add the lootboxes
                 user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
                 lootbox_id = lootbox_template.lootbox_id  # Return the actual lootbox id
             
@@ -60,6 +62,7 @@ def update_leaderboard(request):
             })
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+    
     return JsonResponse({"success": False, "error": "Invalid request method"})
 
 
@@ -96,7 +99,7 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image": f"{item.item_image}",
+                "item_image": request.build_absolute_uri(settings.MEDIA_URL + str(item.item_image)),
             }
         )
 
@@ -117,7 +120,7 @@ def get_lootbox_data(request):
     
     data = {
         'lootbox_name': lootbox.name,
-        'lootbox_image': lootbox.lootbox_image,
+        'lootbox_image': lootbox.lootbox_image.url,
     }
     
     return JsonResponse(data)
