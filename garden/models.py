@@ -28,7 +28,7 @@ class GardenState(models.Model):
                 continue  # Ignore invalid or missing items
 
         # Compute the total for each stat NOTE - This is where you can make logic changes for how garden stats are found
-        avg_stats = {stat: round(total_stats[stat], 2) if item_count else 0 for stat in stat_categories}
+        avg_stats = {stat: round(total_stats[stat] / item_count, 2) if item_count else 0 for stat in stat_categories}
 
         # Compute the total stat score (sum of all average stats)
         total_stat_score = round(sum(avg_stats.values()), 2)
