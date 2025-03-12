@@ -108,7 +108,38 @@
     color: #ff7070;
 }
 
-/* Responsive adjustments */
+/* Navbar Responsive */
 @media (max-width: 767px) {
-    
+    /* remove execo title, make points smaller, hide username but keep profile picture */
+    .navbar-title {
+        display: none;
+    }
+
+    .points-text {
+        font-size: 0.8rem;
+    }
+
+    .user-name-text {
+        display: none;
+    }
+
+    .icon-wrapper {
+        margin-right: 10px;
+    }
+
+    .user-profile-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .icon-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar-logo {
+        width: 50px;
+        height: 50px;
+    }
 }
