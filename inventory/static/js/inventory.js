@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     displayLootboxResult(data.item_won, button, data.lootbox_removed);
                 } else {
-                    alert(data.error || "Something went wrong!");
+                    console.error("Error opening lootbox:", data.error);
                 }
             })
             .catch(error => console.error("Error:", error));
@@ -205,10 +205,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Merge successful! Lootbox added to your inventory.");
-                updateInventory(); // refresh the inventory UI after merge
+                console.log("Item merged successfully:", data.message);
+                updateInventory();
             } else {
-                alert(data.error || "Something went wrong during merge.");
+                console.error("Error merging item:", data.error);
             }
         })
         .catch(error => console.error("Error during merge:", error));

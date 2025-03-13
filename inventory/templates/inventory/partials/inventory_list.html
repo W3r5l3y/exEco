@@ -20,7 +20,7 @@
 
             {# Display merge button only for mergeable items (lootbox-obtained) with at least 5 in quantity #}
             {% if item.item_type == "regular" and item.quantity >= 5 and item.is_mergeable %}
-                <button class="merge-btn merge-btn" data-item-id="{{ item.id }}">Merge</button>
+                <button title="Merge will transform 5 of this item into a lootbox!" class="merge-btn merge-btn" data-item-id="{{ item.id }}">Merge</button>
             {% endif %}
         </div>
     </div>
