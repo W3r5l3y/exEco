@@ -194,6 +194,7 @@ h3 {
     /* max 2 lines, then no more wrapping and ellipses */
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
