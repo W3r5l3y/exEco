@@ -38,10 +38,22 @@ main {
     justify-content: end;
 }
 
+.date-container {
+    width: 40%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+
 .like-count {
     display: flex;
     flex-direction: row;
     cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 
 }
 
@@ -53,7 +65,10 @@ main {
 .like-count-text{
     color: white;
     font-size: 18px;
-    margin-right: 5px;
+    padding: 0;
+    margin: 0;
+    margin-top: 7px;
+
 }
 
 .post{
@@ -80,6 +95,7 @@ main {
     cursor: pointer;
     color: white;
     text-decoration: none;
+    font-size: 1.2em;
 }
 
 .user_profile_link:hover{

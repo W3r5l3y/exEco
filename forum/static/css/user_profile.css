@@ -158,3 +158,7 @@ body {
     border: 2px solid var(--primary_colour);
     border-radius: 10px;
 }
+
+.profile-top-header{
+    font-size: 1.6em;
+}

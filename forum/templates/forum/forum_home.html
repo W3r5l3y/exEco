@@ -20,6 +20,9 @@
                 <div class="post">
                     <div class="post-top">
                         <h3><a href="{% url 'user_profile' post.user.id %}" class="user_profile_link">{{ post.user.email }}</a></h3>
+                        <div class="date-container ">
+                            <h3>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</h3>
+                        </div>
                         <!-- This was the original like count container
                         <div class="like-count-container">
                             <div class="like-count" onclick="likePost({{ post.post_id }})">
@@ -45,9 +48,12 @@
                                 </div>
                             </div>
                             <div class="post-actions">
-                                <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
-                                    <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" src="{% static 'img/like.svg' %}">
-                                </button>
+                                <div class="like-count" onclick="likePost({{ post.post_id }})">
+                                    <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
+                                    <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
+                                        <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" style="margin-left: 5px" src="{% static 'img/like.svg' %}">
+                                    </button>
+                                </div>
                                 <form action="{% url 'report_post' post.post_id %}" method="post">
                                     {% csrf_token %}
                                     <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
