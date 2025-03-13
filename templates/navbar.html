@@ -26,22 +26,24 @@
         {% if user.is_authenticated %}
         <div class="d-flex align-items-center">
 
-            <!-- QR Scanner -->
-            <div class="icon-wrapper me-3">
-                <img class="icon-img" src="{% static 'img/qrscanner-point.png' %}" alt="QR Scanner" />
-                <span class="points-text ms-1">{{ user.userpoints.qrscanner_points }}</span>
-            </div>
+            <div id="points-wrapper">
+                <!-- QR Scanner -->
+                <div class="icon-wrapper me-3">
+                    <img class="icon-img" src="{% static 'img/qrscanner-point.png' %}" alt="QR Scanner" />
+                    <span class="points-text ms-1">{{ user.userpoints.qrscanner_points }}</span>
+                </div>
 
-            <!-- Bingame -->
-            <div class="icon-wrapper me-3">
-                <img class="icon-img" src="{% static 'img/bingame-point.png' %}" alt="Bingame" />
-                <span class="points-text ms-1">{{ user.userpoints.bingame_points }}</span>
-            </div>
+                <!-- Bingame -->
+                <div class="icon-wrapper me-3">
+                    <img class="icon-img" src="{% static 'img/bingame-point.png' %}" alt="Bingame" />
+                    <span class="points-text ms-1">{{ user.userpoints.bingame_points }}</span>
+                </div>
 
-            <!-- Transport Points -->
-            <div class="icon-wrapper me-3 d-flex align-items-center">
-                <img class="icon-img" src="{% static 'img/transport-point.png' %}" alt="Transport Points" />
-                <span class="points-text ms-1">{{ user.userpoints.transport_points }}</span>
+                <!-- Transport Points -->
+                <div class="icon-wrapper me-3 d-flex align-items-center">
+                    <img class="icon-img" src="{% static 'img/transport-point.png' %}" alt="Transport Points" />
+                    <span class="points-text ms-1">{{ user.userpoints.transport_points }}</span>
+                </div>
             </div>
 
             <!-- Coins -->

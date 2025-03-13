@@ -7,6 +7,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
+html, body {
+    height: 100vh;
+}
+
 /* Header (Navbar) */
 #navbar {
     position: fixed;
@@ -38,6 +42,11 @@
 }
 
 /* Right side elements */
+
+#points-wrapper {
+    display: flex;
+}
+
 .icon-wrapper {
     display: inline-flex;
     align-items: center;
@@ -115,22 +124,18 @@
         display: none;
     }
 
-    .points-text {
-        font-size: 0.8rem;
-    }
-
     .user-name-text {
         display: none;
-    }
-
-    .icon-wrapper {
-        margin-right: 10px;
     }
 
     .user-profile-circle {
         width: 40px;
         height: 40px;
         font-size: 16px;
+    }
+
+    #points-wrapper {
+        display: none;
     }
 
     .icon-img {
