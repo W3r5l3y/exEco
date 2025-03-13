@@ -90,7 +90,7 @@ class ViewsTestCase(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)  # Redirect after registration
-        self.assertRedirects(response, reverse("login") + "?tab=login")
+        self.assertRedirects(response, reverse("dashboard"))
 
     def test_login_register_view_post_register_existing_email(self):
         response = self.client.post(
