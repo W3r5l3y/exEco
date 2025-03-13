@@ -9,22 +9,17 @@
         {% endif %}
         <p>x{{ item.quantity }} </p>
         
-
         <div id="item-buttons">
-            <!-- Add a button to open lootboxes -->
             {% if item.item_type == "lootbox" %}
-            <button class="lootbox-btn inventory-btn" data-item-id="{{ item.id }}" data-static-src="{{ item.lootbox_template.lootbox_image.url }}">Open lootbox</button>
-    
+                <button class="lootbox-btn inventory-btn" data-item-id="{{ item.id }}" data-static-src="{{ item.lootbox_template.lootbox_image.url }}">Open lootbox</button>
             {% endif %}
 
-            <!-- Add a button to use send users to garden -->
-            <p>  </p>
             {% if item.item_type == "regular" %}
                 <button class="item-btn inventory-btn" data-item-id="{{ item.id }}">Garden</button>
             {% endif %}
 
-            <!-- If regular item quantity greater than 5 show merge button -->
-            {% if item.item_type == "regular" and item.quantity >= 5 %}
+            {# Display merge button only for mergeable items (lootbox-obtained) with at least 5 in quantity #}
+            {% if item.item_type == "regular" and item.quantity >= 5 and item.is_mergeable %}
                 <button class="merge-btn merge-btn" data-item-id="{{ item.id }}">Merge</button>
             {% endif %}
         </div>

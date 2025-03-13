@@ -147,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.querySelector("#inventory-container").innerHTML = html;
                 lootboxEventListeners();
                 regularItemEventListeners();
+                mergeEventListeners();
             })
             .catch(error => console.error("Error updating inventory:", error));
     }
@@ -181,7 +182,40 @@ document.addEventListener("DOMContentLoaded", function () {
         return "";
     }
 
+    // Functions to handle merging of items
+    // Function to attach event listeners to merge buttons
+    function mergeEventListeners() {
+        document.querySelectorAll(".merge-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const itemId = this.getAttribute("data-item-id");
+                mergeItem(itemId);
+            });
+        });
+    }
+
+    // Function to call merge endpoint for an item
+    function mergeItem(itemId) {
+        fetch(`/merge-item/${itemId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Merge successful! Lootbox added to your inventory.");
+                updateInventory(); // refresh the inventory UI after merge
+            } else {
+                alert(data.error || "Something went wrong during merge.");
+            }
+        })
+        .catch(error => console.error("Error during merge:", error));
+    }
+
     // Attach initial event listeners
     lootboxEventListeners();
     regularItemEventListeners();
+    mergeEventListeners();
 });
