@@ -91,6 +91,37 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <!-- Lifetime Challenges -->
+            <div class="challenges-box lifetime-challenges">
+                <h2>Lifetime Challenges</h2>
+                <div class="challenge-list">
+                    {% for user_challenge in lifetime_challenges %}
+                    <div class="challenge-item {% if user_challenge.completed %}completed{% endif %}">
+                        <p class="challenge-description">{{ user_challenge.challenge.description }}</p>
+                        <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
+                        <!-- Display progress as text -->
+                        <p class="challenge-progress">Progress: {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}</p>
+
+                        {% if user_challenge.completed %}
+                            <button class="submit-btn" disabled>Completed</button>
+                        {% else %}
+                            {% if user_challenge.challenge.goal == 1 %}
+                                <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
+                            {% else %}
+                                {% if user_challenge.progress >= user_challenge.challenge.goal %}
+                                    <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
+                                {% else %}
+                                    <button class="submit-btn" disabled>In Progress</button>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                        <p>No lifetime challenges available.</p>
+                    {% endfor %}
+                </div>
+            </div>
         </section>
     </main>
 </body>
