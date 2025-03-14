@@ -5,9 +5,11 @@ from django.conf import settings
 class Challenge(models.Model):
     DAILY = 'daily'
     WEEKLY = 'weekly'
+    LIFETIME = 'lifetime'
     CHALLENGE_TYPES = [
         (DAILY, 'Daily'),
         (WEEKLY, 'Weekly'),
+        (LIFETIME, 'Lifetime'),
     ]
 
     GAME_CATEGORIES = [

@@ -11,6 +11,7 @@ from .views import (
     disable_qr,
     get_user_ids,
     add_item_to_shop,
+    add_challenge,
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('disable-qr/<str:qr_id>/', disable_qr, name='disable_qr'),
     path('get-user-ids/', get_user_ids, name='get_user_ids'),
     path('add-item-to-shop/', add_item_to_shop, name='add_item_to_shop'),
+    path('add-challenge/', add_challenge, name='add_challenge'),
 ]

@@ -15,6 +15,8 @@ from bingame.models import Items
 from transport.models import StravaToken
 from shop.models import ShopItems
 import re
+from challenges.models import Challenge
+from django.shortcuts import redirect
 
 @login_required
 @is_gamekeeper
@@ -247,8 +249,29 @@ def get_user_ids(request):
     users = CustomUser.objects.values("id", "email")  # Fetch both ID and email
     return JsonResponse({"user_ids": list(users)})
 
-#All items have base stats, then items from lootboxes have the lootbox specific items
-#Base stats: Aesthetic_appeal, habitat, carbon_uptake
-#Bingame Lootbox: waste_reduction
-#Transport Lootbox: health_of_garden
-#QR Lootbox: innovation
+@require_POST
+def add_challenge(request):
+    """
+    Handles POST from the 'Add Challenge' form.
+    Creates a new Challenge object and redirects back to the Gamekeeper page.
+    """
+    description = request.POST.get('challenge_description')
+    challenge_type = request.POST.get('challenge_type')
+    game_category = request.POST.get('challenge_category')
+    reward = request.POST.get('challenge_reward')
+    goal = request.POST.get('challenge_goal')
+
+    # Basic validation (you can add more checks as needed)
+    if not (description and challenge_type and game_category and reward and goal):
+        # If something is missing, you might return an error or handle it gracefully
+        return redirect('gamekeeper')  # Or some error message
+
+    Challenge.objects.create(
+        description=description,
+        challenge_type=challenge_type,
+        game_category=game_category,
+        reward=int(reward),
+        goal=int(goal),
+    )
+
+    return redirect('gamekeeper')  # Replace with your own redirect target

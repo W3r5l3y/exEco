@@ -161,6 +161,43 @@
                 </form>
             </div>
         </section>
+
+        <!-- Challenges -->
+        <section id="challenges-gamekeeper" class="gamekeeper-section">
+            <!-- Add challenges -->
+            <h2>Challenges</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Add Challenge</h3>
+                <form id="challenges-form">
+                    <label for="challenges-description">Description</label>
+                    <input type="text" id="challenges-description" placeholder="Challenge description" name="challenge_description" required>
+                
+                    <label for="challenges-type">Type</label>
+                    <select id="challenges-type" name="challenge_type" required>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="lifetime">Lifetime</option>
+                    </select>
+
+                    <label for="challenges-category">Category</label>
+                    <select id="challenges-category" name="challenge_category" required>
+                        <option value="general">General</option>
+                        <option value="transport">Transport</option>
+                        <option value="bingame">Bin Game</option>
+                        <option value="qrscanner">QR Scanner</option>
+                        <option value="forum">Forum</option>
+                    </select>
+
+                    <label for="challenges-reward">Reward (Coins)</label>
+                    <input type="text" id="challenges-reward" placeholder="Challenge reward" name="challenge_reward" required>
+            
+                    <label for="challenges-goal">Goal</label>
+                    <input type="text" id="challenges-goal" placeholder="Challenge goal" name="challenge_goal" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
     </main>
 </body>
 </html>
