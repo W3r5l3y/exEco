@@ -88,32 +88,34 @@ def add_comment(request, post_id):
 
 
 @login_required
+@require_POST
 def edit_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
-    if post.user != request.user:
-        messages.error(request, "You are not authorized to edit this post.")
-        return redirect("user_profile", user_id=request.user.id)
 
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Post updated successfully.")
-            return redirect("user_profile", user_id=request.user.id)
-    else:
-        form = PostForm(instance=post)
-    return render(request, "forum/edit_post.html", {"form": form, "post": post})
+    if post.user != request.user:
+        return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
+
+    data = request.POST if request.content_type == "application/x-www-form-urlencoded" else request.json()
+    new_description = data.get("description", "").strip()
+
+    if not new_description:
+        return JsonResponse({"success": False, "error": "Description cannot be empty"}, status=400)
+
+    post.description = new_description
+    post.save()
+
+    return JsonResponse({"success": True, "message": "Post updated successfully"})
+
 
 
 @login_required
+@require_POST
 def delete_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
-    if post.user != request.user:
-        messages.error(request, "You are not authorized to delete this post.")
-        return redirect("user_profile", user_id=request.user.id)
 
-    if request.method == "POST":
-        post.delete()
-        messages.success(request, "Post deleted successfully.")
-        return redirect("user_profile", user_id=request.user.id)
-    return render(request, "forum/delete_post.html", {"post": post})
+    if post.user != request.user:
+        return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
+
+    post.delete()
+    return JsonResponse({"success": True, "message": "Post deleted successfully"})
+
