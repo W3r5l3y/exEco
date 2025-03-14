@@ -53,18 +53,26 @@ def challenges_view(request):
             for challenge in weekly_challenges:
                 UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
 
+    if not UserChallenge.objects.filter(user=user, challenge__challenge_type="lifetime").exists():
+        all_lifetime_challenges = list(Challenge.objects.filter(challenge_type="lifetime"))
+        for challenge in all_lifetime_challenges:
+            UserChallenge.objects.create(user=user, challenge=challenge, progress=0, completed=False)
+
     # Fetch user coins
     user_coins, _ = UserCoins.objects.get_or_create(user=user)
 
     # Fetch updated challenges
     daily_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="daily")
     weekly_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly")
+    lifetime_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="lifetime")
 
     return render(request, "challenges/challenges.html", {
         "daily_challenges": daily_challenges,
         "weekly_challenges": weekly_challenges,
+        "lifetime_challenges": lifetime_challenges,
         "user_coins": user_coins.coins 
     })
+
 
 
 
