@@ -90,8 +90,8 @@ def create_empty_garden_image(user):
     except Exception as e:
         print("Error loading tree image:", e)
     
-    file_name = f"empty_garden_user{user.id}.png"
-    output_dir = os.path.join(settings.BASE_DIR, "garden", "static", "img", "gardens")
+    file_name = f"garden_state_user{user.id}.png"
+    output_dir = os.path.join(settings.MEDIA_ROOT, "gardens")
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)

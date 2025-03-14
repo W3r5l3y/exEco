@@ -1,93 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Navbar</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+    
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+    <script src="{% static 'js/navbar.js' %}" defer></script>
+</head>
+<body>
+    <header id="navbar" class="navbar">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+        
+        <!-- Left side: Logo + Title -->
+        <div class="d-flex align-items-center" id="logo-title">
+            <img class="navbar-logo" src="{% static 'img/execo-logo.png' %}" alt="exEco Logo" />
+            <h1 class="navbar-title">exEco</h1>
+        </div>
+        
+        <!-- Right side: Only show if user is authenticated -->
+        {% if user.is_authenticated %}
+        <div class="d-flex align-items-center">
 
-        {% load bootstrap5 %}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
+            <div id="points-wrapper">
+                <!-- QR Scanner -->
+                <div class="icon-wrapper me-3">
+                    <img class="icon-img" src="{% static 'img/qrscanner-point.png' %}" alt="QR Scanner" />
+                    <span class="points-text ms-1">{{ user.userpoints.qrscanner_points }}</span>
+                </div>
 
+                <!-- Bingame -->
+                <div class="icon-wrapper me-3">
+                    <img class="icon-img" src="{% static 'img/bingame-point.png' %}" alt="Bingame" />
+                    <span class="points-text ms-1">{{ user.userpoints.bingame_points }}</span>
+                </div>
 
-
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
-        <script src="{% static 'js/navbar.js' %}" defer></script>
-    </head>
-    <body >
-        {% block content %}
-        <header id="navbar" class="">
-            <div class="header-logo-div">
-                <div class="header-logo-title">
-                    <img src="{% static 'img/execo-logo.png' %}" alt="University of Exeter Logo">
-                    <h1>exEco</h1>
+                <!-- Transport Points -->
+                <div class="icon-wrapper me-3 d-flex align-items-center">
+                    <img class="icon-img" src="{% static 'img/transport-point.png' %}" alt="Transport Points" />
+                    <span class="points-text ms-1">{{ user.userpoints.transport_points }}</span>
                 </div>
             </div>
-            <div class="header-right-div">
-                <!-- only display when logged in -->
-                {% if user.is_authenticated %}
-                <div class="header-right-div-top-line d-none d-md-flex">
-                    <div class="header-right-div-coins1-div ">
-                        <img class="coin1-img" src="{% static 'img/coin1.png' %}" alt="coin1">
-                        <p class="user-profile-text"> 000</p>
-                    </div>
-                    <div class="header-right-div-coins2-div">
-                        <img class="coin2-img" src="{% static 'img/coin2.png' %}" alt="coin2">
-                        <p class="user-profile-text"> 000</p>
-                    </div>
 
-                    <a href="{% url 'login' %}" style="text-decoration: none;color: inherit;">
-                        <div class="header-right-div-profile-div d-none d-md-flex">
-                            <p class="user-profile-text">{{ user.first_name }} {{ user.last_name }}</p>
-                            {% if user.profile_picture %}
-                                <!-- get user profile pics from /media/profile_pics -->
-                                <img class="user-profile-picture" src="{{ user.profile_picture.url }}" alt="Profile Picture">
-                            {% else %}
-                                <div class="user-profile-circle">{{ user.initials }}</div>
-                            {% endif %}
-                        </div>
-                    </a>
+            <!-- Coins -->
+            <div class="icon-wrapper me-3 d-flex align-items-center">
+                <img class="icon-img" src="{% static 'img/coin.png' %}" alt="Coins" />
+                <span class="points-text ms-1">{{ user.usercoins.coins }}</span>
+            </div>
+
+            <!-- User Name -->
+            <span class="user-name-text me-2">
+                {{ user.first_name }} {{ user.last_name }}
+            </span>
+
+            <!-- Profile Picture / Dropdown -->
+            <div class="dropdown">
+            {% if user.profile_picture %}
+                <img
+                src="{{ user.profile_picture.url }}"
+                alt="Profile Picture"
+                class="user-profile-picture dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                />
+            {% else %}
+                <div
+                class="user-profile-circle dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >
+                {{ user.initials }}
                 </div>
-
-
-                <div class="header-right-div-bottom-line">
-                    <nav class="navbar navbar-expand-md navbar-light">
-                        <div class="container-fluid">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
-                                    <li class="header-right-navbar-item">
-                                        <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">Home</a>
-                                    </li>
-                                    <li class="header-right-navbar-item">
-                                        <a class="header-right-navbar-item-link" href="{% url 'inventory' %}">Inventory</a>
-                                    </li>
-                                    <li class="header-right-navbar-item">
-                                        <a class="header-right-navbar-item-link" href="{% url 'shop' %}">Shop</a>
-                                    </li>
-                                    <li class="header-right-navbar-item">
-                                        <a class="header-right-navbar-item-link" href="{% url 'settings' %}">Settings</a>
-                                    </li>
-                                    {% if user.is_staff %}
-                                        <li class="header-right-navbar-item">
-                                            <a class="header-right-navbar-item-link" href="{% url 'dashboard' %}">GameManagers</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
+            {% endif %}
+            
+            <!-- Dropdown Menu -->
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="{% url 'garden' %}">Garden</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'inventory' %}">Inventory</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'shop' %}">Shop</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'challenges' %}">Challenges</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
+                </li>
+                {% if user.is_staff %}
+                <li>
+                    <a class="dropdown-item" href="{% url 'gamekeeper' %}">Gamekeepers</a>
+                </li>
                 {% endif %}
+                <hr>
+                <li id="logout">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
             </div>
+        </div>
+        {% endif %}
+    </div>
+    </header>
 
-            </div>
-
-        </header>
-
-        {% endblock content %}
-    </body>
+    <!-- Main page content goes here -->
+    {% block content %}
+    {% endblock content %}
+</body>
 </html>

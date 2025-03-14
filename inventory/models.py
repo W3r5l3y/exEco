@@ -108,18 +108,25 @@ class InventoryItem(models.Model):
     waste_reduction = models.IntegerField(default=0)
     health_of_garden = models.IntegerField(default=0)
     innovation = models.IntegerField(default=0)
-    
-    
-    
     # If it's a lootbox, link it to a LootboxTemplate
     lootbox_template = models.ForeignKey(LootboxTemplate, on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Automatically delete empty items (instead of marking inactive)
         if self.quantity == 0:
             self.delete()
         else:
             super().save(*args, **kwargs)
+
+    @property
+    def is_mergeable(self):
+        """
+        Returns True if this is a regular item and it can only be obtained from a lootbox,
+        as indicated by its presence in LootboxContents.
+        """
+        if self.item_type != "regular":
+            return False
+        # If the item is present in any LootboxContents, we assume it is mergeable.
+        return LootboxContents.objects.filter(item__name=self.name).exists()
 
     def __str__(self):
         return f"{self.name} (x{self.quantity}) - {self.inventory.user.email}"

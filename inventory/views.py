@@ -97,3 +97,40 @@ def get_inventory(request):
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     items = inventory.items.all()
     return render(request, 'inventory/partials/inventory_list.html', {'items': items})
+
+def get_corresponding_lootbox_template(item):
+    lootbox_contents = LootboxContents.objects.filter(item__name=item.name)
+    if lootbox_contents.count() == 1:
+        return lootbox_contents.first().lootbox_template
+    return None
+
+@login_required
+def merge_item(request, item_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    
+    inventory, _ = Inventory.objects.get_or_create(user=request.user)
+    # Ensure we are dealing with a regular, mergeable item
+    item = inventory.items.filter(id=item_id, item_type="regular").first()
+    if not item:
+        return JsonResponse({"error": "Item not found"}, status=404)
+    
+    if item.quantity < 5:
+        return JsonResponse({"error": "Not enough items to merge"}, status=400)
+    
+    if not item.is_mergeable:
+        return JsonResponse({"error": "This item cannot be merged"}, status=400)
+    
+    # Subtract 5 from the item's quantity
+    item.quantity -= 5
+    item.save()
+    
+    # Determine the corresponding lootbox template for this item
+    lootbox_template = get_corresponding_lootbox_template(item)
+    if not lootbox_template:
+        return JsonResponse({"error": "No corresponding lootbox found for this item"}, status=400)
+    
+    # Option 1: Use the addLootbox helper method from your Inventory model
+    inventory.addLootbox(lootbox_template, quantity=1)
+    
+    return JsonResponse({"success": True, "message": "Merge successful, lootbox added to your inventory."})
