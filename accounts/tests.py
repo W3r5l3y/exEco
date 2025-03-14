@@ -77,7 +77,7 @@ class ViewsTestCase(TestCase):
             response, reverse("login") + "?error=Invalid login credentials&tab=login"
         )
 
-    """ TODO PROBLEM TEST CAUSING GARDEN IMAGE GENERATION
+    # TODO PROBLEM TEST CAUSING GARDEN IMAGE GENERATION
     def test_login_register_view_post_register(self):
         response = self.client.post(
             reverse("login"),
