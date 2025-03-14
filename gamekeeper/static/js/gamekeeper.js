@@ -474,4 +474,35 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    /* --------------------------------------------------
+        Challenges
+    -------------------------------------------------- */
+    const challengesForm = document.getElementById('challenges-form');
+    if (challengesForm) {
+        challengesForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(challengesForm);
+            
+            fetch('/add-challenge/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Challenge added successfully!");
+                challengesForm.reset();
+                } else {
+                    alert("Error adding challenge.");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Error adding challenge.");
+            });
+        });
+    }
 });
