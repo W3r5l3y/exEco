@@ -13,11 +13,12 @@
     transition: all 0.2s ease;
 }
 
+html, body {
+    height: 100vh;
+}
+
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     background-color: var(--neutral_colour);
     background: url('../../../static/img/background-general.png');
     background-size: cover;
@@ -27,9 +28,12 @@ body {
 
 main {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
-    height: 100vh;
-    padding-top: 150px;
+    padding: 100px 20px 20px 20px;
+    gap: 20px;
 }
 
 .left-section, .right-section {
@@ -37,7 +41,6 @@ main {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    padding: 20px;
     gap: 20px;
 }
 
@@ -355,12 +358,7 @@ main {
         padding-top: 100px;
     }
 
-    .left-section {
-        width: 100%;
-        height: auto;
-    }
-
-    .right-section {
+    .left-section, .right-section {
         width: 100%;
         height: auto;
     }

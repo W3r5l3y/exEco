@@ -9,26 +9,35 @@
     box-sizing: border-box;
 }
 
+body, html {
+    height: 100vh;
+    overflow: hidden;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     background-color: var(--neutral-color);
-    overflow: auto;
 }
 
 main {
     flex-grow: 1;
     width: 100%;
     height: 100%;
-    padding-top: 140px;
+    padding: 140px 20px 20px 20px;
     position: relative;
 
     background-image: url(../../../static/img/background-general.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
 }
 
 main::before {
@@ -57,15 +66,15 @@ main::before {
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    padding: 160px 20px 150px 20px;
     justify-content: center;
     align-items: center;
     width: 50%;
-    max-width: 800px;
+    max-width: 1200px;
     height: 600px;
     overflow-y: auto;
     scrollbar-width: none;
     row-gap: 20px;
+    padding: 150px 20px 120px 20px;
 }
 
 /* Basic shop item card styling */
@@ -281,20 +290,16 @@ main::before {
 -------------------------------------------------- */
 
 @media screen and (max-width: 768px) {
-    /* main {
-        padding-top: 100px;
-        width: 100%;
-    } */
-
     .shop-items-grid {
-        grid-template-columns: repeat(2, 1fr);
-        padding: 200px 20px 120px 20px;
-        width: 80%;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        padding: 250px 20px 150px 20px;
+        height: 100%;
+        width: 100%;
     }
 
     .shop-item {
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
     }
 
     .shop-item-img {
@@ -303,10 +308,6 @@ main::before {
 
     .shop-item-cost {
         font-size: 1rem;
-    }
-
-    .scroll-btn-container {
-        display: none;
     }
 
     .scroll-btn img {

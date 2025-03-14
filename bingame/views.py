@@ -37,6 +37,16 @@ def update_leaderboard(request):
             print(score)
 
             user_points, created = UserPoints.objects.get_or_create(user=request.user)
+
+            # Update Challenge Progress
+            user_challenges = UserChallenge.objects.filter(
+                user=request.user, challenge__game_category="bingame", completed=False
+            )
+            for user_challenge in user_challenges:
+                user_challenge.progress += 1
+                if user_challenge.progress >= user_challenge.challenge.goal:
+                    user_challenge.completed = True
+                user_challenge.save()
             
             # Lootbox logic
             old_points = user_points.bingame_points
