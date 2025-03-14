@@ -35,15 +35,21 @@ def create_post(request):
 
 
 @login_required
+@require_POST
 def like_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
     post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
     if not created:
         post_like.liked = not post_like.liked
         post_like.save()
+    else:
+        post_like.liked = True
+        post_like.save()
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
-    return JsonResponse({"likes": post.likes, "liked": post_like.liked})
+    return JsonResponse(
+        {"success": True, "likes": post.likes, "liked": post_like.liked}
+    )
 
 
 @login_required
@@ -59,7 +65,12 @@ def user_profile(request, user_id):
     return render(
         request,
         "forum/user_profile.html",
-        {"user": user, "posts": user_posts, "logged_in_user": request.user,"active_page": "user_profile"},
+        {
+            "user": user,
+            "posts": user_posts,
+            "logged_in_user": request.user,
+            "active_page": "user_profile",
+        },
     )
 
 

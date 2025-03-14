@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="post-actions">
-                                <div class="like-count" onclick="likePost({{ post.post_id }})">
+                                <div class="like-count">
                                     <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
                                     <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
                                         <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" style="margin-left: 5px" src="{% static 'img/like.svg' %}">
