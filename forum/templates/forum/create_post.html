@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/create_post.css' %}">
+    <script src="{% static 'js/create_post.js' %}" defer></script>
 </head>
 <body>
-    <h1>Create a New Post</h1>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <main>
+        <form action="" method="post" enctype="multipart/form-data" class="create-post-form">
+            {% csrf_token %}
+            <div class="create-post-div">
+                <div class="post-top">
+                    <h3>Create Post</h3>
+                </div>
+                <div class="post-image-container">
+                    <div class="post-image-empty" id="post-image-add">
+                        <img class="post-image-add" src="{% static 'img/plus-circle.svg' %}" alt="Post Image">
+                        <h4> Add image</h4>
+                    </div>
+                    <input type="file" name="image" id="imageInput" accept="image/png, image/jpeg" style="display: none;" required>
+                    <img id="post-image-preview" class="post-image"  alt="Post Image" hidden src="">
+                </div>
+                <div class="post-bottom">
+                    <div class="post-description">
+                        <label style="width:100%">
+                            <input class="post-description-input" type="text" name="description" maxlength="50" placeholder="Type the description here" required/>
+                        </label>
+                    </div>
+                    <div class="post-actions">
+                        <button type="submit" class="post-action-button"><img alt="submit-post" class="post-action-img" src="{% static 'img/send.svg' %}"></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+    {% include 'forum/bottom_navbar.html' %}
 </body>
+
 </html>

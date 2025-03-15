@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.email }}'s Profile</title>
+    <!-- <meta name="csrf-token" content="{{ csrf_token }}"> -->
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <script src="{% static 'js/user_profile.js' %}" defer></script>
+</head>
+
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <main>
+        <div class="profile-div">
+            <div class="profile-top">
+                    <h1 class="profile-top-header">{{ user.email }}'s Posts</h1>
+            </div>
+
+            {% if user != logged_in_user %}
+                <div class="user-post-container">
+                    {% for post in posts %}
+                        <div class="post" onclick="goToPost('{{ post.post_id }}')">
+                            <div class="post-top">
+                                <p>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</p>
+                            </div>
+                            <div class="post-image-container">
+                                <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
+                            </div>
+                            <div class="post-bottom">
+                                <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
+                                <img class="like-count-image" src="{% static 'img/like.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
+                            </div>
+                        </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="user-own-post-container">
+                    {% for post in posts %}
+                        <div class="own-post" data-post-id="{{ post.post_id }}">
+                            <div class="own-post-image-container">
+                                <img class="own-post-image" src="{{ post.image.url }}" alt="Post Image">
+                                <img class="change-image" src="" alt="change image" style="display: none" >
+                            </div>
+                            <div class="own-post-description-div">
+                                <label>
+                                    <input value="{{ post.description }}" class="own-post-description" disabled>
+                                </label>
+                            </div>
+                            <div class="own-post-actions">
+                                <!-- Use window.location.href to navigate -->
+                                <img class="left-image" src="{% static 'img/trash.svg' %}" alt="delete">
+                                <img class="right-image" src="{% static 'img/edit.svg' %}" alt="edit">
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+            <!-- <div id="posts" class="posts">
+                        <div class="post">
+                            <div class="post-top">
+                                <h3>{{ post.user.email }}</h3>
+                                <div class="like-count-container">
+                                    <div class="like-count" onclick="likePost({{ post.post_id }})">
+                                        <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
+                                        <img class="like-count-image" src="{% static 'img/heart.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-image-container">
+                                <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
+                            </div>
+                            <div class="post-bottom">
+                                <div class="post-description">
+                                    <h3 class="post-description-text">{{ post.description }}</h3>
+                                </div>
+                                <div class="post-meta">
+                                    <p>Likes: {{ post.likes }}</p>
+                                    <p>Created on: {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+                                </div>
+                                {% if post.user == logged_in_user %}
+                                <div class="post-actions">
+                                    <a href="{% url 'edit_post' post.post_id %}" class="post-action-button">Edit</a>
+                                    <form action="{% url 'delete_post' post.post_id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="post-action-button">Delete</button>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                </div> !-->
+
+        </div>
+
+    </main>
+    <script>
+        const notLikedButton = "{% static 'img/like.svg' %}";
+        const likedButton = "{% static 'img/liked.svg' %}";
+        const checkButton = "{% static 'img/check.svg' %}";
+        const crossButton = "{% static 'img/cross.svg' %}";
+        const editButton = "{% static 'img/edit.svg' %}";
+        const deleteButton = "{% static 'img/trash.svg' %}";
+    </script>
+    {% include 'forum/bottom_navbar.html' %}
+
+</body>
+</html>

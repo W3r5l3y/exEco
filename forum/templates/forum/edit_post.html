@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
+</head>
+<body>
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <main>
+        <form action="" method="post" enctype="multipart/form-data" class="edit-post-form">
+            {% csrf_token %}
+            <div class="edit-post-div">
+                <div class="post-top">
+                    <h3>Edit Post</h3>
+                </div>
+                <div class="post-image-container">
+                    <img id="post-image-preview" class="post-image" src="{{ post.image.url }}" alt="Post Image">
+                    <input type="file" name="image" id="imageInput" accept="image/png, image/jpg">
+                </div>
+                <div class="post-bottom">
+                    <div class="post-description">
+                        <label style="width:100%">
+                            <input class="post-description-input" type="text" name="description" value="{{ post.description }}" maxlength="50" required/>
+                        </label>
+                    </div>
+                    <div class="post-actions">
+                        <button type="submit" class="post-action-button">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

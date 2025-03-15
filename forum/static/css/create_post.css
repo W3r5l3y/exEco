@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+body {
+    background-image: url("/static/img/background-general.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+main {
+    padding-top: 150px;
+    width: 100%;
+    min-height: 100%;
+}
+
+.create-post-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-post-div {
+    background-color: white;
+    border-radius: 10px;
+    width: 40%;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+
+}
+
+
+.post-top{
+    background-color: var(--primary_colour);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.post-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    padding: 10px;
+}
+
+.post-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.post-image-empty {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.post-image-empty h4 {
+    color: gray;
+    margin-top: 10px;
+}
+
+.post-bottom{
+    background-color: var(--primary_colour);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.post-description{
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+.post-description-input {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+    color: black;
+}
+
+.post-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.post-action-button {
+    background-color: transparent;
+    border: none;
+}
+
+.post-action-img {
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
+}
+
