@@ -3,14 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm, ChangeProfileForm, ChangePasswordForm
 from .models import CustomUser
-from django.http import HttpResponseRedirect
+import tempfile
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from transport.models import StravaToken
+from transport.models import StravaToken, LoggedActivity
 from datetime import date
 from .utils import create_empty_garden_image, generate_profile_picture
 from django.conf import settings
 import pygame
 import os
+from datetime import datetime
 def login_register_view(request):
     login_form = LoginForm()
     register_form = RegisterForm()
@@ -85,6 +87,8 @@ def settings_view(request):
             return delete_account(request)
         elif "unlink_strava" in request.POST:
             return strava_unlink(request)
+        elif "request_gdpr" in request.POST:
+            return request_gdpr(request);
 
     strava_linked = StravaToken.objects.filter(expires_at__gt=date.today(), user_id=user.id).exists()
     return render(request, "accounts/settings.html", {"strava_linked": strava_linked})
@@ -115,6 +119,53 @@ def delete_account(request):
             reverse("settings") + f"?error=Failed to delete account. Please contact support."
         )
 
+def request_gdpr(request):
+    try:
+        if request.user.is_authenticated:
+            firstName = request.user.first_name
+            lastName = request.user.last_name
+            date_now = current_date = datetime.now().strftime('%d_%m_%Y')
+            with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.txt') as temp_file:
+
+                temp_file.write("Dear " + firstName + ", please see the data we have stored on you:\n")
+
+                temp_file.write("\n\nAccount Section: " + firstName + "\n")
+                temp_file.write("First Name: " + firstName + "\n")
+                temp_file.write("Last Name: " + lastName + "\n")
+                temp_file.write("Email address: " + request.user.email + "\n")
+                temp_file.write("Last login: " + str(request.user.last_login) + "\n")
+
+
+                stravaToken = StravaToken(user_id=request.user.id)
+                temp_file.write("\n\nTransport Section: " + firstName + "\n")
+                temp_file.write("Athlete Id: " + str(stravaToken.athlete_id) + "\n")
+                temp_file.write("Logged Activity: " + str(stravaToken.athlete_id) + "\n")
+                loggedActivities = LoggedActivity.objects.filter(user_id=request.user.id)
+                for loggedActivity in loggedActivities:
+                    temp_file.write("--Activity " + str(loggedActivity.activity_id)  + " :"+ "\n")
+                    temp_file.write("  distance: " + loggedActivity.distance + "\n")
+                    temp_file.write("  activity type: " + loggedActivity.activity_type + "\n")
+
+                # Go to start of file
+                temp_file.seek(0)
+
+                # Create the file download name
+                filename = firstName + "_" + lastName + "_" + date_now + ".txt"
+
+                # Create an HTTP response with the content in the file
+                response = HttpResponse(temp_file.read(), content_type='text/plain')
+
+                # Prompt file download
+                response['Content-Disposition'] = f'attachment; filename={filename}'
+
+                return response
+        else:
+            return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to request your gdpr.")
+    except Exception as e:
+        print(e)
+        return HttpResponseRedirect(
+            reverse("settings") + f"?error=Failed to request gdpr. Please contact support."
+        )
 
 def strava_unlink(request):
     try:
