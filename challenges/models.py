@@ -18,7 +18,6 @@ class Challenge(models.Model):
         ('qrscanner', 'QR Scanner'),
         ('forum', 'Forum'),
         ('general', 'General'),
-        ('lifetime', 'Lifetime'),
     ]
 
     description = models.CharField(max_length=255)
