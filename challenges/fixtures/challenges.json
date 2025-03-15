@@ -262,6 +262,18 @@
         "game_category": "general",
         "goal": 10
       }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 25,
+      "fields": {
+        "description": "10 Bingame win milestone",
+        "reward": 100,
+        "challenge_type": "lifetime",
+        "game_category": "bingame",
+        "goal": 10
+      }
     }
+    
   ]
   
