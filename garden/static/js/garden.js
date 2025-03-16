@@ -180,6 +180,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Add click event listener to all grid cells to allow selection.
     const gridItems = document.querySelectorAll(".grid-item");
     gridItems.forEach(gridItem => {
+        // Skip the center cell (tree) since it cannot be changed.
+        if (gridItem.classList.contains("grid-item-5-5")) return;
         gridItem.addEventListener("click", () => {
             gridItems.forEach(item => item.classList.remove("grid-item-selected"));
             gridItem.classList.add("grid-item-selected");
@@ -249,51 +251,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     
 
     // Add reset garden functionality
-document.querySelector("#reset-garden-button").addEventListener("click", async () => {
-    // Clear the in-memory garden state.
-    gardenState.clear();
+    document.querySelector("#reset-garden-button").addEventListener("click", async () => {
+        // Clear the in-memory garden state.
+        gardenState.clear();
 
-    // Loop through all grid cells and set them to the empty image,
-    // except cell 5-5 if you want to keep your tree there.
-    document.querySelectorAll(".grid-item").forEach(cell => {
-        if (!cell.classList.contains("grid-item-5-5")) {
-            const img = cell.querySelector("img");
-            if (img) {
-                img.src = "/static/img/empty.png";
+        // Loop through all grid cells and set them to the empty image,
+        document.querySelectorAll(".grid-item").forEach(cell => {
+            if (!cell.classList.contains("grid-item-5-5")) { // Skip the center cell (tree).
+                const img = cell.querySelector("img");
+                if (img) {
+                    img.src = "/static/img/empty.png";
+                }
             }
-        }
-    });
-
-    
-    document.querySelectorAll(".inventory-item").forEach(item => {
-        item.classList.remove("inventory-item-selected");
-    });
-
-    
-    try {
-        const csrftoken = getCookie('csrftoken');
-        const response = await fetch("/save-garden/", {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-            },
-            body: JSON.stringify({ state: {} }),
         });
-        const data = await response.json();
-        console.log("Garden reset:", data);
-        // Show a success tooltip
-        const tooltip = document.getElementById("reset-tooltip");
-        tooltip.textContent = "Garden reset successfully!";
-        tooltip.classList.add("show");
-        setTimeout(() => tooltip.classList.remove("show"), 3000);
-    } catch (error) {
-        console.error("Error resetting garden on server:", error);
-        const tooltip = document.getElementById("reset-tooltip");
-        tooltip.textContent = "Error resetting garden!";
-        tooltip.classList.add("show");
-        setTimeout(() => tooltip.classList.remove("show"), 3000);
-    }
+
+        document.querySelectorAll(".inventory-item").forEach(item => {
+            item.classList.remove("inventory-item-selected");
+        });
+
+        try {
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch("/save-garden/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ state: {} }),
+            });
+            const data = await response.json();
+            console.log("Garden reset:", data);
+            // Show a success tooltip
+            const tooltip = document.getElementById("reset-tooltip");
+            tooltip.textContent = "Garden reset successfully!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
+        } catch (error) {
+            console.error("Error resetting garden on server:", error);
+            const tooltip = document.getElementById("reset-tooltip");
+            tooltip.textContent = "Error resetting garden!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
+        }
     });
 
     
