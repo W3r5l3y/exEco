@@ -21,7 +21,7 @@ def load_garden(request):
         garden = GardenState.objects.filter(user=request.user).first()
 
         if garden:
-            return JsonResponse({"state": garden.state})  # No json.loads() needed
+            return JsonResponse({"state": garden.state})
         else:
             return JsonResponse({"state": {}}, status=200)
 
@@ -166,8 +166,7 @@ def save_garden_as_image(request):
     garden_media_dir = os.path.join(settings.MEDIA_ROOT, "gardens")
     os.makedirs(garden_media_dir, exist_ok=True)  # Ensure directory exists
 
-    output_path = os.path.join(garden_media_dir, file_name)
-    #TODO - fix so it goes to media
+    output_path = os.path.join(garden_media_dir, file_name) 
     try:
         pygame.image.save(surface, output_path)
         print(f"Garden image saved to {output_path}")
@@ -188,3 +187,27 @@ def fetch_user_garden_image(request):
     # Assuming your static files are served from /static/...
     image_url = f"/media/gardens/{file_name}" #TODO - Check it loads media
     return JsonResponse({"image_url": image_url})
+
+@login_required                                
+def get_tree_image(request):                   
+    try:                                     
+        garden = GardenState.objects.filter(user=request.user).first() 
+        if garden:                         
+            stats = garden.calculate_stats() 
+            total_score = stats.get("total_stats", 0) 
+        else:                              
+            total_score = 0              
+        if total_score < 10:               
+            tree_level = 1               
+        elif total_score < 20:             
+            tree_level = 2               
+        elif total_score < 30:             
+            tree_level = 3               
+        elif total_score < 40:             
+            tree_level = 4               
+        else:                              
+            tree_level = 5               
+        image_path = f"/static/img/tree-{tree_level}.png" 
+        return JsonResponse({"tree_image": image_path}) 
+    except Exception as e:                   
+        return JsonResponse({"error": str(e)}, status=500) 

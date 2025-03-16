@@ -299,7 +299,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Set the tree image in the center of the garden (cell 5,5).
     const gridItem55 = document.querySelector(".grid-item-5-5");
     const treeImage = gridItem55.querySelector("img");
-    treeImage.src = "/static/img/temp-tree.png";
+    // Get the correct tree image
+    try {                                    
+        const response = await fetch("/get-tree-image/"); 
+        const data = await response.json();  
+        if (data.tree_image) {               
+            treeImage.src = data.tree_image; 
+        } else {                             
+            treeImage.src = "/static/img/tree-1.png"; 
+        }                                    
+    } catch (error) {                        
+        console.error("Error fetching tree image:", error); 
+        treeImage.src = "/static/img/tree-1.png"; 
+    }                                        
     
     // Load inventory first, then load the garden state so the selected instances are correctly marked.
     await loadInventory();
