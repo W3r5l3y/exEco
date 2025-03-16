@@ -74,9 +74,6 @@ def challenges_view(request):
     })
 
 
-
-
-
 @login_required
 def get_reset_times(request):
     tracker = ChallengeResetTracker.get_reset_tracker()

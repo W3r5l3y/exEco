@@ -28,9 +28,16 @@
                         <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
                         
                         <!-- Display progress as text -->
-                        <p class="challenge-progress">Progress: {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}</p>
+                        <p class="challenge-progress">
+                            Progress: 
+                            <span class="progress-count" data-goal="{{ user_challenge.challenge.goal }}">
+                                {% if user_challenge.progress >= user_challenge.challenge.goal %}
+                                    Completed
+                                {% else %}
+                                    {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
+                                {% endif %}
 
-
+                        <!-- 
                         {% if user_challenge.completed %}
                         <button class="submit-btn" disabled>Completed</button>
                     {% else %}
@@ -43,7 +50,7 @@
                                 <button class="submit-btn" disabled>In Progress</button>
                             {% endif %}
                         {% endif %}
-                    {% endif %}
+                    {% endif %}-->
                     
                     </div>
                     {% empty %}
@@ -64,9 +71,16 @@
                         <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
 
                         <!-- Display progress as text -->
-                        <p class="challenge-progress">Progress: {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}</p>
+                        <p class="challenge-progress">
+                            Progress: 
+                            <span class="progress-count" data-goal="{{ user_challenge.challenge.goal }}">
+                                {% if user_challenge.progress >= user_challenge.challenge.goal %}
+                                    Completed
+                                {% else %}
+                                    {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
+                                {% endif %}
 
-
+                        <!--  Submit button if needed
                         {% if user_challenge.completed %}
                         <button class="submit-btn" disabled>Completed</button>
                     {% else %}
@@ -79,7 +93,7 @@
                                 <button class="submit-btn" disabled>In Progress</button>
                             {% endif %}
                         {% endif %}
-                    {% endif %}
+                    {% endif %}-->
                     
                     </div>
                     {% empty %}
@@ -97,8 +111,16 @@
                         <p class="challenge-description">{{ user_challenge.challenge.description }}</p>
                         <p class="challenge-reward">{{ user_challenge.challenge.reward }} Coins</p>
                         <!-- Display progress as text -->
-                        <p class="challenge-progress">Progress: {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}</p>
+                        <p class="challenge-progress">
+                            Progress: 
+                            <span class="progress-count" data-goal="{{ user_challenge.challenge.goal }}">
+                                {% if user_challenge.progress >= user_challenge.challenge.goal %}
+                                    Completed
+                                {% else %}
+                                    {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
+                                {% endif %}
 
+                        <!-- 
                         {% if user_challenge.completed %}
                             <button class="submit-btn" disabled>Completed</button>
                         {% else %}
@@ -112,6 +134,7 @@
                                 {% endif %}
                             {% endif %}
                         {% endif %}
+                        -->
                     </div>
                     {% empty %}
                         <p>No lifetime challenges available.</p>
