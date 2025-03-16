@@ -132,9 +132,16 @@
             <!-- Moderate forum posts -->
             <h2>Forum</h2>
             <div class="gamekeeper-section-task gamekeeper-sub-section">
-                <h3>Moderate forum posts</h3>
-                <!-- List of forum posts -->
-                <!-- TODO ADD LOGIC HERE -->
+                <h3>Moderate Reported Forum Posts</h3>
+                <label for="reported-posts-select">Reported Posts:</label>
+                <select id="reported-posts-select">
+                    <option value="">Loading reported posts...</option>
+                </select>
+                <div id="reported-post-details" style="margin-top: 15px;"></div>
+                <div id="reported-post-actions" style="margin-top: 15px;">
+                    <button id="delete-post-btn">Delete Post</button>
+                    <button id="delete-report-btn">Delete Report</button>
+                </div>
             </div>
         </section>
 
