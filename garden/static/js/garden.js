@@ -48,6 +48,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* --------------------------------------------------
+    *  Function to load garden stats on page load  
+    * -------------------------------------------------- */
+        async function loadGardenStats() {  
+            try {  
+                const response = await fetch("/get-garden-stats/");  
+                const data = await response.json();  
+                if(data.average_stats) {  
+                    updateGardenStats(data.average_stats, data.total_stat);  
+                }  
+            } catch(error) {  
+                console.error("Error loading garden stats:", error);  
+            }  
+        }  
+    
+
+    /* --------------------------------------------------
     *  Function to load garden state from the server
     * -------------------------------------------------- */
     async function loadGardenState() {
@@ -78,6 +94,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Error loading garden state:", error);
         }
     }
+
+
+        /* --------------------------------------------------
+    *  New function: update tree image after each change  
+    * -------------------------------------------------- */
+        async function updateTreeImage() {  
+            try {  
+                const response = await fetch("/get-tree-image/");  
+                const data = await response.json();  
+                if(data.tree_image) {  
+                    const treeImage = document.querySelector(".grid-item-5-5 img");  
+                    treeImage.src = data.tree_image;  
+                }  
+            } catch(error) {  
+                console.error("Error updating tree image:", error);  
+            }  
+        }  
+    
+        /* --------------------------------------------------
+        *  New function: auto-save garden state and update tree image after changes  
+        * -------------------------------------------------- */
+        let autoSaveTimeout;  
+        function autoSaveGardenState() {  
+            if (autoSaveTimeout) clearTimeout(autoSaveTimeout);  
+            autoSaveTimeout = setTimeout(async () => {  
+                const gardenStateData = Object.fromEntries(gardenState);  
+                const csrftoken = getCookie('csrftoken');  
+                try {  
+                    await fetch("/save-garden/", {  
+                        method: "POST",  
+                        headers: {  
+                            "Content-Type": "application/json",  
+                            "X-CSRFToken": csrftoken  
+                        },  
+                        body: JSON.stringify({ state: gardenStateData })  
+                    });  
+                    updateTreeImage();  
+                } catch (error) {  
+                    console.error("Auto save error:", error);  
+                }  
+            }, 500); // debounce for 500ms  
+        }  
+    
 
     /* --------------------------------------------------
     *  Helper function to get CSRF token from cookies
@@ -122,6 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 this.classList.remove("inventory-item-selected");
                 gardenState.delete(placedGridKey);
                 console.log("Removed from garden:", itemId, "at", placedGridKey);
+                autoSaveGardenState();
                 return;
             }
             // Otherwise, flash the grid cell to indicate this instance is already placed.
@@ -155,6 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Update the grid cell's image to show the placed item.
             selectedImage.src = this.querySelector("img").src;
             console.log("Updated garden state:", gardenState);
+            autoSaveGardenState();
         }
     }
 
@@ -281,6 +342,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const data = await response.json();
             console.log("Garden reset:", data);
+            autoSaveGardenState();
             // Show a success tooltip
             const tooltip = document.getElementById("reset-tooltip");
             tooltip.textContent = "Garden reset successfully!";
@@ -316,4 +378,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Load inventory first, then load the garden state so the selected instances are correctly marked.
     await loadInventory();
     await loadGardenState();
+    await loadGardenStats();
 });
