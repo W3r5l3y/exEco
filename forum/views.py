@@ -8,7 +8,7 @@ from .models import Post, PostLike, Comment
 from .forms import PostForm
 from accounts.models import CustomUser
 from django.contrib import messages
-
+from challenges.models import UserChallenge 
 
 def forum_home(request):
     post_id = request.GET.get("post_id")
@@ -29,6 +29,16 @@ def create_post(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+            # Update Challenge Progress
+            user_challenges = UserChallenge.objects.filter(
+                user=request.user, challenge__game_category="forum", completed=False
+            )
+            for user_challenge in user_challenges:
+                user_challenge.progress += 1
+                if user_challenge.progress >= user_challenge.challenge.goal:
+                    user_challenge.completed = True
+                user_challenge.save()
+            
             return redirect("forum_home")
 
     return render(request, "forum/create_post.html", {"active_page": "create_post"})
