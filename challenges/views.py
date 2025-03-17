@@ -61,10 +61,20 @@ def challenges_view(request):
     # Fetch user coins
     user_coins, _ = UserCoins.objects.get_or_create(user=user)
 
+
     # Fetch updated challenges
     daily_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="daily")
     weekly_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="weekly")
     lifetime_challenges = UserChallenge.objects.filter(user=user, challenge__challenge_type="lifetime")
+
+    user_challenges = UserChallenge.objects.filter(user=user)
+    user_coins, created = UserCoins.objects.get_or_create(user=user)
+    
+    for user_challenge in user_challenges:
+        if user_challenge.completed:
+            user_coins.coins += user_challenge.challenge.reward
+    
+    user_coins.save()
 
     return render(request, "challenges/challenges.html", {
         "daily_challenges": daily_challenges,

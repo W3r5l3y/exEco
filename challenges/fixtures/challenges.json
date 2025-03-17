@@ -1,0 +1,223 @@
+[
+    {
+      "model": "challenges.challenge",
+      "pk": 1,
+      "fields": {
+        "description": "Win Bin Game 3 times",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "bingame",
+        "goal": 3
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 2,
+      "fields": {
+        "description": "Scan 1 QR Code",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "qrscanner",
+        "goal": 1
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 3,
+      "fields": {
+        "description": "Make 1 Forum post",
+        "reward": 20,
+        "challenge_type": "daily",
+        "game_category": "forum",
+        "goal": 1
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 4,
+      "fields": {
+        "description": "Win Bin Game 5 times",
+        "reward": 20,
+        "challenge_type": "daily",
+        "game_category": "bingame",
+        "goal": 5
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 5,
+      "fields": {
+        "description": "Scan 3 QR Codes",
+        "reward": 30,
+        "challenge_type": "daily",
+        "game_category": "qrscanner",
+        "goal": 3
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 6,
+      "fields": {
+        "description": "Travel 5km by foot",
+        "reward": 30,
+        "challenge_type": "daily",
+        "game_category": "transport",
+        "goal": 5000
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 7,
+      "fields": {
+        "description": "Travel 1km by foot",
+        "reward": 10,
+        "challenge_type": "daily",
+        "game_category": "transport",
+        "goal": 1000
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 8,
+      "fields": {
+        "description": "Win Bin Game 15 times",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 15
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 9,
+      "fields": {
+        "description": "Scan 5 QR Codes",
+        "reward": 50,
+        "challenge_type": "weekly",
+        "game_category": "qrscanner",
+        "goal": 5
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 10,
+      "fields": {
+        "description": "Make 5 Forum posts",
+        "reward": 20,
+        "challenge_type": "weekly",
+        "game_category": "forum",
+        "goal": 5
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 11,
+      "fields": {
+        "description": "Win Bin Game 25 times",
+        "reward": 100,
+        "challenge_type": "weekly",
+        "game_category": "bingame",
+        "goal": 25
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 12,
+      "fields": {
+        "description": "Scan 15 QR Code",
+        "reward": 150,
+        "challenge_type": "weekly",
+        "game_category": "qrscanner",
+        "goal": 15
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 13,
+      "fields": {
+        "description": "Travel 5km by foot",
+        "reward": 20,
+        "challenge_type": "weekly",
+        "game_category": "transport",
+        "goal": 5000
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 14,
+      "fields": {
+        "description": "Travel 15km by foot",
+        "reward": 100,
+        "challenge_type": "weekly",
+        "game_category": "transport",
+        "goal": 15000
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 15,
+      "fields": {
+        "description": "10 Bingame win milestone",
+        "reward": 10,
+        "challenge_type": "lifetime",
+        "game_category": "bingame",
+        "goal": 10
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 16,
+      "fields": {
+        "description": "100 Bingame win milestone",
+        "reward": 100,
+        "challenge_type": "lifetime",
+        "game_category": "bingame",
+        "goal": 100
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 17,
+      "fields": {
+        "description": "10 QR Codes scanned milestone",
+        "reward": 50,
+        "challenge_type": "lifetime",
+        "game_category": "qrscanner",
+        "goal": 10
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 18,
+      "fields": {
+        "description": "100 QR Codes scanned milestone",
+        "reward": 500,
+        "challenge_type": "lifetime",
+        "game_category": "qrscanner",
+        "goal": 100
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 19,
+      "fields": {
+        "description": "10 Forum post milestone",
+        "reward": 100,
+        "challenge_type": "lifetime",
+        "game_category": "forum",
+        "goal": 10
+      }
+    },
+    {
+      "model": "challenges.challenge",
+      "pk": 20,
+      "fields": {
+        "description": "100km milestone",
+        "reward": 1000,
+        "challenge_type": "lifetime",
+        "game_category": "transport",
+        "goal": 100000
+      }
+    }
+  ]
+  
