@@ -198,7 +198,7 @@
         "fields": {
             "item_name": "Toilet Roll",
             "item_image": "bingame/items/toilet_roll.png",
-            "bin_id": 5
+            "bin_id": 3
         }
     }
 ]
