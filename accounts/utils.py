@@ -5,6 +5,7 @@ import hashlib
 import random
 import os
 from django.conf import settings
+from garden.models import GardenState
 
 def generate_profile_picture(first_name, last_name, email, grid_size=5, square_size=50):
     seed = email
@@ -82,7 +83,7 @@ def create_empty_garden_image(user):
         surface.fill((255, 255, 255))
     
     center_rect = pygame.Rect((5 - 1) * cell_size, (5 - 1) * cell_size, cell_size, cell_size)
-    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "temp-tree.png")
+    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "tree-1.png")
     try:
         tree_img = pygame.image.load(tree_img_path)
         tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))
