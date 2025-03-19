@@ -4,88 +4,72 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif; /* CHANGE FONT */
+    font-family: 'Roboto', sans-serif;
 }
 
-header {
+html, body {
+    height: 100vh;
+}
+
+/* Header (Navbar) */
+#navbar {
     position: fixed;
-    z-index: 1050;
-    align-self: flex-start;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    top: 0;
     width: 100%;
+    z-index: 1050;
+
     background-color: var(--primary_colour);
-    box-shadow:
-        0 0 10px rgba(0, 0, 0, 0.6),
-        0 0 20px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
 }
 
-
-/* || Header logo ||*/
-.header-logo-div {
-    padding: 20px 40px;
+/* Logo & Title */
+#logo-title {
     cursor: pointer;
 }
-.header-logo-title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+
+.navbar-logo {
+    width: 60px;
+    height: 60px;
 }
 
-.header-logo-title img {
-    height: 75px;
-    width: 75px;
-}
-
-.header-logo-title h1 {
+.navbar-title {
+    margin-left: 15px;
     font-size: 1.8em;
     color: var(--neutral_colour);
-    margin-left: 20px;
 }
 
-/* || Header Right Nav ||*/
+/* Right side elements */
 
-.header-right-div {
-    padding-top: 20px;
-    padding-right: 40px;
-    padding-bottom: 0;
+#points-wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.header-right-div-top-line {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-.header-right-div-bottom-line {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
-
-.header-right-div-profile-div {
+.icon-wrapper {
     display: inline-flex;
     align-items: center;
 }
 
-.user-profile-text {
-    color: white;
-    margin-right: 10px;
-    margin-bottom: 0;
-    line-height: 50px;
+.icon-img {
+    width: 40px;
+    height: 40px;
 }
 
+.points-text,
+.user-name-text {
+    color: var(--neutral_colour);
+    font-size: 1rem;
+}
+
+/* Profile Picture / Circle */
 .user-profile-picture {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid var(--display_colour);
-    color: black;
+    border: 2px solid var(--display_color);
+    cursor: pointer;
 }
 
 .user-profile-circle {
@@ -100,68 +84,67 @@ header {
     align-items: center;
     font-size: 20px;
     font-weight: bold;
-}
-.header-right-div-coins1-div{
-    display: inline-flex;
-    align-items: center;
-    margin-right: 10px;
-}
-.coin1-img {
-    width: 40px;
-    height: 40px;
+    cursor: pointer;
 }
 
-.header-right-div-coins2-div{
-    display: inline-flex;
-    align-items: center;
-    margin-right: 10px;
-}
-.coin2-img {
-    width: 40px;
-    height: 40px;
+/* Dropdown Menu Adjustments */
+.dropdown-menu {
+    min-width: 180px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(0, 0, 0, 0.2);
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
 }
 
-.header-right-navbar{
-    display: flex;
-    margin: 0;
+.dropdown-menu a {
+    color: var(--neutral_colour);
+    transition: all 0.3s ease-in-out;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--accessories_colour);
+    color: var(--neutral_colour);
+}
+
+.dropdown-menu hr {
     padding: 0;
-    list-style-type: none;
+    margin: 5px 0;
 }
 
-.header-right-navbar-item {
-    color: var(--neutral_colour);
-    margin-left: 20px;
+#logout a {
+    color: #ff7070;
 }
 
-.header-right-navbar-item-link {
-    color: var(--neutral_colour);
-    text-decoration:none
-}
-
-.header-right-navbar-item-link:hover{
-  color: var(--accessories_colour);
-}
-
-p {
-    display: block;
-    margin: 0 0 10px;
-}
-
+/* Navbar Responsive */
 @media (max-width: 767px) {
-    .header-right-div {
-        padding-right: 0;
+    /* remove execo title, make points smaller, hide username but keep profile picture */
+    .navbar-title {
+        display: none;
     }
-    .header-logo-title img {
-        height: 50px;
+
+    .user-name-text {
+        display: none;
+    }
+
+    .user-profile-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    #points-wrapper {
+        display: none;
+    }
+
+    .icon-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar-logo {
         width: 50px;
+        height: 50px;
     }
-
-    .header-logo-title h1 {
-        font-size: 1.4em;
-        color: var(--neutral_colour);
-        margin-left: 10px;
-        line-height: 50px;
-    }
-
 }
-

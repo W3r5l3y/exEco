@@ -13,6 +13,9 @@ function sharePost(postId) {
     }
 
     function likePost(postId) {
+        const likeButton = document.querySelector(`#like-button-${postId}`);
+        likeButton.disabled = true;
+
         fetch(`/like/${postId}/`, {
             method: 'POST',
             headers: {
@@ -23,15 +26,19 @@ function sharePost(postId) {
         })
         .then(response => response.json())
         .then(data => {
-            //const likeCountText = document.querySelector(`#like-count-${postId}`);
-            //likeCountText.textContent = data.likes;
-            const likeButton = document.querySelector(`#like-button-${postId}`);
-            //const heartButton = document.querySelector(`#like-heart-${postId}`);
-            //likeCountText.style.color = data.liked ? "red" : "white";
-            //heartButton.src = data.liked ? activeHeart : nonActiveHeart;
-            likeButton.src = data.liked ? likedButton : notLikedButton;
+            if (data.success) {
+                const likeCountText = document.querySelector(`#like-count-${postId}`);
+                likeCountText.textContent = data.likes;
+                likeButton.src = data.liked ? likedButton : notLikedButton;
+            } else {
+                alert('Error updating like');
+            }
+            likeButton.disabled = false;
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            likeButton.disabled = false;
+        });
     }
 
     function addComment(event, postId) {

@@ -6,11 +6,14 @@
     font-family: 'Roboto', sans-serif; /* CHANGE FONT */
 }
 
+html, body {
+    height: 100vh;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     background-color: var(--neutral_colour) ;
 }
 
@@ -71,7 +74,6 @@ main {
 }
 
 .tabs-content form {
-    max-height: 100%;
     width: 100%;
     overflow: hidden;
 }

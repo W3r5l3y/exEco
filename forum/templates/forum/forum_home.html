@@ -39,7 +39,7 @@
                             <div class="post-description">
                                 <h3 class="post-description-text">{{ post.description }}</h3>
                             </div>
-                            <div class="post-comments-button" onclick="toggleComments({{ post.post_id }})" id="post-comments-toggle">
+                            <div class="post-comments-button" onclick="toggleComments('{{ post.post_id }}')" id="post-comments-toggle">
                                 <div>
                                     <p class="post-comments-toggle-text">
                                         Comments
@@ -48,9 +48,9 @@
                                 </div>
                             </div>
                             <div class="post-actions">
-                                <div class="like-count" onclick="likePost({{ post.post_id }})">
+                                <div class="like-count">
                                     <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
-                                    <button class="post-action-button" type="button" onclick="likePost({{ post.post_id }})">
+                                    <button class="post-action-button" type="button" onclick="likePost('{{ post.post_id }}')">
                                         <img id="like-button-{{ post.post_id }}" alt="like-post" class="post-action-img" style="margin-left: 5px" src="{% static 'img/like.svg' %}">
                                     </button>
                                 </div>
@@ -58,12 +58,12 @@
                                     {% csrf_token %}
                                     <button class="post-action-button" type="submit"><img alt="report-post" class="post-action-img" src="{% static 'img/flag.svg' %}"></button>
                                 </form>
-                                <button class="post-action-button" onclick="sharePost({{ post.post_id }})"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
+                                <button class="post-action-button" onclick="sharePost('{{ post.post_id }}')"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
                             </div>
                         </div>
                         <div class="post-comments">
                             <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;padding-top: 10px">
-                                <form onsubmit="addComment(event, {{ post.post_id }})" id="Comment">
+                                <form onsubmit="addComment(event, '{{ post.post_id }}')" id="Comment">
                                     {% csrf_token %}
                                     <label style="width: 85%">
                                         <input type="text" name="comment" placeholder="Add a comment..." required class="comment-input">
