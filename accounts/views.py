@@ -135,8 +135,8 @@ def request_gdpr(request):
                 temp_file.write("Email address: " + request.user.email + "\n")
                 temp_file.write("Last login: " + str(request.user.last_login) + "\n")
 
-
-                stravaToken = StravaToken(user_id=request.user.id)
+                print("DEBUG: Trying to get strava token and retrieve strava data")
+                stravaToken = StravaToken.objects.get(user=request.user)
                 temp_file.write("\n\nTransport Section: " + firstName + "\n")
                 temp_file.write("Athlete Id: " + str(stravaToken.athlete_id) + "\n")
                 temp_file.write("Logged Activity: " + str(stravaToken.athlete_id) + "\n")
