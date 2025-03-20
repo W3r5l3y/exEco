@@ -33,4 +33,5 @@ urlpatterns = [
     path("", include("shop.urls")),
     path("", include("gamekeeper.urls")),
     path("", include("challenges.urls")),
+    path("", include("contact.urls")),
 ]

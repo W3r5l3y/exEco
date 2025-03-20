@@ -95,6 +95,9 @@
                 <li>
                     <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
                 </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'contact' %}">Contact</a>
+                </li>
                 {% if user.is_staff %}
                 <li>
                     <a class="dropdown-item" href="{% url 'gamekeeper' %}">Gamekeepers</a>
