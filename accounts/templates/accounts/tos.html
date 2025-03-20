@@ -10,7 +10,6 @@
     {% block css %}{% endblock %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/tos.css' %}">
-    <script src="{% static 'js/tos.js' %}" defer></script>
 </head>
 
 <body>
@@ -44,7 +43,7 @@
             </ul>
 
             <h2>5. Privacy</h2>
-            <p>Your privacy is important to us. Our <a href="[Insert Link]">Privacy Policy</a> explains how we collect, use, and protect your personal data. By using our Services, you consent to our data practices.</p>
+            <p>Your privacy is important to us. Our <a href="{% url 'privacy' %}">Privacy Policy</a> explains how we collect, use, and protect your personal data. By using our Services, you consent to our data practices.</p>
 
             <h2>6. Licensing and Intellectual Property</h2>
             <ul>
