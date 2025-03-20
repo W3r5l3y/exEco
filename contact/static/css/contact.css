@@ -44,7 +44,7 @@ form {
     box-shadow: 0 0 10px var(--primary_colour);
 }
 
-h1 {
+#contact-title {
     font-size: 2rem;
     font-weight: 700;
     color: var(--primary_colour);
