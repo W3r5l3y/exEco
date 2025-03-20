@@ -291,7 +291,6 @@ def load_contact_requests(request):
     requests_qs = ContactMessage.objects.filter(complete=False)
     data = []
     for req in requests_qs:
-        print("Request: ", req)
         data.append({
             'id': req.id,
             'user_email': req.user.email,
@@ -299,7 +298,6 @@ def load_contact_requests(request):
             'created': req.created.strftime('%Y-%m-%d %H:%M')
         })
 
-    print("Data: ", data)
     return JsonResponse({'requests': data})
 
 
