@@ -572,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         // Send the response via POST
-        fetch("/gamekeeper/respond-contact/", {
+        fetch("/respond-contact/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -601,5 +601,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial load of contact requests into the select dropdown
     loadContactRequestsSelect();
-    
+
 });
