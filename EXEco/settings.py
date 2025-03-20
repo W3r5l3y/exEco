@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import sys
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-kzg+ig14r*p!ip*npq7v!xh1=7c3(l@7rvgms))1dykn^b*5b$"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -157,13 +158,13 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_URL = "/login/"
 
 # Strava environment variables
-STRAVA_CLIENT_ID = 149186
-STRAVA_CLIENT_SECRET = "bca1d6a01353f0c0197a8aed8f331db3aebd37d1"
-REDIRECT_URI = "http://127.0.0.1:8000/strava-callback/"
+STRAVA_CLIENT_ID = config("STRAVA_CLIENT_ID", cast=int)
+STRAVA_CLIENT_SECRET = config("STRAVA_CLIENT_SECRET")
+REDIRECT_URI = config("REDIRECT_URI")
 
 # Session settings
-SESSION_COOKIE_SECURE = False # Allow session cookies to be sent over HTTP
-SESSION_COOKIE_SAMESITE = None # Allow session cookies to be sent with GET requests
+SESSION_COOKIE_SECURE = False  # Allow session cookies to be sent over HTTP
+SESSION_COOKIE_SAMESITE = None  # Allow session cookies to be sent with GET requests
 
 
 # Media settings
@@ -178,5 +179,5 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "execo.services@gmail.com"
-EMAIL_HOST_PASSWORD = "tdmf hozy bmsl avwz"
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
