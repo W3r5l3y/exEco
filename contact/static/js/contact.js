@@ -1,3 +1,7 @@
+
+/* ---------
+    CSRF Token
+--------- */
 function getCSRFToken() {
     const cookieValue = document.cookie
         .split("; ")
@@ -7,6 +11,22 @@ function getCSRFToken() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    /* ---------
+        Character counter
+    --------- */
+    const messageTextArea = document.getElementById('message');
+    const charCountDisplay = document.getElementById('charCount');
+
+    messageTextArea.addEventListener('input', function() {
+        const currentLength = messageTextArea.value.length;
+        charCountDisplay.textContent = `${currentLength} / 500`;
+    });
+
+
+    /* ---------
+        Form submission
+    --------- */
     const form = document.querySelector('form');
     
     form.addEventListener('submit', function(e) {
