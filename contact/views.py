@@ -20,7 +20,6 @@ def submit_contact_message(request):
     if not message_text:
         return JsonResponse({'status': 'error', 'message': 'No message provided'}, status=400)
 
-    # Create the contact message instance
     ContactMessage.objects.create(
         user=request.user,
         message=message_text
