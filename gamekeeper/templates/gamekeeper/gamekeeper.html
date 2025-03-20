@@ -198,6 +198,27 @@
                 </form>
             </div>
         </section>
+
+        <!-- Contact section -->
+        <section id="contact-gamekeeper" class="gamekeeper-section">
+            <h2>Contact</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Review User Contact Requests</h3>
+                <div id="contact-requests-container">
+                    <!-- Active contact requests will be appended here -->
+                </div>
+
+                <!-- Hidden template stored outside the container -->
+                <div id="contact-request-template" class="contact-request" style="display: none;">
+                    <p><strong>User Email:</strong> <span class="user-email"></span></p>
+                    <p><strong>Message:</strong> <span class="user-message"></span></p>
+                    <p><strong>Submitted:</strong> <span class="submitted-time"></span></p>
+                    <textarea class="response-text" placeholder="Type your response here..."></textarea>
+                    <button class="respond-button" data-id="">Submit Response</button>
+                    <hr>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 </html>

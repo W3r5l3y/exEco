@@ -17,6 +17,9 @@ from shop.models import ShopItems
 import re
 from challenges.models import Challenge
 from django.shortcuts import redirect
+from contact.models import ContactMessage
+import json
+from django.core.mail import send_mail
 
 @login_required
 @is_gamekeeper
@@ -275,3 +278,57 @@ def add_challenge(request):
     )
 
     return redirect('gamekeeper')  # Replace with your own redirect target
+
+
+"""
+Contact Gamekeeper views
+"""
+
+@login_required
+@is_gamekeeper
+def load_contact_requests(request):
+    # Fetch contact messages that have not been handled yet
+    requests_qs = ContactMessage.objects.filter(complete=False)
+    data = []
+    for req in requests_qs:
+        print("Request: ", req)
+        data.append({
+            'id': req.id,
+            'user_email': req.user.email,
+            'message': req.message,
+            'created': req.created.strftime('%Y-%m-%d %H:%M')
+        })
+
+    print("Data: ", data)
+    return JsonResponse({'requests': data})
+
+
+@login_required
+@is_gamekeeper
+@require_POST
+def respond_contact(request):
+    try:
+        data = json.loads(request.body)
+        request_id = data.get('id')
+        response_text = data.get('response', '').strip()
+        if not request_id or not response_text:
+            return JsonResponse({'status': 'error', 'message': 'Missing request ID or response.'}, status=400)
+        
+        # Retrieve the active contact request
+        contact_message = ContactMessage.objects.get(id=request_id, complete=False)
+        # Save the gamekeeper's response and mark the request as complete
+        contact_message.response = response_text
+        contact_message.complete = True
+        contact_message.save()
+
+        # Optionally, send an email to the user with the gamekeeper's response
+        subject = "Response to your contact message"
+        message = response_text
+        recipient_list = [contact_message.user.email]
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+
+        return JsonResponse({'status': 'success', 'message': 'Response sent and request marked as complete.'})
+    except ContactMessage.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Contact request not found or already handled.'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

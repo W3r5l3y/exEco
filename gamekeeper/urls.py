@@ -12,6 +12,8 @@ from .views import (
     get_user_ids,
     add_item_to_shop,
     add_challenge,
+    load_contact_requests,
+    respond_contact,
 )
 
 urlpatterns = [
@@ -27,4 +29,6 @@ urlpatterns = [
     path('get-user-ids/', get_user_ids, name='get_user_ids'),
     path('add-item-to-shop/', add_item_to_shop, name='add_item_to_shop'),
     path('add-challenge/', add_challenge, name='add_challenge'),
+    path('contact-requests/', load_contact_requests, name='load_contact_requests'),
+    path('respond-contact/', respond_contact, name='respond_contact'),
 ]

@@ -16,10 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.user_ids && data.user_ids.length > 0) {
-                    console.log("User IDs found:", data.user_ids);
                     updateDropdowns(data.user_ids);
                 } else {
-                    console.error("No user IDs found.");
                 }
             })
             .catch(error => console.error("Error fetching user IDs:", error));
@@ -505,4 +503,80 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    /* --------------------------------------------------
+        Contact (Gamekeeper Response)
+    -------------------------------------------------- */
+    // Function to load active contact requests
+    function loadContactRequests() {
+        fetch("/contact-requests/")
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById("contact-requests-container");
+                container.innerHTML = ""; // Clear previous content
+    
+                // Attempt to get the template element
+                const template = document.querySelector("#contact-request-template");
+                if (!template) {
+                    console.error("Contact request template not found in HTML.");
+                    return;
+                }
+    
+                if (data.requests && data.requests.length > 0) {
+                    data.requests.forEach(request => {
+                        // Clone the template
+                        const requestDiv = template.cloneNode(true);
+                        requestDiv.style.display = "block"; // Unhide the cloned node
+    
+                        // Populate the fields
+                        requestDiv.querySelector(".user-email").textContent = request.user_email;
+                        requestDiv.querySelector(".user-message").textContent = request.message;
+                        requestDiv.querySelector(".submitted-time").textContent = request.created;
+                        // Set the data-id attribute for the respond button
+                        requestDiv.querySelector(".respond-button").setAttribute("data-id", request.id);
+    
+                        container.appendChild(requestDiv);
+                    });
+                } else {
+                    container.innerHTML = "<p>No active contact requests.</p>";
+                }
+            })
+            .catch(error => console.error("Error loading contact requests:", error));
+    }    
+
+    loadContactRequests();
+
+    // Delegate the click event for the respond buttons within the contact container
+    document.getElementById("contact-requests-container").addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("respond-button")) {
+            const requestId = e.target.getAttribute("data-id");
+            const responseText = e.target.parentElement.querySelector(".response-text").value.trim();
+            if (!responseText) {
+                alert("Please enter a response.");
+                return;
+            }
+            // Send the response via POST
+            fetch("/respond-contact/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken()
+                },
+                body: JSON.stringify({
+                    id: requestId,
+                    response: responseText
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Response sent successfully.");
+                    loadContactRequests(); // Refresh the contact requests list
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => console.error("Error sending response:", error));
+        }
+    });
 });
