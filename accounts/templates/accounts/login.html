@@ -85,6 +85,11 @@
                             <input type="checkbox" id="tos-checkbox" name="tos" required>
                             <label for="tos-checkbox">I agree to the <a href="{% url 'tos' %}" target="_blank">Terms of Service</a></label>
                         </div>
+                        <!-- PRIVACY POLICY -->
+                        <div class="privacy">
+                            <input type="checkbox" id="privacy-checkbox" name="privacy" required>
+                            <label for="privacy-checkbox">I agree to the <a href="{% url 'privacy' %}" target="_blank">Privacy Policy</a></label>
+                        </div>
 
                         <button type="submit" name="register">Register</button>
                     </form>

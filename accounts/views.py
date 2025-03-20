@@ -245,3 +245,6 @@ def logout_view(request):
 
 def tos_view(request):
     return render(request, "accounts/tos.html")
+
+def privacy_view(request):
+    return render(request, "accounts/privacy.html")
