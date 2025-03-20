@@ -14,7 +14,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--neutral_colour) ;
+    background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 main {

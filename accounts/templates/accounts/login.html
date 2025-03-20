@@ -80,6 +80,12 @@
                             <label class="input-label" for="confirm-password">Confirm Password</label>
                         </div>
 
+                        <!-- TERMS OF SERVICE -->
+                        <div class="tos">
+                            <input type="checkbox" id="tos-checkbox" name="tos" required>
+                            <label for="tos-checkbox">I agree to the <a href="{% url 'tos' %}" target="_blank">Terms of Service</a></label>
+                        </div>
+
                         <button type="submit" name="register">Register</button>
                     </form>
                 </div>

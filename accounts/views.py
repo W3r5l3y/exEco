@@ -242,3 +242,6 @@ def strava_unlink(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+def tos_view(request):
+    return render(request, "accounts/tos.html")
