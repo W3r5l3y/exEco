@@ -314,17 +314,20 @@ def respond_contact(request):
         if not request_id or not response_text:
             return JsonResponse({'status': 'error', 'message': 'Missing request ID or response.'}, status=400)
         
-        # Retrieve the active contact request
+        # Update the database record
         contact_message = ContactMessage.objects.get(id=request_id, complete=False)
-        # Save the gamekeeper's response and mark the request as complete
         contact_message.response = response_text
         contact_message.complete = True
         contact_message.save()
 
-        # Optionally, send an email to the user with the gamekeeper's response
-        subject = "Response to your contact message"
-        message = response_text
+        # Create the personalized email response
+        first_name = contact_message.user.first_name
+        last_name = contact_message.user.last_name
+        subject = "Your Contact Request"
+        message = f"Hi {first_name} {last_name},\n\n{response_text}\n\nHope this helps!\nThe exEco support team"
         recipient_list = [contact_message.user.email]
+
+        # Send the email to the user
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
 
         return JsonResponse({'status': 'success', 'message': 'Response sent and request marked as complete.'})
