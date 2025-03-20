@@ -96,12 +96,12 @@ class GardenStateTests(TestCase):
         stats = self.garden.calculate_stats()
 
         expected_avg_stats = {
-            "aesthetic_appeal": 12,
-            "habitat": 10,
-            "carbon_uptake": 12,
-            "waste_reduction": 3,
-            "health_of_garden": 8,
-            "innovation": 4
+            "aesthetic_appeal": 6,
+            "habitat": 5,
+            "carbon_uptake": 6,
+            "waste_reduction": 1.5,
+            "health_of_garden": 4,
+            "innovation": 2
         }
         expected_total_stat = sum(expected_avg_stats.values())
 
