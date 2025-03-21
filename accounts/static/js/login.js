@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => popup.style.display = 'none', 300);
     }
 
+    // Add event listener
+    const closePopupButton = document.querySelector('.close-btn');
+    if (closePopupButton) {
+        closePopupButton.addEventListener('click', closePopup);
+    }
+
+
     // Show error message in popup
     function showError(message) {
         const errorPopup = document.getElementById('error-popup');
