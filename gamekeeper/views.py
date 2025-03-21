@@ -17,6 +17,9 @@ from shop.models import ShopItems
 import re
 from challenges.models import Challenge
 from django.shortcuts import redirect
+from contact.models import ContactMessage
+import json
+from django.core.mail import send_mail
 from forum.models import Post, PostReport
 
 @login_required
@@ -275,6 +278,27 @@ def add_challenge(request):
 
 
 """
+Contact Gamekeeper views
+"""
+
+@login_required
+@is_gamekeeper
+def load_contact_requests(request):
+    # Fetch contact messages that have not been handled yet
+    requests_qs = ContactMessage.objects.filter(complete=False)
+    data = []
+    for req in requests_qs:
+        data.append({
+            'id': req.id,
+            'user_email': req.user.email,
+            'message': req.message,
+            'created': req.created.strftime('%Y-%m-%d %H:%M')
+        })
+
+    return JsonResponse({'requests': data})
+
+
+"""
 Forum
 """
 @login_required
@@ -312,6 +336,36 @@ def get_reported_post_details(request, post_id):
 @login_required
 @is_gamekeeper
 @require_POST
+def respond_contact(request):
+    try:
+        data = json.loads(request.body)
+        request_id = data.get('id')
+        response_text = data.get('response', '').strip()
+        if not request_id or not response_text:
+            return JsonResponse({'status': 'error', 'message': 'Missing request ID or response.'}, status=400)
+        
+        # Update the database record
+        contact_message = ContactMessage.objects.get(id=request_id, complete=False)
+        contact_message.response = response_text
+        contact_message.complete = True
+        contact_message.save()
+
+        # Create the personalized email response
+        first_name = contact_message.user.first_name
+        last_name = contact_message.user.last_name
+        subject = "Your Contact Request"
+        message = f"Hi {first_name} {last_name},\n\n{response_text}\n\nHope this helps!\nThe exEco support team"
+        recipient_list = [contact_message.user.email]
+
+        # Send the email to the user
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+
+        return JsonResponse({'status': 'success', 'message': 'Response sent and request marked as complete.'})
+    except ContactMessage.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Contact request not found or already handled.'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
 def delete_reported_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
     # First delete all reports associated with the post

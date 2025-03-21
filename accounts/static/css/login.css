@@ -14,7 +14,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--neutral_colour) ;
+    background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 main {
@@ -127,6 +132,47 @@ main {
     border-bottom: none;
 }
 
+/* Terms of service */
+.tos {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tos input {
+    margin-right: 10px;
+}
+
+.tos a {
+    color: var(--accessories_colour);
+    text-decoration: none;
+}
+
+.tos a:hover {
+    border-bottom: 1px solid var(--accessories_colour);
+}
+
+/* Privacy policy */
+.privacy {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.privacy input {
+    margin-right: 10px;
+}
+
+.privacy a {
+    color: var(--accessories_colour);
+    text-decoration: none;
+}
+
+.privacy a:hover {
+    border-bottom: 1px solid var(--accessories_colour);
+}
+
+
 button {
     width: 100%;
     height: 45px;
@@ -139,6 +185,7 @@ button {
     font-size: 16px;
     color: var(--neutral_colour);
     font-weight: 600;
+    margin-top: 20px;
 }
 
 .tabs-radio:checked + .tabs-radio-label {

@@ -205,6 +205,26 @@
                 </form>
             </div>
         </section>
+
+        <!-- Contact -->
+        <section id="contact-gamekeeper" class="gamekeeper-section">
+            <h2>Contact</h2>
+            <div class="gamekeeper-section-task gamekeeper-sub-section">
+                <h3>Review User Contact Requests</h3>
+                <!-- Dropdown for active contact requests -->
+                <select id="contact-requests-select">
+                    <option value="">Select a contact request</option>
+                </select>
+                <!-- Details container: hidden until a request is selected -->
+                <div id="contact-request-details" style="display: none; margin-top: 1em;">
+                    <p><strong>User Email:</strong> <span id="detail-user-email"></span></p>
+                    <p><strong>Message:</strong> <span id="detail-user-message"></span></p>
+                    <p><strong>Submitted:</strong> <span id="detail-submitted-time"></span></p>
+                    <textarea id="detail-response-text" placeholder="Type your response here..." style="width:100%; height:100px; margin-top: 0.5em;"></textarea>
+                    <button id="detail-respond-button" data-id="">Submit Response</button>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 </html>

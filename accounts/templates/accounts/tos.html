@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+
+    {% include 'navbar.html' %}
+    {% block css %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/tos.css' %}">
+</head>
+
+<body>
+    <main>
+        <div id="tos-wrapper">
+            <!-- TOS -->
+            <h1 id="tos-title">Terms of Service</h1>
+
+            <p id="tos-date"><strong>Effective Date:</strong> 20 03 2025</p>
+
+            <h2>1. Introduction</h2>
+            <p>Welcome to EXEco! These Terms of Service ("Terms") govern your use of the EXEco mobile and web applications ("App"), website, and services (collectively, "Services"). By accessing or using our Services, you agree to be bound by these Terms. If you do not agree, please refrain from using the Services.</p>
+
+            <h2>2. Eligibility</h2>
+            <p>To use EXEco, you must be at least 18 years old or the legal age in your jurisdiction. By using the Services, you represent and warrant that you meet these requirements.</p>
+
+            <h2>3. Account Registration</h2>
+            <ul>
+                <li>You may be required to create an account to access certain features of the Services.</li>
+                <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+                <li>You agree to provide accurate and up-to-date information and notify us of any changes.</li>
+            </ul>
+
+            <h2>4. Acceptable Use</h2>
+            <p>By using EXEco, you agree not to:</p>
+            <ul>
+                <li>Violate any applicable laws or regulations.</li>
+                <li>Use the Services for any fraudulent or unlawful activities.</li>
+                <li>Disrupt or interfere with the security or integrity of the Services.</li>
+                <li>Reverse-engineer, decompile, or attempt to extract the source code.</li>
+            </ul>
+
+            <h2>5. Privacy</h2>
+            <p>Your privacy is important to us. Our <a href="{% url 'privacy' %}">Privacy Policy</a> explains how we collect, use, and protect your personal data. By using our Services, you consent to our data practices.</p>
+
+            <h2>6. Licensing and Intellectual Property</h2>
+            <ul>
+                <li>EXEco is licensed under the MIT License, allowing free use, modification, and distribution of the software.</li>
+                <li>We do not claim ownership over any content or intellectual property displayed on EXEco’s web pages. All content is free to use under applicable open-source and public domain guidelines.</li>
+            </ul>
+
+            <h2>7. Termination</h2>
+            <p>We reserve the right to suspend or terminate your access to EXEco at our sole discretion if you violate these Terms or engage in activities that harm our Services or users.</p>
+
+            <h2>8. Disclaimers and Limitation of Liability</h2>
+            <ul>
+                <li>EXEco is provided on an "as is" and "as available" basis without warranties of any kind.</li>
+                <li>We are not responsible for any indirect, incidental, or consequential damages arising from your use of the Services.</li>
+                <li>Our total liability under these Terms shall not exceed the amount you paid for the Services, if applicable.</li>
+            </ul>
+
+            <h2>9. Changes to These Terms</h2>
+            <p>We may update these Terms from time to time. We will notify users of significant changes by posting a notice within the App or through other means. Continued use of the Services after changes take effect constitutes acceptance of the new Terms.</p>
+
+            <h2>10. Governing Law</h2>
+            <p>These Terms shall be governed by and construed in accordance with the laws of the United Kingdom, without regard to its conflict of law principles.</p>
+
+            <h2>11. Contact Information</h2>
+            <p>For any questions or concerns regarding these Terms, please contact us at <a href="mailto:execo.services@gmail.com">execo.services@gmail.com</a>.</p>
+
+            <p>By using EXEco, you acknowledge that you have read, understood, and agreed to these Terms of Service.</p>
+
+        </div>
+    </main>
+</body>
+
+</html>

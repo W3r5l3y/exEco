@@ -115,7 +115,7 @@
                             <h3>Request data</h3>
                             <p>An email will be sent to your current email,
                                 with all collected data</p>
-                            <button class="buttons-mini-div-button" name="request_data">Request</button>
+                            <button class="buttons-mini-div-button" name="request_data" onclick="requestGDPR()">Request</button>
                         </div>
                         <div class="buttons-mini-div">
                             <h3>Log out</h3>
@@ -137,6 +137,11 @@
                     <form action="" id="delete_form" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="delete_data">
+                    </form>
+
+                    <form action="" id="request_gdpr_form" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_gdpr">
                     </form>
                 </div>
             </div>

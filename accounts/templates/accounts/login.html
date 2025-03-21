@@ -15,7 +15,7 @@
 <body>
     <!-- ERROR POPUP -->
     <div id="error-popup">
-        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <button class="close-btn">&times;</button>
         <p id="error-popup-title">Error</p>
         <p id="error-popup-message">An unexpected error occurred.</p>
     </div>
@@ -78,6 +78,17 @@
                         <div class="input-group">
                             <input class="input" type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
                             <label class="input-label" for="confirm-password">Confirm Password</label>
+                        </div>
+
+                        <!-- TERMS OF SERVICE -->
+                        <div class="tos">
+                            <input type="checkbox" id="tos-checkbox" name="tos" required>
+                            <label for="tos-checkbox">I agree to the <a href="{% url 'tos' %}" target="_blank">Terms of Service</a></label>
+                        </div>
+                        <!-- PRIVACY POLICY -->
+                        <div class="privacy">
+                            <input type="checkbox" id="privacy-checkbox" name="privacy" required>
+                            <label for="privacy-checkbox">I agree to the <a href="{% url 'privacy' %}" target="_blank">Privacy Policy</a></label>
                         </div>
 
                         <button type="submit" name="register">Register</button>

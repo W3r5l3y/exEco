@@ -102,6 +102,10 @@ function logOut() {
     document.getElementById("log_out_form").submit();
 }
 
+function requestGDPR(){
+    document.getElementById("request_gdpr_form").submit();
+}
+
 function stravaUnlink(){
     document.getElementById("strava_form").submit();
 }

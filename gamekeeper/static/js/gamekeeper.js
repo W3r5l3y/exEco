@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return cookieValue || "";
     }
 
+    // Global variable to store contact requests data
+    let contactRequestsData = [];
+
     /* --------------------------------------------------
     Drop down menu logic, for adding points to bingame, transport and qr scanner.
     -------------------------------------------------- */
@@ -16,10 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data.user_ids && data.user_ids.length > 0) {
-                    console.log("User IDs found:", data.user_ids);
                     updateDropdowns(data.user_ids);
                 } else {
-                    console.error("No user IDs found.");
                 }
             })
             .catch(error => console.error("Error fetching user IDs:", error));
@@ -594,4 +595,100 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    /* --------------------------------------------------
+        Contact (Gamekeeper Response)
+    -------------------------------------------------- */
+    
+    // Function to load active contact requests and populate the select dropdown
+    function loadContactRequestsSelect() {
+        fetch("/contact-requests/")
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById("contact-requests-select");
+                // Clear existing options and add a default one
+                select.innerHTML = '<option value="">Select a contact request</option>';
+                contactRequestsData = data.requests || [];
+
+                if (contactRequestsData.length > 0) {
+                    contactRequestsData.forEach(request => {
+                        const option = document.createElement("option");
+                        option.value = request.id;
+                        // Display text: ID, user email and (truncated) message
+                        let displayText = `ID: ${request.id} - ${request.user_email}`;
+                        if (request.message) {
+                            let shortMessage = request.message;
+                            if (shortMessage.length > 20) {
+                                shortMessage = shortMessage.substring(0, 20) + "...";
+                            }
+                            displayText += ` - "${shortMessage}"`;
+                        }
+                        option.textContent = displayText;
+                        select.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => console.error("Error loading contact requests:", error));
+    }
+
+    // Event listener for the select dropdown change
+    const requestsSelect = document.getElementById("contact-requests-select");
+    requestsSelect.addEventListener("change", function () {
+        const selectedId = this.value;
+        const detailsContainer = document.getElementById("contact-request-details");
+        if (!selectedId) {
+            detailsContainer.style.display = "none";
+            return;
+        }
+        // Find the request by its ID
+        const request = contactRequestsData.find(req => req.id == selectedId);
+        if (request) {
+            document.getElementById("detail-user-email").textContent = request.user_email;
+            document.getElementById("detail-user-message").textContent = request.message;
+            document.getElementById("detail-submitted-time").textContent = request.created;
+            // Set the data-id attribute on the respond button for later use
+            document.getElementById("detail-respond-button").setAttribute("data-id", request.id);
+            detailsContainer.style.display = "block";
+        }
+    });
+
+    // Event listener for submitting the response
+    document.getElementById("detail-respond-button").addEventListener("click", function () {
+        const requestId = this.getAttribute("data-id");
+        const responseText = document.getElementById("detail-response-text").value.trim();
+        if (!responseText) {
+            alert("Please enter a response.");
+            return;
+        }
+        // Send the response via POST
+        fetch("/respond-contact/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken()
+            },
+            body: JSON.stringify({
+                id: requestId,
+                response: responseText
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("Response sent successfully.");
+                    // Refresh the select list to remove the responded request
+                    loadContactRequestsSelect();
+                    // Hide the details and clear the textarea
+                    document.getElementById("contact-request-details").style.display = "none";
+                    document.getElementById("detail-response-text").value = "";
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => console.error("Error sending response:", error));
+    });
+
+    // Initial load of contact requests into the select dropdown
+    loadContactRequestsSelect();
+
 });

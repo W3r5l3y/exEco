@@ -1,0 +1,102 @@
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background-color: var(--neutral_colour);
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    padding-top: 150px;
+    gap: 40px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 30px;
+    background-color: var(--neutral_colour);
+    border: 4px solid var(--primary_colour);
+    box-shadow: 0 0 10px var(--primary_colour);
+}
+
+#contact-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary_colour);
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--primary_colour);
+    background-color: var(--neutral_colour);
+    color: var(--primary_colour);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+textarea:focus {
+    border: 2px solid var(--accessories_colour);
+}
+
+#charCount {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--primary_colour);
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 2px solid var(--primary_colour);
+    background-color: var(--primary_colour);
+    color: var(--neutral_colour);
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: var(--secondary_colour);
+    color: var(--primary_colour);
+}
