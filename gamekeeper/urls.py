@@ -12,6 +12,10 @@ from .views import (
     get_user_ids,
     add_item_to_shop,
     add_challenge,
+    get_reported_posts,
+    get_reported_post_details,
+    delete_reported_post,
+    delete_report,
 )
 
 urlpatterns = [
@@ -27,4 +31,8 @@ urlpatterns = [
     path('get-user-ids/', get_user_ids, name='get_user_ids'),
     path('add-item-to-shop/', add_item_to_shop, name='add_item_to_shop'),
     path('add-challenge/', add_challenge, name='add_challenge'),
+    path('get-reported-posts/', get_reported_posts, name='get_reported_posts'),
+    path('get-reported-post-details/<int:post_id>/', get_reported_post_details, name='get_reported_post_details'),
+    path('delete-reported-post/<int:post_id>/', delete_reported_post, name='delete_reported_post'),
+    path('delete-report/<int:post_id>/', delete_report, name='delete_report'),
 ]

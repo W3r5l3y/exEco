@@ -3,7 +3,7 @@ import os
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from qrscanner.models import Location
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -17,6 +17,7 @@ from shop.models import ShopItems
 import re
 from challenges.models import Challenge
 from django.shortcuts import redirect
+from forum.models import Post, PostReport
 
 @login_required
 @is_gamekeeper
@@ -220,13 +221,11 @@ Accounts Gamekeeper views (kinda)
 @login_required
 @is_gamekeeper
 def add_points(request, type, user_id, amount):
-    # Add points to a user's minigame points
     try:
         user = CustomUser.objects.get(id=user_id)
     except CustomUser.DoesNotExist:
         return JsonResponse({"error": "User not found"}, status=404)
 
-    # Ensure the UserPoints instance exists for this user
     user_points, created = UserPoints.objects.get_or_create(user=user)
 
     if type == "bingame":
@@ -246,7 +245,7 @@ def add_points(request, type, user_id, amount):
 @login_required
 @is_gamekeeper
 def get_user_ids(request):
-    users = CustomUser.objects.values("id", "email")  # Fetch both ID and email
+    users = CustomUser.objects.values("id", "email")
     return JsonResponse({"user_ids": list(users)})
 
 @require_POST
@@ -261,10 +260,8 @@ def add_challenge(request):
     reward = request.POST.get('challenge_reward')
     goal = request.POST.get('challenge_goal')
 
-    # Basic validation (you can add more checks as needed)
     if not (description and challenge_type and game_category and reward and goal):
-        # If something is missing, you might return an error or handle it gracefully
-        return redirect('gamekeeper')  # Or some error message
+        return redirect('gamekeeper')
 
     Challenge.objects.create(
         description=description,
@@ -274,4 +271,60 @@ def add_challenge(request):
         goal=int(goal),
     )
 
-    return redirect('gamekeeper')  # Replace with your own redirect target
+    return redirect('gamekeeper')
+
+
+"""
+Forum
+"""
+@login_required
+@is_gamekeeper
+def get_reported_posts(request):
+    if request.method == "GET":
+        # Get all posts that have been reported
+        reported_posts = Post.objects.filter(reports__isnull=False).distinct()
+        data = []
+        for post in reported_posts:
+            data.append({
+                "post_id": post.post_id,
+                "user_email": post.user.email,
+                "description": post.description,
+                "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            })
+        return JsonResponse({"reported_posts": data})
+    return JsonResponse({"error": "Method not allowed."}, status=405)
+
+@login_required
+@is_gamekeeper
+def get_reported_post_details(request, post_id):
+    if request.method == "GET":
+        post = get_object_or_404(Post, post_id=post_id)
+        data = {
+            "post_id": post.post_id,
+            "user_email": post.user.email,
+            "description": post.description,
+            "image_url": post.image.url if post.image else "",
+            "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        return JsonResponse({"post": data})
+    return JsonResponse({"error": "Method not allowed."}, status=405)
+
+@login_required
+@is_gamekeeper
+@require_POST
+def delete_reported_post(request, post_id):
+    post = get_object_or_404(Post, post_id=post_id)
+    # First delete all reports associated with the post
+    PostReport.objects.filter(post=post).delete()
+    # Then delete the post itself
+    post.delete()
+    return JsonResponse({"message": "Post and associated reports deleted."})
+
+@login_required
+@is_gamekeeper
+@require_POST
+def delete_report(request, post_id):
+    post = get_object_or_404(Post, post_id=post_id)
+    # Delete all reports associated with the post
+    PostReport.objects.filter(post=post).delete()
+    return JsonResponse({"message": "Reports for the post deleted."})

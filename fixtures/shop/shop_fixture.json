@@ -1,0 +1,80 @@
+[
+    {
+        "model": "shop.shopitems",
+        "pk": 1,
+        "fields": {
+            "name": "Gnomeo",
+            "description": "A cute lil gnome",
+            "image": "shop/gnome.png",
+            "cost": 50,
+            "aesthetic_appeal": 8,
+            "habitat": 3,
+            "carbon_uptake": 9
+        }
+    },
+    {
+        "model": "shop.shopitems",
+        "pk": 2,
+        "fields": {
+            "name": "A decorative bonsai tree",
+            "description": "Bonsai tree",
+            "image": "shop/bosai.png",
+            "cost": 150,
+            "aesthetic_appeal": 10,
+            "habitat": 4,
+            "carbon_uptake": 9
+        }
+    },
+    {
+        "model": "shop.shopitems",
+        "pk": 3,
+        "fields": {
+            "name": "Dandelion",
+            "description": "Pretty dandelion",
+            "image": "shop/dandelion.png",
+            "cost": 60,
+            "aesthetic_appeal": 6,
+            "habitat": 4,
+            "carbon_uptake": 7
+        }
+    },
+    {
+        "model": "shop.shopitems",
+        "pk": 4,
+        "fields": {
+            "name": "Sunflower",
+            "description": "Bright sunflower to light up your day",
+            "image": "shop/sunflower.png",
+            "cost": 75,
+            "aesthetic_appeal": 8,
+            "habitat": 5,
+            "carbon_uptake": 7
+        }
+    },
+    {
+        "model": "shop.shopitems",
+        "pk": 5,
+        "fields": {
+            "name": "Tulip",
+            "description": "Its a tulip!",
+            "image": "shop/tulip.png",
+            "cost": 50,
+            "aesthetic_appeal": 6,
+            "habitat": 5,
+            "carbon_uptake": 6
+        }
+    },
+    {
+        "model": "shop.shopitems",
+        "pk": 6,
+        "fields": {
+            "name": "Little Flowers",
+            "description": "A small enhancement to your garden",
+            "image": "shop/babybells.png",
+            "cost": 15,
+            "aesthetic_appeal": 2,
+            "habitat": 3,
+            "carbon_uptake": 3
+        }
+    }
+]
