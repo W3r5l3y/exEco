@@ -21,7 +21,7 @@ def load_garden(request):
         garden = GardenState.objects.filter(user=request.user).first()
 
         if garden:
-            return JsonResponse({"state": garden.state})  # No json.loads() needed
+            return JsonResponse({"state": garden.state})
         else:
             return JsonResponse({"state": {}}, status=200)
 
@@ -115,7 +115,7 @@ def save_garden_as_image(request):
 
     # Build paths based on your folder structure.
     empty_img_path = os.path.join(settings.MEDIA_ROOT, "inventory/items/empty.png")
-    tree_img_path = os.path.join(settings.MEDIA_ROOT, "garden/temp-tree.png")
+    
 
 
     def get_inventory_image_path(unique_id):
@@ -142,12 +142,32 @@ def save_garden_as_image(request):
 
             if row == 5 and col == 5:
                 try:
-                    tree_img = pygame.image.load(tree_img_path)
-                    tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))
-                    surface.blit(tree_img, rect)
+                    # Calculate the tree image based on score, highest possible shld be 40 : 60 *2/3 = 40
+                    from garden.models import GardenState  
+                    garden = GardenState.objects.filter(user=request.user).first()  
+                    if garden:  
+                        stats = garden.calculate_stats()  
+                        total_score = stats.get("total_stats", 0)  
+                    else:  
+                        total_score = 0  
+                    if total_score < 8:  
+                        tree_level = 1  
+                    elif total_score < 16:  
+                        tree_level = 2  
+                    elif total_score < 24:  
+                        tree_level = 3  
+                    elif total_score < 32:  
+                        tree_level = 4  
+                    else:  
+                        tree_level = 5  
+                    tree_filename = f"tree-{tree_level}.png"  
+                    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", tree_filename)  
+                    tree_img = pygame.image.load(tree_img_path)  
+                    tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))  
+                    surface.blit(tree_img, rect)  
                 except Exception as e:
-                    print("Error loading tree image:", e)
-                continue
+                    print("Error loading tree image:", e)  
+                continue  
             
             if key in garden_state:
                 unique_item_id = garden_state[key]
@@ -166,8 +186,7 @@ def save_garden_as_image(request):
     garden_media_dir = os.path.join(settings.MEDIA_ROOT, "gardens")
     os.makedirs(garden_media_dir, exist_ok=True)  # Ensure directory exists
 
-    output_path = os.path.join(garden_media_dir, file_name)
-    #TODO - fix so it goes to media
+    output_path = os.path.join(garden_media_dir, file_name) 
     try:
         pygame.image.save(surface, output_path)
         print(f"Garden image saved to {output_path}")
@@ -185,6 +204,44 @@ def save_garden_as_image(request):
 def fetch_user_garden_image(request):
     user_id = request.user.id
     file_name = f"garden_state_user{user_id}.png"
-    # Assuming your static files are served from /static/...
-    image_url = f"/media/gardens/{file_name}" #TODO - Check it loads media
+    image_url = f"/media/gardens/{file_name}"
     return JsonResponse({"image_url": image_url})
+
+@login_required                                
+def get_tree_image(request):                   
+    try:                                     
+        garden = GardenState.objects.filter(user=request.user).first() 
+        if garden:                         
+            stats = garden.calculate_stats() 
+            total_score = stats.get("total_stats", 0) 
+        else:                              
+            total_score = 0              
+        if total_score < 8:               
+            tree_level = 1              
+        elif total_score < 16:            
+            tree_level = 2              
+        elif total_score < 24:            
+            tree_level = 3              
+        elif total_score < 32:            
+            tree_level = 4              
+        else:                           
+            tree_level = 5                            
+        image_path = f"/static/img/tree-{tree_level}.png" 
+        return JsonResponse({"tree_image": image_path}) 
+    except Exception as e:                   
+        return JsonResponse({"error": str(e)}, status=500) 
+    
+@login_required  
+def get_garden_stats(request):  
+    try:  
+        garden = GardenState.objects.filter(user=request.user).first()  
+        if garden:  
+            stats = garden.calculate_stats()  
+            return JsonResponse({  
+                "average_stats": stats["average_stats"],  
+                "total_stat": stats["total_stats"]  
+            })  
+        else:  
+            return JsonResponse({"average_stats": {}, "total_stat": 0})  
+    except Exception as e:  
+        return JsonResponse({"error": str(e)}, status=500)  

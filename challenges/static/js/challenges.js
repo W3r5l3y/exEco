@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const timeLeft = deadline - now;
 
             if (timeLeft <= 0) {
-                if (timerElement) timerElement.innerHTML = "00:00:00"; // Reset when expired
+                if (timerElement) timerElement.innerHTML = "00:00:00";
                 return;
             }
 
@@ -18,60 +18,64 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (days > 0) {
                     timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 } else {
-                    timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+                    timerElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 }
             }
         }
 
         calculateTimeLeft();
-        setInterval(calculateTimeLeft, 1000);
+        return setInterval(calculateTimeLeft, 1000);
     }
 
-    // Fix: Ensure these elements exist before using them
     const dailyTimer = document.getElementById("daily-timer");
     const weeklyTimer = document.getElementById("weekly-timer");
 
-    // Fetch last reset timestamps from the server
+    // Flag to determine if timers are already set
+    let timersSet = false;
+
+    // Try to fetch reset times from the server
     fetch("/get-reset-times/")
     .then(response => response.json())
     .then(data => {
-        if (data.daily_reset) {
+        if (dailyTimer && data.daily_reset) {
             const dailyResetTime = new Date(data.daily_reset);
-            dailyResetTime.setDate(dailyResetTime.getDate() + 1); // Next midnight
+            dailyResetTime.setDate(dailyResetTime.getDate() + 1); // Next reset
             updateCountdown(dailyTimer, dailyResetTime.getTime());
+            timersSet = true;
         }
-
-        if (data.weekly_reset) {
+        if (weeklyTimer && data.weekly_reset) {
             const weeklyResetTime = new Date(data.weekly_reset);
-            weeklyResetTime.setDate(weeklyResetTime.getDate() + 7); // Next week
+            weeklyResetTime.setDate(weeklyResetTime.getDate() + 7); // Next reset
             updateCountdown(weeklyTimer, weeklyResetTime.getTime());
+            timersSet = true;
         }
     })
     .catch(error => {
         console.error("Error fetching reset times:", error);
-        // If fetch fails, fall back to static logic
-        if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
-        if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
+    })
+    .finally(() => {
+        // If timers weren't set from the server, fall back to static deadlines.
+        if (!timersSet) {
+            const now = new Date();
+            
+            if (dailyTimer) {
+                const dailyReset = new Date();
+                dailyReset.setHours(0, 0, 0, 0);
+                dailyReset.setDate(dailyReset.getDate() + 1); 
+                updateCountdown(dailyTimer, dailyReset.getTime());
+            }
+    
+            if (weeklyTimer) {
+                const weeklyReset = new Date();
+                // Calculate days until next Monday (assuming Monday is the weekly reset)
+                weeklyReset.setDate(now.getDate() + ((8 - now.getDay()) % 7));
+                weeklyReset.setHours(0, 0, 0, 0);
+                updateCountdown(weeklyTimer, weeklyReset.getTime());
+            }
+        }
     });
 
-
-    // Set deadlines for daily and weekly challenges (next midnight and next Monday)
-    const now = new Date();
-    
-    const dailyReset = new Date();
-    dailyReset.setHours(0, 0, 0, 0);
-    dailyReset.setDate(dailyReset.getDate() + 1); 
-    
-
-    const weeklyReset = new Date();
-    weeklyReset.setDate(now.getDate() + (8 - now.getDay()) % 7);
-    weeklyReset.setHours(0, 0, 0, 0);
-
-    if (dailyTimer) updateCountdown(dailyTimer, dailyReset.getTime());
-    if (weeklyTimer) updateCountdown(weeklyTimer, weeklyReset.getTime());
-
-
-    // Handle challenge submission
+    // Handle challenge submission logic...
     document.querySelectorAll(".submit-btn").forEach(button => {
         button.addEventListener("click", function () {
             const challengeId = this.getAttribute("data-challenge-id");
@@ -104,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .catch(error => console.error("Error:", error));
-            
         });
     });
 
@@ -118,5 +121,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         return cookieValue;
     }
-    
 });

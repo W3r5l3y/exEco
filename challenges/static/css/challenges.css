@@ -1,3 +1,8 @@
+/* --primary_colour: #003b3c;
+--accessories_colour: #00c592;
+--display_color: #002727;
+--neutral_colour: #fff; */
+
 * {
     margin: 0;
     padding: 0;
@@ -5,55 +10,64 @@
     font-family: 'Roboto', sans-serif;
 }
 
+body, html {
+    height: 100vh;
+}
+
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     background-color: #fff;
+    background: url('../../../static/img/background-general.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 main {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     width: 100%;
-    padding: 0;
-    margin: 0;
-    padding-top: 150px;
+    padding: 100px 20px 20px 20px;
 }
 
-/* Challenges Title */
 .challenges-title {
+    align-self: center;
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
     color: var(--primary_colour);
+    padding: 10px 20px;
 }
 
-/* Challenges Container */
+/* --------------------------------------------------
+    Challenges Container
+-------------------------------------------------- */
+
 .challenges-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: flex-start;
-    width: 80%;
+    width: 100%;
     gap: 20px;
 }
 
-/* Daily and Weekly Challenges Box */
 .challenges-box {
     flex: 1;
-    max-width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
     padding: 20px;
     border-radius: 10px;
-    background: #f9f9f9;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 4px solid var(--primary_colour);
+    backdrop-filter: blur(10px);
 }
 
 .challenges-box h2 {
@@ -62,118 +76,133 @@ main {
     margin-bottom: 10px;
 }
 
-.duration {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 15px;
+.challenges-box:nth-child(even) {
+    border: 4px solid var(--accessories_colour);
 }
 
-/* Challenge List */
 .challenge-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width: 100%;
+    gap: 10px;
 }
 
 .challenge-item {
+    flex-wrap: wrap;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    background: #00c5916a;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    transition: all 0.2s ease-in-out;
+    align-items: flex-start;
     width: 100%;
+    background-color: #003b3c;
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
 }
 
-.challenge-item:nth-child(even) {
-    background-color: #00c5913d;
+.challenges-box:nth-child(even) .challenge-item {
+    background-color: #00c592;
+    border: 4px solid var(--accessories_colour);
 }
 
 .challenge-item:hover {
-    background-color: #00c591f0;
+    scale: 1.03;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Challenge Description */
 .challenge-description {
     font-size: 1rem;
-    font-weight: bold;
-    flex: 2;
+    color: var(--neutral_colour);
+    margin: 0;
+    width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Challenge Reward */
 .challenge-reward {
     font-size: 1rem;
-    font-weight: bold;
-    color: #003b3c;
-    flex: 1;
-    text-align: right;
+    color: var(--neutral_colour);
+    margin: 0;
+    width: 20%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Submit Button */
-.submit-btn {
-    background: #003b3c;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+.challenge-progress {
     font-size: 1rem;
-    transition: background 0.3s ease;
-    flex: 0.5;
+    color: var(--neutral_colour);
+    margin: 0;
+    width: 20%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.submit-btn {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--neutral_colour);
+    padding: 10px 20px;
+    border: none;
+    border: 2px solid var(--neutral_colour);
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 30%;
+    transition: all 0.2s ease-in-out;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .submit-btn:hover {
-    background: #005f60;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive Design */
+/* --------------------------------------------------
+    Responsive
+-------------------------------------------------- */
+
 @media screen and (max-width: 768px) {
-    .challenges-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        width: 100%;
+    main {
+        padding: 100px 10px 10px 10px;
+    }
+
+    .challenges-title {
+        font-size: 1.5rem;
     }
 
     .challenges-box {
-        max-width: 100%;
+        padding: 10px;
     }
 
     .challenge-item {
         flex-direction: column;
+        align-items: center;
+    }
+
+    .challenge-description {
+        width: 100%;
         text-align: center;
     }
 
     .challenge-reward {
+        width: 100%;
         text-align: center;
-        margin-top: 5px;
+    }
+
+    .challenge-progress {
+        width: 100%;
+        text-align: center;
     }
 
     .submit-btn {
-        margin-top: 5px;
         width: 100%;
     }
-}
-
-.challenge-item.completed {
-    background-color: #ccc;
-    color: #777;
-}
-
-.challenge-item.completed .submit-btn {
-    background-color: #888;
-    cursor: not-allowed;
-}
-
-.coins-container {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #003b3c;
-    background: #f3f3f3;
-    padding: 10px 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

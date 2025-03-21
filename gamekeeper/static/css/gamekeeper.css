@@ -31,7 +31,7 @@ main {
     gap: 40px;
 }
 
-h1 {
+#gamekeeper-title {
     font-size: 2rem;
     font-weight: 700;
     color: var(--primary_colour);

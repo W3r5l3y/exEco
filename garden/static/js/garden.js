@@ -48,6 +48,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* --------------------------------------------------
+    *  Function to load garden stats on page load  
+    * -------------------------------------------------- */
+        async function loadGardenStats() {  
+            try {  
+                const response = await fetch("/get-garden-stats/");  
+                const data = await response.json();  
+                if(data.average_stats) {  
+                    updateGardenStats(data.average_stats, data.total_stat);  
+                }  
+            } catch(error) {  
+                console.error("Error loading garden stats:", error);  
+            }  
+        }  
+    
+
+    /* --------------------------------------------------
     *  Function to load garden state from the server
     * -------------------------------------------------- */
     async function loadGardenState() {
@@ -78,6 +94,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Error loading garden state:", error);
         }
     }
+
+
+        /* --------------------------------------------------
+    *  New function: update tree image after each change  
+    * -------------------------------------------------- */
+        async function updateTreeImage() {  
+            try {  
+                const response = await fetch("/get-tree-image/");  
+                const data = await response.json();  
+                if(data.tree_image) {  
+                    const treeImage = document.querySelector(".grid-item-5-5 img");  
+                    treeImage.src = data.tree_image;  
+                }  
+            } catch(error) {  
+                console.error("Error updating tree image:", error);  
+            }  
+        }  
+    
+        /* --------------------------------------------------
+        *  New function: auto-save garden state and update tree image after changes  
+        * -------------------------------------------------- */
+        let autoSaveTimeout;  
+        function autoSaveGardenState() {  
+            if (autoSaveTimeout) clearTimeout(autoSaveTimeout);  
+            autoSaveTimeout = setTimeout(async () => {  
+                const gardenStateData = Object.fromEntries(gardenState);  
+                const csrftoken = getCookie('csrftoken');  
+                try {  
+                    await fetch("/save-garden/", {  
+                        method: "POST",  
+                        headers: {  
+                            "Content-Type": "application/json",  
+                            "X-CSRFToken": csrftoken  
+                        },  
+                        body: JSON.stringify({ state: gardenStateData })  
+                    });  
+                    updateTreeImage();  
+                } catch (error) {  
+                    console.error("Auto save error:", error);  
+                }  
+            }, 500); // debounce for 500ms  
+        }  
+    
 
     /* --------------------------------------------------
     *  Helper function to get CSRF token from cookies
@@ -122,6 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 this.classList.remove("inventory-item-selected");
                 gardenState.delete(placedGridKey);
                 console.log("Removed from garden:", itemId, "at", placedGridKey);
+                autoSaveGardenState();
                 return;
             }
             // Otherwise, flash the grid cell to indicate this instance is already placed.
@@ -155,6 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Update the grid cell's image to show the placed item.
             selectedImage.src = this.querySelector("img").src;
             console.log("Updated garden state:", gardenState);
+            autoSaveGardenState();
         }
     }
 
@@ -180,6 +241,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Add click event listener to all grid cells to allow selection.
     const gridItems = document.querySelectorAll(".grid-item");
     gridItems.forEach(gridItem => {
+        // Skip the center cell (tree) since it cannot be changed.
+        if (gridItem.classList.contains("grid-item-5-5")) return;
         gridItem.addEventListener("click", () => {
             gridItems.forEach(item => item.classList.remove("grid-item-selected"));
             gridItem.classList.add("grid-item-selected");
@@ -249,60 +312,71 @@ document.addEventListener("DOMContentLoaded", async () => {
     
 
     // Add reset garden functionality
-document.querySelector("#reset-garden-button").addEventListener("click", async () => {
-    // Clear the in-memory garden state.
-    gardenState.clear();
+    document.querySelector("#reset-garden-button").addEventListener("click", async () => {
+        // Clear the in-memory garden state.
+        gardenState.clear();
 
-    // Loop through all grid cells and set them to the empty image,
-    // except cell 5-5 if you want to keep your tree there.
-    document.querySelectorAll(".grid-item").forEach(cell => {
-        if (!cell.classList.contains("grid-item-5-5")) {
-            const img = cell.querySelector("img");
-            if (img) {
-                img.src = "/static/img/empty.png";
+        // Loop through all grid cells and set them to the empty image,
+        document.querySelectorAll(".grid-item").forEach(cell => {
+            if (!cell.classList.contains("grid-item-5-5")) { // Skip the center cell (tree).
+                const img = cell.querySelector("img");
+                if (img) {
+                    img.src = "/static/img/empty.png";
+                }
             }
-        }
-    });
-
-    
-    document.querySelectorAll(".inventory-item").forEach(item => {
-        item.classList.remove("inventory-item-selected");
-    });
-
-    
-    try {
-        const csrftoken = getCookie('csrftoken');
-        const response = await fetch("/save-garden/", {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-            },
-            body: JSON.stringify({ state: {} }),
         });
-        const data = await response.json();
-        console.log("Garden reset:", data);
-        // Show a success tooltip
-        const tooltip = document.getElementById("reset-tooltip");
-        tooltip.textContent = "Garden reset successfully!";
-        tooltip.classList.add("show");
-        setTimeout(() => tooltip.classList.remove("show"), 3000);
-    } catch (error) {
-        console.error("Error resetting garden on server:", error);
-        const tooltip = document.getElementById("reset-tooltip");
-        tooltip.textContent = "Error resetting garden!";
-        tooltip.classList.add("show");
-        setTimeout(() => tooltip.classList.remove("show"), 3000);
-    }
+
+        document.querySelectorAll(".inventory-item").forEach(item => {
+            item.classList.remove("inventory-item-selected");
+        });
+
+        try {
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch("/save-garden/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ state: {} }),
+            });
+            const data = await response.json();
+            console.log("Garden reset:", data);
+            autoSaveGardenState();
+            // Show a success tooltip
+            const tooltip = document.getElementById("reset-tooltip");
+            tooltip.textContent = "Garden reset successfully!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
+        } catch (error) {
+            console.error("Error resetting garden on server:", error);
+            const tooltip = document.getElementById("reset-tooltip");
+            tooltip.textContent = "Error resetting garden!";
+            tooltip.classList.add("show");
+            setTimeout(() => tooltip.classList.remove("show"), 3000);
+        }
     });
 
     
     // Set the tree image in the center of the garden (cell 5,5).
     const gridItem55 = document.querySelector(".grid-item-5-5");
     const treeImage = gridItem55.querySelector("img");
-    treeImage.src = "/static/img/temp-tree.png";
+    // Get the correct tree image
+    try {                                    
+        const response = await fetch("/get-tree-image/"); 
+        const data = await response.json();  
+        if (data.tree_image) {               
+            treeImage.src = data.tree_image; 
+        } else {                             
+            treeImage.src = "/static/img/tree-1.png"; 
+        }                                    
+    } catch (error) {                        
+        console.error("Error fetching tree image:", error); 
+        treeImage.src = "/static/img/tree-1.png"; 
+    }                                        
     
     // Load inventory first, then load the garden state so the selected instances are correctly marked.
     await loadInventory();
     await loadGardenState();
+    await loadGardenStats();
 });

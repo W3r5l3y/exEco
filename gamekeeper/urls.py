@@ -14,6 +14,10 @@ from .views import (
     add_challenge,
     load_contact_requests,
     respond_contact,
+    get_reported_posts,
+    get_reported_post_details,
+    delete_reported_post,
+    delete_report,
 )
 
 urlpatterns = [
@@ -31,4 +35,8 @@ urlpatterns = [
     path('add-challenge/', add_challenge, name='add_challenge'),
     path('contact-requests/', load_contact_requests, name='load_contact_requests'),
     path('respond-contact/', respond_contact, name='respond_contact'),
+    path('get-reported-posts/', get_reported_posts, name='get_reported_posts'),
+    path('get-reported-post-details/<int:post_id>/', get_reported_post_details, name='get_reported_post_details'),
+    path('delete-reported-post/<int:post_id>/', delete_reported_post, name='delete_reported_post'),
+    path('delete-report/<int:post_id>/', delete_report, name='delete_report'),
 ]

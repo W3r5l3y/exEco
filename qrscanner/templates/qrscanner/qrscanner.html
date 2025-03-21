@@ -70,5 +70,31 @@
 
     </main>
     
+    <!-- Popup for scanned QR code information -->
+    <div id="qr-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-qr-popup">&times;</span>
+            {% if location_name %}
+                <h2>{{ location_name }}</h2>
+                <p>{{ location_fact }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if a QR scan result exists by testing the location name.
+            '{% if location_name %}'
+                var qrPopup = document.getElementById("qr-popup");
+                qrPopup.style.display = "block";
+            '{% endif %}'
+        
+            // Close the popup when the close button is clicked.
+            var closeBtn = document.getElementById("close-qr-popup");
+            closeBtn.addEventListener("click", function() {
+                document.getElementById("qr-popup").style.display = "none";
+            });
+        });
+        </script>
 </body>
 </html>

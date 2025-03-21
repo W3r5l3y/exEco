@@ -7,7 +7,7 @@
             "description": "The mystical golden carrot",
             "image": "inventory/items/qrscanner_1.png",
             "aesthetic_appeal": 10,
-            "habitat": 10,
+            "habitat": 2,
             "carbon_uptake": 10,
             "innovation": 10
         }
@@ -28,10 +28,10 @@
             "name": "Weeping willow",
             "description": "Mysterious willow ",
             "image": "inventory/items/qrscanner_2.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 8,
+            "habitat": 7,
+            "carbon_uptake": 8,
+            "innovation": 8
         }
     },
     {
@@ -50,10 +50,10 @@
             "name": "Yellow flower",
             "description": "The yellow reflects sunlight",
             "image": "inventory/items/qrscanner_3.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 7,
+            "habitat": 4,
+            "carbon_uptake": 7,
+            "innovation": 7
         }
     },
     {
@@ -70,12 +70,12 @@
         "pk": 4,
         "fields": {
             "name": "Purple flower",
-            "description": "The brigh purple brings out the beauty of the garden",
+            "description": "The bright purple brings out the beauty of the garden",
             "image": "inventory/items/qrscanner_4.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 7,
+            "habitat": 3,
+            "carbon_uptake": 6,
+            "innovation": 6
         }
     },
     {
@@ -94,10 +94,10 @@
             "name": "Blue tulip",
             "description": "A brilliant blue tulip",
             "image": "inventory/items/qrscanner_5.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 6,
+            "habitat": 3,
+            "carbon_uptake": 6,
+            "innovation": 5
         }
     },
     {
@@ -116,10 +116,10 @@
             "name": "Yellow tulip",
             "description": "A bright yellow tulip",
             "image": "inventory/items/qrscanner_6.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 6,
+            "habitat": 2,
+            "carbon_uptake": 7,
+            "innovation": 3
         }
     },
     {
@@ -138,10 +138,10 @@
             "name": "Purple tulip",
             "description": "Little purple tulip",
             "image": "inventory/items/qrscanner_7.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 4,
+            "habitat": 2,
+            "carbon_uptake": 5,
+            "innovation": 2
         }
     },
     {
@@ -160,10 +160,10 @@
             "name": "Leaf scanner",
             "description": "Two leafy leafs",
             "image": "inventory/items/qrscanner_8.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 2,
+            "habitat": 1,
+            "carbon_uptake": 7,
+            "innovation": 4
         }
     },
     {
@@ -182,10 +182,10 @@
             "name": "Four leaf clover",
             "description": "Mysterical quadruple",
             "image": "inventory/items/qrscanner_9.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 8,
+            "habitat": 1,
+            "carbon_uptake": 2,
+            "innovation": 2
         }
     },
     {
@@ -204,10 +204,10 @@
             "name": "Rubbish Carrot",
             "description": "Rubbish carrot not even golden :(",
             "image": "inventory/items/qrscanner_10.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "innovation": 9
+            "aesthetic_appeal": 2,
+            "habitat": 0,
+            "carbon_uptake": 2,
+            "innovation": 1
         }
     },
     {
@@ -228,7 +228,7 @@
             "image": "inventory/items/transport_1.png",
             "aesthetic_appeal": 10,
             "habitat": 10,
-            "carbon_uptake": 10,
+            "carbon_uptake": 9,
             "health_of_garden": 10
         }
     },
@@ -249,8 +249,8 @@
             "description": "The illusive snake plant held within the mighty shoe!",
             "image": "inventory/items/transport_2.png",
             "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
+            "habitat": 8,
+            "carbon_uptake": 10,
             "health_of_garden": 9
         }
     },
@@ -270,10 +270,10 @@
             "name": "Rordans",
             "description": "Fresh as hell, the Rordans are the best shoe out there!",
             "image": "inventory/items/transport_3.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
+            "aesthetic_appeal": 8,
+            "habitat": 7,
             "carbon_uptake": 9,
-            "health_of_garden": 9
+            "health_of_garden": 8
         }
     },
     {
@@ -292,10 +292,10 @@
             "name": "The blues",
             "description": "Brings a casual look to the long grass equation ;)",
             "image": "inventory/items/transport_4.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 8,
+            "habitat": 5,
+            "carbon_uptake": 7,
+            "health_of_garden": 7
         }
     },
     {
@@ -315,9 +315,9 @@
             "description": "For a more refined garden",
             "image": "inventory/items/transport_5.png",
             "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "habitat": 2,
+            "carbon_uptake": 3,
+            "health_of_garden": 1
         }
     },
     {
@@ -336,10 +336,10 @@
             "name": "Boots",
             "description": "They get the work done",
             "image": "inventory/items/transport_6.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 4,
+            "habitat": 8,
+            "carbon_uptake": 3,
+            "health_of_garden": 7
         }
     },
     {
@@ -358,10 +358,10 @@
             "name": "School shoes",
             "description": "A plant sprouting from your year 4 school shoes.",
             "image": "inventory/items/transport_7.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 3,
+            "habitat": 4,
+            "carbon_uptake": 3,
+            "health_of_garden": 3
         }
     },
     {
@@ -380,10 +380,10 @@
             "name": "Magic sandals",
             "description": "They provide a bare bone look into the plant world",
             "image": "inventory/items/transport_8.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 1,
+            "habitat": 1,
+            "carbon_uptake": 1,
+            "health_of_garden": 10
         }
     },
     {
@@ -402,10 +402,10 @@
             "name": "Converse",
             "description": "A casual look to the garden world",
             "image": "inventory/items/transport_9.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 7,
+            "habitat": 4,
+            "carbon_uptake": 7,
+            "health_of_garden": 5
         }
     },
     {
@@ -424,10 +424,10 @@
             "name": "Wellington boots",
             "description": "For the dirty work.",
             "image": "inventory/items/transport_10.png",
-            "aesthetic_appeal": 9,
-            "habitat": 9,
-            "carbon_uptake": 9,
-            "health_of_garden": 9
+            "aesthetic_appeal": 4,
+            "habitat": 10,
+            "carbon_uptake": 3,
+            "health_of_garden": 3
         }
     },
     {
@@ -443,13 +443,13 @@
         "model": "inventory.lootboxitem",
         "pk": 21,
         "fields": {
-            "name": "Grey Bin",
-            "description": "Bad grey bin",
-            "image": "inventory/items/grey_bin.png",
-            "aesthetic_appeal": 7,
+            "name": "King Bin",
+            "description": "The almighty golden bing",
+            "image": "inventory/items/bingame_1.png",
+            "aesthetic_appeal": 10,
             "habitat": 7,
-            "carbon_uptake": 7,
-            "waste_reduction": 7
+            "carbon_uptake": 0,
+            "waste_reduction": 10
         }
     },
     {
@@ -458,20 +458,20 @@
         "fields": {
             "lootbox_template": 1,
             "item": 21,
-            "probability": 0.3
+            "probability": 0.01
         }
     },
     {
         "model": "inventory.lootboxitem",
         "pk": 22,
         "fields": {
-            "name": "Gold Bin",
-            "description": "Gold grey bin",
-            "image": "inventory/items/gold_bin.png",
-            "aesthetic_appeal": 4,
-            "habitat": 4,
-            "carbon_uptake": 4,
-            "waste_reduction": 4
+            "name": "Silver bin",
+            "description": "The second place, is still majestic in silver. ",
+            "image": "inventory/items/bingame_2.png",
+            "aesthetic_appeal": 7,
+            "habitat": 7,
+            "carbon_uptake": 0,
+            "waste_reduction": 8
         }
     },
     {
@@ -480,7 +480,183 @@
         "fields": {
             "lootbox_template": 1,
             "item": 22,
-            "probability": 0.7
+            "probability": 0.03
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 23,
+        "fields": {
+            "name": "Green Bin",
+            "description": "The green bin for our green world",
+            "image": "inventory/items/bingame_3.png",
+            "aesthetic_appeal": 4,
+            "habitat": 7,
+            "carbon_uptake": 0,
+            "waste_reduction": 8
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 23,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 23,
+            "probability": 0.03
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 24,
+        "fields": {
+            "name": "Gothic Bin",
+            "description": "For the Raymond fans (it crowd)",
+            "image": "inventory/items/bingame_4.png",
+            "aesthetic_appeal": 2,
+            "habitat": 7,
+            "carbon_uptake": 0,
+            "waste_reduction": 8
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 24,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 24,
+            "probability": 0.03
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 25,
+        "fields": {
+            "name": "Yellow Bin",
+            "description": "Bright like the sun, shining upon gardens everywhere.",
+            "image": "inventory/items/bingame_5.png",
+            "aesthetic_appeal": 6,
+            "habitat": 7,
+            "carbon_uptake": 0,
+            "waste_reduction": 6
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 25,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 25,
+            "probability": 0.09
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 26,
+        "fields": {
+            "name": "Red Bin",
+            "description": "The red bin, for the red planet.",
+            "image": "inventory/items/bingame_6.png",
+            "aesthetic_appeal": 5,
+            "habitat": 7,
+            "carbon_uptake": 0,
+            "waste_reduction": 5
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 26,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 26,
+            "probability": 0.09
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 27,
+        "fields": {
+            "name": "Purple Bin",
+            "description": "Purple bin, suitable for aliens.",
+            "image": "inventory/items/bingame_7.png",
+            "aesthetic_appeal": 4,
+            "habitat": 6,
+            "carbon_uptake": 0,
+            "waste_reduction": 4
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 27,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 27,
+            "probability": 0.12
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 28,
+        "fields": {
+            "name": "Aqua Bin",
+            "description": "The sea bin, for the oceanic waste.",
+            "image": "inventory/items/bingame_8.png",
+            "aesthetic_appeal": 4,
+            "habitat": 4,
+            "carbon_uptake": 4,
+            "waste_reduction": 4
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 28,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 28,
+            "probability": 0.2
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 29,
+        "fields": {
+            "name": "Trash Bag",
+            "description": "A little bit smelly",
+            "image": "inventory/items/bingame_9.png",
+            "aesthetic_appeal": 1,
+            "habitat": 2,
+            "carbon_uptake": 0,
+            "waste_reduction": 2
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 29,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 29,
+            "probability": 0.2
+        }
+    },
+    {
+        "model": "inventory.lootboxitem",
+        "pk": 30,
+        "fields": {
+            "name": "Trash heap",
+            "description": "Rubbish",
+            "image": "inventory/items/bingame_10.png",
+            "aesthetic_appeal": 0,
+            "habitat": 1,
+            "carbon_uptake": 0,
+            "waste_reduction": 1
+        }
+    },
+    {
+        "model": "inventory.lootboxcontents",
+        "pk": 30,
+        "fields": {
+            "lootbox_template": 1,
+            "item": 30,
+            "probability": 0.2
         }
     }
 ]

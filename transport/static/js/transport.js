@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("error-popup").style.display = "none";
     });
 
-        // --------------------------------------------------
+    // --------------------------------------------------
     // Lootbox popup
     // --------------------------------------------------
 

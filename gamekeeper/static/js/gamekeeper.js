@@ -224,19 +224,6 @@ document.addEventListener("DOMContentLoaded", function () {
         Bingame
     -------------------------------------------------- */
 
-    // <div class="gamekeeper-section-task gamekeeper-sub-section">
-    //             <h3>Add bin game entries into the database</h3>
-    //             <form id="bingame-form">
-    //                 <label for="bingame-item-picture">Item Picture</label>
-    //                 <input type="file" id="bingame-item-picture" name="item_picture" required>
-    //                 <label for="bingame-item-name">Item Name</label>
-    //                 <input type="text" id="bingame-item-name" placeholder="Item name" name="item_name" required>
-    //                 <label for="bingame-item-bin-id">Bin Id</label>
-    //                 <input type="text" id="bingame-item-bin-id" placeholder="Bin id" name="item_bin_id" required>
-    //                 <button type="bingame-add-button">Submit</button>
-    //             </form>
-    //         </div>
-
     /* ----------
         Add bingame item to database
     ---------- */
@@ -427,6 +414,108 @@ document.addEventListener("DOMContentLoaded", function () {
     /* --------------------------------------------------
         Forum
     -------------------------------------------------- */
+    
+    function loadReportedPosts() {
+        fetch("/get-reported-posts/")
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("reported-posts-select");
+            select.innerHTML = `<option value="">Select a reported post</option>`;
+            data.reported_posts.forEach(post => {
+                const option = document.createElement("option");
+                option.value = post.post_id;
+                option.textContent = `Post ${post.post_id} by ${post.user_email} - ${post.description.substring(0,30)}...`;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Error loading reported posts:", error));
+    }
+    
+    function loadReportedPostDetails(postId) {
+        fetch(`/get-reported-post-details/${postId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.post) {
+                const container = document.getElementById("reported-post-details");
+                container.innerHTML = `
+                    <h3>Post Details</h3>
+                    <p>User: ${data.post.user_email}</p>
+                    <p>Description: ${data.post.description}</p>
+                    <p>Created at: ${data.post.created_at}</p>
+                    ${data.post.image_url ? `<img src="${data.post.image_url}" alt="Post image">` : ""}
+                `;
+            }
+        })
+        .catch(error => console.error("Error loading post details:", error));
+    }
+    
+    function clearReportedPostDetails() {
+        const container = document.getElementById("reported-post-details");
+        container.innerHTML = "";
+    }
+    
+    function deleteReportedPost(postId) {
+        fetch(`/delete-reported-post/${postId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            loadReportedPosts();
+            clearReportedPostDetails();
+        })
+        .catch(error => console.error("Error deleting reported post:", error));
+    }
+    
+    function deleteReport(postId) {
+        fetch(`/delete-report/${postId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            loadReportedPosts();
+            clearReportedPostDetails();
+        })
+        .catch(error => console.error("Error deleting report:", error));
+    }    
+
+    loadReportedPosts();
+
+    const reportedPostsSelect = document.getElementById("reported-posts-select");
+    reportedPostsSelect.addEventListener("change", function() {
+        const postId = this.value;
+        if (postId) {
+            loadReportedPostDetails(postId);
+        } else {
+            clearReportedPostDetails();
+        }
+    });
+
+    document.getElementById("delete-post-btn").addEventListener("click", () => {
+        const postId = reportedPostsSelect.value;
+        if (postId && confirm("Are you sure you want to delete this post? This will remove the post and its reports.")) {
+            deleteReportedPost(postId);
+        }
+    });
+
+    document.getElementById("delete-report-btn").addEventListener("click", () => {
+        const postId = reportedPostsSelect.value;
+        if (postId && confirm("Are you sure you want to delete the report(s) for this post? The post will remain visible.")) {
+            deleteReport(postId);
+        }
+    });                         
+    
 
     /* --------------------------------------------------
         Shop

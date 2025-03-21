@@ -10,11 +10,11 @@ class Command(BaseCommand):
         subprocess.run([sys.executable, "manage.py", "migrate"], check=True)
 
         fixtures = [
-            "inventory/fixtures/lootbox_templates_fixture.json",
-            "bingame/fixtures/bingame_fixture.json",
-            "shop/fixtures/shop_fixture.json",
-            "inventory/fixtures/lootbox_contents_fixture.json",
-            "challenges/fixtures/challenges.json",
+            "fixtures/inventory/lootbox_templates_fixture.json",
+            "fixtures/bingame/bingame_fixture.json",
+            "fixtures/shop/shop_fixture.json",
+            "fixtures/inventory/lootbox_contents_fixture.json",
+            "fixtures/challenges/challenges.json",
         ]
 
         for fixture in fixtures:
