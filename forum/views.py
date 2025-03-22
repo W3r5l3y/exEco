@@ -112,6 +112,11 @@ def add_comment(request, post_id):
         return JsonResponse(
             {"success": True, "text": comment.text, "user_email": comment.user.email}
         )
+
+    # Update forum points for the post's user
+    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
+    user_points.update_forum_points()
+
     return JsonResponse({"success": False})
 
 
@@ -138,6 +143,10 @@ def edit_post(request, post_id):
     post.description = new_description
     post.save()
 
+    # Update forum points for the post's user
+    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
+    user_points.update_forum_points()
+
     return JsonResponse({"success": True, "message": "Post updated successfully"})
 
 
@@ -150,4 +159,9 @@ def delete_post(request, post_id):
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
     post.delete()
+
+    # Update forum points for the post's user
+    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
+    user_points.update_forum_points()
+
     return JsonResponse({"success": True, "message": "Post deleted successfully"})
