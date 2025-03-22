@@ -58,7 +58,6 @@
             
                 {% if location_name %}
                     <p><strong>Location Name:</strong> <strong>{{ location_name }}</strong></p>
-                    <p>Fact: {{ location_fact }}</p>
                     <p>Times Scanned: {{ location_times_visited }}</p>
                     <p>Point Value: {{ location_value }}</p>
                 {% endif %}
@@ -76,7 +75,10 @@
             <span class="close" id="close-qr-popup">&times;</span>
             {% if location_name %}
                 <h2>{{ location_name }}</h2>
-                <p>{{ location_fact }}</p>
+                {% if location_image %}
+                    <img src="{{ location_image }}" style="max-width: 100%; height: auto; margin-top: 10px;"> <!-- IMAGE IN POP UP NEEDS STYLING/SCALING -->
+                {% endif %}
+                <p><strong>Fact:</strong> {{ location_fact }}</p>
             {% endif %}
         </div>
     </div>
