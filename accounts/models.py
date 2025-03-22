@@ -142,4 +142,4 @@ class UserCoins(models.Model):
 def calculate_logarithmic_points(likes):
     if likes <= 0:
         return 0
-    return math.floor(5 * math.log2(likes + 1))
+    return math.floor(5 * math.log2(likes + 1))  # Adjust as necessary
