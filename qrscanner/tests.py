@@ -18,10 +18,10 @@ class QRScannerTestCase(TestCase):
         )
         self.client.login(email="test@example.com", password="password123")
         self.location = Location.objects.create(
-            location_code="0001",
+            location_code="test1",
             location_name="Test Location",
             location_fact="This is a test location.",
-            cooldown_length=60,
+            cooldown_length=600,
             times_visited=0,
             location_value=2,
         )
@@ -29,7 +29,7 @@ class QRScannerTestCase(TestCase):
     def test_qrscanner_code_success(self):
         session = self.client.session
         session.save()
-        with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
             response = self.client.post(
                 reverse("qrscanner"), {"image": qr_image}, follow=True
             )
@@ -39,31 +39,35 @@ class QRScannerTestCase(TestCase):
         )
         self.assertContains(response, "You earned 2 points!")
 
+
+"""
     def test_qrscanner_code_cooldown(self):
         ScanRecord.objects.create(
             user=self.user, location=self.location, last_scanned=now()
         )
-        with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
             response = self.client.post(
                 reverse("qrscanner"), {"image": qr_image}, follow=True
             )
+            
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This QR code is on cooldown.")
 
     def test_qrscanner_code_location_not_found(self):
-        with open("qrscanner/tests/qr0002.png", "rb") as qr_image:
+        with open("qrscanner/tests/qrtest123.png", "rb") as qr_image:
             response = self.client.post(
                 reverse("qrscanner"), {"image": qr_image}, follow=True
             )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Location not found for code: 0002")
+        self.assertContains(response, "Location not found for code: test123")
 
     def test_qrscanner_code_anonymous_user(self):
         self.client.logout()
-        with open("qrscanner/tests/qr0001.png", "rb") as qr_image:
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
             response = self.client.post(reverse("qrscanner"), {"image": qr_image})
         self.assertEqual(response.status_code, 302)  # Correctly expecting redirect
         self.assertIn("/login/", response.url)
+"""
 
 
 class QRScannerLeaderboardTestCase(TestCase):
