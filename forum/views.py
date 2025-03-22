@@ -6,9 +6,10 @@ from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from .models import Post, PostLike, Comment, PostReport
 from .forms import PostForm
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UserPoints
 from django.contrib import messages
-from challenges.models import UserChallenge 
+from challenges.models import UserChallenge
+
 
 def forum_home(request):
     post_id = request.GET.get("post_id")
@@ -38,7 +39,7 @@ def create_post(request):
                 if user_challenge.progress >= user_challenge.challenge.goal:
                     user_challenge.completed = True
                 user_challenge.save()
-            
+
             return redirect("forum_home")
 
     return render(request, "forum/create_post.html", {"active_page": "create_post"})
@@ -49,14 +50,22 @@ def create_post(request):
 def like_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
     post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
+
     if not created:
         post_like.liked = not post_like.liked
         post_like.save()
     else:
         post_like.liked = True
         post_like.save()
+
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
+
+    # Update forum points for the post's user
+    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
+    user_points.update_forum_points()
+    print(user_points.forum_points)
+
     return JsonResponse(
         {"success": True, "likes": post.likes, "liked": post_like.liked}
     )
@@ -65,15 +74,15 @@ def like_post(request, post_id):
 @login_required
 def report_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
-    
+
     # Check if the report already exists
     report, created = PostReport.objects.get_or_create(user=request.user, post=post)
-    
+
     if created:
         messages.success(request, "Post reported successfully.")
     else:
         messages.info(request, "You have already reported this post.")
-    
+
     return redirect("forum_home")
 
 
@@ -114,17 +123,22 @@ def edit_post(request, post_id):
     if post.user != request.user:
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
-    data = request.POST if request.content_type == "application/x-www-form-urlencoded" else request.json()
+    data = (
+        request.POST
+        if request.content_type == "application/x-www-form-urlencoded"
+        else request.json()
+    )
     new_description = data.get("description", "").strip()
 
     if not new_description:
-        return JsonResponse({"success": False, "error": "Description cannot be empty"}, status=400)
+        return JsonResponse(
+            {"success": False, "error": "Description cannot be empty"}, status=400
+        )
 
     post.description = new_description
     post.save()
 
     return JsonResponse({"success": True, "message": "Post updated successfully"})
-
 
 
 @login_required
@@ -137,4 +151,3 @@ def delete_post(request, post_id):
 
     post.delete()
     return JsonResponse({"success": True, "message": "Post deleted successfully"})
-

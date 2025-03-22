@@ -26,6 +26,7 @@ def get_total_leaderboard(request):
                 total_points=F("bingame_points")
                 + F("qrscanner_points")
                 + F("transport_points")
+                + F("forum_points")
             )
             .order_by("-total_points")
             .values("user_id", "total_points")[:10]

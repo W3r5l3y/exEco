@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.conf import settings
+import math
+from django.db.models import Sum
 
 
 class CustomUserManager(BaseUserManager):
@@ -26,7 +28,9 @@ class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    profile_picture = models.ImageField(
+        upload_to="profile_pics/", null=True, blank=True
+    )
     password = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -55,10 +59,16 @@ class UserPoints(models.Model):
     bingame_points = models.IntegerField(default=0)
     qrscanner_points = models.IntegerField(default=0)
     transport_points = models.IntegerField(default=0)
+    forum_points = models.IntegerField(default=0)  # Add forum points field
 
     @property
     def total_points(self):
-        return self.bingame_points + self.qrscanner_points + self.transport_points
+        return (
+            self.bingame_points
+            + self.qrscanner_points
+            + self.transport_points
+            + self.forum_points
+        )
 
     def add_points(self, points=1, category="bingame"):
         # Check if the users points wont go below 0. If they do return False. If true perform the add and return true.
@@ -70,10 +80,10 @@ class UserPoints(models.Model):
             self.transport_points += points
         else:
             return False
-        
+
         self.save()
-        return True 
-    
+        return True
+
     def __str__(self):
         # Example: "john@example.com - Total: 20 (bingame=5, qr=10, transport=5)"
         return (
@@ -94,7 +104,20 @@ class UserPoints(models.Model):
     def add_transport_points(self, points=1):
         self.transport_points += points
         self.save()
-        
+
+    def update_forum_points(self):
+        from forum.models import Post
+
+        posts = Post.objects.filter(user=self.user)
+        total_points = 0
+
+        for post in posts:
+            total_points += calculate_logarithmic_points(post.likes)
+
+        self.forum_points = total_points
+        self.save()
+
+
 class UserCoins(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True
@@ -114,3 +137,9 @@ class UserCoins(models.Model):
 
     def __str__(self):
         return f"{self.user.id} - {self.coins} coins"
+
+
+def calculate_logarithmic_points(likes):
+    if likes <= 0:
+        return 0
+    return math.floor(10 * math.log2(likes + 1))  # Adjust the multiplier (10) as needed
