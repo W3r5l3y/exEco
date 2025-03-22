@@ -16,8 +16,8 @@ def populate_qr_locations(apps, schema_editor):
             "location_value": 10,
             "is_active": True,
             "image": "qrscanner/locations/0001.png",
-            "Latitude": 50.7352134,
-            "Longitude": -3.5335332,
+            "latitude": 50.7352134,
+            "longitude": -3.5335332,
         },
         {
             "location_code": "0002",
@@ -27,8 +27,8 @@ def populate_qr_locations(apps, schema_editor):
             "location_value": 15,
             "is_active": True,
             "image": "qrscanner/locations/0002.png",
-            "Latitude": 50.7341376,
-            "Longitude": -3.5378137,
+            "latitude": 50.7341376,
+            "longitude": -3.5378137,
         },
     ]
     for location in locations:
