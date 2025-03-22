@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from .models import Post, PostLike, Comment, PostReport
 from .forms import PostForm
-from accounts.models import CustomUser, UserPoints
+from accounts.models import CustomUser, UserPoints, UserCoins
 from django.contrib import messages
 from challenges.models import UserChallenge
 
@@ -30,6 +30,11 @@ def create_post(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+
+            # Add coins to the user
+            user_coins, _ = UserCoins.objects.get_or_create(user=request.user)
+            user_coins.add_coins(10)  # Example: Add 10 coins for creating a post
+
             # Update Challenge Progress
             user_challenges = UserChallenge.objects.filter(
                 user=request.user, challenge__game_category="forum", completed=False
@@ -60,6 +65,10 @@ def like_post(request, post_id):
 
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
     post.save()
+
+    # Add coins to the post's user
+    user_coins, _ = UserCoins.objects.get_or_create(user=post.user)
+    user_coins.add_coins(5)  # Example: Add 5 coins for receiving a like
 
     # Update forum points for the post's user
     user_points, _ = UserPoints.objects.get_or_create(user=post.user)
@@ -109,6 +118,11 @@ def add_comment(request, post_id):
     text = request.POST.get("text")
     if text:
         comment = Comment.objects.create(user=request.user, post=post, text=text)
+
+        # Add coins to the user who commented
+        user_coins, _ = UserCoins.objects.get_or_create(user=request.user)
+        user_coins.add_coins(3)  # Example: Add 3 coins for adding a comment
+
         return JsonResponse(
             {"success": True, "text": comment.text, "user_email": comment.user.email}
         )
