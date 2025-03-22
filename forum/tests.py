@@ -8,12 +8,18 @@ User = get_user_model()
 
 class ForumTests(TestCase):
     def setUp(self):
-        # Create test users
+        # Create test users with required fields
         self.user1 = User.objects.create_user(
-            email="user1@example.com", password="password123"
+            email="user1@example.com",
+            password="password123",
+            first_name="User",
+            last_name="One",
         )
         self.user2 = User.objects.create_user(
-            email="user2@example.com", password="password123"
+            email="user2@example.com",
+            password="password123",
+            first_name="User",
+            last_name="Two",
         )
 
         # Create a test post
