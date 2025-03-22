@@ -12,6 +12,8 @@ class Location(models.Model):
     location_value = models.IntegerField(default=1)  # Amount of points awarded
     is_active = models.BooleanField(default=True)
     image = models.ImageField(upload_to="qrscanner/locations/", blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
 
     @classmethod
     def addLocation(
@@ -22,6 +24,8 @@ class Location(models.Model):
         cooldown_length=0,
         location_value=5,
         image=None,
+        latitude=None,
+        longitude=None,
     ):
         location, created = cls.objects.get_or_create(
             location_code=location_code,
@@ -31,6 +35,8 @@ class Location(models.Model):
                 "cooldown_length": cooldown_length,
                 "location_value": location_value,
                 "image": image,
+                "latitude": latitude,
+                "longitude": longitude,
             },
         )
 
