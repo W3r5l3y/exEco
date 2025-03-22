@@ -76,7 +76,7 @@
             {% if location_name %}
                 <h2>{{ location_name }}</h2>
                 {% if location_image %}
-                    <img src="{{ location_image }}" style="max-width: 100%; height: auto; margin-top: 10px;"> <!-- IMAGE IN POP UP NEEDS STYLING/SCALING -->
+                    <img id="location-image" src="{{ location_image }}"> <!-- IMAGE IN POP UP NEEDS STYLING/SCALING -->
                 {% endif %}
                 <p><strong>Fact:</strong> {{ location_fact }}</p>
             {% endif %}

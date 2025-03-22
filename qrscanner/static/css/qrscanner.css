@@ -284,6 +284,15 @@ h3 {
     margin-bottom: 10px;
 }
 
+#location-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    object-fit: cover;
+    border-radius: 10px;
+    
+}
+
 @keyframes popup-animation { /* Animation for the popup */
     from {
         opacity: 0;
