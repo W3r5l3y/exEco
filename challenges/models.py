@@ -24,7 +24,8 @@ class Challenge(models.Model):
     reward = models.PositiveIntegerField(default=10)
     challenge_type = models.CharField(max_length=10, choices=CHALLENGE_TYPES)
     game_category = models.CharField(max_length=20, choices=GAME_CATEGORIES, default="general")
-    goal = models.IntegerField(default=1)  # The target number required to complete the challenge
+    # The target number required to complete the challenge
+    goal = models.IntegerField(default=1)  
 
     def __str__(self):
         return f"{self.description} ({self.challenge_type} - {self.game_category})"
@@ -34,7 +35,8 @@ class UserChallenge(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
-    progress = models.IntegerField(default=0)  # Track how far the user has progressed toward completion
+    # Track how far the user has progressed toward completion
+    progress = models.IntegerField(default=0)  
 
     def __str__(self):
         return f"{self.user.email} - {self.challenge.description} - {self.progress}/{self.challenge.goal} {'(Completed)' if self.completed else '(In Progress)'}"
