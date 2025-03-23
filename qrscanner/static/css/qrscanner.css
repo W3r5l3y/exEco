@@ -1,9 +1,6 @@
-/*:root {
-    --primary_colour: #003b3c;
-    --accessories_colour: #00c592;
-    --display_colour: #002727;
-    --neutral_colour: #fff;
-}*/
+/* --------------------------------------------------
+    General Styles
+-------------------------------------------------- */
 
 * {
     margin: 0;
@@ -198,7 +195,7 @@ h3 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent dark overlay */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -261,7 +258,7 @@ h3 {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     overflow: auto; /* Scroll if necessary */
-    padding-top: 60px; /* Positioning for the popup */
+    padding-top: 60px;
 }
 
 .popup-content {
@@ -310,7 +307,7 @@ h3 {
     }
 }
 
-/* Close button styles */
+/* Close button */
 .close {
     color: #aaa;
     float: right;

@@ -144,8 +144,8 @@ def qrscanner(request):
 
     lootboxes_to_reward = request.session.pop(
         "lootboxes_to_reward", 0
-    )  # CHANGED: get lootboxes from session
-    message = request.session.pop("message", "")  # CHANGED: get message from session
+    )
+    message = request.session.pop("message", "")
 
     location_name = request.session.pop("location_name", None)
     location_fact = request.session.pop("location_fact", None)
@@ -195,6 +195,7 @@ def get_qrscanner_leaderboard(request):
 
 
 def locations_json(request):
+    # Get all active locations with their details
     locations = Location.objects.filter(
         is_active=True, latitude__isnull=False, longitude__isnull=False
     )

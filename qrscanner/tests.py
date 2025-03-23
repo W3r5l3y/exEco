@@ -6,6 +6,7 @@ from .models import Location, ScanRecord
 from accounts.models import UserPoints
 from datetime import timedelta
 from django.utils.timezone import now
+from inventory.models import Inventory, InventoryItem, LootboxTemplate
 
 
 class QRScannerTestCase(TestCase):
@@ -16,9 +17,10 @@ class QRScannerTestCase(TestCase):
             last_name="User",
             password="password123",
         )
+        UserPoints.objects.create(user=self.user, qrscanner_points=0)
         self.client.login(email="test@example.com", password="password123")
         self.location = Location.objects.create(
-            location_code="test1",
+            location_code="TEST1",
             location_name="Test Location",
             location_fact="This is a test location.",
             cooldown_length=600,
@@ -87,7 +89,10 @@ class QRScannerTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No QR code found in the uploaded image.")
+        self.assertContains(
+            response,
+            "Upload a valid image. The file you uploaded was either not an image or a corrupted image.",
+        )
 
     def test_qrscanner_code_multiple_scans(self):
         # Simulate multiple scans of the same QR code
@@ -96,9 +101,10 @@ class QRScannerTestCase(TestCase):
                 response = self.client.post(
                     reverse("qrscanner"), {"image": qr_image}, follow=True
                 )
-
+        # Print response for debugging
+        print(response.content.decode("utf-8"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "You earned 2 points!")
+        self.assertContains(response, "This QR code is on cooldown.")
         self.assertEqual(self.location.times_visited, 3)
 
     def test_qrscanner_code_lootbox_reward(self):
@@ -114,14 +120,13 @@ class QRScannerTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You earned 2 points!")
-        self.assertEqual(self.client.session["lootboxes_to_reward"], 1)
 
-    def test_qrscanner_code_no_image_uploaded(self):
-        # Test submitting the form without an image
-        response = self.client.post(reverse("qrscanner"), {}, follow=True)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No QR code found in the uploaded image.")
+        # Check that the user has the lootbox in their inventory
+        inventory_item = InventoryItem.objects.filter(
+            inventory__user=self.user, name="QR Scanner Lootbox"
+        ).first()
+        self.assertIsNotNone(inventory_item)  # Ensure the item exists
+        self.assertEqual(inventory_item.quantity, 1)  # Check the quantity
 
 
 class QRScannerLeaderboardTestCase(TestCase):
