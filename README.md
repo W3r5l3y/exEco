@@ -1,6 +1,20 @@
 # exEco
 
-exEco is a Django-based sustainability application for the University of Exeter, designed to promote and track sustainable practices in a fun and engaging way.
+exEco is a Django-based sustainability application designed for the University of Exeter. It promotes and tracks sustainable practices in an engaging and interactive way, combining gamification elements with educational content.
+
+---
+
+## **Features**
+
+- **Forum**: A discussion board for users to share ideas and engage in sustainability-related conversations.
+- **Garden**: A 9x9 grid-based feature where users can design and maintain a virtual garden, reflecting their sustainability efforts.
+- **Bin Game**: A fun and educational game to teach proper waste segregation.
+- **Transport Tracking**: Strava-linked functionality to track eco-friendly transport activities like walking, cycling, and running.
+- **QR Scanner**: Scan QR codes at specific locations to learn about sustainability efforts and earn rewards.
+- **Shop**: An in-game shop for users to redeem rewards.
+- **Leaderboard**: Compete with others by earning points through sustainable actions.
+
+---
 
 ## **Project Setup**
 
@@ -41,11 +55,11 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-#### **5. Load Fixtures
+#### **5. Load Fixtures**
 
-````sh
+```sh
 python manage.py load_fixtures
-````
+```
 
 #### **6. Run the Development Server**
 
@@ -53,42 +67,42 @@ python manage.py load_fixtures
 python manage.py runserver
 ```
 
-The app will be available at **http://127.0.0.1:8000/**.
+The app will be available at **http://TBD.com**.
 
 ---
 
-## **Project Structure WIP**
+## **Project Structure**
 
 ```
 EXEco/
-│── .github/         # GitHub-specific files (workflows, issue templates, etc.)
-│── .vscode/         # VS Code settings
-│── accounts/        # User authentication and account management
-│── bingame/         # Bingo game-related functionality
-│── challenges/      # Challenge-related features
-│── contact/         # Contact page or support-related functionality
-│── dashboard/       # User dashboard and main navigation
-│── EXEco/           # Core Django project settings and configuration
-│── fixtures/        # Predefined database data for testing
-│── forum/           # Forum or discussion board
-│── gamekeeper/      # Game-related state management
-│── garden/          # Garden feature (9x9 grid persistence)
-│── inventory/       # User inventory management
-│── media/           # Media file storage (uploads, images, etc.)
-│── qrscanner/       # QR code scanning functionality
-│── shop/            # In-game or e-commerce shop features
-│── static/          # Static files (CSS, JS, Images)
-│── templates/       # HTML templates for rendering views
-│── transport/       # Strava-linked transport tracking features
-│── venv/            # Virtual environment (dependencies)
-│── .env             # Environment variables (not tracked in Git)
-│── .gitignore       # Git ignore file
-│── db.sqlite3       # SQLite database file
-│── LICENSE          # Project license
-│── manage.py        # Django project management script
-│── README.md        # Project documentation
-│── requirements.txt # Python dependencies
+├── .github/         # GitHub-specific files (workflows, issue templates, etc.)
+├── .vscode/         # VS Code settings
+├── accounts/        # User authentication and account management
+├── bingame/         # Bingo game-related functionality
+├── challenges/      # Challenge-related features
+├── contact/         # Contact page or support-related functionality
+├── dashboard/       # User dashboard and main navigation
+├── EXEco/           # Core Django project settings and configuration
+├── fixtures/        # Predefined database data for testing
+├── forum/           # Forum or discussion board
+├── gamekeeper/      # Game-related state management
+├── garden/          # Garden feature (9x9 grid persistence)
+├── inventory/       # User inventory management
+├── media/           # Media file storage (uploads, images, etc.)
+├── qrscanner/       # QR code scanning functionality
+├── shop/            # In-game or e-commerce shop features
+├── static/          # Static files (CSS, JS, Images)
+├── templates/       # HTML templates for rendering views
+├── transport/       # Strava-linked transport tracking features
+├── .gitignore       # Git ignore file
+├── db.sqlite3       # SQLite database file
+├── LICENSE          # Project license
+├── manage.py        # Django project management script
+├── README.md        # Project documentation
+└── requirements.txt # Python dependencies
 ```
+
+---
 
 ## **License**
 
