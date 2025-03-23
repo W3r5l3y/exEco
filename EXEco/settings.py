@@ -181,3 +181,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    "https://execo-production.up.railway.app/",
+]
