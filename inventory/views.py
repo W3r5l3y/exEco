@@ -1,12 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import random
-from django.contrib import messages
-from .models import Inventory, InventoryItem, LootboxContents, LootboxTemplate
+from .models import Inventory, LootboxContents
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.conf import settings
-from django.templatetags.static import static
-# Create your views here.
 
 @login_required
 def inventory_view(request):
@@ -106,11 +102,13 @@ def open_lootbox(request, lootbox_id):
 
 @login_required
 def get_inventory(request):
+    # Get the user's inventory
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     items = inventory.items.all()
     return render(request, 'inventory/partials/inventory_list.html', {'items': items})
 
 def get_corresponding_lootbox_template(item):
+    # Find the corresponding lootbox template for this item
     lootbox_contents = LootboxContents.objects.filter(item__name=item.name)
     if lootbox_contents.count() == 1:
         return lootbox_contents.first().lootbox_template
@@ -142,7 +140,6 @@ def merge_item(request, item_id):
     if not lootbox_template:
         return JsonResponse({"error": "No corresponding lootbox found for this item"}, status=400)
     
-    # Option 1: Use the addLootbox helper method from your Inventory model
     inventory.addLootbox(lootbox_template, quantity=1)
     
     return JsonResponse({"success": True, "message": "Merge successful, lootbox added to your inventory."})

@@ -1,16 +1,16 @@
 from django.db import models
-#from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Inventory Table - Links each user to their inventory
+# Inventory - Stores all items owned by a user
 class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    # Add an item to the inventory
     def addItem(self, name, image=None, item_type="regular", description=None, quantity=1, stats=None):
         print(f"Adding item to inventory: {name}, {quantity}")
-        #Add an item to the user inventory, if it already exists add 1 to quantity
+        # If the item already exists in the inventory, add the quantity
         if quantity < 1:
             return False  # Prevent adding zero or negative quantities
 
@@ -34,17 +34,17 @@ class Inventory(models.Model):
         if not created:
             item.quantity += quantity
             item.save()
-        #print(f"Item added to inventory: {item.name}, {item.quantity}") #DEBUG
         return item
 
+    # Add a lootbox to the inventory
     def addLootbox(self, lootbox_template, quantity=1):
-        #Add lootbox to a user inventory, if it exists already add 1 to quantity 
+        # If the lootbox already exists in the inventory, add the quantity
         if quantity < 1:
-            return False  # Prevent invalid quantity
+            return False  # Prevent adding zero or negative quantities
 
         lootbox, created = InventoryItem.objects.get_or_create(
             inventory=self,
-            name=lootbox_template.name,  # Assuming lootbox template has a name
+            name=lootbox_template.name,
             defaults={"image": lootbox_template.lootbox_image, "item_type": "lootbox", "quantity": quantity, "lootbox_template": lootbox_template}
         )
         if not created:

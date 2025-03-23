@@ -36,22 +36,6 @@
                                 {% else %}
                                     {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
                                 {% endif %}
-
-                        <!-- 
-                        {% if user_challenge.completed %}
-                        <button class="submit-btn" disabled>Completed</button>
-                    {% else %}
-                        {% if user_challenge.challenge.goal == 1 %}
-                            <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                        {% else %}
-                            {% if user_challenge.progress >= user_challenge.challenge.goal %}
-                                <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                            {% else %}
-                                <button class="submit-btn" disabled>In Progress</button>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}-->
-                    
                     </div>
                     {% empty %}
                         <p>No daily challenges available.</p>
@@ -79,21 +63,6 @@
                                 {% else %}
                                     {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
                                 {% endif %}
-
-                        <!--  Submit button if needed
-                        {% if user_challenge.completed %}
-                        <button class="submit-btn" disabled>Completed</button>
-                    {% else %}
-                        {% if user_challenge.challenge.goal == 1 %}
-                            <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                        {% else %}
-                            {% if user_challenge.progress >= user_challenge.challenge.goal %}
-                                <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                            {% else %}
-                                <button class="submit-btn" disabled>In Progress</button>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}-->
                     
                     </div>
                     {% empty %}
@@ -120,21 +89,6 @@
                                     {{ user_challenge.progress }} / {{ user_challenge.challenge.goal }}
                                 {% endif %}
 
-                        <!-- 
-                        {% if user_challenge.completed %}
-                            <button class="submit-btn" disabled>Completed</button>
-                        {% else %}
-                            {% if user_challenge.challenge.goal == 1 %}
-                                <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                            {% else %}
-                                {% if user_challenge.progress >= user_challenge.challenge.goal %}
-                                    <button class="submit-btn" data-challenge-id="{{ user_challenge.challenge.id }}">Submit</button>
-                                {% else %}
-                                    <button class="submit-btn" disabled>In Progress</button>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                        -->
                     </div>
                     {% empty %}
                         <p>No lifetime challenges available.</p>

@@ -57,22 +57,23 @@ def update_leaderboard(request):
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
-
-            lootbox_id = None  # Default value
+            lootbox_id = None
+            # If the user has earned lootboxes, add them to the inventory
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                 user_inventory.addLootbox(
                     lootbox_template, quantity=lootboxes_to_reward
                 )
-                lootbox_id = lootbox_template.lootbox_id  # Return the actual lootbox id
+                # Return the actual lootbox id
+                lootbox_id = lootbox_template.lootbox_id
 
             return JsonResponse(
                 {
                     "status": "success",
                     "new_score": user_points.bingame_points,
                     "lootboxes_to_reward": lootboxes_to_reward,
-                    "lootbox_id": lootbox_id,  # Now included in the response
+                    "lootbox_id": lootbox_id,
                 }
             )
         except Exception as e:
@@ -89,15 +90,13 @@ def get_bingame_leaderboard(request):
         user_points = UserPoints.objects.order_by("-bingame_points").values(
             "user_id", "bingame_points"
         )[:10]
-
         # Get the username of each user
         for entry in user_points:
             user = CustomUser.objects.get(id=entry["user_id"])
             entry["username"] = f"{user.first_name} {user.last_name}"
             del entry["user_id"]
-
-        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
-
+        # Return the data as a JSON
+        return JsonResponse(list(user_points), safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
@@ -119,10 +118,10 @@ def fetch_random_items(request):
                 ),
             }
         )
-
     return JsonResponse({"items": item_data})
 
 
+@login_required
 def get_lootbox_data(request):
     # Get the lootbox_id from the GET parameters
     lootbox_id = request.GET.get("lootbox_id")

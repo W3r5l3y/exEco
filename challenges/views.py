@@ -17,16 +17,17 @@ def challenges_view(request):
     tracker = ChallengeResetTracker.get_reset_tracker()
     current_time = now()
 
-    # **Reset Daily Challenges if past midnight**
+    # Reset Daily Challenges if past midnight
     if current_time.date() > tracker.last_daily_reset.date():
         UserChallenge.objects.filter(
             user=user, challenge__challenge_type="daily"
         ).delete()
         all_daily_challenges = list(Challenge.objects.filter(challenge_type="daily"))
         if len(all_daily_challenges) >= 3:
+            # Pick 3 random challenges
             daily_challenges = sample(
                 all_daily_challenges, min(3, len(all_daily_challenges))
-            )  # Pick 3 random challenges
+            )
             for challenge in daily_challenges:
                 UserChallenge.objects.create(
                     user=user, challenge=challenge, progress=0, completed=False
@@ -34,7 +35,7 @@ def challenges_view(request):
         tracker.last_daily_reset = current_time
         tracker.save()
 
-    # **Reset Weekly Challenges if it's Monday and not reset this week**
+    # Reset Weekly Challenges if it's Monday and not reset this week
     if (
         current_time.weekday() == 0
         and current_time.date() > tracker.last_weekly_reset.date()
@@ -44,17 +45,18 @@ def challenges_view(request):
         ).delete()
         all_weekly_challenges = list(Challenge.objects.filter(challenge_type="weekly"))
         if len(all_weekly_challenges) >= 5:
+            # Pick 5 random challenges
             weekly_challenges = sample(
                 all_weekly_challenges, min(5, len(all_weekly_challenges))
-            )  # Pick 5 random challenges
+            )
             for challenge in weekly_challenges:
                 UserChallenge.objects.create(
                     user=user, challenge=challenge, progress=0, completed=False
                 )
-
         tracker.last_weekly_reset = current_time
         tracker.save()
 
+    # Add daily challenges if user has none
     if not UserChallenge.objects.filter(
         user=user, challenge__challenge_type="daily"
     ).exists():
@@ -66,6 +68,7 @@ def challenges_view(request):
                     user=user, challenge=challenge, progress=0, completed=False
                 )
 
+    # Add weekly challenges if user has none
     if not UserChallenge.objects.filter(
         user=user, challenge__challenge_type="weekly"
     ).exists():
@@ -77,6 +80,7 @@ def challenges_view(request):
                     user=user, challenge=challenge, progress=0, completed=False
                 )
 
+    # Add lifetime challenges if user has none
     if not UserChallenge.objects.filter(
         user=user, challenge__challenge_type="lifetime"
     ).exists():
@@ -102,6 +106,7 @@ def challenges_view(request):
         user=user, challenge__challenge_type="lifetime"
     )
 
+    # Check if any challenges are completed and reward user
     user_challenges = UserChallenge.objects.filter(user=user)
     user_coins, created = UserCoins.objects.get_or_create(user=user)
 
@@ -125,6 +130,7 @@ def challenges_view(request):
 
 @login_required
 def get_reset_times(request):
+    # Fetch reset times
     tracker = ChallengeResetTracker.get_reset_tracker()
     return JsonResponse(
         {

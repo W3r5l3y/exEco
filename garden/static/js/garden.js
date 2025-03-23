@@ -12,22 +12,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch("/load-inventory/");
             const data = await response.json();
             if (data.items) {
+                // Create an inventory item element for each item in the inventory
                 data.items.forEach(item => {
-                    // Use the base id returned from the server (e.g., "inventory-item-123")
                     const baseId = item.id;
-                    // Create a DOM element for each quantity
-                    for (let i = 1; i <= item.quantity; i++) {
-                        const uniqueId = `${baseId}-${i}`; // e.g., "inventory-item-123-1"
+                    for (let i = 1; i <= item.quantity; i++) { // Create multiple instances of the same item if quantity > 1
+                        const uniqueId = `${baseId}-${i}`;
                         const inventoryItem = document.createElement("div");
                         inventoryItem.classList.add("inventory-item");
                         inventoryItem.id = uniqueId;
-                        // Store the unique id in the dataset so that later we can refer to this specific instance.
                         inventoryItem.dataset.itemId = uniqueId;
     
                         const img = document.createElement("img");
                         img.src = item.img;
                         img.alt = item.name;
-                        img.draggable = false; // Prevents dragging the image
+                        img.draggable = false; // Prevent dragging the inventory item image
     
                         const name = document.createElement("p");
                         name.textContent = item.name;
@@ -37,7 +35,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         inventoryWrapper.appendChild(inventoryItem);
                     }
                 });
-                // Attach click event listeners to each dynamically loaded inventory item.
+                
+                // Add click event listener to all inventory items to allow selection
                 document.querySelectorAll(".inventory-item").forEach(inventoryItem => {
                     inventoryItem.addEventListener("click", handleInventoryItemClick);
                 });
@@ -50,17 +49,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* --------------------------------------------------
     *  Function to load garden stats on page load  
     * -------------------------------------------------- */
-        async function loadGardenStats() {  
-            try {  
-                const response = await fetch("/get-garden-stats/");  
-                const data = await response.json();  
-                if(data.average_stats) {  
-                    updateGardenStats(data.average_stats, data.total_stat);  
-                }  
-            } catch(error) {  
-                console.error("Error loading garden stats:", error);  
+    async function loadGardenStats() {  
+        try {  
+            const response = await fetch("/get-garden-stats/");  
+            const data = await response.json();  
+            if(data.average_stats) {  
+                updateGardenStats(data.average_stats, data.total_stat);  
             }  
+        } catch(error) {  
+            console.error("Error loading garden stats:", error);  
         }  
+    }  
     
 
     /* --------------------------------------------------
@@ -70,6 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const response = await fetch("/load-garden/");
             const data = await response.json();
+            // Load garden state and update the garden grid
             if (data.state) {
                 Object.entries(data.state).forEach(([key, uniqueItemId]) => {
                     const cell = document.querySelector(`.grid-item-${key}`);
@@ -96,46 +96,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-        /* --------------------------------------------------
-    *  New function: update tree image after each change  
+    /* --------------------------------------------------
+    *  Function to update the tree image on the garden grid
     * -------------------------------------------------- */
-        async function updateTreeImage() {  
-            try {  
-                const response = await fetch("/get-tree-image/");  
-                const data = await response.json();  
-                if(data.tree_image) {  
-                    const treeImage = document.querySelector(".grid-item-5-5 img");  
-                    treeImage.src = data.tree_image;  
-                }  
-            } catch(error) {  
-                console.error("Error updating tree image:", error);  
+    async function updateTreeImage() {  
+        try {  
+            const response = await fetch("/get-tree-image/");  
+            const data = await response.json();  
+            if(data.tree_image) {  
+                const treeImage = document.querySelector(".grid-item-5-5 img");  
+                treeImage.src = data.tree_image;  
             }  
+        } catch(error) {  
+            console.error("Error updating tree image:", error);  
         }  
+    }  
     
-        /* --------------------------------------------------
-        *  New function: auto-save garden state and update tree image after changes  
-        * -------------------------------------------------- */
-        let autoSaveTimeout;  
-        function autoSaveGardenState() {  
-            if (autoSaveTimeout) clearTimeout(autoSaveTimeout);  
-            autoSaveTimeout = setTimeout(async () => {  
-                const gardenStateData = Object.fromEntries(gardenState);  
-                const csrftoken = getCookie('csrftoken');  
-                try {  
-                    await fetch("/save-garden/", {  
-                        method: "POST",  
-                        headers: {  
-                            "Content-Type": "application/json",  
-                            "X-CSRFToken": csrftoken  
-                        },  
-                        body: JSON.stringify({ state: gardenStateData })  
-                    });  
-                    updateTreeImage();  
-                } catch (error) {  
-                    console.error("Auto save error:", error);  
-                }  
-            }, 500); // debounce for 500ms  
-        }  
+    /* --------------------------------------------------
+    *  Function to auto-save the garden state
+    * -------------------------------------------------- */
+    let autoSaveTimeout;  
+    function autoSaveGardenState() {  
+        if (autoSaveTimeout) clearTimeout(autoSaveTimeout);  
+        autoSaveTimeout = setTimeout(async () => {  
+            const gardenStateData = Object.fromEntries(gardenState);  
+            const csrftoken = getCookie('csrftoken');  
+            try {  
+                await fetch("/save-garden/", {  
+                    method: "POST",  
+                    headers: {  
+                        "Content-Type": "application/json",  
+                        "X-CSRFToken": csrftoken  
+                    },  
+                    body: JSON.stringify({ state: gardenStateData })  
+                });  
+                updateTreeImage();  
+            } catch (error) {  
+                console.error("Auto save error:", error);  
+            }  
+        }, 500);
+    }
     
 
     /* --------------------------------------------------
@@ -223,6 +223,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     *  Populate the garden grid
     * -------------------------------------------------- */
     const gardenWrapper = document.querySelector("#garden-wrapper");
+    // Create a 9x9 grid of cells with images
     for (let row = 1; row <= 9; row++) {
         for (let col = 1; col <= 9; col++) {
             const cell = document.createElement("div");
@@ -258,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const tooltip = document.getElementById("save-tooltip");
     
         try {
-            // First endpoint: save the garden state.
+            // Save the garden state and render the garden image
             const saveResponse = await fetch("/save-garden/", {
                 method: "POST",
                 headers: { 
@@ -274,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 updateGardenStats(saveData.average_stats, saveData.total_stat);
             }
             
-            // Second endpoint: render the garden image.
+            // Save the garden image to the server
             const imageResponse = await fetch("/save-garden-as-image/", {
                 method: "POST",
                 headers: { 
@@ -300,6 +301,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });  
     
+    /* --------------------------------------------------
+    *  Function to update the garden stats on the page
+    * -------------------------------------------------- */
     function updateGardenStats(stats, totalStat) {
         document.getElementById("garden-stat-1").textContent = stats.aesthetic_appeal.toFixed(1);
         document.getElementById("garden-stat-2").textContent = stats.habitat.toFixed(1);
@@ -309,16 +313,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("garden-stat-6").textContent = stats.innovation.toFixed(1);
         document.getElementById("garden-total-stat").textContent = totalStat.toFixed(1);
     }
-    
 
-    // Add reset garden functionality
+    // Reset the garden state and grid when the button is clicked
     document.querySelector("#reset-garden-button").addEventListener("click", async () => {
-        // Clear the in-memory garden state.
         gardenState.clear();
 
         // Loop through all grid cells and set them to the empty image,
         document.querySelectorAll(".grid-item").forEach(cell => {
-            if (!cell.classList.contains("grid-item-5-5")) { // Skip the center cell (tree).
+            if (!cell.classList.contains("grid-item-5-5")) { // Skip the center cell (tree)
                 const img = cell.querySelector("img");
                 if (img) {
                     img.src = "/static/img/empty.png";

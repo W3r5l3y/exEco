@@ -1,4 +1,9 @@
 @import url("/static/css/colours.css");
+
+/* --------------------------------------------------
+    Bottom Navbar
+-------------------------------------------------- */
+
 .bottom-navbar-container {
     position: fixed;
     left: 0;

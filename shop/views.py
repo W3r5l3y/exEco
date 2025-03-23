@@ -8,12 +8,11 @@ from django.conf import settings
 import os
 import shutil
 
-# Create your views here.
-
 
 # Get the shop items to frontend
 @login_required
 def shop_view(request):
+    # View to display the shop items
     shop_items = ShopItems.objects.all()
 
     return render(request, "shop/shop.html", {"shop_items": shop_items})
@@ -21,6 +20,7 @@ def shop_view(request):
 
 @login_required
 def buy_item(request, item_id):
+    # View to handle buying an item from the shop, returns a JSON response based on success or failure due to errors or low balance
     # View to handle buying an item from the shop, returns a JSON response based on success or failure due to errors or low balance
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
@@ -34,6 +34,7 @@ def buy_item(request, item_id):
 
     if user_coins.coins < shop_item.cost:
         return JsonResponse({"lowbalance": "Not enough coins"}, status=400)
+    # Spend coins - deal with false response
     # Spend coins - deal with false response
     if not user_coins.spend_coins(shop_item.cost):
         return JsonResponse(

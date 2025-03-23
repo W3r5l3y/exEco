@@ -1,8 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
 
-# Create your models here.
-
 
 # The table for bins
 class Bins(models.Model):

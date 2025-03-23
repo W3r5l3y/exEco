@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Handle challenge submission logic...
+    // Handle challenge submission logic
     document.querySelectorAll(".submit-btn").forEach(button => {
         button.addEventListener("click", function () {
             const challengeId = this.getAttribute("data-challenge-id");

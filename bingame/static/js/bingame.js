@@ -98,9 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- (Unused Drag Functions Removed) ---
-    // (mouseDown, mouseMove, mouseUp have been removed since we now use clicks.)
-
     // --- Answer Checking and Game Functions ---
     function resetItemPosition(item) {
         item.style.removeProperty('left');
@@ -127,10 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please place all items in the correct bins');
             return;
         }
-    
         attempts++;
-    
         let correctCount = 0;
+        // Check if each item is in the correct bin; if not, mark it with a solid red border.
         items.forEach(item => {
             const correctBinId = item.getAttribute('data-correct-bin-id');
             const droppedBinId = item.getAttribute('data-dropped-bin-id');
@@ -148,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     
+        // If all items are correct or the max attempts have been reached
         if (correctCount === totalItems || attempts >= maxAttempts) {
             let tempScore = calculateScore();
             endGame(tempScore);
@@ -159,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }    
 
+    // Calculate the score based on the number of attempts
     function calculateScore() {
         if (attempts >= maxAttempts) {
             return 0;
@@ -189,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resultMessage.style.fontWeight = 'bold';
         resultMessage.style.textAlign = 'center';
         resultMessage.style.marginTop = '50px';
-    
+        
+        // Display the result message based on the score
         if (tempScore > 0) {
             itemsContainer.style.backgroundColor = 'lightgreen'; // Win
             resultMessage.textContent = `Game Won! Score: ${tempScore}`;
@@ -199,12 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         itemsContainer.appendChild(resultMessage);
-        
         document.getElementById('check-answer-label').innerText = 'Next Round';
         checkAnswerBtn.removeEventListener('click', checkAnswers);
         checkAnswerBtn.addEventListener('click', resetGame);
     }
     
+    // Reset the game state
     function resetGame() {
         attempts = 0;
         score = 0;
@@ -239,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Leaderboard Functions ---
     function updateLeaderboard(tempScore) {
         console.log('Updating leaderboard with score:', tempScore);
+        // Send the updated score to the server
         fetch('/update-leaderboard/', {
             method: 'POST',
             headers: {
@@ -268,7 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error:', error));
     }
 
+    // Fetch the leaderboard data and update the leaderboard displays
     function getLeaderboard() {
+        // Fetch the leaderboard data from the server
         fetch("/get-bingame-leaderboard/")
         .then(response => response.json())
         .then(data => {
@@ -297,17 +299,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Fetch New Items ---
     async function fetchNewRandomItems() {
         try {
+            // Fetch new random items from the server
             const response = await fetch('/fetch-random-items/');
             if (!response.ok) {
                 throw new Error('Failed to fetch random items');
             }
-            
+
             const data = await response.json();
             const items = data.items;
             console.log('New random items:', items);
             // Clear existing items
             itemsContainer.innerHTML = '';
-            
+
             items.forEach(itemData => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('items');
@@ -342,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lootboxContent = document.createElement('div');
         lootboxContent.id = 'lootbox-content';
         lootboxPopup.appendChild(lootboxContent);
-        
+        // Fetch lootbox data from the server
         fetch(`/get-lootbox-data/?lootbox_id=${lootbox_id}`)
         .then(response => response.json())
         .then(data => {

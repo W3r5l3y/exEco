@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        // Send data to Django to store in database
+        // Store activity data in database
         fetch("/log-activity/", {
             method: "POST",
             headers: {
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.success) { // If activity is logged successfully, show success popup
                 document.getElementById("log-popup").style.display = "none";
                 document.getElementById("success-popup").style.display = "flex";
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 updateStats();
                 updateLeaderboard();
-            } else {
+            } else { // If activity is not logged successfully, show error popup
                 document.getElementById("log-popup").style.display = "none";
                 document.getElementById("error-popup").style.display = "flex";
                 console.error("Error logging activity:", data.error);
