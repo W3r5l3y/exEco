@@ -26,8 +26,6 @@ class QRScannerTestCase(TestCase):
             location_value=2,
         )
 
-
-"""
     def test_qrscanner_code_success(self):
         session = self.client.session
         session.save()
@@ -41,8 +39,6 @@ class QRScannerTestCase(TestCase):
         )
         self.assertContains(response, "You earned 2 points!")
 
-
-
     def test_qrscanner_code_cooldown(self):
         ScanRecord.objects.create(
             user=self.user, location=self.location, last_scanned=now()
@@ -51,7 +47,7 @@ class QRScannerTestCase(TestCase):
             response = self.client.post(
                 reverse("qrscanner"), {"image": qr_image}, follow=True
             )
-            
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This QR code is on cooldown.")
 
@@ -69,7 +65,63 @@ class QRScannerTestCase(TestCase):
             response = self.client.post(reverse("qrscanner"), {"image": qr_image})
         self.assertEqual(response.status_code, 302)  # Correctly expecting redirect
         self.assertIn("/login/", response.url)
-"""
+
+    def test_qrscanner_code_inactive_location(self):
+        # Mark the location as inactive
+        self.location.is_active = False
+        self.location.save()
+
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
+            response = self.client.post(
+                reverse("qrscanner"), {"image": qr_image}, follow=True
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This QR code is currently disabled.")
+
+    def test_qrscanner_code_invalid_image(self):
+        # Upload an invalid image file
+        invalid_image = SimpleUploadedFile("invalid.txt", b"Not an image file")
+        response = self.client.post(
+            reverse("qrscanner"), {"image": invalid_image}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No QR code found in the uploaded image.")
+
+    def test_qrscanner_code_multiple_scans(self):
+        # Simulate multiple scans of the same QR code
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
+            for _ in range(3):
+                response = self.client.post(
+                    reverse("qrscanner"), {"image": qr_image}, follow=True
+                )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You earned 2 points!")
+        self.assertEqual(self.location.times_visited, 3)
+
+    def test_qrscanner_code_lootbox_reward(self):
+        # Simulate earning enough points to receive a lootbox
+        user_points = UserPoints.objects.get(user=self.user)
+        user_points.qrscanner_points = 18  # Close to lootbox threshold
+        user_points.save()
+
+        with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
+            response = self.client.post(
+                reverse("qrscanner"), {"image": qr_image}, follow=True
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You earned 2 points!")
+        self.assertEqual(self.client.session["lootboxes_to_reward"], 1)
+
+    def test_qrscanner_code_no_image_uploaded(self):
+        # Test submitting the form without an image
+        response = self.client.post(reverse("qrscanner"), {}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No QR code found in the uploaded image.")
 
 
 class QRScannerLeaderboardTestCase(TestCase):
