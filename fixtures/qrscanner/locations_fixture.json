@@ -5,7 +5,7 @@
         "fields": {
             "location_name": "Forum",
             "location_fact": "The Forum at the University of Exeter is a modern, sustainably designed hub at the heart of the Streatham Campus. Its landscape features a series of interconnected ponds that collect and filter rainwater, enhancing both aesthetics and environmental sustainability. Surrounded by native planting and a wildflower meadow, the ponds create a biodiverse habitat that attracts dragonflies, birds, and other wildlife. The water features, combined with contemporary architecture and green spaces, make the Forum a vibrant and inviting area for students and visitors, blending natural beauty with sustainable innovation.",
-            "cooldown_length": 0,
+            "cooldown_length": 7200,
             "location_value": 10,
             "is_active": true,
             "image": "qrscanner/locations/0001.png",
