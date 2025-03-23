@@ -64,17 +64,6 @@ document.addEventListener("DOMContentLoaded", function() {
         closeMapPopupButton.addEventListener("click", function() {
             mapPopupContainer.style.display = "none";
         });
-    }    
-
-    // QR Scanner Popup Logic
-    var closeQrBtn = document.getElementById("close-qr-popup");
-    if (closeQrBtn) {
-        closeQrBtn.addEventListener("click", function() {
-            var qrPopup = document.getElementById("qr-popup");
-            if (qrPopup) {
-                qrPopup.style.display = "none";
-            }
-        });
     }
 
     /* --------------------------------------------------
@@ -130,6 +119,9 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.error("Error fetching lootbox data:", error));
     }
 
+    /* --------------------------------------------------
+        QR Scanner Logic
+    -------------------------------------------------- */
     // Handle qr scanner form submission
     const fileInput = document.querySelector("input[name='image']");
     if (fileInput) {
@@ -149,6 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Close the qr scanner popup
+    var closeQrBtn = document.getElementById("close-qr-popup");
+    if (closeQrBtn) {
+        closeQrBtn.addEventListener("click", function() {
+            var qrPopup = document.getElementById("qr-popup");
+            if (qrPopup) {
+                qrPopup.style.display = "none";
+            }
+        });
+    }
+
+
+    /* --------------------------------------------------
+        Leaderboard Logic
+    -------------------------------------------------- */
     // Function to update the leaderboard
     function updateLeaderboard() {
         fetch("/get-qrscanner-leaderboard/")
