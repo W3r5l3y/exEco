@@ -31,10 +31,6 @@ def create_post(request):
             post.user = request.user
             post.save()
 
-            # Add coins to the user
-            user_coins, _ = UserCoins.objects.get_or_create(user=request.user)
-            user_coins.add_coins(10)  # Example: Add 10 coins for creating a post
-
             # Update Challenge Progress
             user_challenges = UserChallenge.objects.filter(
                 user=request.user, challenge__game_category="forum", completed=False
@@ -68,12 +64,8 @@ def like_post(request, post_id):
 
     # Add coins to the post's user
     user_coins, _ = UserCoins.objects.get_or_create(user=post.user)
-    user_coins.add_coins(5)  # Example: Add 5 coins for receiving a like
-
-    # Update forum points for the post's user
-    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
-    user_points.update_forum_points()
-    print(user_points.forum_points)
+    user_coins.update_forum_coins()
+    print(user_coins.coins)
 
     return JsonResponse(
         {"success": True, "likes": post.likes, "liked": post_like.liked}
@@ -118,18 +110,14 @@ def add_comment(request, post_id):
     text = request.POST.get("text")
     if text:
         comment = Comment.objects.create(user=request.user, post=post, text=text)
-
-        # Add coins to the user who commented
-        user_coins, _ = UserCoins.objects.get_or_create(user=request.user)
-        user_coins.add_coins(3)  # Example: Add 3 coins for adding a comment
-
         return JsonResponse(
             {"success": True, "text": comment.text, "user_email": comment.user.email}
         )
 
-    # Update forum points for the post's user
-    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
-    user_points.update_forum_points()
+    # Add coins to the post's user
+    user_coins, _ = UserCoins.objects.get_or_create(user=post.user)
+    user_coins.update_forum_coins()
+    print(user_coins.coins)
 
     return JsonResponse({"success": False})
 
@@ -157,9 +145,10 @@ def edit_post(request, post_id):
     post.description = new_description
     post.save()
 
-    # Update forum points for the post's user
-    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
-    user_points.update_forum_points()
+    # Add coins to the post's user
+    user_coins, _ = UserCoins.objects.get_or_create(user=post.user)
+    user_coins.update_forum_coins()
+    print(user_coins.coins)
 
     return JsonResponse({"success": True, "message": "Post updated successfully"})
 
@@ -174,8 +163,9 @@ def delete_post(request, post_id):
 
     post.delete()
 
-    # Update forum points for the post's user
-    user_points, _ = UserPoints.objects.get_or_create(user=post.user)
-    user_points.update_forum_points()
+    # Add coins to the post's user
+    user_coins, _ = UserCoins.objects.get_or_create(user=post.user)
+    user_coins.update_forum_coins()
+    print(user_coins.coins)
 
     return JsonResponse({"success": True, "message": "Post deleted successfully"})

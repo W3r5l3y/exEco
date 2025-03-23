@@ -59,16 +59,10 @@ class UserPoints(models.Model):
     bingame_points = models.IntegerField(default=0)
     qrscanner_points = models.IntegerField(default=0)
     transport_points = models.IntegerField(default=0)
-    forum_points = models.IntegerField(default=0)  # Add forum points field
 
     @property
     def total_points(self):
-        return (
-            self.bingame_points
-            + self.qrscanner_points
-            + self.transport_points
-            + self.forum_points
-        )
+        return self.bingame_points + self.qrscanner_points + self.transport_points
 
     def add_points(self, points=1, category="bingame"):
         # Check if the users points wont go below 0. If they do return False. If true perform the add and return true.
@@ -105,18 +99,6 @@ class UserPoints(models.Model):
         self.transport_points += points
         self.save()
 
-    def update_forum_points(self):
-        from forum.models import Post
-
-        posts = Post.objects.filter(user=self.user)
-        total_points = 0
-
-        for post in posts:
-            total_points += calculate_logarithmic_points(post.likes)
-
-        self.forum_points = total_points
-        self.save()
-
 
 class UserCoins(models.Model):
     user = models.OneToOneField(
@@ -138,8 +120,20 @@ class UserCoins(models.Model):
     def __str__(self):
         return f"{self.user.id} - {self.coins} coins"
 
+    def update_forum_coins(self):
+        from forum.models import Post
 
-def calculate_logarithmic_points(likes):
+        posts = Post.objects.filter(user=self.user)
+        total_coins = 0
+
+        for post in posts:
+            total_coins += calculate_logarithmic_coins(post.likes)
+
+        self.coins = total_coins
+        self.save()
+
+
+def calculate_logarithmic_coins(likes):
     if likes <= 0:
         return 0
-    return math.floor(5 * math.log2(likes + 1))  # Adjust as necessary
+    return math.floor(5 * math.log2(likes + 1))
