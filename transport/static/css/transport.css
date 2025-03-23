@@ -1,10 +1,6 @@
-/*:root {
-    --primary_colour: #003b3c;
-    --accessories_colour: #00c592;
-    --display_colour: #002727;
-    --neutral_colour: #fff;
-}*/
-
+/* --------------------------------------------------
+    General Styles
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -204,9 +200,8 @@ h3 {
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 10px;
-    /* max 2 lines, then no more wrapping and ellipses */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -225,16 +220,16 @@ h3 {
 -------------------------------------------------- */
 
 .popup {
-    display: none; /* Initially hidden */
+    display: none;
     position: fixed;
-    z-index: 2000; /* Above everything */
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    overflow: auto; /* Scroll if necessary */
-    padding-top: 60px; /* Positioning for the popup */
+    overflow: auto;
+    padding-top: 60px;
 }
 
 .popup-content {
@@ -324,7 +319,7 @@ input[type="radio"]:checked {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent dark overlay */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
