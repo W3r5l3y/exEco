@@ -33,7 +33,7 @@ def open_lootbox(request, lootbox_id):
     if not lootbox:
         errorMsg = "Lootbox not found ", lootbox_id, " in user's inventory" #DEBUG
         return JsonResponse({"error": errorMsg}, status=404)
-    
+
     #Get all possible items inside the lootbox
     lootbox_contents = list(LootboxContents.objects.filter(lootbox_template=lootbox.lootbox_template))
     if not lootbox_contents:
@@ -57,15 +57,27 @@ def open_lootbox(request, lootbox_id):
         if random_number <= probability:
             selected_item = content
             break
-    
+        
     # If wrong stat is added, it will be lootbox_id == logic
+    if lootbox.lootbox_template == "Bingame Lootbox":
+        selected_item.health_of_garden = 0
+        selected_item.innovation = 0
+        
+    elif lootbox.lootbox_template == "QR Scanner Lootbox":
+        selected_item.waste_reduction = 0
+        selected_item.health_of_garden = 0
+        
+    elif lootbox.lootbox_template == "Transport Lootbox":
+        selected_item.waste_reduction = 0
+        selected_item.innovation = 0
+        
     stats = {
         "aesthetic_appeal": selected_item.aesthetic_appeal,
         "habitat": selected_item.habitat,
         "carbon_uptake": selected_item.carbon_uptake,
-        "waste_reduction": selected_item.waste_reduction if lootbox_id == 1 else 0,
-        "health_of_garden": selected_item.health_of_garden if lootbox_id == 3 else 0,
-        "innovation": selected_item.innovation if lootbox_id== 2 else 0
+        "waste_reduction": selected_item.waste_reduction,
+        "health_of_garden": selected_item.health_of_garden,
+        "innovation": selected_item.innovation
     }
     
     #Add the selected item to users inventory
