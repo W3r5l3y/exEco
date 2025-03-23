@@ -175,10 +175,12 @@
             <h2>Challenges</h2>
             <div class="gamekeeper-section-task gamekeeper-sub-section">
                 <h3>Add Challenge</h3>
+                <!-- Add challenge form -->
                 <form id="challenges-form">
                     <label for="challenges-description">Description</label>
                     <input type="text" id="challenges-description" placeholder="Challenge description" name="challenge_description" required>
                 
+                    <!-- Option to select challenge type -->
                     <label for="challenges-type">Type</label>
                     <select id="challenges-type" name="challenge_type" required>
                         <option value="daily">Daily</option>
@@ -186,6 +188,7 @@
                         <option value="lifetime">Lifetime</option>
                     </select>
 
+                    <!-- Option to select challenge category -->
                     <label for="challenges-category">Category</label>
                     <select id="challenges-category" name="challenge_category" required>
                         <option value="general">General</option>
@@ -195,6 +198,7 @@
                         <option value="forum">Forum</option>
                     </select>
 
+                    <!-- Challenge reward and goal -->
                     <label for="challenges-reward">Reward (Coins)</label>
                     <input type="text" id="challenges-reward" placeholder="Challenge reward" name="challenge_reward" required>
             

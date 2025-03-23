@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             defaultOption.textContent = "Select a QR code";
             qrScannerQrSelect.appendChild(defaultOption);
             
+            // Add each QR code as an option
             if (data.qr_codes && data.qr_codes.length > 0) {
                 data.qr_codes.forEach(qrCode => {
                     const option = document.createElement("option");
@@ -144,8 +145,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error fetching QR codes:", error));
     }
 
+    // Initial load of QR codes into the select dropdown
     refreshQrSelect();
 
+    // Event listeners for enabling QR codes
     qrScannerQrEnable.addEventListener("click", function () {
         const selectedQrId = qrScannerQrSelect.value;
         if (!selectedQrId) {
@@ -165,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error enabling QR code:", error));
     });
 
+    // Event listeners for disabling QR codes
     qrScannerQrDisable.addEventListener("click", function () {
         const selectedQrId = qrScannerQrSelect.value;
         if (!selectedQrId) {
@@ -369,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message); // Show success/error message TODO: Show in HTML clearererer
+            alert(data.message); // Show success/error message
             location.reload(); // Refresh the dropdown after unlinking
         })
         .catch(error => console.error("Error unlinking Strava:", error));
@@ -415,6 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
         Forum
     -------------------------------------------------- */
     
+    // Function to load reported posts and populate the select dropdown
     function loadReportedPosts() {
         fetch("/get-reported-posts/")
         .then(response => response.json())
@@ -431,6 +436,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error loading reported posts:", error));
     }
     
+    // Function to load details of a reported post
     function loadReportedPostDetails(postId) {
         fetch(`/get-reported-post-details/${postId}/`)
         .then(response => response.json())
@@ -449,11 +455,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error loading post details:", error));
     }
     
+    // Function to clear the reported post details container
     function clearReportedPostDetails() {
         const container = document.getElementById("reported-post-details");
         container.innerHTML = "";
     }
     
+    // Function to delete a reported post
     function deleteReportedPost(postId) {
         fetch(`/delete-reported-post/${postId}/`, {
             method: "POST",
@@ -472,6 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error deleting reported post:", error));
     }
     
+    // Function to delete a report
     function deleteReport(postId) {
         fetch(`/delete-report/${postId}/`, {
             method: "POST",
@@ -490,8 +499,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error deleting report:", error));
     }    
 
+    // Initial load of reported posts into the select dropdown
     loadReportedPosts();
 
+    // Event listener for the select dropdown change
     const reportedPostsSelect = document.getElementById("reported-posts-select");
     reportedPostsSelect.addEventListener("change", function() {
         const postId = this.value;
@@ -502,13 +513,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Event listeners for delete buttons
     document.getElementById("delete-post-btn").addEventListener("click", () => {
         const postId = reportedPostsSelect.value;
         if (postId && confirm("Are you sure you want to delete this post? This will remove the post and its reports.")) {
             deleteReportedPost(postId);
         }
     });
-
     document.getElementById("delete-report-btn").addEventListener("click", () => {
         const postId = reportedPostsSelect.value;
         if (postId && confirm("Are you sure you want to delete the report(s) for this post? The post will remain visible.")) {
@@ -522,27 +533,31 @@ document.addEventListener("DOMContentLoaded", function () {
     -------------------------------------------------- */
     const shopForm = document.getElementById("shop-form");
     if (shopForm) {
+        // Event listener for adding an item to the shop
         shopForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
+            // Get input values
             const itemPicture = document.getElementById("shop-item-picture").files[0];
             const itemName = document.getElementById("shop-item-name").value;
             const itemPrice = document.getElementById("shop-item-price").value;
             const itemDescription = document.getElementById("shop-item-description").value;
 
+            // Check if all fields are filled
             if (!itemPicture || !itemName || !itemPrice || !itemDescription) {
                 alert("Please fill in all fields.");
                 return;
             }
 
+            // Create FormData object to send file and text data
             const formData = new FormData();
             const item_picture = new File([itemPicture], itemPicture.name.replace(/ /g, "_"), { type: itemPicture.type });
-            //item_picture.name = itemPicture.name.replace(/ /g, "_")
             formData.append("item_picture", item_picture);
             formData.append("item_name", itemName);
             formData.append("item_price", itemPrice);
             formData.append("item_description", itemDescription);
 
+            // Send request to add item to shop
             fetch("/add-item-to-shop/", {
                 method: "POST",
                 body: formData,
@@ -570,10 +585,12 @@ document.addEventListener("DOMContentLoaded", function () {
     -------------------------------------------------- */
     const challengesForm = document.getElementById('challenges-form');
     if (challengesForm) {
+        // Event listener for adding a challenge
         challengesForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(challengesForm);
             
+            // Send request to add challenge
             fetch('/add-challenge/', {
                 method: 'POST',
                 body: formData,
@@ -602,6 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Function to load active contact requests and populate the select dropdown
     function loadContactRequestsSelect() {
+        // Fetch contact requests from the server
         fetch("/contact-requests/")
             .then(response => response.json())
             .then(data => {
@@ -660,7 +678,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Please enter a response.");
             return;
         }
-        // Send the response via POST
+        // Get server to save the response
         fetch("/respond-contact/", {
             method: "POST",
             headers: {
@@ -690,5 +708,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initial load of contact requests into the select dropdown
     loadContactRequestsSelect();
-
 });
