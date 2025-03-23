@@ -10,32 +10,33 @@ from inventory.models import Inventory
 import os
 import shutil
 from django.conf import settings
+
 """
 MODELS TESTING
 """
 
+
 class ShopModelTests(TestCase):
 
     def setUp(self):
-        
+
         # Create test media directory if it doesn’t exist
-        self.test_media_dir = os.path.join(settings.BASE_DIR, 'shop/static/img/')
+        self.test_media_dir = os.path.join(settings.BASE_DIR, "shop/static/img/")
         os.makedirs(self.test_media_dir, exist_ok=True)
-        
+
         # Create a temporary image file inside the test media directory
         self.test_image_path = os.path.join(self.test_media_dir, "test_image.png")
         with open(self.test_image_path, "wb") as f:
             f.write(b"file_content")
-        
-        
+
         # Create a shop item instance
         self.shop_item = ShopItems.objects.create(
             name="Test Item",
             description="Some form of item",
             image="/img/test_plant_snake.png",
-            cost=50
+            cost=50,
         )
-        
+
         self.test_images = [self.test_image_path]
 
     def test_shop_item_creation(self):
@@ -48,9 +49,9 @@ class ShopModelTests(TestCase):
     def test_shop_item_str(self):
         # Check __str__ method for readability
         self.assertEqual(str(self.shop_item), "Test Item - 50 coins")
-        
+
     def tearDown(self):
-        #Delete test images
+        # Delete test images
         for image_path in self.test_images:
             if os.path.exists(image_path):
                 os.remove(image_path)
@@ -60,9 +61,11 @@ class ShopModelTests(TestCase):
         static_shop_dir = os.path.join(settings.BASE_DIR, "static/shop/")
         shutil.rmtree(static_shop_dir, ignore_errors=True)
 
+
 """
 VIEWS TESTING
 """
+
 
 class ShopViewsTests(TestCase):
 
@@ -72,28 +75,28 @@ class ShopViewsTests(TestCase):
             email="testuser@example.com",
             first_name="Test",
             last_name="User",
-            password="password123"
+            password="password123",
         )
 
         # Create test media directory if it doesn’t exist
-        self.test_media_dir = os.path.join(settings.BASE_DIR, 'shop/static/img/')
+        self.test_media_dir = os.path.join(settings.BASE_DIR, "shop/static/img/")
         os.makedirs(self.test_media_dir, exist_ok=True)
 
         self.test_images = []
-        
+
         # Create a temporary image file inside the test media directory
         self.test_image_path = os.path.join(self.test_media_dir, "test_plant_snake.png")
         with open(self.test_image_path, "wb") as f:
             f.write(b"file_content")
 
         self.test_images.append(self.test_image_path)
-        
+
         # Create test shop item
         self.shop_item = ShopItems.objects.create(
             name="Test Plant",
             description="Snake plant - best at air purification -those who know, know",
             image="shop/static/img/test_plant_snake.png",
-            cost=300
+            cost=300,
         )
 
         # Create user coins
@@ -108,21 +111,21 @@ class ShopViewsTests(TestCase):
 
     def test_shop_view(self):
         # Test if the shop page loads successfully
-        response = self.client.get(reverse('shop'))
+        response = self.client.get(reverse("shop"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'shop/shop.html')
+        self.assertTemplateUsed(response, "shop/shop.html")
         self.assertIn("shop_items", response.context)
         self.assertEqual(response.context["shop_items"].count(), 1)
 
     def test_buy_item_success(self):
         # Test purchasing an item successfully
-        url = reverse('buy_item', kwargs={'item_id': self.shop_item.itemId})
+        url = reverse("buy_item", kwargs={"item_id": self.shop_item.itemId})
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(
-            str(response.content, encoding='utf8'),
-            {"success": "Item purchased successfully"}
+            str(response.content, encoding="utf8"),
+            {"success": "Item purchased successfully"},
         )
 
         # Check that the user's coins decreased
@@ -137,13 +140,12 @@ class ShopViewsTests(TestCase):
         self.user_coins.coins = 100
         self.user_coins.save()
 
-        url = reverse('buy_item', kwargs={'item_id': self.shop_item.itemId})
+        url = reverse("buy_item", kwargs={"item_id": self.shop_item.itemId})
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(
-            str(response.content, encoding='utf8'),
-            {"lowbalance": "Not enough coins"}
+            str(response.content, encoding="utf8"), {"lowbalance": "Not enough coins"}
         )
 
         # Confirm that no item was added
@@ -151,32 +153,30 @@ class ShopViewsTests(TestCase):
 
     def test_buy_item_invalid_item(self):
         # Try purchasing a non-existent item
-        url = reverse('buy_item', kwargs={'item_id': 9999})  # Non-existent ID
+        url = reverse("buy_item", kwargs={"item_id": 9999})  # Non-existent ID
         response = self.client.post(url)
 
         self.assertEqual(response.status_code, 404)
         self.assertJSONEqual(
-            str(response.content, encoding='utf8'),
-            {"error": "Item not found"}
+            str(response.content, encoding="utf8"), {"error": "Item not found"}
         )
 
     def test_buy_item_get_request(self):
         # Ensure GET requests are rejected
-        url = reverse('buy_item', kwargs={'item_id': self.shop_item.itemId})
+        url = reverse("buy_item", kwargs={"item_id": self.shop_item.itemId})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(
-            str(response.content, encoding='utf8'),
-            {"error": "POST request required."}
+            str(response.content, encoding="utf8"), {"error": "POST request required."}
         )
-    
+
     def tearDown(self):
         # Clean up after tests
         for image_path in self.test_images:
             if os.path.exists(image_path):
                 os.remove(image_path)
-        
+
         # Force delete the entire static/shop/ directory
         static_shop_dir = os.path.join(settings.BASE_DIR, "static/shop/")
         shutil.rmtree(static_shop_dir, ignore_errors=True)

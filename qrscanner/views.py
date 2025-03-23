@@ -193,16 +193,21 @@ def get_qrscanner_leaderboard(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+
 def locations_json(request):
-    locations = Location.objects.filter(is_active=True, latitude__isnull=False, longitude__isnull=False)
+    locations = Location.objects.filter(
+        is_active=True, latitude__isnull=False, longitude__isnull=False
+    )
     data = []
     for location in locations:
-        data.append({
-            'location_code': location.location_code,
-            'location_name': location.location_name,
-            'location_fact': location.location_fact,
-            'latitude': location.latitude,
-            'longitude': location.longitude,
-            'location_value': location.location_value,
-        })
+        data.append(
+            {
+                "location_code": location.location_code,
+                "location_name": location.location_name,
+                "location_fact": location.location_fact,
+                "latitude": location.latitude,
+                "longitude": location.longitude,
+                "location_value": location.location_value,
+            }
+        )
     return JsonResponse(data, safe=False)

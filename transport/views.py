@@ -20,6 +20,7 @@ from challenges.models import UserChallenge
 def transport_view(request):
     return render(request, "transport/transport.html")
 
+
 @login_required
 @is_gamekeeper
 def transport_error(request):
@@ -101,7 +102,9 @@ def strava_callback(request):
     # Ensure the code is present, otherwise show an error
     if not code:
         return render(
-            request, "transport/transport-error.html", {"error": "No code returned from Strava"}
+            request,
+            "transport/transport-error.html",
+            {"error": "No code returned from Strava"},
         )
 
     # Exchange the code for tokens
@@ -124,7 +127,9 @@ def strava_callback(request):
     # Ensure all tokens are present
     if not access_token or not refresh_token or not expires_at:
         return render(
-            request, "transport/transport-error.html", {"error": "Invalid response from Strava"}
+            request,
+            "transport/transport-error.html",
+            {"error": "Invalid response from Strava"},
         )
 
     # Ensure the user is logged in (CustomUser from your accounts app)
@@ -315,7 +320,7 @@ def log_activity(request):
             cumulative_stats.save()
 
             # Convert distance from meters to kilometers
-            distance_km = distance / 1000  
+            distance_km = distance / 1000
 
             # Update Transport Challenges
             user_challenges = UserChallenge.objects.filter(
@@ -332,17 +337,16 @@ def log_activity(request):
 
                 user_challenge.save()
 
-
             score = int(distance / 100)
-            
+
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
-            
+
             old_points = user_points.transport_points
-            
+
             user_points.add_transport_points(score)
-            
+
             new_points = user_points.transport_points
-            
+
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
@@ -359,15 +363,19 @@ def log_activity(request):
                 # Fetch or create the user's inventory
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                 # Add the lootboxes
-                user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
-            
-            user_points.save()
-            
-            return JsonResponse(
-                {"success": "Activity logged successfully!",
-                "lootboxes_to_reward": lootboxes_to_reward}, 
-                status=200
+                user_inventory.addLootbox(
+                    lootbox_template, quantity=lootboxes_to_reward
                 )
+
+            user_points.save()
+
+            return JsonResponse(
+                {
+                    "success": "Activity logged successfully!",
+                    "lootboxes_to_reward": lootboxes_to_reward,
+                },
+                status=200,
+            )
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
@@ -380,7 +388,7 @@ def get_transport_stats(request):
     try:
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
-        
+
         return JsonResponse(
             {
                 "total_commute_distance": cumulative_stats.total_commute_distance,

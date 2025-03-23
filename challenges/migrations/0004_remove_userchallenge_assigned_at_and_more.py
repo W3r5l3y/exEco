@@ -6,27 +6,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('challenges', '0003_remove_challenge_active_and_more'),
+        ("challenges", "0003_remove_challenge_active_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='userchallenge',
-            name='assigned_at',
+            model_name="userchallenge",
+            name="assigned_at",
         ),
         migrations.AddField(
-            model_name='challenge',
-            name='game_category',
-            field=models.CharField(choices=[('bingame', 'Bin Game'), ('transport', 'Transport'), ('qrscanner', 'QR Scanner'), ('forum', 'Forum'), ('general', 'General')], default='general', max_length=20),
+            model_name="challenge",
+            name="game_category",
+            field=models.CharField(
+                choices=[
+                    ("bingame", "Bin Game"),
+                    ("transport", "Transport"),
+                    ("qrscanner", "QR Scanner"),
+                    ("forum", "Forum"),
+                    ("general", "General"),
+                ],
+                default="general",
+                max_length=20,
+            ),
         ),
         migrations.AddField(
-            model_name='challenge',
-            name='goal',
+            model_name="challenge",
+            name="goal",
             field=models.IntegerField(default=1),
         ),
         migrations.AddField(
-            model_name='userchallenge',
-            name='progress',
+            model_name="userchallenge",
+            name="progress",
             field=models.IntegerField(default=0),
         ),
     ]

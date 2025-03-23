@@ -12,7 +12,8 @@ from inventory.models import LootboxTemplate
 from django.conf import settings
 
 # Import Challenge tracking model
-from challenges.models import UserChallenge 
+from challenges.models import UserChallenge
+
 
 # Create your views here.
 # Initial game view
@@ -47,12 +48,12 @@ def update_leaderboard(request):
                 if user_challenge.progress >= user_challenge.challenge.goal:
                     user_challenge.completed = True
                 user_challenge.save()
-            
+
             # Lootbox logic
             old_points = user_points.bingame_points
             user_points.add_bingame_points(score)
             new_points = user_points.bingame_points
-            
+
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
@@ -61,18 +62,22 @@ def update_leaderboard(request):
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
-                user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
+                user_inventory.addLootbox(
+                    lootbox_template, quantity=lootboxes_to_reward
+                )
                 lootbox_id = lootbox_template.lootbox_id  # Return the actual lootbox id
-            
-            return JsonResponse({
-                "status": "success",
-                "new_score": user_points.bingame_points,
-                "lootboxes_to_reward": lootboxes_to_reward,
-                "lootbox_id": lootbox_id,  # Now included in the response
-            })
+
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "new_score": user_points.bingame_points,
+                    "lootboxes_to_reward": lootboxes_to_reward,
+                    "lootbox_id": lootbox_id,  # Now included in the response
+                }
+            )
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
-    
+
     return JsonResponse({"success": False, "error": "Invalid request method"})
 
 
@@ -109,16 +114,19 @@ def fetch_random_items(request):
                 "id": item.item_id,
                 "bin_id": item.bin_id.bin_id,
                 "item_name": item.item_name,
-                "item_image": request.build_absolute_uri(settings.MEDIA_URL + str(item.item_image)),
+                "item_image": request.build_absolute_uri(
+                    settings.MEDIA_URL + str(item.item_image)
+                ),
             }
         )
 
     return JsonResponse({"items": item_data})
 
+
 def get_lootbox_data(request):
     # Get the lootbox_id from the GET parameters
-    lootbox_id = request.GET.get('lootbox_id')
-    
+    lootbox_id = request.GET.get("lootbox_id")
+
     if not lootbox_id:
         return HttpResponseBadRequest("Missing lootbox_id parameter")
 
@@ -127,10 +135,10 @@ def get_lootbox_data(request):
         lootbox = LootboxTemplate.objects.get(lootbox_id=lootbox_id)
     except LootboxTemplate.DoesNotExist:
         return HttpResponseBadRequest("Invalid lootbox_id")
-    
+
     data = {
-        'lootbox_name': lootbox.name,
-        'lootbox_image': lootbox.lootbox_image.url,
+        "lootbox_name": lootbox.name,
+        "lootbox_image": lootbox.lootbox_image.url,
     }
-    
+
     return JsonResponse(data)

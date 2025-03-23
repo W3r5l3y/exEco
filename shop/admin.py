@@ -9,5 +9,4 @@ class ShopItemsAdmin(admin.ModelAdmin):
     list_editable = ("name", "description", "image", "cost")
 
 
-
 admin.site.register(ShopItems, ShopItemsAdmin)
