@@ -15,30 +15,30 @@
 </head>
 <body>
     <main>
+        <!-- Container for the posts -->
         <div id="posts" class="posts">
+            <!-- Loop through all the posts and display them -->
             {% for post in posts %}
                 <div class="post">
+                    <!-- Post Top to display user and date -->
                     <div class="post-top">
                         <h3><a href="{% url 'user_profile' post.user.id %}" class="user_profile_link">{{ post.user.email }}</a></h3>
                         <div class="date-container ">
                             <h3>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</h3>
                         </div>
-                        <!-- This was the original like count container
-                        <div class="like-count-container">
-                            <div class="like-count" onclick="likePost({{ post.post_id }})">
-                                <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
-                                <img class="like-count-image" src="{% static 'img/heart.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
-                            </div>
-                        </div> !-->
                     </div>
+                    <!-- Post Image Container to display image -->
                     <div class="post-image-container">
                         <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
                     </div>
+                    <!-- Post Bottom to display description, comments, likes and actions -->
                     <div class="post-bottom">
                         <div class="post-bottom-content">
+                            <!-- Post Description Container to display description -->
                             <div class="post-description">
                                 <h3 class="post-description-text">{{ post.description }}</h3>
                             </div>
+                            <!-- Post Comments Button to toggle comments -->
                             <div class="post-comments-button" onclick="toggleComments('{{ post.post_id }}')" id="post-comments-toggle">
                                 <div>
                                     <p class="post-comments-toggle-text">
@@ -47,6 +47,7 @@
                                     <img src="{% static 'img/chevron-down.svg' %}" alt="comments down" class="post-comments-toggle-image" id="post-comments-toggle-image">
                                 </div>
                             </div>
+                            <!-- Post Actions Container to like, report and share the post -->
                             <div class="post-actions">
                                 <div class="like-count">
                                     <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
@@ -61,6 +62,7 @@
                                 <button class="post-action-button" onclick="sharePost('{{ post.post_id }}')"><img alt="share-post" class="post-action-img" src="{% static 'img/share.svg' %}"></button>
                             </div>
                         </div>
+                        <!-- Post Comments to display comments -->
                         <div class="post-comments">
                             <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;padding-top: 10px">
                                 <form onsubmit="addComment(event, '{{ post.post_id }}')" id="Comment">
@@ -70,12 +72,12 @@
                                     </label>
                                     <button type="submit" class="comment-post">Post</button>
                                 </form>
+                                <!-- Loop through all the comments and display them -->
                                 {% for comment in post.comments.all %}
                                     <div class="comment">
                                         <p><strong>{{ comment.user.email }}</strong>: {{ comment.text }}</p>
                                     </div>
                                 {% endfor %}
-
                             </div>
                         </div>
                     </div>
@@ -83,6 +85,7 @@
             {% endfor %}
         </div>
     </main>
+    <!-- Script to pass the static files to the JavaScript -->
     <script>
         const chevronUp = "{% static 'img/chevron-up.svg' %}";
         const chevronDown = "{% static 'img/chevron-down.svg' %}";
