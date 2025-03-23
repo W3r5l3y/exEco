@@ -376,7 +376,7 @@ def get_transport_leaderboard(request):
             entry["username"] = f"{user.first_name} {user.last_name}"
             del entry["user_id"]
 
-        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
+        return JsonResponse(list(user_points), safe=False)
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
