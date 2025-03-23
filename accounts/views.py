@@ -83,6 +83,7 @@ def login_register_view(request):
 def settings_view(request):
     user = request.user
     if request.method == "POST":
+        # ----- Edit profile -----
         if "confirm_profile" in request.POST:
             form = ChangeProfileForm(request.POST, instance=user)
             if form.is_valid():
@@ -92,6 +93,7 @@ def settings_view(request):
             else:
                 error_message = list(form.errors.values())[0][0]
                 return HttpResponseRedirect(reverse("settings") + f"?error={error_message}")
+        # ----- Change password -----
         elif "confirm_password" in request.POST:
             form = ChangePasswordForm(request.POST, instance=user)
             if form.is_valid():
@@ -103,6 +105,7 @@ def settings_view(request):
             else:
                 error_message = list(form.errors.values())[0][0]
                 return HttpResponseRedirect(reverse("settings") + f"?error={error_message}")
+        # ----- Other requests -----
         elif "log_out" in request.POST:
             return log_out(request)
         elif "delete_data" in request.POST:
@@ -110,13 +113,14 @@ def settings_view(request):
         elif "unlink_strava" in request.POST:
             return strava_unlink(request)
         elif "request_gdpr" in request.POST:
-            return request_gdpr(request);
+            return request_gdpr(request)
 
     strava_linked = StravaToken.objects.filter(expires_at__gt=date.today(), user_id=user.id).exists()
     return render(request, "accounts/settings.html", {"strava_linked": strava_linked})
 
 
 def log_out(request):
+    # Log the user out
     try:
         if request.user.is_authenticated:
             logout(request)
@@ -129,6 +133,7 @@ def log_out(request):
 
 
 def delete_account(request):
+    # Delete the user account
     try:
         if request.user.is_authenticated:
             request.user.delete()
@@ -142,6 +147,7 @@ def delete_account(request):
         )
 
 def request_gdpr(request):
+    # Request the GDPR data
     try:
         if request.user.is_authenticated:
             firstName = request.user.first_name
@@ -226,6 +232,7 @@ def request_gdpr(request):
         )
 
 def strava_unlink(request):
+    # Unlink the Strava account
     try:
         user = request.user
         if user.is_authenticated:
@@ -240,11 +247,14 @@ def strava_unlink(request):
         )
 
 def logout_view(request):
+    # Log the user out
     logout(request)
     return redirect("login")
 
 def tos_view(request):
+    # Terms of service view
     return render(request, "accounts/tos.html")
 
 def privacy_view(request):
+    # Privacy policy view
     return render(request, "accounts/privacy.html")

@@ -1,11 +1,7 @@
-# accounts/utils.py (or wherever you prefer to put helper functions)
-
 import pygame
-import hashlib
 import random
 import os
 from django.conf import settings
-from garden.models import GardenState
 
 def generate_profile_picture(first_name, last_name, email, grid_size=5, square_size=50):
     seed = email
@@ -48,7 +44,7 @@ def generate_profile_picture(first_name, last_name, email, grid_size=5, square_s
     if not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)
     
-    # Use a unique filename; you could use a hash or a combination of names.
+    # Use the email as the file name.
     file_name = f"{email}_profile_picture.png"
     output_path = os.path.join(output_dir, file_name)
     
@@ -59,20 +55,24 @@ def generate_profile_picture(first_name, last_name, email, grid_size=5, square_s
         print("Error saving profile picture:", e)
     
     pygame.quit()
-    # Return the relative path that Django will use.
+    # Return the path to the image.
     return f"profile_pics/{file_name}"
 
 
 def create_empty_garden_image(user):
+    # Create a 9x9 grid with a tree in the center and save it as a PNG file.
     pygame.init()
     
+    # Define the size of the grid and the cells.
     grid_size = 9
     cell_size = 64
     width = grid_size * cell_size
     height = grid_size * cell_size
     
+    # Create a surface with a grass background.
     surface = pygame.Surface((width, height))
     
+    # Load the grass image and scale it to the surface size.
     grass_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "grass.png")
     try:
         grass_img = pygame.image.load(grass_img_path)
@@ -80,8 +80,9 @@ def create_empty_garden_image(user):
         surface.blit(grass_img, (0, 0))
     except Exception as e:
         print("Error loading grass background:", e)
-        surface.fill((255, 255, 255))
+        surface.fill((255, 255, 255)) # Fill with white if image not found.
     
+    # Draw a tree in the center of the grid.
     center_rect = pygame.Rect((5 - 1) * cell_size, (5 - 1) * cell_size, cell_size, cell_size)
     tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "tree-1.png")
     try:
@@ -91,14 +92,17 @@ def create_empty_garden_image(user):
     except Exception as e:
         print("Error loading tree image:", e)
     
+    # Save the image in MEDIA_ROOT/gardens.
     file_name = f"garden_state_user{user.id}.png"
     output_dir = os.path.join(settings.MEDIA_ROOT, "gardens")
     
+    # Create the output directory if it does not exist.
     if not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)
     
     output_path = os.path.join(output_dir, file_name)
     
+    # Save the image to the output path.
     try:
         pygame.image.save(surface, output_path)
         print(f"Empty garden image saved to {output_path}")
