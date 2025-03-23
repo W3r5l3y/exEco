@@ -45,7 +45,9 @@ class CumulativeStats(models.Model):
     user = models.OneToOneField(
         CustomUser, on_delete=models.CASCADE, related_name="cumulative_stats"
     )
-    total_commute_distance = models.FloatField(default=0)  # Distance in meters (commute)
+    total_commute_distance = models.FloatField(
+        default=0
+    )  # Distance in meters (commute)
     total_hobby_distance = models.FloatField(default=0)  # Distance in meters (hobby)
 
     def __str__(self):

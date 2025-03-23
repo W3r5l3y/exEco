@@ -94,6 +94,7 @@ class QRScannerTestCase(TestCase):
             "Upload a valid image. The file you uploaded was either not an image or a corrupted image.",
         )
 
+
 def test_qrscanner_code_multiple_scans(self):
     # Simulate multiple scans of the same QR code
     with open("qrscanner/tests/qrtest1.png", "rb") as qr_image:
@@ -103,19 +104,19 @@ def test_qrscanner_code_multiple_scans(self):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You earned 2 points!")
-        
+
         # Reset the file pointer for next read
         qr_image.seek(0)
-        
+
         # Second scan should be on cooldown
         response = self.client.post(
             reverse("qrscanner"), {"image": qr_image}, follow=True
         )
-        
+
     # Check for the cooldown message
     self.assertEqual(response.status_code, 200)
     self.assertContains(response, "This QR code is on cooldown")
-    
+
     # Verify the location was visited once
     location = Location.objects.get(location_code="TEST1")
     self.assertEqual(location.times_visited, 2)

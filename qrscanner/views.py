@@ -142,9 +142,7 @@ def qrscanner(request):
     else:
         form = QRCodeUploadForm()
 
-    lootboxes_to_reward = request.session.pop(
-        "lootboxes_to_reward", 0
-    )
+    lootboxes_to_reward = request.session.pop("lootboxes_to_reward", 0)
     message = request.session.pop("message", "")
 
     location_name = request.session.pop("location_name", None)
