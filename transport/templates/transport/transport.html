@@ -26,12 +26,12 @@
             <section class="log-activity column-item">
                 <h3>Log Activity</h3>
                 {% if user.is_authenticated %}
-                    {% if user.strava_token %}
+                    {% if user.strava_token %} <!-- If user is authenticated and has a strava token, show log activity button -->
                         <p>Log your activities here to earn points!</p>
                         <p>Points are earned based on the distance traveled and the reason for the activity.</p>
                         <p>If you're replacing a commute, LOG IT!</p>
                         <button id="log-btn" class="log-activity-btn">Log Activity</button>
-                    {% else %}
+                    {% else %} <!-- If user is authenticated but does not have a strava token, show connect to strava button -->
                         <p>In order to log your activities you must log in using Strava</p>
                         <p>Strava is a mobile application to log exercises, such as walk, runs, cycles</p>
                         <p>Access it below!</p>
@@ -90,11 +90,13 @@
 
             <h2>Log Activity</h2>
 
+            <!-- Select activity from strava -->
             <p>Please select the activity from your last 5 strava entries. <b>[Must be a new entry]</b></p>
             <select id="activity-select">
                 <option value="" disabled selected>Select an activity</option>
             </select>
 
+            <!-- Radio buttons for activity reason -->
             <p>What was the reason for this activity?</p>
             <div id="commute-radio">
                 <input type="radio" id="commute" name="activity-option" value="commute" checked>
@@ -104,6 +106,8 @@
                 <input type="radio" id="hobby" name="activity-option" value="hobby">
                 <label for="hobby">Hobby/Exercise</label>
             </div>
+
+            <!-- Submit button -->
             <button id="submit-activity">Submit</button>
         </div>
     </div>
@@ -126,5 +130,6 @@
             <h2>Error</h2>
             <p>There was an error in logging your activity. Please try again later.</p>
         </div>
+    </div>
 </body>
 </html>

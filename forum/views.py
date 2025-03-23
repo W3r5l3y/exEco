@@ -11,6 +11,7 @@ from django.contrib import messages
 from challenges.models import UserChallenge 
 
 def forum_home(request):
+    # Display a single post if post_id is provided in the query params, else display all posts
     post_id = request.GET.get("post_id")
     if post_id:
         post = get_object_or_404(Post, post_id=post_id)
@@ -23,8 +24,10 @@ def forum_home(request):
 
 @login_required
 def create_post(request):
+    # Create a new post
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
+        # Check if the form is valid, if so save the post
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
@@ -47,12 +50,13 @@ def create_post(request):
 @login_required
 @require_POST
 def like_post(request, post_id):
+    # Like or unlike a post
     post = get_object_or_404(Post, post_id=post_id)
     post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
-    if not created:
+    if not created: # If the like already exists, toggle the liked status
         post_like.liked = not post_like.liked
         post_like.save()
-    else:
+    else: # If the like is being created for the first time, set liked to True
         post_like.liked = True
         post_like.save()
     post.likes = PostLike.objects.filter(post=post, liked=True).count()
@@ -64,9 +68,10 @@ def like_post(request, post_id):
 
 @login_required
 def report_post(request, post_id):
+    # Report a post
     post = get_object_or_404(Post, post_id=post_id)
     
-    # Check if the report already exists
+    # Check if the report already exists, if not create a new report
     report, created = PostReport.objects.get_or_create(user=request.user, post=post)
     
     if created:
@@ -79,6 +84,7 @@ def report_post(request, post_id):
 
 @login_required
 def user_profile(request, user_id):
+    # Display the profile of a user
     user = get_object_or_404(CustomUser, id=user_id)
     user_posts = Post.objects.filter(user=user).order_by("-created_at")
     return render(
@@ -96,6 +102,7 @@ def user_profile(request, user_id):
 @require_POST
 @login_required
 def add_comment(request, post_id):
+    # Add a comment to a post
     post = get_object_or_404(Post, post_id=post_id)
     text = request.POST.get("text")
     if text:
@@ -109,15 +116,16 @@ def add_comment(request, post_id):
 @login_required
 @require_POST
 def edit_post(request, post_id):
+    # Edit a post
     post = get_object_or_404(Post, post_id=post_id)
 
-    if post.user != request.user:
+    if post.user != request.user: # Check if the user is the owner of the post
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
     data = request.POST if request.content_type == "application/x-www-form-urlencoded" else request.json()
     new_description = data.get("description", "").strip()
 
-    if not new_description:
+    if not new_description: # Check if the description is empty
         return JsonResponse({"success": False, "error": "Description cannot be empty"}, status=400)
 
     post.description = new_description
@@ -130,9 +138,10 @@ def edit_post(request, post_id):
 @login_required
 @require_POST
 def delete_post(request, post_id):
+    # Delete a post
     post = get_object_or_404(Post, post_id=post_id)
 
-    if post.user != request.user:
+    if post.user != request.user: # Check if the user is the owner of the post
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
     post.delete()

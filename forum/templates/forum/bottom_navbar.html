@@ -13,26 +13,30 @@
     </head>
     <body>
         {% block content %}
+            <!-- Bottom Navbar -->
             <div class="bottom-navbar-container">
                 <div class="bottom-navbar">
+                    <!-- Home -->
                     <a href="{% url 'forum_home' %}">
-                        {% if active_page == 'home' %}
+                        {% if active_page == 'home' %} <!-- If the active page is home, display the selected image -->
                             <img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/home_selected.svg' %}" alt="home">
-                        {% else %}
+                        {% else %} <!-- If the active page is not home, display the unselected image -->
                             <img class="bottom-navbar-image" src="{% static 'img/home.svg' %}" alt="home">
                         {% endif %}
                     </a>
+                    <!-- Manage -->
                     <a href="{% url 'user_profile' user_id=request.user.id %}">
-                        {% if active_page == 'user_profile' and user.id == request.user.id %}
+                        {% if active_page == 'user_profile' and user.id == request.user.id %} <!-- If the active page is user_profile and the user is the logged in user, display the selected image -->
                             <img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/archive_selected.svg' %}" alt="manage">
-                        {% else %}
+                        {% else %} <!-- If the active page is not user_profile or the user is not the logged in user, display the unselected image -->
                             <img class="bottom-navbar-image" src="{% static 'img/archive.svg' %}" alt="manage">
                         {% endif %}
                     </a>
+                    <!-- Create Post -->
                     <a href="{% url 'create_post' %}">
-                        {% if active_page == 'create_post' %}
+                        {% if active_page == 'create_post' %} <!-- If the active page is create_post, display the selected image -->
                             <img class="bottom-navbar-image bottom-navbar-image-selected" src="{% static 'img/new_post_selected.svg' %}" alt="Create Post">
-                        {% else %}
+                        {% else %} <!-- If the active page is not create_post, display the unselected image -->
                             <img class="bottom-navbar-image" src="{% static 'img/new_post.svg' %}" alt="Create Post">
                         {% endif %}
                     </a>

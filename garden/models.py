@@ -16,7 +16,7 @@ class GardenState(models.Model):
         for item_id in self.state.values():
             try:
                 # Extract the item ID from unique inventory reference
-                item_pk = int(item_id.split("-")[2])  # "inventory-item-123" → 123
+                item_pk = int(item_id.split("-")[2])
                 item = InventoryItem.objects.get(pk=item_pk)
 
                 # Sum stats

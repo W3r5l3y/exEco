@@ -14,12 +14,11 @@
     <script src="{% static 'js/shop.js' %}" defer></script>
 </head>
 <body>
-    <main>
-        <!-- <h1>Shop</h1> -->
-        
+    <main>      
         <!-- Grid container for shop items -->
         <div class="shop-items-grid">
 
+            <!-- Loop through each item in the shop and display it -->
             {% for item in shop_items %}
                 <div class="shop-item" 
                     data-item-id="{{ item.itemId }}" 
@@ -28,6 +27,7 @@
                     data-item-cost="{{ item.cost }}" 
                     data-item-img-src="{{ item.image.url }}">
                     <div class="shop-item-inner">
+                        <!-- If the item has an image, display it -->
                         {% if item.image %}
                             <img class="shop-item-img" src="{{ item.image.url }}" alt="{{ item.name }}">
                         {% endif %}
@@ -37,11 +37,13 @@
                         </div>
                     </div>
                 </div>
+            <!-- If there are no items in the shop, display a message -->
             {% empty %}
                 <p>No items available in the shop.</p>
             {% endfor %}
         </div>
         
+        <!-- Scroll buttons -->
         <div class="scroll-btn-container">
             <button id="scroll-up-btn" class="scroll-btn"><img src="../../static/img/shop-up.png"></button>
             <button id="scroll-down-btn" class="scroll-btn"><img src="../../static/img/shop-down.png"></button>

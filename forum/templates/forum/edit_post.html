@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
 </head>
 <body>
+    <!-- If there are messages, display them -->
     {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -20,22 +21,26 @@
         </div>
     {% endif %}
     <main>
+        <!-- Edit Post Form -->
         <form action="" method="post" enctype="multipart/form-data" class="edit-post-form">
             {% csrf_token %}
             <div class="edit-post-div">
                 <div class="post-top">
                     <h3>Edit Post</h3>
                 </div>
+                <!-- Post Image Container to display image -->
                 <div class="post-image-container">
                     <img id="post-image-preview" class="post-image" src="{{ post.image.url }}" alt="Post Image">
                     <input type="file" name="image" id="imageInput" accept="image/png, image/jpg">
                 </div>
+                <!-- Post Description Container to edit description -->
                 <div class="post-bottom">
                     <div class="post-description">
                         <label style="width:100%">
                             <input class="post-description-input" type="text" name="description" value="{{ post.description }}" maxlength="50" required/>
                         </label>
                     </div>
+                    <!-- Post Actions Container to save the post -->
                     <div class="post-actions">
                         <button type="submit" class="post-action-button">Save</button>
                     </div>

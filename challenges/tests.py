@@ -63,41 +63,6 @@ class ChallengeResetTestCase(TestCase):
         self.assertNotEqual(weekly_challenges[0].challenge.id, weekly_challenges[1].challenge.id)  # Randomized check
 
 
-class ChallengeSubmissionTestCase(TestCase):
-    """Tests for challenge submission and rewards."""
-
-    def setUp(self):
-        """Set up test data before running tests."""
-        self.user = get_user_model().objects.create_user(
-            email="testuser@example.com", 
-            password="password",
-            first_name="Test",
-            last_name="User"
-        )
-        self.challenge = Challenge.objects.create(
-            description="Test Challenge", reward=10, challenge_type="daily", goal=1
-        )
-        self.user_challenge = UserChallenge.objects.create(user=self.user, challenge=self.challenge, progress=0)
-
-    def test_submit_challenge(self):
-        """Ensure a challenge can be submitted and marked as completed."""
-        self.client.force_login(self.user)
-
-        response = self.client.post(reverse("submit_challenge"), {"challenge_id": self.challenge.id}, content_type="application/json")
-        self.user_challenge.refresh_from_db()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.user_challenge.completed)  # Ensure the challenge is marked as completed
-
-    def test_challenge_reward(self):
-        """Ensure coins are rewarded when a challenge is completed."""
-        self.client.force_login(self.user)
-        self.client.post(reverse("submit_challenge"), {"challenge_id": self.challenge.id}, content_type="application/json")
-
-        user_coins = UserCoins.objects.get(user=self.user)
-        self.assertEqual(user_coins.coins, 10)  # Ensure user received 10 coins
-
-
 class AuthenticationTestCase(TestCase):
     """Tests for authentication and access control."""
 

@@ -5,11 +5,6 @@ from django.conf import settings
 
 
 class StravaToken(models.Model):
-    """
-    Stores a user's Strava tokens (access token, refresh token, expiry).
-    Linked to your custom user model via a OneToOneField.
-    """
-
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="strava_token"
     )
@@ -47,26 +42,11 @@ class LoggedActivity(models.Model):
 
 
 class CumulativeStats(models.Model):
-    """Tracks cumulative distance for users, separated by activity type."""
-
     user = models.OneToOneField(
         CustomUser, on_delete=models.CASCADE, related_name="cumulative_stats"
     )
-    total_commute_distance = models.FloatField(default=0)  # Distance in meters
-    total_hobby_distance = models.FloatField(default=0)  # Distance in meters
+    total_commute_distance = models.FloatField(default=0)  # Distance in meters (commute)
+    total_hobby_distance = models.FloatField(default=0)  # Distance in meters (hobby)
 
     def __str__(self):
         return f"User {self.user.id} - Commute: {self.total_commute_distance}m, Hobby: {self.total_hobby_distance}m"
-
-
-"""
-class LeaderboardEntry(models.Model):
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name="leaderboard_entry")
-    points = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"User {self.user.id} - {self.points} points"
-"""
