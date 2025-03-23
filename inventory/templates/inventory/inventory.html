@@ -14,25 +14,31 @@
     <script src="{% static 'js/inventory.js' %}" defer></script>
 </head>
 <body>
+    <!-- Main -->
     <main>
         <h1 id="inventory-header">{{user.first_name}}'s Inventory</h1>
 
+        <!-- Highlight buttons -->
         <div id="highlight-buttons">
             <button id="toggle-regular" class="toggle-button">Normal Items</button>
             <button id="toggle-lootbox" class="toggle-button">Lootboxes</button>
         </div>
         
+        <!-- Inventory container -->
         <div id = "inventory-container">
             {% include 'inventory/partials/inventory_list.html' %}
         </div>
     </main>
 
+    <!-- Popup -->
     <div id="popup-overlay" class="popup-overlay" style="display: none;">
         <div id="lootbox-popup" class="lootbox-popup">
+
             <!-- Static image and animation of the lootbox -->
             <div id="lootbox-image-container">
                 <img id="lootbox-static-image" class="lootbox-media" src="" alt="Lootbox" style="cursor: pointer;">
             </div>
+            
             <!-- Result of opening the lootbox -->
             <div id="lootbox-item-result" style="display: none;">
                 <h2 id="popup-title"></h2>

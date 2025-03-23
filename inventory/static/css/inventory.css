@@ -1,4 +1,4 @@
-/* set variables */
+/* Initialise colour for the lootbox animation, so we can dynamically change it according to the animation result */
 :root {
     --lootbox-animation-final-colour: #f0f0f0;
 }
@@ -81,10 +81,10 @@ main {
     size: 24px;
     font-weight: 600;
     color: var(--primary_colour);
-    /* margin-left: 20px; */
 }
 
-#inventory-container { /* This is the container for the inventory slots */
+/* The container for the inventory slots */
+#inventory-container {
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -95,7 +95,8 @@ main {
     gap: 20px;
 }
 
-.inventory-slot { /* Inventory slots */
+/* The individual inventory slot */
+.inventory-slot {
     width: 160px;
     height: 220px;
     display: flex;
@@ -111,10 +112,10 @@ main {
 }
 
 .item-name {
-    white-space: nowrap;
+    white-space: nowrap; /* Prevents text from wrapping, and uses ellipsis to indicate overflow */
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%; /* Adjust as needed */
+    max-width: 100%;
 }
 
 .inventory-slot img {
