@@ -10,9 +10,20 @@ document.addEventListener("DOMContentLoaded", function() {
             map = L.map("map").setView([50.73555553269732, -3.5337938165488967], 16);
             
             // Add an OpenStreetMap tile layer
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+                attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
             }).addTo(map);
+            
+            
+            var customIcon = L.icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+                iconSize: [25, 41], // Default Leaflet marker size
+                iconAnchor: [12, 41], // Positioning
+                popupAnchor: [1, -34]
+            });
+            
+            
             
             // Fetch location pins from the Django view
             fetch('/locations-json/')
@@ -21,11 +32,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     locations.forEach(loc => {
                         // Check that latitude and longitude are valid
                         if (loc.latitude && loc.longitude) {
-                            L.marker([loc.latitude, loc.longitude])
+                            L.marker([loc.latitude, loc.longitude], { icon: customIcon })
                                 .addTo(map)
-                                .bindPopup(`<strong>${loc.location_name}</strong><br>
-                                            ${loc.location_fact}<br>
-                                            Points: ${loc.location_value}`);
+                                .bindPopup(`${loc.location_name}`);
                         }
                     });
                 })

@@ -290,7 +290,13 @@ h3 {
     margin-bottom: 20px;
     object-fit: cover;
     border-radius: 10px;
-    
+
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
 }
 
 @keyframes popup-animation { /* Animation for the popup */
