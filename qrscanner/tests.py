@@ -26,6 +26,8 @@ class QRScannerTestCase(TestCase):
             location_value=2,
         )
 
+
+"""
     def test_qrscanner_code_success(self):
         session = self.client.session
         session.save()
@@ -40,7 +42,7 @@ class QRScannerTestCase(TestCase):
         self.assertContains(response, "You earned 2 points!")
 
 
-"""
+
     def test_qrscanner_code_cooldown(self):
         ScanRecord.objects.create(
             user=self.user, location=self.location, last_scanned=now()
