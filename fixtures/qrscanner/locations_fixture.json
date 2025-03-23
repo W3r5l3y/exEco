@@ -36,7 +36,7 @@
             "cooldown_length": 3600,
             "location_value": 10,
             "is_active": true,
-            "image": "qrscanner/locations/0003.png",
+            "image": "qrscanner/locations/0003.jpg",
             "latitude": 50.7363027,
             "longitude": -3.5296921
         }
@@ -92,7 +92,7 @@
             "cooldown_length": 3600,
             "location_value": 10,
             "is_active": true,
-            "image": "qrscanner/locations/0007.png",
+            "image": "qrscanner/locations/0007.jpg",
             "latitude": 50.737914,
             "longitude": -3.529873
         }
@@ -106,7 +106,7 @@
             "cooldown_length": 3600,
             "location_value": 10,
             "is_active": true,
-            "image": "qrscanner/locations/0008.png",
+            "image": "qrscanner/locations/0008.jpg",
             "latitude": 50.737874,
             "longitude": -3.528991
         }
