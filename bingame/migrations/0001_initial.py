@@ -8,25 +8,29 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Bins',
+            name="Bins",
             fields=[
-                ('bin_id', models.AutoField(primary_key=True, serialize=False)),
-                ('bin_name', models.CharField(max_length=100)),
-                ('bin_image', models.CharField(max_length=255)),
+                ("bin_id", models.AutoField(primary_key=True, serialize=False)),
+                ("bin_name", models.CharField(max_length=100)),
+                ("bin_image", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Items',
+            name="Items",
             fields=[
-                ('item_id', models.AutoField(primary_key=True, serialize=False)),
-                ('item_name', models.CharField(max_length=100)),
-                ('item_image', models.CharField(max_length=255)),
-                ('bin_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bingame.bins')),
+                ("item_id", models.AutoField(primary_key=True, serialize=False)),
+                ("item_name", models.CharField(max_length=100)),
+                ("item_image", models.CharField(max_length=255)),
+                (
+                    "bin_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="bingame.bins"
+                    ),
+                ),
             ],
         ),
     ]

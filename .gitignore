@@ -84,6 +84,7 @@ media/*
 !media/garden/
 !media/inventory/
 !media/shop/
+!media/qrscanner/
 
 # Allow tracking of files inside these folders
 !media/bingame/*
@@ -91,6 +92,7 @@ media/*
 !media/inventory/items/*
 !media/items/*
 !media/shop/*
+!media/qrscanner/locations/*
 target/
 
 # Jupyter Notebook

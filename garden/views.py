@@ -7,11 +7,15 @@ from inventory.models import Inventory, ItemType, InventoryItem
 import pygame
 import os
 from django.conf import settings
+from django.templatetags.static import static
+
 
 @login_required
 def garden_view(request):
     # Render the garden main page
-    return render(request, 'garden/garden.html')
+    return render(request, "garden/garden.html")
+    return render(request, "garden/garden.html")
+
 
 @login_required
 def load_garden(request):
@@ -27,6 +31,7 @@ def load_garden(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+
 @login_required
 @login_required
 def save_garden(request):
@@ -37,25 +42,32 @@ def save_garden(request):
 
             # Ensure garden state is a dictionary before saving
             if not isinstance(garden_state, dict):
-                return JsonResponse({"error": "Invalid garden state format"}, status=400)
+                return JsonResponse(
+                    {"error": "Invalid garden state format"}, status=400
+                )
 
             garden, created = GardenState.objects.update_or_create(
                 user=request.user, defaults={"state": garden_state}
             )
-            
+
             # Calculate the stats correctly
             stats_data = garden.calculate_stats()
 
-            return JsonResponse({
-                "message": "Garden saved successfully!",
-                "average_stats": stats_data["average_stats"],
-                "total_stat": stats_data["total_stats"]
-            })
+            return JsonResponse(
+                {
+                    "message": "Garden saved successfully!",
+                    "average_stats": stats_data["average_stats"],
+                    "total_stat": stats_data[
+                        "total_stats"
+                    ],  # Ensure correct key for total stats
+                }
+            )
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
 
 @login_required
 def load_inventory(request):
@@ -64,20 +76,23 @@ def load_inventory(request):
         items = inventory.items.filter(item_type=ItemType.REGULAR)
         items_list = []
         for item in items:
-            items_list.append({
-                # Format the id so that it matches the format used in garden state.
-                'id': f"inventory-item-{item.id}",
-                'img': item.image.url,
-                'name': item.name,
-                'quantity': item.quantity,
-                'item_type': item.item_type,
-            })
-        return JsonResponse({'items': items_list})
+            items_list.append(
+                {
+                    # Format the id so that it matches the format used in garden state.
+                    "id": f"inventory-item-{item.id}",
+                    "img": item.image.url,
+                    "name": item.name,
+                    "quantity": item.quantity,
+                    "item_type": item.item_type,
+                }
+            )
+        return JsonResponse({"items": items_list})
     except Inventory.DoesNotExist:
-        return JsonResponse({'items': []})
+        return JsonResponse({"items": []})
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
+        return JsonResponse({"error": str(e)}, status=500)
+
+
 def save_garden_as_image(request):
     # Extract the state from the request body.
     try:
@@ -100,8 +115,10 @@ def save_garden_as_image(request):
     surface = pygame.Surface((width, height))
     surface.fill((255, 255, 255))
 
-    grass_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", "grass.png")
-
+    # Build the path for the wallpaper image.
+    grass_img_path = os.path.join(
+        settings.BASE_DIR, "garden", "static", "img", "grass.png"
+    )
     try:
         # Load and scale the grass image to cover the entire surface.
         grass_img = pygame.image.load(grass_img_path)
@@ -112,6 +129,7 @@ def save_garden_as_image(request):
         # Fallback to a white background if the image fails to load.
         surface.fill((255, 255, 255))
 
+    # Build paths based on your folder structure.
     empty_img_path = os.path.join(settings.MEDIA_ROOT, "inventory/items/empty.png")
 
     # Helper function to get the image path for an inventory item.
@@ -125,7 +143,9 @@ def save_garden_as_image(request):
             path = item.image.url
             # Try using static path if media path doesn't exist
             if not os.path.exists(path):
-                alt_path = os.path.join(settings.MEDIA_ROOT, "inventory/items/", os.path.basename(path))
+                alt_path = os.path.join(
+                    settings.MEDIA_ROOT, "inventory/items/", os.path.basename(path)
+                )
                 if os.path.exists(alt_path):
                     path = alt_path
             return path
@@ -135,22 +155,25 @@ def save_garden_as_image(request):
     # Iterate over garden state and draw the images on the surface.
     for row in range(1, grid_size + 1):
         for col in range(1, grid_size + 1):
-            rect = pygame.Rect((col - 1) * cell_size, (row - 1) * cell_size, cell_size, cell_size)
+            rect = pygame.Rect(
+                (col - 1) * cell_size, (row - 1) * cell_size, cell_size, cell_size
+            )
             key = f"{row}-{col}"
 
             if row == 5 and col == 5:
                 try:
                     # Calculate the tree image based on score, highest possible shld be 40 : 60 *2/3 = 40
                     from garden.models import GardenState
+
                     garden = GardenState.objects.filter(user=request.user).first()
                     if garden:
                         stats = garden.calculate_stats()
                         total_score = stats.get("total_stats", 0)
                     else:
                         total_score = 0
-                    if total_score < 8:  
+                    if total_score < 8:
                         tree_level = 1
-                    elif total_score < 16: 
+                    elif total_score < 16:
                         tree_level = 2
                     elif total_score < 24:
                         tree_level = 3
@@ -159,14 +182,16 @@ def save_garden_as_image(request):
                     else:
                         tree_level = 5
                     tree_filename = f"tree-{tree_level}.png"
-                    tree_img_path = os.path.join(settings.BASE_DIR, "garden", "static", "img", tree_filename)
+                    tree_img_path = os.path.join(
+                        settings.BASE_DIR, "garden", "static", "img", tree_filename
+                    )
                     tree_img = pygame.image.load(tree_img_path)
                     tree_img = pygame.transform.scale(tree_img, (cell_size, cell_size))
                     surface.blit(tree_img, rect)
                 except Exception as e:
                     print("Error loading tree image:", e)
                 continue
-            
+
             # Get the image path for the item in the cell.
             if key in garden_state:
                 unique_item_id = garden_state[key]
@@ -209,7 +234,8 @@ def fetch_user_garden_image(request):
     image_url = f"/media/gardens/{file_name}"
     return JsonResponse({"image_url": image_url})
 
-@login_required                                
+
+@login_required
 def get_tree_image(request):
     # Return the URL for the tree image based on the user's garden stats.
     try:
@@ -233,7 +259,8 @@ def get_tree_image(request):
         return JsonResponse({"tree_image": image_path})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-    
+
+
 @login_required
 def get_garden_stats(request):
     # Return the average and total stats for the user's garden.
@@ -241,10 +268,55 @@ def get_garden_stats(request):
         garden = GardenState.objects.filter(user=request.user).first()
         if garden:
             stats = garden.calculate_stats()
-            return JsonResponse({
-                "average_stats": stats["average_stats"],
-                "total_stat": stats["total_stats"]
-            })
+            return JsonResponse(
+                {
+                    "average_stats": stats["average_stats"],
+                    "total_stat": stats["total_stats"],
+                }
+            )
+        else:
+            return JsonResponse({"average_stats": {}, "total_stat": 0})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required
+def get_tree_image(request):
+    try:
+        garden = GardenState.objects.filter(user=request.user).first()
+        if garden:
+            stats = garden.calculate_stats()
+            total_score = stats.get("total_stats", 0)
+        else:
+            total_score = 0
+        if total_score < 8:
+            tree_level = 1
+        elif total_score < 16:
+            tree_level = 2
+        elif total_score < 24:
+            tree_level = 3
+        elif total_score < 32:
+            tree_level = 4
+        else:
+            tree_level = 5
+        image_path = f"/static/img/tree-{tree_level}.png"
+        return JsonResponse({"tree_image": image_path})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required
+def get_garden_stats(request):
+    try:
+        garden = GardenState.objects.filter(user=request.user).first()
+        if garden:
+            stats = garden.calculate_stats()
+            return JsonResponse(
+                {
+                    "average_stats": stats["average_stats"],
+                    "total_stat": stats["total_stats"],
+                }
+            )
         else:
             return JsonResponse({"average_stats": {}, "total_stat": 0})
     except Exception as e:

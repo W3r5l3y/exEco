@@ -6,13 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('challenges', '0005_challengeresettracker'),
+        ("challenges", "0005_challengeresettracker"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='challenge',
-            name='challenge_type',
-            field=models.CharField(choices=[('daily', 'Daily'), ('weekly', 'Weekly'), ('lifetime', 'Lifetime')], max_length=10),
+            model_name="challenge",
+            name="challenge_type",
+            field=models.CharField(
+                choices=[
+                    ("daily", "Daily"),
+                    ("weekly", "Weekly"),
+                    ("lifetime", "Lifetime"),
+                ],
+                max_length=10,
+            ),
         ),
     ]

@@ -13,5 +13,6 @@ class ItemsAdmin(admin.ModelAdmin):
     search_fields = ("item_id", "item_name", "bin_id")
     list_editable = ("item_name", "item_image", "bin_id")
 
+
 admin.site.register(Bins, BinsAdmin)
 admin.site.register(Items, ItemsAdmin)

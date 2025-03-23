@@ -18,6 +18,7 @@ def transport_view(request):
     # Return the main transport page
     return render(request, "transport/transport.html")
 
+
 @login_required
 @is_gamekeeper
 def transport_error(request):
@@ -51,7 +52,9 @@ def strava_login(request):
         # Update database with new tokens and expiry date
         strava_token.access_token = data.get("access_token")
         strava_token.refresh_token = data.get("refresh_token")
-        strava_token.expires_at = datetime.datetime.fromtimestamp(data.get("expires_at"))
+        strava_token.expires_at = datetime.datetime.fromtimestamp(
+            data.get("expires_at")
+        )
         strava_token.save()
 
         return redirect("transport/transport.html")
@@ -85,7 +88,9 @@ def strava_callback(request):
     # Ensure the code is present, otherwise show an error
     if not code:
         return render(
-            request, "transport/transport-error.html", {"error": "No code returned from Strava"}
+            request,
+            "transport/transport-error.html",
+            {"error": "No code returned from Strava"},
         )
 
     # Exchange the code for tokens
@@ -107,7 +112,11 @@ def strava_callback(request):
 
     # Ensure all tokens are present
     if not access_token or not refresh_token or not expires_at:
-        return render(request, "transport/transport-error.html", {"error": "Invalid response from Strava"})
+        return render(
+            request,
+            "transport/transport-error.html",
+            {"error": "Invalid response from Strava"},
+        )
 
     user = request.user
 
@@ -120,11 +129,19 @@ def strava_callback(request):
 
     # Check if the athlete ID was successfully retrieved
     if not athlete_id:
-        return render(request, "transport/transport-error.html", {"error": "Could not get athlete ID from Strava"})
+        return render(
+            request,
+            "transport/transport-error.html",
+            {"error": "Could not get athlete ID from Strava"},
+        )
 
     # Check if the athlete ID is in use by another user
     if StravaToken.objects.filter(athlete_id=athlete_id).exists():
-        return render(request, "transport/transport-error.html", {"error": "This Strava account is already linked to another user"})
+        return render(
+            request,
+            "transport/transport-error.html",
+            {"error": "This Strava account is already linked to another user"},
+        )
 
     # Create or update the user's Strava tokens
     strava_token, created = StravaToken.objects.get_or_create(user=user)
@@ -287,7 +304,7 @@ def log_activity(request):
             cumulative_stats.save()
 
             # Convert distance from meters to kilometers
-            distance_km = distance / 1000  
+            distance_km = distance / 1000
 
             # Update Transport Challenges
             user_challenges = UserChallenge.objects.filter(
@@ -306,15 +323,15 @@ def log_activity(request):
 
             # Update UserPoints
             score = int(distance / 100)
-            
+
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
-            
+
             old_points = user_points.transport_points
-            
+
             user_points.add_transport_points(score)
-            
+
             new_points = user_points.transport_points
-            
+
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
@@ -324,15 +341,19 @@ def log_activity(request):
                 # Fetch or create the user's inventory
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                 # Add the lootboxes
-                user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
-            
-            user_points.save()
-            
-            return JsonResponse(
-                {"success": "Activity logged successfully!",
-                "lootboxes_to_reward": lootboxes_to_reward}, 
-                status=200
+                user_inventory.addLootbox(
+                    lootbox_template, quantity=lootboxes_to_reward
                 )
+
+            user_points.save()
+
+            return JsonResponse(
+                {
+                    "success": "Activity logged successfully!",
+                    "lootboxes_to_reward": lootboxes_to_reward,
+                },
+                status=200,
+            )
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
@@ -342,10 +363,10 @@ def log_activity(request):
 
 @login_required
 def get_transport_stats(request):
-    try: # Get cumulative stats and user points
+    try:  # Get cumulative stats and user points
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
-        
+
         return JsonResponse(
             {
                 "total_commute_distance": cumulative_stats.total_commute_distance,

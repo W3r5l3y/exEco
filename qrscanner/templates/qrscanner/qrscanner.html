@@ -9,6 +9,10 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/qrscanner.css' %}">
     <script src="{% static 'js/qrscanner.js' %}" defer></script>
+
+    <!-- Leaflet CSS and JS [Map Dependency] -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <main>
@@ -31,6 +35,9 @@
                 {% if message %}
                     <p><strong>{{ message }}</strong></p>
                 {% endif %}
+
+
+                <button id="open-map-popup-button">Show Map</button>
             </section>
         </div>
 
@@ -58,7 +65,6 @@
             
                 {% if location_name %}
                     <p><strong>Location Name:</strong> <strong>{{ location_name }}</strong></p>
-                    <p>Fact: {{ location_fact }}</p>
                     <p>Times Scanned: {{ location_times_visited }}</p>
                     <p>Point Value: {{ location_value }}</p>
                 {% endif %}
@@ -66,7 +72,7 @@
             </section>
         </div>
     <div id="lootbox-popup" style="display: none"></div>
-    <input type="hidden" id="lootbox-count" value="{{ lootboxes_to_reward }}"> <!-- CHANGED -->
+    <input type="hidden" id="lootbox-count" value="{{ lootboxes_to_reward }}">
 
     </main>
     
@@ -76,25 +82,42 @@
             <span class="close" id="close-qr-popup">&times;</span>
             {% if location_name %}
                 <h2>{{ location_name }}</h2>
+                {% if location_image %}
+                    <img id="location-image" src="{{ location_image }}">
+                {% endif %}
                 <p>{{ location_fact }}</p>
             {% endif %}
         </div>
     </div>
 
+    <!-- Popup for map -->
+    <div id="map-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="close-map-popup">&times;</span>
+            <h2>Eco-locations</h2>
+            <p>Go and find these locations and scan the QR code to earn points!</p>
+            <!-- Add a container for the map -->
+            <div id="map" style="height: 400px; width: 100%;"></div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Check if a QR scan result exists by testing the location name.
-            '{% if location_name %}'
+        // Check if a QR scan result exists by testing the location name.
+        '{% if location_name %}'
+            var qrPopup = document.getElementById("qr-popup");
+            qrPopup.style.display = "block";
+        '{% endif %}'
+
+         // Close the qr scanner popup
+        var closeQrBtn = document.getElementById("close-qr-popup");
+        if (closeQrBtn) {
+            closeQrBtn.addEventListener("click", function() {
                 var qrPopup = document.getElementById("qr-popup");
-                qrPopup.style.display = "block";
-            '{% endif %}'
-        
-            // Close the popup when the close button is clicked.
-            var closeBtn = document.getElementById("close-qr-popup");
-            closeBtn.addEventListener("click", function() {
-                document.getElementById("qr-popup").style.display = "none";
+                if (qrPopup) {
+                    qrPopup.style.display = "none";
+                }
             });
-        });
-        </script>
+        }
+    </script>
 </body>
 </html>

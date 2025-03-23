@@ -15,43 +15,123 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='StravaToken',
+            name="StravaToken",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('access_token', models.CharField(blank=True, max_length=200, null=True)),
-                ('refresh_token', models.CharField(blank=True, max_length=200, null=True)),
-                ('expires_at', models.DateTimeField(blank=True, null=True)),
-                ('athlete_id', models.BigIntegerField(blank=True, null=True, unique=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='strava_token', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "access_token",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "refresh_token",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ("expires_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "athlete_id",
+                    models.BigIntegerField(blank=True, null=True, unique=True),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="strava_token",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='LoggedActivity',
+            name="LoggedActivity",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('activity_id', models.BigIntegerField(unique=True)),
-                ('distance', models.FloatField()),
-                ('activity_type', models.CharField(choices=[('run', 'Run'), ('ride', 'Ride'), ('walk', 'Walk')], max_length=20)),
-                ('option', models.CharField(choices=[('commute', 'Commute'), ('hobby', 'Hobby')], max_length=20)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("activity_id", models.BigIntegerField(unique=True)),
+                ("distance", models.FloatField()),
+                (
+                    "activity_type",
+                    models.CharField(
+                        choices=[("run", "Run"), ("ride", "Ride"), ("walk", "Walk")],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "option",
+                    models.CharField(
+                        choices=[("commute", "Commute"), ("hobby", "Hobby")],
+                        max_length=20,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='LeaderboardEntry',
+            name="LeaderboardEntry",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('points', models.IntegerField(default=0)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='leaderboard_entry', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("points", models.IntegerField(default=0)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="leaderboard_entry",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='CumulativeStats',
+            name="CumulativeStats",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('total_commute_distance', models.FloatField(default=0)),
-                ('total_hobby_distance', models.FloatField(default=0)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='cumulative_stats', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("total_commute_distance", models.FloatField(default=0)),
+                ("total_hobby_distance", models.FloatField(default=0)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="cumulative_stats",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
