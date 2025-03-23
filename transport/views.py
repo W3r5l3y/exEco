@@ -1,11 +1,8 @@
-# transport/views.py
-
 import datetime
 import requests
 import json
 from django.conf import settings
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import is_gamekeeper
 from django.utils.timezone import now
@@ -18,20 +15,18 @@ from challenges.models import UserChallenge
 
 @login_required
 def transport_view(request):
+    # Return the main transport page
     return render(request, "transport/transport.html")
 
 @login_required
 @is_gamekeeper
 def transport_error(request):
+    # Return the transport error page
     return render(request, "transport/transport-error.html")
 
 
 @login_required
 def strava_login(request):
-    """
-    Check if user has valid Strava credentials; otherwise, redirect to Strava OAuth.
-    """
-
     user = request.user
 
     try:
@@ -39,9 +34,7 @@ def strava_login(request):
 
         # If token is still valid, no need to log in again
         if strava_token.expires_at > now():
-            return redirect(
-                "transport/transport.html"
-            )  # Redirect to the transport view
+            return redirect("transport/transport.html")
 
         # If expired, refresh the token
         refresh_token = strava_token.refresh_token
@@ -55,17 +48,13 @@ def strava_login(request):
         response = requests.post(refresh_url, data=payload)
         data = response.json()
 
-        # Update database with new tokens
+        # Update database with new tokens and expiry date
         strava_token.access_token = data.get("access_token")
-        strava_token.refresh_token = data.get(
-            "refresh_token"
-        )  # Strava provides a new one
-        strava_token.expires_at = datetime.datetime.fromtimestamp(
-            data.get("expires_at")
-        )
+        strava_token.refresh_token = data.get("refresh_token")
+        strava_token.expires_at = datetime.datetime.fromtimestamp(data.get("expires_at"))
         strava_token.save()
 
-        return redirect("transport/transport.html")  # Redirect after refreshing
+        return redirect("transport/transport.html")
 
     except StravaToken.DoesNotExist:
         # If no StravaToken exists, redirect user to Strava login
@@ -86,12 +75,7 @@ def strava_login(request):
 
 @login_required
 def strava_callback(request):
-    """
-    Handles the callback from Strava, exchanging the code for tokens and storing them.
-    """
-
-    # Get the code and error from the query parameters
-    # code = request.GET.get("code")
+    # Get the code from the query parameters
     code = request.GET.get("code")
     error = request.GET.get("error")
 
@@ -107,9 +91,9 @@ def strava_callback(request):
     # Exchange the code for tokens
     token_url = "https://www.strava.com/oauth/token"
     payload = {
-        "client_id": settings.STRAVA_CLIENT_ID,  # Use settings to get the client ID and secret
+        "client_id": settings.STRAVA_CLIENT_ID,
         "client_secret": settings.STRAVA_CLIENT_SECRET,
-        "code": code,  # The code from the query parameters
+        "code": code,
         "grant_type": "authorization_code",
     }
     response = requests.post(token_url, data=payload)
@@ -123,11 +107,8 @@ def strava_callback(request):
 
     # Ensure all tokens are present
     if not access_token or not refresh_token or not expires_at:
-        return render(
-            request, "transport/transport-error.html", {"error": "Invalid response from Strava"}
-        )
+        return render(request, "transport/transport-error.html", {"error": "Invalid response from Strava"})
 
-    # Ensure the user is logged in (CustomUser from your accounts app)
     user = request.user
 
     # Get the athlete ID from the Strava API
@@ -139,19 +120,11 @@ def strava_callback(request):
 
     # Check if the athlete ID was successfully retrieved
     if not athlete_id:
-        return render(
-            request,
-            "transport/transport-error.html",
-            {"error": "Could not get athlete ID from Strava"},
-        )
+        return render(request, "transport/transport-error.html", {"error": "Could not get athlete ID from Strava"})
 
     # Check if the athlete ID is in use by another user
     if StravaToken.objects.filter(athlete_id=athlete_id).exists():
-        return render(
-            request,
-            "transport/transport-error.html",
-            {"error": "This Strava account is already linked to another user"},
-        )
+        return render(request, "transport/transport-error.html", {"error": "This Strava account is already linked to another user"})
 
     # Create or update the user's Strava tokens
     strava_token, created = StravaToken.objects.get_or_create(user=user)
@@ -161,12 +134,11 @@ def strava_callback(request):
     strava_token.athlete_id = athlete_id
     strava_token.save()
 
-    return redirect("transport")  # Redirect to the transport view
+    return redirect("transport")
 
 
 @login_required
 def get_latest_activity(request):
-    """Fetches the latest activity from Strava API."""
     try:
         strava_token = StravaToken.objects.get(user=request.user)
 
@@ -332,7 +304,7 @@ def log_activity(request):
 
                 user_challenge.save()
 
-
+            # Update UserPoints
             score = int(distance / 100)
             
             user_points, _ = UserPoints.objects.get_or_create(user=request.user)
@@ -346,14 +318,7 @@ def log_activity(request):
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
-            """
-            NOTE:
-            If the test for this rewards more than 20 points,
-            the test will fail.
-            
-            This is because Lootox template wont exist in the test, as
-            fixtures purposely dont run in test mode.
-            """
+
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Transport Lootbox")
                 # Fetch or create the user's inventory
@@ -377,7 +342,7 @@ def log_activity(request):
 
 @login_required
 def get_transport_stats(request):
-    try:
+    try: # Get cumulative stats and user points
         cumulative_stats = CumulativeStats.objects.get(user=request.user)
         user_points = UserPoints.objects.get(user=request.user)
         
