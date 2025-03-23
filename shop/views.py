@@ -8,18 +8,16 @@ from django.conf import settings
 import os
 import shutil
 
-# Create your views here.
-
-#Get the shop items to frontend
 @login_required
 def shop_view(request):
+    # View to display the shop items
     shop_items = ShopItems.objects.all()
     
     return render(request, 'shop/shop.html', {'shop_items': shop_items})
 
 @login_required
 def buy_item(request, item_id):
-    #View to handle buying an item from the shop, returns a JSON response based on success or failure due to errors or low balance
+    # View to handle buying an item from the shop, returns a JSON response based on success or failure due to errors or low balance
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
     
@@ -32,16 +30,16 @@ def buy_item(request, item_id):
     
     if user_coins.coins < shop_item.cost:
         return JsonResponse({"lowbalance": "Not enough coins"}, status=400)
-    #Spend coins - deal with false response
+    # Spend coins - deal with false response
     if not user_coins.spend_coins(shop_item.cost):
         return JsonResponse({"error": "Failed to spend coins - not enough coins in inventory"}, status=500)
     
     
-    #Clean url - so it works if you pass in a file named "the image.png"
+    # Clean url - so it works if you pass in a file named "the image.png"
     cleaned_image = shop_item.image.name.replace(" ", "_")
     shop_item.image = cleaned_image
     
-    #Copy image to inventory
+    # Copy image to inventory
     if shop_item.image:
         old_image_path = os.path.join(settings.MEDIA_ROOT, str(shop_item.image))
         new_image_dir = os.path.join(settings.MEDIA_ROOT, 'inventory/items/')
@@ -56,7 +54,7 @@ def buy_item(request, item_id):
 
 
 
-    #Add item to user inventory
+    # Add item to user inventory
     inventory, created = Inventory.objects.get_or_create(user=request.user)
     stats = {
         "aesthetic_appeal": shop_item.aesthetic_appeal,
@@ -66,5 +64,3 @@ def buy_item(request, item_id):
     inventory.addItem(shop_item.name,  new_image_relative_path, item_type="regular", stats=stats)
     
     return JsonResponse({"success": "Item purchased successfully"}, status=200)
-    
-    

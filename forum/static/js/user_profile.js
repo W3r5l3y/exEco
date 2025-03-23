@@ -1,13 +1,16 @@
 document.querySelectorAll('.own-post').forEach(postElement => {
+    // Global variables
     let originalDescriptionText = '';
     let state = 'none';
 
+    // Global constants
     const editInput = postElement.querySelector('.own-post-description');
     const leftImage = postElement.querySelector('.left-image');
     const rightImage = postElement.querySelector('.right-image');
     const postImage = postElement.querySelector('.own-post-image');
     const postId = postElement.dataset.postId;
 
+    // Add event listeners to the left and right images
     leftImage.addEventListener('click', function () {
         if (state === 'none') {
             originalDescriptionText = editInput.value;
@@ -22,7 +25,6 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             cancelDeleteMode();
         }
     });
-
     rightImage.addEventListener('click', function () {
         if (state === 'none') {
             enterEditMode();
@@ -33,6 +35,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         }
     });
 
+    // Function to enter edit mode
     function enterEditMode() {
         postImage.style.opacity = 0.5;
         originalDescriptionText = editInput.value;
@@ -43,6 +46,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         state = 'edit';
     }
 
+    // Function to cancel edit mode
     function cancelEditMode() {
         postImage.style.opacity = 1;
         editInput.value = originalDescriptionText;
@@ -53,6 +57,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         state = 'none';
     }
 
+    // Function to cancel delete mode
     function cancelDeleteMode() {
         editInput.value = originalDescriptionText;
         editInput.style.color = "white";
@@ -61,13 +66,15 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         state = 'none';
     }
 
+    // Function to submit the edited post
     function submitEdit() {
         const postElement = editInput.closest('.own-post');
         if (!postElement) {
             console.error("Error: Could not find post container.");
             return;
         }
-    
+        
+        // Get the post ID and CSRF token
         const postId = postElement.dataset.postId;
         const csrfToken = getCSRFToken();
     
@@ -76,10 +83,11 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             return;
         }
     
+        // Send a POST request to the server to edit the post
         fetch(`/edit_post/${postId}/`, {
             method: "POST",
             headers: {
-                "X-CSRFToken": csrfToken,  // Using the CSRF token from cookies
+                "X-CSRFToken": csrfToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -98,6 +106,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         .catch(error => console.error("Error:", error));
     }      
 
+    // Function to delete the post
     function submitDelete() {
         const postElement = leftImage.closest('.own-post'); 
         if (!postElement) {
@@ -105,6 +114,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             return;
         }
     
+        // Get the post ID and CSRF token
         const postId = postElement.dataset.postId;
         const csrfToken = getCSRFToken();
     
@@ -113,10 +123,11 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             return;
         }
     
+        // Send a POST request to the server to delete the post
         fetch(`/delete_post/${postId}/`, {
             method: "POST",
             headers: {
-                "X-CSRFToken": csrfToken,  // Using CSRF token from cookies
+                "X-CSRFToken": csrfToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({})
@@ -133,6 +144,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         .catch(error => console.error("Delete request failed:", error));
     }        
 
+    // Function to get the CSRF token
     function getCSRFToken() {
         const cookieValue = document.cookie
             .split("; ")

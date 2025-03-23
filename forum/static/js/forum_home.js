@@ -1,3 +1,4 @@
+// Function to share a post
 function sharePost(postId) {
     const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
     navigator.clipboard.writeText(url).then(() => {
@@ -5,6 +6,7 @@ function sharePost(postId) {
     });
 }
 
+// Function to toggle comments on a post
 function toggleComments(postId) {
     const commentsContainer = document.getElementById(`comments-${postId}`);
     const commentsChevron = document.getElementById(`post-comments-toggle-image`);
@@ -12,10 +14,12 @@ function toggleComments(postId) {
     commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
 }
 
+// Function to like a post
 function likePost(postId) {
     const likeButton = document.querySelector(`#like-button-${postId}`);
     likeButton.disabled = true;
 
+    // Send a POST request to the server to like the post
     fetch(`/like/${postId}/`, {
         method: 'POST',
         headers: {
@@ -26,7 +30,7 @@ function likePost(postId) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.success) { // Update the like count and button image
             const likeCountText = document.querySelector(`#like-count-${postId}`);
             likeCountText.textContent = data.likes;
             likeButton.src = data.liked ? likedButton : notLikedButton;
@@ -41,11 +45,13 @@ function likePost(postId) {
     });
 }
 
+// Function to add a comment to a post
 function addComment(event, postId) {
     event.preventDefault();
     const form = event.target;
     const commentText = form.comment.value;
 
+    // Send a POST request to the server to add the comment
     fetch(`/add_comment/${postId}/`, {
         method: 'POST',
         headers: {
@@ -58,7 +64,7 @@ function addComment(event, postId) {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.success) { // Add the comment to the comments container
             const commentsContainer = document.getElementById(`comments-${postId}`);
             const newComment = document.createElement('div');
             newComment.classList.add('comment');
@@ -72,10 +78,12 @@ function addComment(event, postId) {
     .catch(error => console.error('Error:', error));
 }
 
+// Function to report a post
 function reportPost(postId) {
     const reportButton = document.querySelector(`#report-button-${postId}`);
     reportButton.disabled = true;
 
+    // Send a POST request to the server to report the post
     fetch(`/report/${postId}/`, {
         method: 'POST',
         headers: {

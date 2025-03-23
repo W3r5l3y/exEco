@@ -1,9 +1,11 @@
-
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif; /* CHANGE FONT */
+    font-family: 'Roboto', sans-serif;
 }
 
 html, body {
@@ -31,6 +33,9 @@ main {
     padding: 100px 0;
 }
 
+/* --------------------------------------------------
+    Tabs
+-------------------------------------------------- */
 .tabs-wrapper {
     display: flex;
     flex-direction: column;
@@ -83,6 +88,9 @@ main {
     overflow: hidden;
 }
 
+/* --------------------------------------------------
+    Tab content
+-------------------------------------------------- */
 .input-group {
     position: relative;
     width: 100%;
@@ -253,17 +261,18 @@ button {
     color: #ddd;
 }
 
-/* Responsive */
-
+/* --------------------------------------------------
+    Responsive
+-------------------------------------------------- */
 @media (max-width: 768px) {
     .tabs-wrapper {
         width: 90%;
     }
 }
 
-
-/* Custom scrollbar (thin, grey) */
-
+/* --------------------------------------------------
+    Scrollbar
+-------------------------------------------------- */
 ::-webkit-scrollbar {
     width: 10px;
 }
