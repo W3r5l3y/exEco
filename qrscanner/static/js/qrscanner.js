@@ -141,17 +141,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Close the qr scanner popup
-    var closeQrBtn = document.getElementById("close-qr-popup");
-    if (closeQrBtn) {
-        closeQrBtn.addEventListener("click", function() {
-            var qrPopup = document.getElementById("qr-popup");
-            if (qrPopup) {
-                qrPopup.style.display = "none";
-            }
-        });
-    }
-
 
     /* --------------------------------------------------
         Leaderboard Logic

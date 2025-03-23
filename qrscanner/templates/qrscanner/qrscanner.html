@@ -100,5 +100,24 @@
             <div id="map" style="height: 400px; width: 100%;"></div>
         </div>
     </div>
+
+    <script>
+        // Check if a QR scan result exists by testing the location name.
+        '{% if location_name %}'
+            var qrPopup = document.getElementById("qr-popup");
+            qrPopup.style.display = "block";
+        '{% endif %}'
+
+         // Close the qr scanner popup
+        var closeQrBtn = document.getElementById("close-qr-popup");
+        if (closeQrBtn) {
+            closeQrBtn.addEventListener("click", function() {
+                var qrPopup = document.getElementById("qr-popup");
+                if (qrPopup) {
+                    qrPopup.style.display = "none";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
