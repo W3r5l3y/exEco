@@ -14,7 +14,6 @@ from django.conf import settings
 # Import Challenge tracking model
 from challenges.models import UserChallenge 
 
-# Create your views here.
 # Initial game view
 @login_required
 def game_view(request):
@@ -52,23 +51,23 @@ def update_leaderboard(request):
             old_points = user_points.bingame_points
             user_points.add_bingame_points(score)
             new_points = user_points.bingame_points
-            
             old_multiple = old_points // 20
             new_multiple = new_points // 20
             lootboxes_to_reward = new_multiple - old_multiple
-
-            lootbox_id = None  # Default value
+            lootbox_id = None
+            # If the user has earned lootboxes, add them to the inventory
             if lootboxes_to_reward > 0:
                 lootbox_template = LootboxTemplate.objects.get(name="Bingame Lootbox")
                 user_inventory, _ = Inventory.objects.get_or_create(user=request.user)
                 user_inventory.addLootbox(lootbox_template, quantity=lootboxes_to_reward)
-                lootbox_id = lootbox_template.lootbox_id  # Return the actual lootbox id
+                # Return the actual lootbox id
+                lootbox_id = lootbox_template.lootbox_id
             
             return JsonResponse({
                 "status": "success",
                 "new_score": user_points.bingame_points,
                 "lootboxes_to_reward": lootboxes_to_reward,
-                "lootbox_id": lootbox_id,  # Now included in the response
+                "lootbox_id": lootbox_id,
             })
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
@@ -84,15 +83,13 @@ def get_bingame_leaderboard(request):
         user_points = UserPoints.objects.order_by("-bingame_points").values(
             "user_id", "bingame_points"
         )[:10]
-
         # Get the username of each user
         for entry in user_points:
             user = CustomUser.objects.get(id=entry["user_id"])
             entry["username"] = f"{user.first_name} {user.last_name}"
             del entry["user_id"]
-
-        return JsonResponse(list(user_points), safe=False)  # Convert QuerySet to JSON
-
+        # Return the data as a JSON
+        return JsonResponse(list(user_points), safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
@@ -112,9 +109,9 @@ def fetch_random_items(request):
                 "item_image": request.build_absolute_uri(settings.MEDIA_URL + str(item.item_image)),
             }
         )
-
     return JsonResponse({"items": item_data})
 
+@login_required
 def get_lootbox_data(request):
     # Get the lootbox_id from the GET parameters
     lootbox_id = request.GET.get('lootbox_id')

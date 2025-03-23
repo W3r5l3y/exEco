@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Bins, Items
 
 
-# Register your models here.
 class BinsAdmin(admin.ModelAdmin):
     list_display = ("bin_id", "bin_name", "bin_image")
     search_fields = ("bin_id", "bin_name")

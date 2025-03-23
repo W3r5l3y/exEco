@@ -15,6 +15,7 @@
     <main>
         <!-- Left section -->
         <div class="left-section">
+            <!-- Instructions -->
             <section class="instructions">
                 <h3>Bin Game Instructions</h3>
                 <p>The idea of bin game is simple!</p>
@@ -22,6 +23,7 @@
                 <p>Once you have placed all the items in the correct bins, click on the "Check Answers" button to see how you did.</p>
                 <p>Good luck!</p>
             </section>
+            <!-- Leaderboard -->
             <section class="leaderboard">
                 <h3>Leaderboard</h3>
                 <ol id="leaderboard-list">
@@ -43,7 +45,7 @@
         <div class="right-section">
             <div id="game-container">
                 <div id="items-container" >
-                    
+                    <!-- Items -->
                     {% for item in items %}
                         <div class="items" data-dropped-bin-id=""  id="{{ item.item_id }}" data-correct-bin-id="{{ item.bin_id.bin_id}}">
                             <p>{{ item.item_name }}</p>
