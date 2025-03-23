@@ -60,19 +60,34 @@ The app will be available at **http://127.0.0.1:8000/**.
 ## **Project Structure WIP**
 
 ```
-exEco/
-│── 
-│── 
-│── 
-│── 
-│── manage.py        # Django project management script
-│── exEco/           # Project settings and configuration
-│── accounts/        # User authentication (if applicable)
+EXEco/
+│── .github/         # GitHub-specific files (workflows, issue templates, etc.)
+│── .vscode/         # VS Code settings
+│── accounts/        # User authentication and account management
+│── bingame/         # Bingo game-related functionality
+│── challenges/      # Challenge-related features
+│── contact/         # Contact page or support-related functionality
+│── dashboard/       # User dashboard and main navigation
+│── EXEco/           # Core Django project settings and configuration
+│── fixtures/        # Predefined database data for testing
+│── forum/           # Forum or discussion board
+│── gamekeeper/      # Game-related state management
+│── garden/          # Garden feature (9x9 grid persistence)
+│── inventory/       # User inventory management
+│── media/           # Media file storage (uploads, images, etc.)
+│── qrscanner/       # QR code scanning functionality
+│── shop/            # In-game or e-commerce shop features
 │── static/          # Static files (CSS, JS, Images)
-│── templates/       # HTML templates
-│── db.sqlite3       # SQLite database (auto-generated)
-│── requirements.txt # Python dependencies
+│── templates/       # HTML templates for rendering views
+│── transport/       # Strava-linked transport tracking features
+│── venv/            # Virtual environment (dependencies)
+│── .env             # Environment variables (not tracked in Git)
+│── .gitignore       # Git ignore file
+│── db.sqlite3       # SQLite database file
+│── LICENSE          # Project license
+│── manage.py        # Django project management script
 │── README.md        # Project documentation
+│── requirements.txt # Python dependencies
 ```
 
 ## **License**
