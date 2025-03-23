@@ -5,7 +5,7 @@
         "fields": {
             "location_name": "Forum",
             "location_fact": "The Forum at the University of Exeter is a modern, sustainably designed hub at the heart of the Streatham Campus. Its landscape features a series of interconnected ponds that collect and filter rainwater, enhancing both aesthetics and environmental sustainability. Surrounded by native planting and a wildflower meadow, the ponds create a biodiverse habitat that attracts dragonflies, birds, and other wildlife. The water features, combined with contemporary architecture and green spaces, make the Forum a vibrant and inviting area for students and visitors, blending natural beauty with sustainable innovation.",
-            "cooldown_length": 3600,
+            "cooldown_length": 0,
             "location_value": 10,
             "is_active": true,
             "image": "qrscanner/locations/0001.png",
@@ -19,12 +19,96 @@
         "fields": {
             "location_name": "Reed Pond",
             "location_fact": "Reed Pond, located on the University of Exeter's Streatham Campus, is an ornamental pond with historical significance. Originally part of the Veitch-designed landscape surrounding Streatham Hall (now Reed Hall), it remains a key feature of the campus gardens. The pond is characterized by its serene setting, lush vegetation, and reflective waters, contributing to the area's tranquil atmosphere. It serves as both a scenic attraction and a habitat for local wildlife, supporting aquatic plants and various species of birds and amphibians. Reed Pond continues to be a cherished element of the university's green spaces, offering a peaceful retreat within the campus.",
-            "cooldown_length": 7200,
+            "cooldown_length": 3600,
             "location_value": 15,
             "is_active": true,
             "image": "qrscanner/locations/0002.png",
             "latitude": 50.7341376,
             "longitude": -3.5378137
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0003",
+        "fields": {
+            "location_name": "Green Space",
+            "location_fact": "This open green space outside Building: One, home to the University of Exeter's Business School, offers more than just a scenic view. It plays a key role in the university's sustainability strategy by supporting natural drainage, improving air quality, and providing a cooling effect during warmer months. Open lawns and surrounding trees create a welcoming space for rest, study, and informal gatherings, while also helping to reduce the urban heat island effect. Promoting the use and preservation of green areas like this encourages a stronger connection to nature on campus and reinforces the university's commitment to environmentally responsible land use.",
+            "cooldown_length": 3600,
+            "location_value": 10,
+            "is_active": true,
+            "image": "qrscanner/locations/0003.png",
+            "latitude": 0.0,
+            "longitude": 0.0
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0004",
+        "fields": {
+            "location_name": "Cigarette Bin near Lafrowda Block T",
+            "location_fact": "This cigarette bin, located near Lafrowda Block T, is one of many across the University of Exeter's campus designed to keep outdoor spaces clean and reduce environmental harm from litter. Proper disposal of cigarette butts helps prevent toxic waste from entering soil and waterways, while also reducing the risk of fire in green areas. These bins are part of a wider effort to support a clean, sustainable campus environment. By making disposal points clearly visible and easily accessible, the university encourages responsible habits and helps protect both public spaces and local ecosystems from avoidable pollution.",
+            "cooldown_length": 3600,
+            "location_value": 5,
+            "is_active": true,
+            "image": "qrscanner/locations/0004.png",
+            "latitude": 0.0,
+            "longitude": 0.0
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0005",
+        "fields": {
+            "location_name": "Cycle Parking on Stocker Road",
+            "location_fact": "Situated along Stocker Road, this covered cycle parking area supports the University of Exeter's ongoing efforts to promote low carbon, sustainable travel. With secure stands and convenient access to key parts of campus, it encourages students and staff to choose cycling over car travel, helping to reduce emissions, ease congestion, and improve overall air quality. Knowing where facilities like this are located plays a key role in making active travel more accessible and attractive. By supporting cycling infrastructure, the university is not only promoting healthier lifestyles but also helping to build a more sustainable, climate conscious campus community.",
+            "cooldown_length": 3600,
+            "location_value": 5,
+            "is_active": true,
+            "image": "qrscanner/locations/0005.png",
+            "latitude": 0.0,
+            "longitude": 0.0
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0006",
+        "fields": {
+            "location_name": "Recycling Facilities at Spreytonway",
+            "location_fact": "Located just outside Spreytonway, these clearly labelled recycling facilities are part of the University of Exeter's commitment to reducing waste and promoting sustainable habits on campus. With dedicated bins for cardboard, plastic, glass, cans, and food waste, this site makes it easy for students and staff to recycle responsibly. Proper sorting helps reduce landfill waste, conserve natural resources, and lower the university's carbon footprint. Making people aware of where these facilities are located is just as important. When recycling options are accessible and visible, it encourages everyday sustainable behavior and helps embed environmentally conscious habits into campus life.",
+            "cooldown_length": 3600,
+            "location_value": 5,
+            "is_active": true,
+            "image": "qrscanner/locations/0006.png",
+            "latitude": 0.0,
+            "longitude": 0.0
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0007",
+        "fields": {
+            "location_name": "Duryard Memorial Trees",
+            "location_fact": "Located in the quiet grounds of Duryard, this site features a group of trees planted by the Exeter University Club in memory of students who lost their lives in the two World Wars. While the trees serve as a lasting tribute, they also play a meaningful role in the university's sustainability efforts. Trees like these help reduce carbon in the atmosphere, regulate temperatures, and improve air quality across campus. By preserving and maintaining mature green spaces such as this one, the university supports long term environmental goals while honoring the past. The Duryard Memorial Trees stand as a reminder that sustainability is not just about the future. It is also about how we care for what we inherit.",
+            "cooldown_length": 3600,
+            "location_value": 10,
+            "is_active": true,
+            "image": "qrscanner/locations/0007.png",
+            "latitude": 0.0,
+            "longitude": 0.0
+        }
+    },
+    {
+        "model": "qrscanner.location",
+        "pk": "0008",
+        "fields": {
+            "location_name": "The Champion Tree",
+            "location_fact": "The University of Exeter's Streatham Campus is known for its rich and diverse green spaces, and standing tall among them is the Champion Tree near East Park accommodation. This impressive eucalyptus is one of the largest on campus, with a towering presence and distinctive peeling bark that reveals smooth, pale wood beneath. More than just a visual landmark, the Champion Tree plays an important ecological role. Its canopy provides shelter for birds and insects, while the natural shedding of its bark contributes to the nutrient cycle in the surrounding soil. As part of the university's commitment to sustainability and biodiversity, this tree represents the lasting value of mature, healthy trees in supporting wildlife and maintaining resilient green spaces.",
+            "cooldown_length": 3600,
+            "location_value": 10,
+            "is_active": true,
+            "image": "qrscanner/locations/0008.png",
+            "latitude": 0.0,
+            "longitude": 0.0
         }
     }
 ]
