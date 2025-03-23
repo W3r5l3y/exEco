@@ -184,5 +184,5 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
-    "https://execo-production.up.railway.app/",
+    "https://execo-production.up.railway.app",
 ]
