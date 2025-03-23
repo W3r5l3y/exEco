@@ -1,5 +1,8 @@
 @import url("/static/css/colours.css");
 
+/* --------------------------------------------------
+    General settings
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +15,10 @@ main {
     justify-content: center;
     align-items: center;
 }
+
+/* --------------------------------------------------
+    Profile settings
+-------------------------------------------------- */
 .background-box {
     display: flex;
     flex-direction: column;
@@ -31,7 +38,6 @@ main {
     margin-bottom: 0;
 }
 
-
 .main-title {
     font-size: 2.5em;
     color: white;
@@ -49,7 +55,9 @@ main {
 
 
 
-/* || INPUT BOX DESIGN||*/
+/* --------------------------------------------------
+    Input fields
+-------------------------------------------------- */
 
 .input-group {
     position: relative;
@@ -99,7 +107,9 @@ main {
     border-bottom: none;
 }
 
-/* || Container boxes||*/
+/* --------------------------------------------------
+    Container
+-------------------------------------------------- */
 .container-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -117,26 +127,28 @@ main {
     justify-content: space-evenly;
 }
 
-
-/* || Connections container||*/
-
-
+/* --------------------------------------------------
+    Connections settings
+-------------------------------------------------- */
 .connection-item-div{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-top: 20px;
 }
+
 .connection-logo {
     width: 60px;
     height: 60px;
 }
+
 .connection-name {
     color: white;
     font-size: 1.8em;
     margin-left: 20px;
 
 }
+
 .connection-logo-name {
     display: flex;
     flex-direction: row;
@@ -156,7 +168,6 @@ main {
     color: var(--neutral_colour);
     font-weight: 600;
 }
-
 
 .confirm-button {
     width: 20%;
@@ -214,8 +225,6 @@ main {
     margin-bottom: 20px;
 }
 
-
-
 .buttons-mini-div-button {
     width: 90%;
     height: 45px;
@@ -230,7 +239,9 @@ main {
     font-weight: 600;
 }
 
-/* Error popup */
+/* --------------------------------------------------
+    Popup
+-------------------------------------------------- */
 .popup {
     position: fixed;
     display: none;
@@ -281,7 +292,9 @@ main {
     color: #ddd;
 }
 
-/* || Modal DESIGN||*/
+/* --------------------------------------------------
+    Modal
+-------------------------------------------------- */
 .modal-content-delete{
     background: red;
     color: white;
@@ -292,6 +305,9 @@ main {
     color: white;
 }
 
+/* --------------------------------------------------
+    Responsive design
+-------------------------------------------------- */
 @media (max-width: 768px) {
     .background-box {
         width: 650px;
