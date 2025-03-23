@@ -22,5 +22,5 @@ COPY . .
 # Expose the port Django will run on
 EXPOSE 8000
 
-# Run the Django app
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run commands: migrate, load fixtures, start server
+CMD ["sh", "-c", "python manage.py migrate && python manage.py load_fixtures && python manage.py runserver 0.0.0.0:8000"]
