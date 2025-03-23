@@ -28,17 +28,23 @@
             <div class="profile-top">
                     <h1 class="profile-top-header">{{ user.email }}'s Posts</h1>
             </div>
-
+        <!-- Check if the user's profile is the logged in user !-->
             {% if user != logged_in_user %}
+                <!-- Since the user isn't viewing their own posts, show the correct visual form !-->
                 <div class="user-post-container">
+                    <!-- Loop through posts !-->
                     {% for post in posts %}
+                        <!-- Post item !-->
                         <div class="post" onclick="goToPost('{{ post.post_id }}')">
+                            <!-- Date title !-->
                             <div class="post-top">
                                 <p>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</p>
                             </div>
+                            <!-- Image container !-->
                             <div class="post-image-container">
                                 <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
                             </div>
+                            <!-- Show like count !-->
                             <div class="post-bottom">
                                 <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
                                 <img class="like-count-image" src="{% static 'img/like.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
@@ -47,18 +53,23 @@
                 {% endfor %}
                 </div>
             {% else %}
+                <!-- User is viewing their own profile, show edit/delete layout !-->
                 <div class="user-own-post-container">
                     {% for post in posts %}
+                        <!-- Row design !-->
                         <div class="own-post" data-post-id="{{ post.post_id }}">
+                            <!-- Post image preview !-->
                             <div class="own-post-image-container">
                                 <img class="own-post-image" src="{{ post.image.url }}" alt="Post Image">
                                 <img class="change-image" src="" alt="change image" style="display: none" >
                             </div>
+                            <!-- Description edit input !-->
                             <div class="own-post-description-div">
                                 <label>
                                     <input value="{{ post.description }}" class="own-post-description" disabled>
                                 </label>
                             </div>
+                            <!-- Action buttons which change based on state !-->
                             <div class="own-post-actions">
                                 <!-- Use window.location.href to navigate -->
                                 <img class="left-image" src="{% static 'img/trash.svg' %}" alt="delete">
@@ -70,47 +81,11 @@
                 </div>
             {% endif %}
 
-
-            <!-- <div id="posts" class="posts">
-                        <div class="post">
-                            <div class="post-top">
-                                <h3>{{ post.user.email }}</h3>
-                                <div class="like-count-container">
-                                    <div class="like-count" onclick="likePost({{ post.post_id }})">
-                                        <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
-                                        <img class="like-count-image" src="{% static 'img/heart.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-image-container">
-                                <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
-                            </div>
-                            <div class="post-bottom">
-                                <div class="post-description">
-                                    <h3 class="post-description-text">{{ post.description }}</h3>
-                                </div>
-                                <div class="post-meta">
-                                    <p>Likes: {{ post.likes }}</p>
-                                    <p>Created on: {{ post.created_at|date:"F j, Y, g:i a" }}</p>
-                                </div>
-                                {% if post.user == logged_in_user %}
-                                <div class="post-actions">
-                                    <a href="{% url 'edit_post' post.post_id %}" class="post-action-button">Edit</a>
-                                    <form action="{% url 'delete_post' post.post_id %}" method="post" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="post-action-button">Delete</button>
-                                    </form>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                </div> !-->
-
         </div>
 
     </main>
     <script>
+        //Image assets for use in js
         const notLikedButton = "{% static 'img/like.svg' %}";
         const likedButton = "{% static 'img/liked.svg' %}";
         const checkButton = "{% static 'img/check.svg' %}";

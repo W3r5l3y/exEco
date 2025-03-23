@@ -10,7 +10,18 @@ from accounts.models import CustomUser
 from django.contrib import messages
 from challenges.models import UserChallenge 
 
+
 def forum_home(request):
+    """
+        Checks if the request is for a specific post, returning a page for that specific post if so.
+        Else returns default forum home page
+
+        Parameters:
+        request: The page request.
+
+        Returns:
+        rendered forum_home html template
+    """
     post_id = request.GET.get("post_id")
     if post_id:
         post = get_object_or_404(Post, post_id=post_id)
@@ -23,6 +34,16 @@ def forum_home(request):
 
 @login_required
 def create_post(request):
+    """
+        Checks if create post has already been submitted. If it hasn't , return create post page.
+        If it has and the post request form is valid, save post to database and redirect.
+
+        Parameters:
+        request: The page request.
+
+        Returns:
+        rendered forum_home/create_post html template
+    """
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -47,6 +68,16 @@ def create_post(request):
 @login_required
 @require_POST
 def like_post(request, post_id):
+    """
+        Likes/Unlikes post and saves the value to the database.
+
+        Parameters:
+        request: The page request.
+        post_id: The id of the post to like.
+
+        Returns:
+        json response with post like count
+    """
     post = get_object_or_404(Post, post_id=post_id)
     post_like, created = PostLike.objects.get_or_create(user=request.user, post=post)
     if not created:
@@ -64,6 +95,16 @@ def like_post(request, post_id):
 
 @login_required
 def report_post(request, post_id):
+    """
+        Attempts to report post, checking if it has already been reported by the user before.
+
+        Parameters:
+        request: The page request.
+        post_id: The id of the post to report.
+
+        Returns:
+        rendered forum_home html template
+    """
     post = get_object_or_404(Post, post_id=post_id)
     
     # Check if the report already exists
@@ -79,6 +120,16 @@ def report_post(request, post_id):
 
 @login_required
 def user_profile(request, user_id):
+    """
+        Gets a profile of a specific user.
+
+        Parameters:
+        request: The page request.
+        user_id: user_id of the user's profile.
+
+        Returns:
+        rendered user_profile html template
+    """
     user = get_object_or_404(CustomUser, id=user_id)
     user_posts = Post.objects.filter(user=user).order_by("-created_at")
     return render(
@@ -96,6 +147,16 @@ def user_profile(request, user_id):
 @require_POST
 @login_required
 def add_comment(request, post_id):
+    """
+        Submits a comment on a specific post.
+
+        Parameters:
+        request: The page request.
+        post_id: id of post to add a comment to
+
+        Returns:
+        json response stated whether comment was successfully added.
+    """
     post = get_object_or_404(Post, post_id=post_id)
     text = request.POST.get("text")
     if text:
@@ -109,8 +170,18 @@ def add_comment(request, post_id):
 @login_required
 @require_POST
 def edit_post(request, post_id):
-    post = get_object_or_404(Post, post_id=post_id)
+    """
+        Submits the edit of the user's post.
 
+        Parameters:
+        request: The page request.
+        post_id: post_id of the post to submit edit for.
+
+        Returns:
+        json response stating whether edit was successful.
+    """
+    post = get_object_or_404(Post, post_id=post_id)
+    #Check if user is somehow editing somebody else's post
     if post.user != request.user:
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
@@ -130,6 +201,16 @@ def edit_post(request, post_id):
 @login_required
 @require_POST
 def delete_post(request, post_id):
+    """
+        Submits the deletion of the user's post.
+
+        Parameters:
+        request: The page request.
+        post_id: post_id of the post to submit edit for.
+
+        Returns:
+        json response stating whether deletion was successful.
+    """
     post = get_object_or_404(Post, post_id=post_id)
 
     if post.user != request.user:

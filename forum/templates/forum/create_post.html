@@ -14,26 +14,34 @@
 </head>
 <body>
     <main>
+        <!-- The create post form which is submitted in order to create the post !-->
         <form action="" method="post" enctype="multipart/form-data" class="create-post-form">
             {% csrf_token %}
+
             <div class="create-post-div">
+                <!-- Create post top green portion which contains title !-->
                 <div class="post-top">
                     <h3>Create Post</h3>
                 </div>
+                <!-- Create post middle portion which contains image adder/ image preview !-->
                 <div class="post-image-container">
                     <div class="post-image-empty" id="post-image-add">
                         <img class="post-image-add" src="{% static 'img/plus-circle.svg' %}" alt="Post Image">
                         <h4> Add image</h4>
                     </div>
+                    <!-- Image input retriever !-->
                     <input type="file" name="image" id="imageInput" accept="image/png, image/jpeg" style="display: none;" required>
                     <img id="post-image-preview" class="post-image"  alt="Post Image" hidden src="">
                 </div>
+                <!-- Create post bottom portion which description input and send button !-->
                 <div class="post-bottom">
+                    <!-- Description input !-->
                     <div class="post-description">
                         <label style="width:100%">
                             <input class="post-description-input" type="text" name="description" maxlength="50" placeholder="Type the description here" required/>
                         </label>
                     </div>
+                    <!-- Send button !-->
                     <div class="post-actions">
                         <button type="submit" class="post-action-button"><img alt="submit-post" class="post-action-img" src="{% static 'img/send.svg' %}"></button>
                     </div>

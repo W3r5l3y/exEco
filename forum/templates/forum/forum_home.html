@@ -18,12 +18,13 @@
         <div id="posts" class="posts">
             {% for post in posts %}
                 <div class="post">
+                    <!-- Post top - user and date !-->
                     <div class="post-top">
                         <h3><a href="{% url 'user_profile' post.user.id %}" class="user_profile_link">{{ post.user.email }}</a></h3>
                         <div class="date-container ">
                             <h3>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</h3>
                         </div>
-                        <!-- This was the original like count container
+                        <!-- This was the original like count container, has been kept in case reverting to original
                         <div class="like-count-container">
                             <div class="like-count" onclick="likePost({{ post.post_id }})">
                                 <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
@@ -31,14 +32,17 @@
                             </div>
                         </div> !-->
                     </div>
+                    <!-- Post image !-->
                     <div class="post-image-container">
                         <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
                     </div>
+                    <!-- Post bottom - description, comment section and action buttons (like/report/share) !-->
                     <div class="post-bottom">
                         <div class="post-bottom-content">
                             <div class="post-description">
                                 <h3 class="post-description-text">{{ post.description }}</h3>
                             </div>
+                            <!-- Comments toggle section !-->
                             <div class="post-comments-button" onclick="toggleComments('{{ post.post_id }}')" id="post-comments-toggle">
                                 <div>
                                     <p class="post-comments-toggle-text">
@@ -47,6 +51,7 @@
                                     <img src="{% static 'img/chevron-down.svg' %}" alt="comments down" class="post-comments-toggle-image" id="post-comments-toggle-image">
                                 </div>
                             </div>
+                            <!-- Action buttons section (like/report/share) !-->
                             <div class="post-actions">
                                 <div class="like-count">
                                     <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
@@ -62,7 +67,9 @@
                             </div>
                         </div>
                         <div class="post-comments">
+                            <!-- visibility of this comment section is toggle by user actions !-->
                             <div id="comments-{{ post.post_id }}" class="comments-container" style="display: none;padding-top: 10px">
+                                <!-- Add comment form !-->
                                 <form onsubmit="addComment(event, '{{ post.post_id }}')" id="Comment">
                                     {% csrf_token %}
                                     <label style="width: 85%">
@@ -70,6 +77,7 @@
                                     </label>
                                     <button type="submit" class="comment-post">Post</button>
                                 </form>
+                                <!-- Loop through comments and show user & text !-->
                                 {% for comment in post.comments.all %}
                                     <div class="comment">
                                         <p><strong>{{ comment.user.email }}</strong>: {{ comment.text }}</p>
@@ -84,6 +92,7 @@
         </div>
     </main>
     <script>
+        //Image assets for use in js
         const chevronUp = "{% static 'img/chevron-up.svg' %}";
         const chevronDown = "{% static 'img/chevron-down.svg' %}";
         const notLikedButton = "{% static 'img/like.svg' %}";

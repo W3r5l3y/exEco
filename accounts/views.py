@@ -81,6 +81,18 @@ def login_register_view(request):
 
 @login_required(login_url="/login/")
 def settings_view(request):
+    """
+            This is the view for the settings page. If the user performs an action,
+            this view will receive the post request and call the appropriate function.
+            Actions including altering profile, password, unlinking strava, deleting account, logging out
+            or requesting gdpr.
+
+            Parameters:
+            request: The page request.
+
+            Returns:
+            Redirect to the outcome page with success/error.
+        """
     user = request.user
     if request.method == "POST":
         if "confirm_profile" in request.POST:
@@ -117,11 +129,20 @@ def settings_view(request):
 
 
 def log_out(request):
+    """
+            Called when the user logs out.
+
+            Parameters:
+            request: The action request.
+
+            Returns:
+            Redirect to the outcome page with success/error.
+        """
     try:
         if request.user.is_authenticated:
             logout(request)
             return redirect("login")
-        return HttpResponseRedirect(reverse("settings") + "?error=You must be logged in to delete your account.")
+        return HttpResponseRedirect(reverse("settings") + "?error=Error logging out.")
     except Exception as e:
         return HttpResponseRedirect(
             reverse("settings") + f"?error=Failed to log out. Please contact support."
@@ -129,6 +150,17 @@ def log_out(request):
 
 
 def delete_account(request):
+    """
+            Called when the user confirms the deletion of their account.
+            Alerts the user if an error occurs.
+            Redirects the user to the login page if they are not logged in.
+
+            Parameters:
+            request: The action request.
+
+            Returns:
+            Redirect to the outcome page.
+        """
     try:
         if request.user.is_authenticated:
             request.user.delete()
@@ -142,6 +174,16 @@ def delete_account(request):
         )
 
 def request_gdpr(request):
+    """
+        Called when the user requests the gdpr file. Create a zip file containing their images
+        and a text file which states the data kept for that user.
+
+        Parameters:
+        request: The action request.
+
+        Returns:
+        Redirect to the outcome page with success/error.
+    """
     try:
         if request.user.is_authenticated:
             firstName = request.user.first_name
@@ -226,6 +268,16 @@ def request_gdpr(request):
         )
 
 def strava_unlink(request):
+    """
+        Called when the user unlinks their strava account.
+        Deletes the strava token from database.
+
+        Parameters:
+        request: The action request.
+
+        Returns:
+        Redirect to the outcome page with success/error.
+    """
     try:
         user = request.user
         if user.is_authenticated:

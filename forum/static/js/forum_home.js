@@ -1,3 +1,8 @@
+/**
+ * Copies the post link to clipboard and alerts user.
+ *
+ * @param postId post to be shared
+ */
 function sharePost(postId) {
     const url = `${window.location.origin}${window.location.pathname}?post_id=${postId}`;
     navigator.clipboard.writeText(url).then(() => {
@@ -5,6 +10,11 @@ function sharePost(postId) {
     });
 }
 
+/**
+ * Shows/Hides the Comment section
+ *
+ * @param postId post for comments to be toggled
+ */
 function toggleComments(postId) {
     const commentsContainer = document.getElementById(`comments-${postId}`);
     const commentsChevron = document.getElementById(`post-comments-toggle-image`);
@@ -12,10 +22,17 @@ function toggleComments(postId) {
     commentsContainer.style.display = commentsContainer.style.display === 'none' ? 'block' : 'none';
 }
 
+/**
+ * Like the post by sending a post request to url
+ *
+ * @param postId post for comments to be liked/unliked
+ */
 function likePost(postId) {
     const likeButton = document.querySelector(`#like-button-${postId}`);
     likeButton.disabled = true;
 
+
+    //Send like post request
     fetch(`/like/${postId}/`, {
         method: 'POST',
         headers: {
@@ -41,6 +58,12 @@ function likePost(postId) {
     });
 }
 
+/**
+ * Adds a comment by sending a post request to url
+ *
+ * @param event add comment form submit event
+ * @param postId post for comments to be added
+ */
 function addComment(event, postId) {
     event.preventDefault();
     const form = event.target;
@@ -72,6 +95,11 @@ function addComment(event, postId) {
     .catch(error => console.error('Error:', error));
 }
 
+/**
+ * Submits a report by sending post request to url
+ *
+ * @param postId post to be reported
+ */
 function reportPost(postId) {
     const reportButton = document.querySelector(`#report-button-${postId}`);
     reportButton.disabled = true;
@@ -86,6 +114,7 @@ function reportPost(postId) {
     })
     .then(response => response.json())
     .then(data => {
+        //User feedback
         if (data.success) {
             alert(data.message || 'Post reported successfully.');
         } else {
