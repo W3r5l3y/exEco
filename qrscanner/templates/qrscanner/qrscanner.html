@@ -9,6 +9,10 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/qrscanner.css' %}">
     <script src="{% static 'js/qrscanner.js' %}" defer></script>
+
+    <!-- Leaflet CSS and JS [Map Dependency] -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <main>
@@ -31,6 +35,9 @@
                 {% if message %}
                     <p><strong>{{ message }}</strong></p>
                 {% endif %}
+
+
+                <button id="open-map-popup-button">Show Map</button>
             </section>
         </div>
 
@@ -88,24 +95,9 @@
         <div class="popup-content">
             <span class="close" id="close-map-popup">&times;</span>
             <h2>Map</h2>
-            
+            <!-- Add a container for the map -->
+            <div id="map" style="height: 400px; width: 100%;"></div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Check if a QR scan result exists by testing the location name.
-            '{% if location_name %}'
-                var qrPopup = document.getElementById("qr-popup");
-                qrPopup.style.display = "block";
-            '{% endif %}'
-        
-            // Close the popup when the close button is clicked.
-            var closeBtn = document.getElementById("close-qr-popup");
-            closeBtn.addEventListener("click", function() {
-                document.getElementById("qr-popup").style.display = "none";
-            });
-        });
-        </script>
 </body>
 </html>
