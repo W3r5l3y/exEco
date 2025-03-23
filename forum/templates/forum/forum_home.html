@@ -22,7 +22,7 @@
                     <div class="post-top">
                         <h3><a href="{% url 'user_profile' post.user.id %}" class="user_profile_link">{{ post.user.email }}</a></h3>
                         <div class="date-container ">
-                            <h3>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</h3>
+                            <h3 class="date-text">{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</h3>
                         </div>
                         <!-- This was the original like count container, has been kept in case reverting to original
                         <div class="like-count-container">
