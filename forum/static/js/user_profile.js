@@ -138,7 +138,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
     /**
      * This function occurs once deletion is confirmed.
      * Firstly checking for errors with retrieving the post or CSRFToken,
-     * it confirms deletiom by sending a POST request to the right url.
+     * it confirms deletion by sending a POST request to the right url.
      */
     function submitDelete() {
         const postElement = leftImage.closest('.own-post'); 

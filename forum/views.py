@@ -8,7 +8,8 @@ from .models import Post, PostLike, Comment, PostReport
 from .forms import PostForm
 from accounts.models import CustomUser
 from django.contrib import messages
-from challenges.models import UserChallenge 
+from challenges.models import UserChallenge
+import json
 
 
 def forum_home(request):
@@ -185,7 +186,14 @@ def edit_post(request, post_id):
     if post.user != request.user:
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
-    data = request.POST if request.content_type == "application/x-www-form-urlencoded" else request.json()
+    if request.content_type == "application/json":
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
+    else:
+        data = request.POST
+
     new_description = data.get("description", "").strip()
 
     if not new_description:
