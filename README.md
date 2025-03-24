@@ -67,7 +67,7 @@ python manage.py load_fixtures
 python manage.py runserver
 ```
 
-The app will be available at **http://TBD.com**.
+The app will be available at **<https://execo-production.up.railway.app>**.
 
 ---
 
