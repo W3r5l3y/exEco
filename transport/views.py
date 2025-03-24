@@ -314,8 +314,8 @@ def log_activity(request):
 
             cumulative_stats.save()
 
-            # Convert distance from meters to kilometers
-            distance_km = distance / 1000  
+            # Convert distance to kilometers
+            distance_km = distance 
 
             # Update Transport Challenges
             user_challenges = UserChallenge.objects.filter(
