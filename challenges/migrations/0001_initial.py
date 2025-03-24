@@ -15,23 +15,57 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Challenge',
+            name="Challenge",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.TextField()),
-                ('points', models.IntegerField()),
-                ('challenge_type', models.CharField(choices=[('daily', 'Daily'), ('weekly', 'Weekly')], max_length=10)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("points", models.IntegerField()),
+                (
+                    "challenge_type",
+                    models.CharField(
+                        choices=[("daily", "Daily"), ("weekly", "Weekly")],
+                        max_length=10,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='UserChallenge',
+            name="UserChallenge",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('assigned_at', models.DateTimeField(auto_now_add=True)),
-                ('completed', models.BooleanField(default=False)),
-                ('completed_at', models.DateTimeField(blank=True, null=True)),
-                ('challenge', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='challenges.challenge')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("assigned_at", models.DateTimeField(auto_now_add=True)),
+                ("completed", models.BooleanField(default=False)),
+                ("completed_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "challenge",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="challenges.challenge",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

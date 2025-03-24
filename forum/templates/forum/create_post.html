@@ -13,8 +13,9 @@
     <script src="{% static 'js/create_post.js' %}" defer></script>
 </head>
 <body>
+    <!-- Main -->
     <main>
-        <!-- The create post form which is submitted in order to create the post !-->
+        <!-- Create Post Form -->
         <form action="" method="post" enctype="multipart/form-data" class="create-post-form">
             {% csrf_token %}
 
@@ -23,7 +24,7 @@
                 <div class="post-top">
                     <h3>Create Post</h3>
                 </div>
-                <!-- Create post middle portion which contains image adder/ image preview !-->
+                <!-- Post Image Container to add image -->
                 <div class="post-image-container">
                     <div class="post-image-empty" id="post-image-add">
                         <img class="post-image-add" src="{% static 'img/plus-circle.svg' %}" alt="Post Image">
@@ -33,7 +34,7 @@
                     <input type="file" name="image" id="imageInput" accept="image/png, image/jpeg" style="display: none;" required>
                     <img id="post-image-preview" class="post-image"  alt="Post Image" hidden src="">
                 </div>
-                <!-- Create post bottom portion which description input and send button !-->
+                <!-- Post Description Container to add description -->
                 <div class="post-bottom">
                     <!-- Description input !-->
                     <div class="post-description">
@@ -41,7 +42,7 @@
                             <input class="post-description-input" type="text" name="description" maxlength="50" placeholder="Type the description here" required/>
                         </label>
                     </div>
-                    <!-- Send button !-->
+                    <!-- Post Actions Container to submit the post -->
                     <div class="post-actions">
                         <button type="submit" class="post-action-button"><img alt="submit-post" class="post-action-img" src="{% static 'img/send.svg' %}"></button>
                     </div>

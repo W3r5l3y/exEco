@@ -12,14 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         closePopupButton.addEventListener('click', closePopup);
     }
 
-
     // Show error message in popup
     function showError(message) {
         const errorPopup = document.getElementById('error-popup');
         const errorMessage = document.getElementById('error-popup-message');
 
         errorMessage.textContent = message;
-        errorPopup.style.display = 'flex'; // Make it visible
+        errorPopup.style.display = 'flex';
         setTimeout(() => errorPopup.classList.remove('hidden'), 10);
     }
 

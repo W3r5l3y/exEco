@@ -10,16 +10,20 @@
     <link rel="stylesheet" href="{% static 'css/delete_post.css' %}">
 </head>
 <body>
-<!-- Delete post confirmation !-->
+    <!-- Main -->
     <main>
+        <!-- Delete Post Form -->
         <div class="delete-post-div">
             <h3>Are you sure you want to delete this post?</h3>
+            <!-- Image of the post -->
             <div class="post-image-container">
                 <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
             </div>
+            <!-- Description of the post -->
             <div class="post-description">
                 <p>{{ post.description }}</p>
             </div>
+            <!-- Post Actions Container to delete the post -->
             <form action="" method="post">
                 {% csrf_token %}
                 <button type="submit" class="post-action-button">Delete</button>

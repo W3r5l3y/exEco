@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from challenges.models import UserChallenge, Challenge
 from django.contrib.auth import get_user_model
 
+
 class Command(BaseCommand):
     help = "Force refreshes all challenges (daily & weekly) immediately, regardless of the current day."
 
@@ -26,5 +27,7 @@ class Command(BaseCommand):
             for challenge in assigned_daily + assigned_weekly:
                 UserChallenge.objects.create(user=user, challenge=challenge)
 
-        self.stdout.write("New daily and weekly challenges have been assigned to all users.")
+        self.stdout.write(
+            "New daily and weekly challenges have been assigned to all users."
+        )
         self.stdout.write("Challenge refresh completed successfully!")

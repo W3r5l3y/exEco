@@ -1,19 +1,18 @@
-// Close the error popup
+// Function to show the error popup
 function closeErrorPopup() {
     const popup = document.getElementById('error-popup');
     popup.classList.add('hidden');
     setTimeout(() => popup.style.display = 'none', 300);
 }
 
-// Close the error popup
+// Function to close the success popup
 function closeSuccessPopup() {
     const popup = document.getElementById('success-popup');
     popup.classList.add('hidden');
     setTimeout(() => popup.style.display = 'none', 300);
 }
 
-
-// Show error message in popup
+// Function to show the error popup
 function showError(message) {
     const errorPopup = document.getElementById('error-popup');
     const errorMessage = document.getElementById('error-popup-message');
@@ -23,6 +22,7 @@ function showError(message) {
     setTimeout(() => errorPopup.classList.remove('hidden'), 10);
 }
 
+// Function to show the success popup
 function showSuccess(message) {
     const successPopup = document.getElementById('success-popup');
     const successMessage = document.getElementById('success-popup-message');
@@ -45,7 +45,7 @@ if (error) {
     showSuccess(success)
 }
 
-
+// Function to reset the profile form
 function profileReset(){
     const email_input = document.getElementById('email');
     const first_name_input = document.getElementById('first_name');
@@ -56,11 +56,12 @@ function profileReset(){
     last_name_input.value = last_name_input.dataset.lastname;
 }
 
-
+// Set navbar height on load
 window.onload = function () {
     adjustNavBarHeight();
 }
 
+// Function to adjust the navbar height
 function adjustNavBarHeight(){
     const navbar = document.getElementById("navbar");
     const content = document.getElementById("settings");
@@ -71,6 +72,7 @@ function adjustNavBarHeight(){
     }
 }
 
+// Function to show the account modal
 function alterModalUnlink(serviceName){
     document.getElementById("modal-content").className = "";
     document.getElementById("modal-content").classList.add("modal-content");
@@ -83,6 +85,7 @@ function alterModalUnlink(serviceName){
     };
 }
 
+// Function to show the delete account modal
 function alterModalDelete(){
     document.getElementById("modal-content").className = "";
     document.getElementById("modal-content").classList.add("modal-content");
@@ -95,17 +98,22 @@ function alterModalDelete(){
     };
 }
 
+// Function to delete the account
 function confirmDelete() {
     document.getElementById("delete_form").submit();
 }
+
+// Function to log out
 function logOut() {
     document.getElementById("log_out_form").submit();
 }
 
+// Function to request user data
 function requestGDPR(){
     document.getElementById("request_gdpr_form").submit();
 }
 
+// Function to unlink Strava
 function stravaUnlink(){
     document.getElementById("strava_form").submit();
 }

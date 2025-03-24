@@ -13,13 +13,13 @@
     <script src="{% static 'js/settings.js' %}" defer></script>
 </head>
 <body >
-    <!-- Error popUp !-->
+    <!-- Error popup !-->
     <div id="error-popup" class="popup" >
         <button class="close-btn" onclick="closeErrorPopup()">&times;</button>
         <p id="error-popup-title">Error</p>
         <p id="error-popup-message">An unexpected error occurred.</p>
     </div>
-    <!-- Success popUp !-->
+    <!-- Success Popup -->
     <div id="success-popup" style="background-color: lightgreen" class="popup">
         <button class="close-btn" onclick="closeSuccessPopup()">&times;</button>
         <p id="success-popup-title">Success</p>
@@ -42,133 +42,132 @@
             <button type="button" class="btn btn-primary" id="modalConfirmButton">Confirm</button>
           </div>
         </div>
-      </div>
     </div>
+    <!-- Main content -->
     <main id="settings">
         <div class="background-box">
             <h1 class="main-title">Settings</h1>
             <hr class="main-title-divider">
+            <!-- A container for the profile, connections, password and buttons grids -->
             <div class="container-container">
                 <div class="profile-grid">
                     <h1 class="sub-title"> Profile </h1>
                     <form action="" id="profile_form" method="POST">
                         {% csrf_token %}
-                        <!-- email input !-->
+                        <!-- Input for the email -->
                         <div class="input-group limited-width">
                             <input class="input" type="email" id="email" name="email" placeholder="Enter your email" data-email="{{ request.user.email }}" value="{{ request.user.email }}"  required>
                             <label class="input-label" for="email">Email</label>
                         </div>
-
-                        <!-- first_name input !-->
+                        <!-- Input for the first name -->
                         <div class="input-group limited-width">
                                 <input class="input" type="text" id="first_name" name="first_name" placeholder="Enter your first name" data-firstname="{{ request.user.first_name }}" value="{{ request.user.first_name }}" required>
                                 <label class="input-label" for="first_name">First name</label>
                         </div>
-
-                        <!-- last_name input !-->
+                        <!-- Input for the last name -->
                         <div class="input-group limited-width">
                                 <input class="input" type="text" id="last_name" name="last_name" placeholder="Enter your last name" data-lastname="{{ request.user.last_name }}" value="{{ request.user.last_name }}"  required>
                                 <label class="input-label" for="last_name">Last name</label>
                         </div>
 
+                        <!-- Submit and cancel buttons -->
                         <div class="space-evenly-button-div limited-width">
                             <button class="confirm-button" type="submit" name="confirm_profile">Confirm</button>
                             <button class="reset-button" name="cancel_profile" onclick="profileReset()">Cancel</button>
                         </div>
                     </form>
                 </div>
-                <!-- Connections grid!-->
+                <!-- A grid for the connections -->
                 <div class="connections-grid">
                     <h1 class="sub-title"> Connections </h1>
                     <div class="connection-item-div">
+                        <!-- Strava connection -->
                         <div class="connection-logo-name">
                             <img class="connection-logo"  src="{% static 'img/strava-logo.png' %}" alt="strava_logo">
                             <h2 class="connection-name">Strava</h2>
                         </div>
-                        <!-- Different design depending on whether connection is linked !-->
+                        <!-- Button to link or unlink the strava account -->
                         {% if strava_linked %}
                         <button class="connection-button" name="login" data-bs-toggle="modal" data-bs-target="#checkModal" onclick="alterModalUnlink('Strava')">Unlink</button>
-                        {% else %}
+                        {% else %} <!-- If the account is not linked, the button is disabled -->
                             <button class="connection-button" name="login" style="background-color: lightgray; color: white" disabled>Not Linked</button>
                         {% endif %}
                     </div>
-                    <!-- Strava unlink form !-->
+                    <!-- Form to unlink the strava account -->
                     <form action="" id="strava_form" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="unlink_strava">
                     </form>
-
                 </div>
+                <!-- A grid for the password -->
                 <div class="password-grid">
                     <h1 class="sub-title"> Password </h1>
+                    <!-- Form to change the password -->
                     <form action="" id="password_form" method="POST">
                         {% csrf_token %}
-                        <!-- Password input !-->
+                        <!-- Input for the current password -->
                         <div class="input-group limited-width">
                             <input class="input" type="password" id="password" name="password" placeholder="Enter your new password" required>
                             <label class="input-label" for="password">Password</label>
                         </div>
-                        <!-- Confirm Password input !-->
+                        <!-- Input for the new password -->
                         <div class="input-group limited-width">
                                 <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
                                 <label class="input-label" for="confirm_password">Password</label>
                         </div>
-                        <!-- Confirmation !-->
+                        <!-- Submit and cancel buttons -->
                         <div class="space-evenly-button-div limited-width">
                             <button class="confirm-button" type="submit" name="confirm_password_change">Confirm</button>
                             <button class="reset-button" type="reset" name="cancel_password">Cancel</button>
                         </div>
                     </form>
                 </div>
-                <!-- Action buttons grid !-->
+                <!-- A grid for bottom right buttons -->
                 <div class="buttons-grid">
                     <div class="all-buttons-div ">
-                        <!-- Request Data Button !-->
+                        <!-- Buttons for the GDPR -->
                         <div class="buttons-mini-div">
                             <h3>Request data</h3>
                             <p>An email will be sent to your current email,
                                 with all collected data</p>
                             <button class="buttons-mini-div-button" name="request_data" onclick="requestGDPR()">Request</button>
                         </div>
-                        <!-- Log out Button !-->
+                        
+                        <!-- Buttons for the log out -->
                         <div class="buttons-mini-div">
                             <h3>Log out</h3>
                             <p>Log out of your account.</p>
                             <button class="buttons-mini-div-button" name="log_out_data" style="background-color: lightblue" onclick="logOut()">Log out</button>
                         </div>
-                        <!-- Delete account Button !-->
+                      
+                        <!-- Buttons for the delete account -->
                         <div class="buttons-mini-div">
                             <h3>Delete account</h3>
                             <p>Warning, this is an irreversible action</p>
                             <button class="buttons-mini-div-button" name="delete_data" style="background-color: red" data-bs-toggle="modal" data-bs-target="#checkModal" onclick="alterModalDelete()">Delete</button>
                         </div>
-
-
                     </div>
-                    <!-- Log out form  !-->
+
+                    <!-- Forms for the log out -->
                     <form action="" id="log_out_form" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="log_out">
                     </form>
-                    <!-- Delete form  !-->
+
+                    <!-- Forms for the delete account -->
                     <form action="" id="delete_form" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="delete_data">
                     </form>
 
-                    <!-- Request gdpr  !-->
+                    <!-- Forms for the request GDPR -->
                     <form action="" id="request_gdpr_form" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="request_gdpr">
                     </form>
                 </div>
             </div>
-
-
-
         </div>
     </main>
-
 </body>
-
 </html>

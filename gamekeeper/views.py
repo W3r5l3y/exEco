@@ -22,17 +22,28 @@ import json
 from django.core.mail import send_mail
 from forum.models import Post, PostReport
 
+
 @login_required
 @is_gamekeeper
 def gamekeeper_view(request):
-    return render(request, 'gamekeeper/gamekeeper.html')
+    return render(request, "gamekeeper/gamekeeper.html")
+
 
 """
 QR Scanner Gamekeeper Views
 """
+
+
 @login_required
 @is_gamekeeper
-def add_location_to_qr(request, location_code, location_name, location_fact, cooldown_length, location_value):
+def add_location_to_qr(
+    request,
+    location_code,
+    location_name,
+    location_fact,
+    cooldown_length,
+    location_value,
+):
     # Add relevant information for a qr code to the qrscanner database, then return a Json showing the new qr code location in media
     # Add qr code location to qrscanner database
     location = Location.addLocation(
@@ -40,11 +51,11 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
         location_name=location_name,
         location_fact=location_fact,
         cooldown_length=cooldown_length,
-        location_value=location_value
+        location_value=location_value,
     )
     if location == "Code already exists":
         return JsonResponse({"error": "Code already exists"}, status=400)
-    
+
     # Generate a qr code with the location code
     # Generate the QR code
     qr = qrcode.make(location_code)
@@ -63,6 +74,7 @@ def add_location_to_qr(request, location_code, location_name, location_fact, coo
     qr_url = f"{settings.MEDIA_URL}{qr_filename}"
     return JsonResponse({"message": "Location added", "qr_code_url": qr_url})
 
+
 @login_required
 @is_gamekeeper
 def get_qr_codes(request):
@@ -80,6 +92,7 @@ def get_qr_codes(request):
         return JsonResponse({"qr_codes": qr_codes})
     return JsonResponse({"message": "Method not allowed."}, status=405)
 
+
 @login_required
 @is_gamekeeper
 def enable_qr(request, qr_id):
@@ -88,10 +101,13 @@ def enable_qr(request, qr_id):
             location = Location.objects.get(location_code=qr_id)
             location.is_active = True
             location.save()
-            return JsonResponse({"message": f"QR code '{location.location_name}' enabled."})
+            return JsonResponse(
+                {"message": f"QR code '{location.location_name}' enabled."}
+            )
         except Location.DoesNotExist:
             return JsonResponse({"message": "QR code not found."}, status=404)
     return JsonResponse({"message": "Method not allowed."}, status=405)
+
 
 @login_required
 @is_gamekeeper
@@ -101,7 +117,9 @@ def disable_qr(request, qr_id):
             location = Location.objects.get(location_code=qr_id)
             location.is_active = False
             location.save()
-            return JsonResponse({"message": f"QR code '{location.location_name}' disabled."})
+            return JsonResponse(
+                {"message": f"QR code '{location.location_name}' disabled."}
+            )
         except Location.DoesNotExist:
             return JsonResponse({"message": "QR code not found."}, status=404)
     return JsonResponse({"message": "Method not allowed."}, status=405)
@@ -110,39 +128,45 @@ def disable_qr(request, qr_id):
 """
 Transport Gamekeeper Views
 """
+
+
 @login_required
 @is_gamekeeper
 def unlink_strava(request, user_id):
     # Tale in user_id and unlink the strava account from the user
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=400)
-    
+
     try:
-        user = CustomUser.objects.get(id=user_id)    
+        user = CustomUser.objects.get(id=user_id)
     except CustomUser.DoesNotExist:
         return JsonResponse({"error": "User not found"}, status=404)
-    
+
     deleted, _ = StravaToken.objects.filter(user_id=user_id).delete()
-    
+
     if deleted:
         return JsonResponse({"message": "Strava account unlinked successfully"})
     else:
         return JsonResponse({"error": "No linked Strava account found"}, status=400)
+
 
 @login_required
 @is_gamekeeper
 def get_strava_links(request):
     # Get all the user with linked strava accounts
     strava_links = list(StravaToken.objects.values_list("user_id", flat=True))
-    
+
     if not strava_links:
         return JsonResponse({"message": "No linked Strava accounts found"})
-    
+
     return JsonResponse({"strava_links": strava_links})
+
 
 """
 Bingame Gamekeeper Views
 """
+
+
 @require_POST
 @login_required
 @is_gamekeeper
@@ -150,36 +174,36 @@ def add_item_to_bingame(request):
     item_name = request.POST.get("item_name")
     item_bin_id = request.POST.get("item_bin_id")
     item_picture = request.FILES.get("item_picture")
-    
+
     if not item_name or not item_bin_id:
         return JsonResponse({"error": "Missing required fields."}, status=400)
-    
+
     try:
         bin_obj = Bins.objects.get(bin_id=item_bin_id)
     except Bins.DoesNotExist:
         return JsonResponse({"error": "Bin not found."}, status=404)
-    
+
     if item_picture:
         item_image_url = f"bingame/items/{item_name}.png"
     else:
         return JsonResponse({"error": "Missing item picture."}, status=400)
-    
+
     # Check if an item with the same name already exists
     if Items.objects.filter(item_name=item_name).exists():
         return JsonResponse({"error": "Item already exists."}, status=400)
-    
+
     # Create the new item
     item = Items.objects.create(
-        item_name=item_name,
-        item_image=item_image_url,
-        bin_id=bin_obj
+        item_name=item_name, item_image=item_image_url, bin_id=bin_obj
     )
-    
+
     return JsonResponse({"item_id": item.item_id})
+
 
 """
 Shop gamekeeper views     
 """
+
 
 @login_required
 @is_gamekeeper
@@ -194,14 +218,13 @@ def add_item_to_shop(request):
 
     if not item_picture:
         return JsonResponse({"error": "Missing item picture."}, status=400)
-    
-    
+
     # Ensure filename is safe by replacing spaces and special characters
     safe_filename = re.sub(r"[^\w\.-]", "_", item_picture.name)
 
     # Save the image using Django's storage system (saves into MEDIA_ROOT/shop/)
     saved_path = default_storage.save(f"shop/{safe_filename}", item_picture)
-    
+
     # Check if an item with the same name already exists
     if ShopItems.objects.filter(name=item_name).exists():
         return JsonResponse({"error": "Item already exists."}, status=400)
@@ -211,16 +234,17 @@ def add_item_to_shop(request):
         name=item_name,
         cost=item_price,  # Adjusted to match model field
         description=item_description,
-        image=saved_path
+        image=saved_path,
     )
 
     return JsonResponse({"message": "Item added successfully", "item_id": item.itemId})
 
 
-
 """
 Accounts Gamekeeper views (kinda)
 """
+
+
 @login_required
 @is_gamekeeper
 def add_points(request, type, user_id, amount):
@@ -244,12 +268,14 @@ def add_points(request, type, user_id, amount):
         return JsonResponse({"message": "Points added"})
     else:
         return JsonResponse({"message": "Goes below zero"}, status=400)
-    
+
+
 @login_required
 @is_gamekeeper
 def get_user_ids(request):
     users = CustomUser.objects.values("id", "email")
     return JsonResponse({"user_ids": list(users)})
+
 
 @require_POST
 def add_challenge(request):
@@ -257,14 +283,14 @@ def add_challenge(request):
     Handles POST from the 'Add Challenge' form.
     Creates a new Challenge object and redirects back to the Gamekeeper page.
     """
-    description = request.POST.get('challenge_description')
-    challenge_type = request.POST.get('challenge_type')
-    game_category = request.POST.get('challenge_category')
-    reward = request.POST.get('challenge_reward')
-    goal = request.POST.get('challenge_goal')
+    description = request.POST.get("challenge_description")
+    challenge_type = request.POST.get("challenge_type")
+    game_category = request.POST.get("challenge_category")
+    reward = request.POST.get("challenge_reward")
+    goal = request.POST.get("challenge_goal")
 
     if not (description and challenge_type and game_category and reward and goal):
-        return redirect('gamekeeper')
+        return redirect("gamekeeper")
 
     Challenge.objects.create(
         description=description,
@@ -274,12 +300,13 @@ def add_challenge(request):
         goal=int(goal),
     )
 
-    return redirect('gamekeeper')
+    return redirect("gamekeeper")
 
 
 """
 Contact Gamekeeper views
 """
+
 
 @login_required
 @is_gamekeeper
@@ -288,19 +315,23 @@ def load_contact_requests(request):
     requests_qs = ContactMessage.objects.filter(complete=False)
     data = []
     for req in requests_qs:
-        data.append({
-            'id': req.id,
-            'user_email': req.user.email,
-            'message': req.message,
-            'created': req.created.strftime('%Y-%m-%d %H:%M')
-        })
+        data.append(
+            {
+                "id": req.id,
+                "user_email": req.user.email,
+                "message": req.message,
+                "created": req.created.strftime("%Y-%m-%d %H:%M"),
+            }
+        )
 
-    return JsonResponse({'requests': data})
+    return JsonResponse({"requests": data})
 
 
 """
 Forum
 """
+
+
 @login_required
 @is_gamekeeper
 def get_reported_posts(request):
@@ -309,14 +340,17 @@ def get_reported_posts(request):
         reported_posts = Post.objects.filter(reports__isnull=False).distinct()
         data = []
         for post in reported_posts:
-            data.append({
-                "post_id": post.post_id,
-                "user_email": post.user.email,
-                "description": post.description,
-                "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S")
-            })
+            data.append(
+                {
+                    "post_id": post.post_id,
+                    "user_email": post.user.email,
+                    "description": post.description,
+                    "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                }
+            )
         return JsonResponse({"reported_posts": data})
     return JsonResponse({"error": "Method not allowed."}, status=405)
+
 
 @login_required
 @is_gamekeeper
@@ -333,17 +367,21 @@ def get_reported_post_details(request, post_id):
         return JsonResponse({"post": data})
     return JsonResponse({"error": "Method not allowed."}, status=405)
 
+
 @login_required
 @is_gamekeeper
 @require_POST
 def respond_contact(request):
     try:
         data = json.loads(request.body)
-        request_id = data.get('id')
-        response_text = data.get('response', '').strip()
+        request_id = data.get("id")
+        response_text = data.get("response", "").strip()
         if not request_id or not response_text:
-            return JsonResponse({'status': 'error', 'message': 'Missing request ID or response.'}, status=400)
-        
+            return JsonResponse(
+                {"status": "error", "message": "Missing request ID or response."},
+                status=400,
+            )
+
         # Update the database record
         contact_message = ContactMessage.objects.get(id=request_id, complete=False)
         contact_message.response = response_text
@@ -360,11 +398,23 @@ def respond_contact(request):
         # Send the email to the user
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
 
-        return JsonResponse({'status': 'success', 'message': 'Response sent and request marked as complete.'})
+        return JsonResponse(
+            {
+                "status": "success",
+                "message": "Response sent and request marked as complete.",
+            }
+        )
     except ContactMessage.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'Contact request not found or already handled.'}, status=404)
+        return JsonResponse(
+            {
+                "status": "error",
+                "message": "Contact request not found or already handled.",
+            },
+            status=404,
+        )
     except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
 
 def delete_reported_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
@@ -373,6 +423,7 @@ def delete_reported_post(request, post_id):
     # Then delete the post itself
     post.delete()
     return JsonResponse({"message": "Post and associated reports deleted."})
+
 
 @login_required
 @is_gamekeeper

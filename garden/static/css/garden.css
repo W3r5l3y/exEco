@@ -1,3 +1,6 @@
+/* --------------------------------------------------
+    General Styling
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -48,13 +51,13 @@ h3 {
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* min-width: 300px; */
     padding: 20px;
 }
 
 #garden-buttons-container {
     flex-direction: column;
 }
+
 /* --------------------------------------------------
     Garden Styling
 -------------------------------------------------- */
@@ -73,6 +76,8 @@ h3 {
     padding: 10px;
     margin-bottom: 20px;
 }
+
+/* Garden Item Styling */
 
 .grid-item {
     display: flex;
@@ -222,6 +227,8 @@ h3 {
     overflow-y: auto;
 }
 
+/* Inventory Item Styling */
+
 .inventory-item {
     display: flex;
     flex-direction: column;
@@ -242,9 +249,8 @@ h3 {
     margin-bottom: 10px;
 }
 
-/* max 1 line and with ellipses */
 .inventory-item p { 
-    white-space: nowrap;
+    white-space: nowrap; /* Prevent text wrapping and use ellipsis instead */
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
@@ -259,6 +265,9 @@ h3 {
     scale: 1.05;
 }
 
+/* --------------------------------------------------
+    Garden Stats Styling
+-------------------------------------------------- */
 #garden-stat-wrapper {
     display: flex;
     flex-direction: column;
@@ -285,7 +294,9 @@ h3 {
     color: var(--primary_colour);
 }
 
-/* Inventory Scrollbar Styling */
+/* --------------------------------------------------
+    Scrollbar Styling
+-------------------------------------------------- */
 #inventory-wrapper::-webkit-scrollbar {
     width: 10px;
 }

@@ -1,4 +1,8 @@
 @import url("/static/css/colours.css");
+
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -21,8 +25,9 @@ main {
     min-height: 100%;
 }
 
-
-
+/* --------------------------------------------------
+    Posts
+-------------------------------------------------- */
 .posts {
     display: flex;
     flex-direction: column;
@@ -30,6 +35,7 @@ main {
     width: 100%;
     padding-bottom: 100px;
 }
+
 .like-count-container {
     width: 60px;
     height: 60px;
@@ -45,7 +51,6 @@ main {
     align-items: center;
     justify-content: end;
 }
-
 
 .like-count {
     display: flex;
@@ -102,7 +107,7 @@ main {
     color: var(--accessories_colour);
 }
 
-
+/* Post image */
 
 .post-image-container {
     display: flex;
@@ -118,6 +123,8 @@ main {
     border-radius: 10px;
     object-fit: contain;
 }
+
+/* Bottom of post */
 
 .post-bottom{
     background-color: var(--primary_colour);
@@ -140,6 +147,8 @@ main {
     display: flex;
     align-items: center;
 }
+
+/* Post comments */
 
 .post-comments-button {
     display: flex;
@@ -178,6 +187,8 @@ main {
     text-align: center;
 }
 
+/* Post actions */
+
 .post-actions {
     display: flex;
     flex-direction: row;
@@ -194,6 +205,10 @@ main {
     height: 30px;
     margin-left: 20px;
 }
+
+/* --------------------------------------------------
+    Comments
+-------------------------------------------------- */
 
 #comment {
     width: 100%;
@@ -279,11 +294,3 @@ main {
     }
 
 }
-
-
-
-
-
-
-
-

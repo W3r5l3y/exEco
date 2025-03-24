@@ -30,13 +30,13 @@
             <div id="points-wrapper">
                 <!-- QR Scanner -->
                 <div class="icon-wrapper me-3">
-                    <img class="icon-img" src="{% static 'img/qrscanner-point.png' %}" alt="QR Scanner" />
+                    <img class="icon-img" src="{% static 'img/qrscanner-point.png' %}" alt="QR Scanner Points" />
                     <span class="points-text ms-1">{{ user.userpoints.qrscanner_points }}</span>
                 </div>
 
                 <!-- Bingame -->
                 <div class="icon-wrapper me-3">
-                    <img class="icon-img" src="{% static 'img/bingame-point.png' %}" alt="Bingame" />
+                    <img class="icon-img" src="{% static 'img/bingame-point.png' %}" alt="Bingame Points" />
                     <span class="points-text ms-1">{{ user.userpoints.bingame_points }}</span>
                 </div>
 
@@ -45,12 +45,12 @@
                     <img class="icon-img" src="{% static 'img/transport-point.png' %}" alt="Transport Points" />
                     <span class="points-text ms-1">{{ user.userpoints.transport_points }}</span>
                 </div>
-            </div>
-
-            <!-- Coins -->
-            <div class="icon-wrapper me-3 d-flex align-items-center">
-                <img class="icon-img" src="{% static 'img/coin.png' %}" alt="Coins" />
-                <span class="points-text ms-1">{{ user.usercoins.coins }}</span>
+                
+                <!-- Coins -->
+                <div class="icon-wrapper me-3 d-flex align-items-center">
+                    <img class="icon-img" src="{% static 'img/coin.png' %}" alt="Coins" />
+                    <span class="points-text ms-1">{{ user.usercoins.coins }}</span>
+                </div>
             </div>
 
             <!-- User Name -->

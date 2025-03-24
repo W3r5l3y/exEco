@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shop', '0001_initial'),
+        ("shop", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shopitems',
-            name='aesthetic_appeal',
+            model_name="shopitems",
+            name="aesthetic_appeal",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='shopitems',
-            name='carbon_uptake',
+            model_name="shopitems",
+            name="carbon_uptake",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='shopitems',
-            name='habitat',
+            model_name="shopitems",
+            name="habitat",
             field=models.IntegerField(default=0),
         ),
     ]

@@ -35,7 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Function to open a lootbox
+    /* --------------------------------------------------
+    *  Function for opening lootboxes
+    * ------------------------------------------------ */
     function openLootbox(lootboxId, button) {
         fetch(`/open-lootbox/${lootboxId}/`, {
             method: "POST",
@@ -55,7 +57,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error:", error));
     }
 
-    // Function to display the lootbox result with animation sequence
+    /* --------------------------------------------------
+    *  Function for displaying lootbox results
+    * ------------------------------------------------ */
     function displayLootboxResult(item, button, lootboxRemoved) {
         // Get popup elements
         const popupOverlay = document.getElementById("popup-overlay");
@@ -139,7 +143,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }    
 
-    // Function to update the inventory
+    /* --------------------------------------------------
+    *  Function for updating the inventory
+    * ------------------------------------------------ */
     function updateInventory() {
         fetch("/get-inventory/")
             .then(response => response.text())
@@ -152,7 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error updating inventory:", error));
     }
 
-    // Function to attach event listeners to lootbox buttons
+    /* --------------------------------------------------
+    *  Function for attaching event listeners to lootboxes
+    * ------------------------------------------------ */
     function lootboxEventListeners() {
         document.querySelectorAll(".lootbox-btn").forEach(button => {
             button.addEventListener("click", function () {
@@ -162,7 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Function to attach event listeners to regular item buttons
+    /* --------------------------------------------------
+    *  Function for attaching event listeners to regular items
+    * ------------------------------------------------ */
     function regularItemEventListeners() {
         document.querySelectorAll(".item-btn").forEach(button => {
             button.addEventListener("click", function () {
@@ -171,7 +181,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Function to get the CSRF token
+    /* --------------------------------------------------
+    *  Function for getting the CSRF token
+    * ------------------------------------------------ */
     function getCSRFToken() {
         const cookies = document.cookie.split("; ");
         for (let cookie of cookies) {
@@ -182,8 +194,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return "";
     }
 
-    // Functions to handle merging of items
-    // Function to attach event listeners to merge buttons
+    /* --------------------------------------------------
+    *  Function for attaching event listeners to merge buttons
+    * ------------------------------------------------ */
     function mergeEventListeners() {
         document.querySelectorAll(".merge-btn").forEach(button => {
             button.addEventListener("click", function () {
@@ -193,7 +206,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Function to call merge endpoint for an item
+    /* --------------------------------------------------
+    *  Function for merging items
+    * ------------------------------------------------ */
     function mergeItem(itemId) {
         fetch(`/merge-item/${itemId}/`, {
             method: "POST",

@@ -1,3 +1,7 @@
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
+
 main {
     padding-top: 150px;
     width: 100%;
@@ -14,6 +18,10 @@ body {
     background-attachment: fixed;
     background-position: center;
 }
+
+/* --------------------------------------------------
+    User Profile
+-------------------------------------------------- */
 
 .profile-div {
     background-color: white;
@@ -43,6 +51,9 @@ body {
     gap: 3% 10%;
 }
 
+/* --------------------------------------------------
+    User Posts
+-------------------------------------------------- */
 .post {
     background-color: white;
     border-radius: 10px;
@@ -103,7 +114,6 @@ body {
     margin-top: -6px;
 }
 
-
 .user-own-post-container {
     display: flex;
     flex-direction: column;
@@ -153,6 +163,8 @@ body {
     color: white;
     border: none;
 }
+
+/* edit post */
 
 .own-post-description-editing {
     border: 2px solid var(--primary_colour);

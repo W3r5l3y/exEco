@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ user.email }}'s Profile</title>
-    <!-- <meta name="csrf-token" content="{{ csrf_token }}"> -->
     {% include 'navbar.html' %}
     {% block css %}{% endblock %}
     {% load static %}
@@ -14,6 +13,7 @@
 </head>
 
 <body>
+    <!-- Load messages if there are any -->
     {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -28,11 +28,9 @@
             <div class="profile-top">
                     <h1 class="profile-top-header">{{ user.email }}'s Posts</h1>
             </div>
-        <!-- Check if the user's profile is the logged in user !-->
-            {% if user != logged_in_user %}
-                <!-- Since the user isn't viewing their own posts, show the correct visual form !-->
+            {% if user != logged_in_user %} <!-- If the user is not the logged in user, display the posts -->
                 <div class="user-post-container">
-                    <!-- Loop through posts !-->
+                    <!-- Loop through all the posts and display them -->
                     {% for post in posts %}
                         <!-- Post item !-->
                         <div class="post" onclick="goToPost('{{ post.post_id }}')">
@@ -40,11 +38,11 @@
                             <div class="post-top">
                                 <p>{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</p>
                             </div>
-                            <!-- Image container !-->
+                            <!-- Post Image Container to display image -->
                             <div class="post-image-container">
                                 <img class="post-image" src="{{ post.image.url }}" alt="Post Image">
                             </div>
-                            <!-- Show like count !-->
+                            <!-- Post Bottom to display description, comments, likes and actions -->
                             <div class="post-bottom">
                                 <p id="like-count-{{ post.post_id }}" class="like-count-text">{{ post.likes }}</p>
                                 <img class="like-count-image" src="{% static 'img/like.svg' %}" alt="like_count" id="like-heart-{{ post.post_id }}">
@@ -52,38 +50,36 @@
                         </div>
                 {% endfor %}
                 </div>
-            {% else %}
-                <!-- User is viewing their own profile, show edit/delete layout !-->
+            {% else %} <!-- If the user is the logged in user, display the posts with edit and delete options -->
                 <div class="user-own-post-container">
+                    <!-- Loop through all the posts and display them -->
                     {% for post in posts %}
                         <!-- Row design !-->
                         <div class="own-post" data-post-id="{{ post.post_id }}">
-                            <!-- Post image preview !-->
+                            <!-- Post Image Container to display image -->
                             <div class="own-post-image-container">
                                 <img class="own-post-image" src="{{ post.image.url }}" alt="Post Image">
                                 <img class="change-image" src="" alt="change image" style="display: none" >
                             </div>
-                            <!-- Description edit input !-->
+                            <!-- Post Description Container to display description -->
                             <div class="own-post-description-div">
                                 <label>
                                     <input value="{{ post.description }}" class="own-post-description" disabled>
                                 </label>
                             </div>
-                            <!-- Action buttons which change based on state !-->
+                            <!-- Post Actions Container to edit and delete the post -->
                             <div class="own-post-actions">
-                                <!-- Use window.location.href to navigate -->
                                 <img class="left-image" src="{% static 'img/trash.svg' %}" alt="delete">
                                 <img class="right-image" src="{% static 'img/edit.svg' %}" alt="edit">
-
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
-
         </div>
-
     </main>
+
+    <!-- Pass the static files to the JavaScript file -->
     <script>
         //Image assets for use in js
         const notLikedButton = "{% static 'img/like.svg' %}";

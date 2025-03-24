@@ -1,3 +1,6 @@
+/* --------------------------------------------------
+    General
+-------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -20,6 +23,9 @@ main {
     min-height: 100%;
 }
 
+/* --------------------------------------------------
+    Create Post
+-------------------------------------------------- */
 .create-post-form {
     display: flex;
     justify-content: center;
@@ -35,7 +41,6 @@ main {
 
 }
 
-
 .post-top{
     background-color: var(--primary_colour);
     border-top-left-radius: 10px;
@@ -47,7 +52,6 @@ main {
     justify-content: space-between;
     align-items: center;
 }
-
 
 .post-image-container {
     display: flex;
@@ -101,6 +105,9 @@ main {
     color: black;
 }
 
+/* --------------------------------------------------
+    Post Actions
+-------------------------------------------------- */
 .post-actions {
     display: flex;
     flex-direction: row;

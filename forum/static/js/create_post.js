@@ -1,12 +1,10 @@
-// Detect user clicking on add image, and start image selection
+// Add event listener to the image input field
 document.getElementById("post-image-add").addEventListener("click", function() {
     document.getElementById("imageInput").click();
 });
 
 
-/**
- * Detect image change and alter image preview
- */
+// Display the selected image in the preview
 document.getElementById("imageInput").addEventListener("change", function(event) {
     let file = event.target.files[0];
     if (file) {
