@@ -90,7 +90,7 @@ EXEco/
 ├── inventory/       # User inventory management
 ├── media/           # Media file storage (uploads, images, etc.)
 ├── qrscanner/       # QR code scanning functionality
-├── shop/            # In-game or e-commerce shop features
+├── shop/            # In game shop
 ├── static/          # Static files (CSS, JS, Images)
 ├── templates/       # HTML templates for rendering views
 ├── transport/       # Strava-linked transport tracking features
