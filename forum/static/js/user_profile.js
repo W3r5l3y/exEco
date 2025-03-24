@@ -1,3 +1,4 @@
+// Have event listeners for each individual post
 document.querySelectorAll('.own-post').forEach(postElement => {
     // Global variables
     let originalDescriptionText = '';
@@ -13,6 +14,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
     // Add event listeners to the left and right images
     leftImage.addEventListener('click', function () {
         if (state === 'none') {
+            //Send image into delete state and design
             originalDescriptionText = editInput.value;
             leftImage.src = crossButton;
             rightImage.src = checkButton;
@@ -20,17 +22,24 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             editInput.value = 'Confirm Delete?';
             state = 'delete';
         } else if (state === 'edit') {
+            //Send image into default state
             cancelEditMode();
         } else if (state === 'delete') {
+            //Send image into default state
             cancelDeleteMode();
         }
     });
+
+    // Detect edit button clicked
     rightImage.addEventListener('click', function () {
         if (state === 'none') {
+            //Send image into edit state
             enterEditMode();
         } else if (state === 'edit') {
+            //Send image into default state and submit the edit changes
             submitEdit();
         } else if (state === 'delete') {
+            //Delete post
             submitDelete();
         }
     });
@@ -49,6 +58,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
     // Function to cancel edit mode
     function cancelEditMode() {
         postImage.style.opacity = 1;
+        //Restoring description text
         editInput.value = originalDescriptionText;
         editInput.classList.remove('own-post-description-editing');
         editInput.disabled = true;
@@ -56,6 +66,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         rightImage.src = editButton;
         state = 'none';
     }
+
 
     // Function to cancel delete mode
     function cancelDeleteMode() {
@@ -65,6 +76,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         rightImage.src = editButton;
         state = 'none';
     }
+
 
     // Function to submit the edited post
     function submitEdit() {
@@ -77,7 +89,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         // Get the post ID and CSRF token
         const postId = postElement.dataset.postId;
         const csrfToken = getCSRFToken();
-    
+        //Checking for errors with post or CSRF retrieval
         if (!csrfToken || !postId) {
             console.error("CSRF token or Post ID not found!", { csrfToken, postId });
             return;
@@ -96,6 +108,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         })
         .then(response => response.json())
         .then(data => {
+            //User feedback
             if (data.success) {
                 alert("Post edited successfully");
                 location.reload();
@@ -105,6 +118,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         })
         .catch(error => console.error("Error:", error));
     }      
+
 
     // Function to delete the post
     function submitDelete() {
@@ -117,7 +131,8 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         // Get the post ID and CSRF token
         const postId = postElement.dataset.postId;
         const csrfToken = getCSRFToken();
-    
+
+        //Checking for errors with post or CSRF retrieval
         if (!csrfToken || !postId) {
             console.error("CSRF token or Post ID not found!", { csrfToken, postId });
             return;
@@ -134,6 +149,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
         })
         .then(response => response.json())
         .then(data => {
+            //User feedback
             if (data.success) {
                 postElement.remove();
                 alert("Post deleted successfully");
@@ -142,7 +158,7 @@ document.querySelectorAll('.own-post').forEach(postElement => {
             }
         })
         .catch(error => console.error("Delete request failed:", error));
-    }        
+    }
 
     // Function to get the CSRF token
     function getCSRFToken() {

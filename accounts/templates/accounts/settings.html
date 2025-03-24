@@ -13,7 +13,7 @@
     <script src="{% static 'js/settings.js' %}" defer></script>
 </head>
 <body >
-    <!-- Error Popup -->
+    <!-- Error popup !-->
     <div id="error-popup" class="popup" >
         <button class="close-btn" onclick="closeErrorPopup()">&times;</button>
         <p id="error-popup-title">Error</p>
@@ -26,21 +26,21 @@
         <p id="success-popup-message">An unexpected success occurred.</p>
     </div>
 
-    <!-- Modal to display the check message -->
+    <!-- Confirmation modal !-->
     <div class="modal fade" id="checkModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="checkModalTitle" aria-hidden="true">
-        <div class="modal-dialog" >
-            <div id="modal-content" class="modal-content modal-content-delete" >
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="checkModalTitle">Title</h1>
-                </div>
-                <div class="modal-body">
-                    <p id="modal_body_text"> Main body Text </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="modalConfirmButton">Confirm</button>
-                </div>
-            </div>
+      <div class="modal-dialog" >
+        <div id="modal-content" class="modal-content modal-content-delete" >
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="checkModalTitle">Title</h1>
+          </div>
+          <div class="modal-body">
+              <p id="modal_body_text"> Main body Text </p>
+          </div>
+            <!-- Cancel confirm buttons !-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="modalConfirmButton">Confirm</button>
+          </div>
         </div>
     </div>
     <!-- Main content -->
@@ -59,13 +59,11 @@
                             <input class="input" type="email" id="email" name="email" placeholder="Enter your email" data-email="{{ request.user.email }}" value="{{ request.user.email }}"  required>
                             <label class="input-label" for="email">Email</label>
                         </div>
-
                         <!-- Input for the first name -->
                         <div class="input-group limited-width">
                                 <input class="input" type="text" id="first_name" name="first_name" placeholder="Enter your first name" data-firstname="{{ request.user.first_name }}" value="{{ request.user.first_name }}" required>
                                 <label class="input-label" for="first_name">First name</label>
                         </div>
-
                         <!-- Input for the last name -->
                         <div class="input-group limited-width">
                                 <input class="input" type="text" id="last_name" name="last_name" placeholder="Enter your last name" data-lastname="{{ request.user.last_name }}" value="{{ request.user.last_name }}"  required>
@@ -112,13 +110,11 @@
                             <input class="input" type="password" id="password" name="password" placeholder="Enter your new password" required>
                             <label class="input-label" for="password">Password</label>
                         </div>
-
                         <!-- Input for the new password -->
                         <div class="input-group limited-width">
                                 <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
                                 <label class="input-label" for="confirm_password">Password</label>
                         </div>
-
                         <!-- Submit and cancel buttons -->
                         <div class="space-evenly-button-div limited-width">
                             <button class="confirm-button" type="submit" name="confirm_password_change">Confirm</button>
@@ -136,12 +132,14 @@
                                 with all collected data</p>
                             <button class="buttons-mini-div-button" name="request_data" onclick="requestGDPR()">Request</button>
                         </div>
+                        
                         <!-- Buttons for the log out -->
                         <div class="buttons-mini-div">
                             <h3>Log out</h3>
                             <p>Log out of your account.</p>
                             <button class="buttons-mini-div-button" name="log_out_data" style="background-color: lightblue" onclick="logOut()">Log out</button>
                         </div>
+                      
                         <!-- Buttons for the delete account -->
                         <div class="buttons-mini-div">
                             <h3>Delete account</h3>

@@ -9,7 +9,7 @@ from .forms import PostForm
 from accounts.models import CustomUser, UserPoints, UserCoins
 from django.contrib import messages
 from challenges.models import UserChallenge
-
+import json
 
 def forum_home(request):
     # Display a single post if post_id is provided in the query params, else display all posts
@@ -134,15 +134,17 @@ def add_comment(request, post_id):
 def edit_post(request, post_id):
     # Edit a post
     post = get_object_or_404(Post, post_id=post_id)
-
-    if post.user != request.user:  # Check if the user is the owner of the post
+    #Check if user is somehow editing somebody else's post
+    if post.user != request.user:
         return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
 
-    data = (
-        request.POST
-        if request.content_type == "application/x-www-form-urlencoded"
-        else request.json()
-    )
+    if request.content_type == "application/json":
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
+    else:
+        data = request.POST
     new_description = data.get("description", "").strip()
 
     if not new_description:  # Check if the description is empty

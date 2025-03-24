@@ -3,6 +3,7 @@ document.getElementById("post-image-add").addEventListener("click", function() {
     document.getElementById("imageInput").click();
 });
 
+
 // Display the selected image in the preview
 document.getElementById("imageInput").addEventListener("change", function(event) {
     let file = event.target.files[0];

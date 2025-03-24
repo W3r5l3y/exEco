@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.sort((a, b) => b.points - a.points);
     
                 // Loop through the leaderboard items and update them
-                for (let i = 0; i < 5; i++) { // Only show top 5
+                for (let i = 0; i < 10; i++) { // Only show top 10
                     const leaderboardItem = document.getElementById(`leaderboard-item-${i + 1}`);
     
                     if (leaderboardItem) {

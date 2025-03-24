@@ -19,6 +19,7 @@ function likePost(postId) {
     const likeButton = document.querySelector(`#like-button-${postId}`);
     likeButton.disabled = true;
 
+
     // Send a POST request to the server to like the post
     fetch(`/like/${postId}/`, {
         method: 'POST',
@@ -44,6 +45,8 @@ function likePost(postId) {
         likeButton.disabled = false;
     });
 }
+
+
 
 // Function to add a comment to a post
 function addComment(event, postId) {
@@ -78,6 +81,7 @@ function addComment(event, postId) {
     .catch(error => console.error('Error:', error));
 }
 
+
 // Function to report a post
 function reportPost(postId) {
     const reportButton = document.querySelector(`#report-button-${postId}`);
@@ -94,6 +98,7 @@ function reportPost(postId) {
     })
     .then(response => response.json())
     .then(data => {
+        //User feedback
         if (data.success) {
             alert(data.message || 'Post reported successfully.');
         } else {

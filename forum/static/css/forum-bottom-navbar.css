@@ -37,3 +37,27 @@
 .bottom-navbar-image-selected {
     opacity: 1;
 }
+
+@media (max-width: 1200px) {
+    /* make it responsive on smaller screens */
+    .bottom-navbar {
+        width: 60%;
+    }
+
+    .bottom-navbar-image{
+        width: 33px;
+        height: 33px;
+    }
+}
+@media (max-width: 767px) {
+    /* make it responsive on mobile */
+    .bottom-navbar {
+        width: 70%;
+    }
+
+    .bottom-navbar-image{
+        width: 26px;
+        height: 26px;
+    }
+
+}

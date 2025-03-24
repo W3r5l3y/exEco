@@ -123,3 +123,52 @@ main {
     height: 30px;
     margin-left: 20px;
 }
+
+@media (max-width: 1600px) {
+    /* make it responsive on smaller screens */
+    .create-post-div {
+        width: 60%;
+    }
+
+}
+
+@media (max-width: 1200px) {
+    /* make it responsive on smaller screens */
+    .create-post-div {
+        width: 70%;
+    }
+}
+@media (max-width: 767px) {
+    /* make it responsive on mobile */
+    .create-post-div {
+        width: 90%;
+    }
+
+    .post-image-container{
+        min-height: 20vh;
+    }
+
+    .user_profile_link {
+        font-size: 4vw;
+    }
+
+    .date-text {
+        font-size: 4vw;
+    }
+
+    .post-description-text {
+        font-size: 4vw;
+    }
+
+    .post-action-img {
+        width: 5vw;
+        height: 5vw;
+        margin-left: 10px;
+    }
+
+    .like-count-text{
+        font-size: 2vw;
+    }
+
+}
+

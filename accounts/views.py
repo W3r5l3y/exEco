@@ -105,6 +105,18 @@ def login_register_view(request):
 
 @login_required(login_url="/login/")
 def settings_view(request):
+    """
+            This is the view for the settings page. If the user performs an action,
+            this view will receive the post request and call the appropriate function.
+            Actions including altering profile, password, unlinking strava, deleting account, logging out
+            or requesting gdpr.
+
+            Parameters:
+            request: The page request.
+
+            Returns:
+            Redirect to the outcome page with success/error.
+        """
     user = request.user
     if request.method == "POST":
         # ----- Edit profile -----
